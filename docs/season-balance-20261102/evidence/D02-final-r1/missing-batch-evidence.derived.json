@@ -1,0 +1,13 @@
+{
+  "stage": "d02-rebuild-pg-r1",
+  "not_present": [
+    "cases.trx",
+    "cases.xml"
+  ],
+  "reason": "600s guard stopped originalbatch duringMageinitialization afterPriestFINISHED. No completebatchTRX/XML was produced, neither reconstructed nor markedallgreen.",
+  "Priest_completion_evidence": [
+    "originaltestlog FINISHED481.5040788s",
+    "Priest/result.original.json and alltypedquote/ready/death records",
+    "Priestschema absent in originalcleanupquery"
+  ]
+}

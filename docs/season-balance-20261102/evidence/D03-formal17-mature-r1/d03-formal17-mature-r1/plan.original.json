@@ -1,0 +1,76 @@
+{
+  "prior_used": 293,
+  "config_version": "season-v1-config-17",
+  "content_hash": "3e4efc7f04d2acc0d70f1ef3ba7f2ce9cc4b675543b443606880a10b6cc1e490",
+  "frozen_at_utc": "2026-11-07T00:09:17.782436+00:00",
+  "cases": [
+    {
+      "id": "D03-FORMAL17-MATURE-1-Mage-1061",
+      "hero": "Mage",
+      "deck": "flow-loop",
+      "armor": "counter-offense",
+      "seed": 1061,
+      "policy": "rate-budget-half-v1"
+    },
+    {
+      "id": "D03-FORMAL17-MATURE-1-Priest-1061",
+      "hero": "Priest",
+      "deck": "flow-loop",
+      "armor": "counter-offense",
+      "seed": 1061,
+      "policy": "rate-budget-half-v1"
+    },
+    {
+      "id": "D03-FORMAL17-MATURE-1-Guardian-1061",
+      "hero": "Guardian",
+      "deck": "flow-loop",
+      "armor": "counter-offense",
+      "seed": 1061,
+      "policy": "rate-budget-half-v1"
+    },
+    {
+      "id": "D03-FORMAL17-MATURE-2-Mage-1061",
+      "hero": "Mage",
+      "deck": "flow-offense",
+      "armor": "balanced",
+      "seed": 1061,
+      "policy": "rate-budget-half-v1"
+    },
+    {
+      "id": "D03-FORMAL17-MATURE-2-Priest-1061",
+      "hero": "Priest",
+      "deck": "flow-offense",
+      "armor": "balanced",
+      "seed": 1061,
+      "policy": "rate-budget-half-v1"
+    },
+    {
+      "id": "D03-FORMAL17-MATURE-2-Guardian-1061",
+      "hero": "Guardian",
+      "deck": "flow-offense",
+      "armor": "balanced",
+      "seed": 1061,
+      "policy": "rate-budget-half-v1"
+    }
+  ],
+  "scope": "Six new actual original Boss encounters, two legal mature non-red builds x three classes. Explicit Boss-spawn fixture, not route/yield/calendar/population evidence.",
+  "original_boss_seconds": [
+    75,
+    120
+  ],
+  "effective_boss_seconds": [
+    63.75,
+    120
+  ],
+  "class_ratio_limit": 1.15,
+  "pacing_relaxation": {
+    "lower_fraction": 0.15,
+    "reason": "Repeated archived75s and67.5s lower-bound failures; original user explicitly allows documented finite relaxation. This new preregistered tolerance affects pacing only, no retrospective pass and no relaxation of class1.15."
+  },
+  "policy_equivalence": "Formal17 current Cards (MAG-10 draw0), explicit season sustain500bp equals NumericalRules.ForSeason current config. No old in-memory card candidate.",
+  "seed_is_new_for_this_scope": true,
+  "no_development_pooling": true,
+  "B05_new": 0,
+  "F01_new": 0,
+  "capital_banks_unchanged": true
+}

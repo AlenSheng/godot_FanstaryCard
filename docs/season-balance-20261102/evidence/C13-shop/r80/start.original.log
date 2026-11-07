@@ -1,0 +1,17 @@
+{
+  "container_id": "f251c938d345ac422f9ce16059e122bc6e24985a15c91248b6973cf626ede2ee",
+  "name": "fc-season-a03-storage-20261102-r80",
+  "database_container": "803968e390014540be88f60b9ac43203946d0145bf886fc61d9d9d4d04bc3b1a",
+  "source_base": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+  "archive_sha256": "606799a1443e8ea5a28dd1f29f3c66b1679eb5e7cd9f7a33367d7fdb9162a3a6",
+  "image_id": "sha256:4beef5b8919dcaa2dc924233bd069257e883cc7a061e09088a97d152d6a48510",
+  "cpu": 1,
+  "memory_mib": 1200,
+  "server_command": "dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter \"FullyQualifiedName~PostgresPermanentCardCopyTests|FullyQualifiedName~PostgresCardEconomyTests|FullyQualifiedName~PostgresCardUpgradeTests|FullyQualifiedName~PostgresMigrationTests|FullyQualifiedName~EconomyReconciliationReportTests\" --logger \"trx;LogFileName=shop-copies-server.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "server_evidence_source": null,
+  "domain_command": "dotnet test tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj --filter \"FullyQualifiedName~PermanentCardCopyRulesTests|FullyQualifiedName~CardUpgradeTests|FullyQualifiedName~CardEconomyTests|FullyQualifiedName~DeckRulesTests\" --logger \"trx;LogFileName=shop-copies-domain.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "domain_evidence_source": null,
+  "production_database_used": false,
+  "available_ram_before": 2543669248,
+  "free_disk_before": 3587850240
+}

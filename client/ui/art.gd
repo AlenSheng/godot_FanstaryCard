@@ -32,7 +32,15 @@ static func texture(key: String) -> Texture2D:
 	if not _textures.has(key):
 		var entry: Dictionary = MANIFEST.data.files.get(key, {})
 		var path: String = entry.get("path", "")
-		_textures[key] = load(path) if not path.is_empty() and ResourceLoader.exists(path) else null
+		var source: Texture2D = load(path) if not path.is_empty() and ResourceLoader.exists(path) else null
+		if source != null and entry.get("region_xywh") is Array:
+			var bounds: Array = entry.region_xywh
+			var region := AtlasTexture.new()
+			region.atlas = source
+			region.region = Rect2(float(bounds[0]),float(bounds[1]),float(bounds[2]),float(bounds[3]))
+			region.filter_clip = true
+			_textures[key] = region
+		else: _textures[key] = source
 	return _textures[key]
 
 static func card(id: String) -> Texture2D:

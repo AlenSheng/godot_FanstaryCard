@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="056b7542-19ce-4363-9b95-95d9d67414c4" name="shengjiahao@YK-SHENGJIAHAO 2026-11-05 23:39:50" runUser="DOBEST\shengjiahao" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-05T23:39:50.3547050+08:00" queuing="2026-11-05T23:39:50.3547054+08:00" start="2026-11-05T23:39:47.0233190+08:00" finish="2026-11-05T23:39:50.3636242+08:00" />
+  <TestSettings name="default" id="6d99741d-7733-4fa7-99a5-f3ec949e6c96">
+    <Deployment runDeploymentRoot="shengjiahao_YK-SHENGJIAHAO_2026-11-05_23_39_50" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="54d191b5-520a-4e4e-b293-1bb633f20c4c" testId="7bc0deb6-6e86-bc57-8ee0-ffc5672822fd" testName="FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests.PreflightBuildsAreDistinctLegalAndRespectAllSixArmorEntryCapsWithoutRunningEncounters" computerName="YK-SHENGJIAHAO" duration="00:00:00.2602151" startTime="2026-11-05T23:39:49.9846836+08:00" endTime="2026-11-05T23:39:50.2641535+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="54d191b5-520a-4e4e-b293-1bb633f20c4c">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.All() Failure: 5 out of 5 items in the collection did not pass.&#xD;
+[0]: Item:  ExplorationItem { ItemId = 5060b365-8b1f-44f8-b6b8-3ac50e7e4def, Kind = Equipment, Quantity = 1, IsSafe = False, Equipment = EquipmentRewardData { Slot = Head, Quality = Blue, Element = Wood, EffectAffix = Piercing, SecondaryTrait = DrawInterval, Level = 3, IsBound = False, SeasonOrigin = , UniqueAffix = , UniqueElement = , StatsVersion = season-equipment-v1 }, SlotIndex = -1, IsGenerated = False, IsCombatProjection = False }&#xD;
+     Error: Assert.True() Failure&#xD;
+            Expected: True&#xD;
+            Actual:   False&#xD;
+[1]: Item:  ExplorationItem { ItemId = 93ec0bfc-4a90-4904-833d-2b24c312fe6d, Kind = Equipment, Quantity = 1, IsSafe = False, Equipment = EquipmentRewardData { Slot = Hands, Quality = Blue, Element = Wood, EffectAffix = Piercing, SecondaryTrait = DrawInterval, Level = 3, IsBound = False, SeasonOrigin = , UniqueAffix = , UniqueElement = , StatsVersion = season-equipment-v1 }, SlotIndex = -1, IsGenerated = False, IsCombatProjection = False }&#xD;
+     Error: Assert.True() Failure&#xD;
+            Expected: True&#xD;
+            Actual:   False&#xD;
+[2]: Item:  ExplorationItem { ItemId = 32dec2b3-fc66-44f7-946b-167557ad447c, Kind = Equipment, Quantity = 1, IsSafe = False, Equipment = EquipmentRewardData { Slot = Chest, Quality = Blue, Element = Wood, EffectAffix = Vitality, SecondaryTrait = DrawInterval, Level = 3, IsBound = False, SeasonOrigin = , UniqueAffix = , UniqueElement = , StatsVersion = season-equipment-v1 }, SlotIndex = -1, IsGenerated = False, IsCombatProjection = False }&#xD;
+     Error: Assert.True() Failure&#xD;
+            Expected: True&#xD;
+            Actual:   False&#xD;
+[3]: Item:  ExplorationItem { ItemId = 19c359f7-a439-4342-9ad4-e368f82d3af5, Kind = Equipment, Quantity = 1, IsSafe = False, Equipment = EquipmentRewardData { Slot = Legs, Quality = Blue, Element = Water, EffectAffix = Vitality, SecondaryTrait = DrawInterval, Level = 3, IsBound = False, SeasonOrigin = , UniqueAffix = , UniqueElement = , StatsVersion = season-equipment-v1 }, SlotIndex = -1, IsGenerated = False, IsCombatProjection = False }&#xD;
+     Error: Assert.True() Failure&#xD;
+            Expected: True&#xD;
+            Actual:   False&#xD;
+[4]: Item:  ExplorationItem { ItemId = 44b3fc4d-6ab6-40a8-b5f1-f0ed679f3ba6, Kind = Equipment, Quantity = 1, IsSafe = False, Equipment = EquipmentRewardData { Slot = Feet, Quality = Blue, Element = Water, EffectAffix = Vitality, SecondaryTrait = DrawInterval, Level = 3, IsBound = False, SeasonOrigin = , UniqueAffix = , UniqueElement = , StatsVersion = season-equipment-v1 }, SlotIndex = -1, IsGenerated = False, IsCombatProjection = False }&#xD;
+     Error: Assert.True() Failure&#xD;
+            Expected: True&#xD;
+            Actual:   False</Message>
+          <StackTrace>   at FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests.PreflightBuildsAreDistinctLegalAndRespectAllSixArmorEntryCapsWithoutRunningEncounters() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\SeasonThemeCalibrationTests.cs:line 40&#xD;
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests.PreflightBuildsAreDistinctLegalAndRespectAllSixArmorEntryCapsWithoutRunningEncounters" storage="g:\pr13evidence\season-balance-20261102-r1\c16-calibration-preflight-r1\build\bin\fantasycard.server.tests\debug\fantasycard.server.tests.dll" id="7bc0deb6-6e86-bc57-8ee0-ffc5672822fd">
+      <Execution id="54d191b5-520a-4e4e-b293-1bb633f20c4c" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\c16-calibration-preflight-r1\build\bin\FantasyCard.Server.Tests\debug\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests" name="PreflightBuildsAreDistinctLegalAndRespectAllSixArmorEntryCapsWithoutRunningEncounters" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="7bc0deb6-6e86-bc57-8ee0-ffc5672822fd" executionId="54d191b5-520a-4e4e-b293-1bb633f20c4c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="1" executed="1" passed="0" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)&#xD;
+[xUnit.net 00:00:00.48]   Discovering: FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:00:01.19]   Discovered:  FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:00:01.59]   Starting:    FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:00:01.84]       Assert.All() Failure: 5 out of 5 items in the collection did not pass.&#xD;
+[xUnit.net 00:00:01.84]       [0]: Item:  ExplorationItem { ItemId = 5060b365-8b1f-44f8-b6b8-3ac50e7e4def, Kind = Equipment, Quantity = 1, IsSafe = False, Equipment = EquipmentRewardData { Slot = Head, Quality = Blue, Element = Wood, EffectAffix = Piercing, SecondaryTrait = DrawInterval, Level = 3, IsBound = False, SeasonOrigin = , UniqueAffix = , UniqueElement = , StatsVersion = season-equipment-v1 }, SlotIndex = -1, IsGenerated = False, IsCombatProjection = False }&#xD;
+[xUnit.net 00:00:01.84]            Error: Assert.True() Failure&#xD;
+[xUnit.net 00:00:01.84]                   Expected: True&#xD;
+[xUnit.net 00:00:01.84]                   Actual:   False&#xD;
+[xUnit.net 00:00:01.84]       [1]: Item:  ExplorationItem { ItemId = 93ec0bfc-4a90-4904-833d-2b24c312fe6d, Kind = Equipment, Quantity = 1, IsSafe = False, Equipment = EquipmentRewardData { Slot = Hands, Quality = Blue, Element = Wood, EffectAffix = Piercing, SecondaryTrait = DrawInterval, Level = 3, IsBound = False, SeasonOrigin = , UniqueAffix = , UniqueElement = , StatsVersion = season-equipment-v1 }, SlotIndex = -1, IsGenerated = False, IsCombatProjection = False }&#xD;
+[xUnit.net 00:00:01.84]            Error: Assert.True() Failure&#xD;
+[xUnit.net 00:00:01.84]                   Expected: True&#xD;
+[xUnit.net 00:00:01.84]                   Actual:   False&#xD;
+[xUnit.net 00:00:01.84]       [2]: Item:  ExplorationItem { ItemId = 32dec2b3-fc66-44f7-946b-167557ad447c, Kind = Equipment, Quantity = 1, IsSafe = False, Equipment = EquipmentRewardData { Slot = Chest, Quality = Blue, Element = Wood, EffectAffix = Vitality, SecondaryTrait = DrawInterval, Level = 3, IsBound = False, SeasonOrigin = , UniqueAffix = , UniqueElement = , StatsVersion = season-equipment-v1 }, SlotIndex = -1, IsGenerated = False, IsCombatProjection = False }&#xD;
+[xUnit.net 00:00:01.84]            Error: Assert.True() Failure&#xD;
+[xUnit.net 00:00:01.84]                   Expected: True&#xD;
+[xUnit.net 00:00:01.84]                   Actual:   False&#xD;
+[xUnit.net 00:00:01.84]       [3]: Item:  ExplorationItem { ItemId = 19c359f7-a439-4342-9ad4-e368f82d3af5, Kind = Equipment, Quantity = 1, IsSafe = False, Equipment = EquipmentRewardData { Slot = Legs, Quality = Blue, Element = Water, EffectAffix = Vitality, SecondaryTrait = DrawInterval, Level = 3, IsBound = False, SeasonOrigin = , UniqueAffix = , UniqueElement = , StatsVersion = season-equipment-v1 }, SlotIndex = -1, IsGenerated = False, IsCombatProjection = False }&#xD;
+[xUnit.net 00:00:01.84]            Error: Assert.True() Failure&#xD;
+[xUnit.net 00:00:01.84]                   Expected: True&#xD;
+[xUnit.net 00:00:01.84]                   Actual:   False&#xD;
+[xUnit.net 00:00:01.84]       [4]: Item:  ExplorationItem { ItemId = 44b3fc4d-6ab6-40a8-b5f1-f0ed679f3ba6, Kind = Equipment, Quantity = 1, IsSafe = False, Equipment = EquipmentRewardData { Slot = Feet, Quality = Blue, Element = Water, EffectAffix = Vitality, SecondaryTrait = DrawInterval, Level = 3, IsBound = False, SeasonOrigin = , UniqueAffix = , UniqueElement = , StatsVersion = season-equipment-v1 }, SlotIndex = -1, IsGenerated = False, IsCombatProjection = False }&#xD;
+[xUnit.net 00:00:01.84]            Error: Assert.True() Failure&#xD;
+[xUnit.net 00:00:01.84]                   Expected: True&#xD;
+[xUnit.net 00:00:01.84]                   Actual:   False&#xD;
+[xUnit.net 00:00:01.84]       Stack Trace:&#xD;
+[xUnit.net 00:00:01.84]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\SeasonThemeCalibrationTests.cs(40,0): at FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests.PreflightBuildsAreDistinctLegalAndRespectAllSixArmorEntryCapsWithoutRunningEncounters()&#xD;
+[xUnit.net 00:00:01.85]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+[xUnit.net 00:00:01.85]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)&#xD;
+[xUnit.net 00:00:01.86]   Finished:    FantasyCard.Server.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="YK-SHENGJIAHAO" outcome="Error" timestamp="2026-11-05T23:39:50.2695287+08:00">
+        <Text>[xUnit.net 00:00:01.84]     FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests.PreflightBuildsAreDistinctLegalAndRespectAllSixArmorEntryCapsWithoutRunningEncounters [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

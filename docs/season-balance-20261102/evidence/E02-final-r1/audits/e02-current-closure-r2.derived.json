@@ -1,0 +1,2358 @@
+{
+  "at_utc": "2026-11-06T16:53:33.315854+00:00",
+  "head": "11d7dcbd1e1fb7facdcbb2f21bbbd4956a1e859a",
+  "E02_complete": true,
+  "acceptance_scope": "All affected game UI families covered by original accepted multilingual/resolution module matrices plus exact unchanged dependencies and this99-frame shared-change bridge. Human experience and real gameplay not claimed.",
+  "new_frames": 99,
+  "new_UI_checks": 9555,
+  "current_native_named_checks": 49,
+  "current_native_confirmation_suite": 1,
+  "direct_new_representatives": 14,
+  "languages": [
+    "ar",
+    "en",
+    "es",
+    "fr",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh-CN"
+  ],
+  "widths": [
+    960,
+    1280,
+    1920
+  ],
+  "keys_per_pack": 1142,
+  "product_files_identical_to_config17_pin": 116,
+  "changed_symbol_coverage": [
+    {
+      "baseline": "C12-market",
+      "path": "client/data/catalog_index.gd",
+      "symbol": "reward_refresh_gold",
+      "original_commit": "5fa3b7702ae05d7307941ff2a00e8824b0da8c6f",
+      "original_pin_sha256": "f5b0e24e5f76e87149da49b9e3abd6ca79185807de74cd0f0d0f8727bf55e3e4",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "a8104ca8ae7c776d0c34ede3439946e88f8c893c665f5ed9a6bc241b97df7701",
+      "review": {
+        "scope": "Verified original refresh price visibility; published values preserved",
+        "evidence": [
+          "evidence/C01-refresh-price-ui/result.json",
+          "evidence/A04-client-preparation-config-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/data/config_bundle.gd",
+      "symbol": "_table",
+      "original_commit": "0f260267804b57dfb41a9c9b7b022d07b5f8fa53",
+      "original_pin_sha256": "0db686247755f7ef94a16acc32d7bc485c26521079fde019620c50366e2fd16f",
+      "before_symbol_sha256": "36181bf48fe1b94d994aa2ae2b9ad49bc13f85d3397e9989b873e7c3033cdd9a",
+      "after_symbol_sha256": "c3daf43c56cdbdf54137a703c0555257023b6de6813e91f7d46ac6435daf8209",
+      "review": {
+        "scope": "Verified original refresh price visibility; published values preserved",
+        "evidence": [
+          "evidence/C01-refresh-price-ui/result.json",
+          "evidence/A04-client-preparation-config-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/state/game_store.gd",
+      "symbol": "__header__",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "aa641784e9f1c68809dd1343bf97bf9c7fe8f4e5511c196974e8e80ba6e701a9",
+      "before_symbol_sha256": "4b79fcddc86b7bd5e874439bc153d80f522bf4b01a844c726689fb79580a2516",
+      "after_symbol_sha256": "9dc8875733079377152651e09f037b6154d28d75d9266e89ad03104c37dd7a28",
+      "review": {
+        "scope": "Added module/session/preparation/original-catalog state; original API fields preserved; original-source and stale-context branches remain separately tested",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/state/game_store.gd",
+      "symbol": "_calculate_combat_preview",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "aa641784e9f1c68809dd1343bf97bf9c7fe8f4e5511c196974e8e80ba6e701a9",
+      "before_symbol_sha256": "5135e5acedbdf693eee09b63a2d48eecaddb37a3db340c9d06a404df189801bf",
+      "after_symbol_sha256": "7b2f89b17fd5f6df4a4109e1dcbe60b3b8ad78e2c528d3c6d6727ff51a57b5db",
+      "review": {
+        "scope": "New rate-budgeted rhythm preview only; not combat authority",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/state/game_store.gd",
+      "symbol": "_catalog_index_for_version",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "aa641784e9f1c68809dd1343bf97bf9c7fe8f4e5511c196974e8e80ba6e701a9",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "d4ce7009be8901f3f38705ce0ca5d8c3aad505c99f72ca73e18738ae089ab427",
+      "review": {
+        "scope": "Added module/session/preparation/original-catalog state; original API fields preserved; original-source and stale-context branches remain separately tested",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/state/game_store.gd",
+      "symbol": "_clear_authenticated_state",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "aa641784e9f1c68809dd1343bf97bf9c7fe8f4e5511c196974e8e80ba6e701a9",
+      "before_symbol_sha256": "b7fe972852710eccc44d906b82b9fa215ca6ae6a844a8437727a1b15e18dd9c0",
+      "after_symbol_sha256": "98431d8d482d668d35d12ba2039858633a4227305808eb2191af14b6c4379d18",
+      "review": {
+        "scope": "Added module/session/preparation/original-catalog state; original API fields preserved; original-source and stale-context branches remain separately tested",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/state/game_store.gd",
+      "symbol": "_ensure_room_catalog",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "aa641784e9f1c68809dd1343bf97bf9c7fe8f4e5511c196974e8e80ba6e701a9",
+      "before_symbol_sha256": "a460b37966263fba1af95b7d115991364b15950baf7ddac2692a3fe6bdb9e047",
+      "after_symbol_sha256": "0ca36c622230d736340eccbf550b52c7d612cf3297e8d864776446f98f3a9a6d",
+      "review": {
+        "scope": "Added module/session/preparation/original-catalog state; original API fields preserved; original-source and stale-context branches remain separately tested",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/state/game_store.gd",
+      "symbol": "_lobby_scope",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "aa641784e9f1c68809dd1343bf97bf9c7fe8f4e5511c196974e8e80ba6e701a9",
+      "before_symbol_sha256": "42f7485b34d9f4c00d6ee34da7d1780656d584ac764c908e6cf4232583e7d06b",
+      "after_symbol_sha256": "986d33ee1046702391c1d235ec48a9e3e2c21b9a27d11d4b10b8e7fafe7470b0",
+      "review": {
+        "scope": "Added module/session/preparation/original-catalog state; original API fields preserved; original-source and stale-context branches remain separately tested",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/state/game_store.gd",
+      "symbol": "_on_event",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "aa641784e9f1c68809dd1343bf97bf9c7fe8f4e5511c196974e8e80ba6e701a9",
+      "before_symbol_sha256": "41fb7d6767551a8933d79cf95801711390e49d056458ce0838d8d7ccf8cd4232",
+      "after_symbol_sha256": "e1833daa8378a49a3246ae1caa3bdfec00c58937fe52047a173324cb938a9f78",
+      "review": {
+        "scope": "Added module/session/preparation/original-catalog state; original API fields preserved; original-source and stale-context branches remain separately tested",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/state/game_store.gd",
+      "symbol": "_preparation_catalog_versions",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "aa641784e9f1c68809dd1343bf97bf9c7fe8f4e5511c196974e8e80ba6e701a9",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "0d11601d62b16cd6d91a0f7ec5f943aa02751e2ebb9ee90f109b9d02167b5359",
+      "review": {
+        "scope": "Added module/session/preparation/original-catalog state; original API fields preserved; original-source and stale-context branches remain separately tested",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/state/game_store.gd",
+      "symbol": "_preparation_config_valid",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "aa641784e9f1c68809dd1343bf97bf9c7fe8f4e5511c196974e8e80ba6e701a9",
+      "before_symbol_sha256": "64ac8499daac6e6caa815a2b55c1c7a16c94ac3b649a4ee9b0c300971ef3e3c6",
+      "after_symbol_sha256": "608cd30aa1cbb16094f5aabed6db076bfbc8e1ca55b4e47d4b51d7c1d90a84f3",
+      "review": {
+        "scope": "Added module/session/preparation/original-catalog state; original API fields preserved; original-source and stale-context branches remain separately tested",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/state/game_store.gd",
+      "symbol": "_preparation_source_key",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "aa641784e9f1c68809dd1343bf97bf9c7fe8f4e5511c196974e8e80ba6e701a9",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "a4fe94a188f5e68d0ce0b30f8cfe2d65b89ecf6b8c6072af06ccf9b84cc959c5",
+      "review": {
+        "scope": "Added module/session/preparation/original-catalog state; original API fields preserved; original-source and stale-context branches remain separately tested",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/state/game_store.gd",
+      "symbol": "enqueue",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "aa641784e9f1c68809dd1343bf97bf9c7fe8f4e5511c196974e8e80ba6e701a9",
+      "before_symbol_sha256": "d017a4784f53a62af7969991a0e603d16fd719ab3c9f8fbf5f8287bc6202ec78",
+      "after_symbol_sha256": "ab5ca33aa160e027e82337315dc4028a2703dace58c8f078878fbfba66d6fd16",
+      "review": {
+        "scope": "Added module/session/preparation/original-catalog state; original API fields preserved; original-source and stale-context branches remain separately tested",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/state/game_store.gd",
+      "symbol": "preparation_catalog_index",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "aa641784e9f1c68809dd1343bf97bf9c7fe8f4e5511c196974e8e80ba6e701a9",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "440d899df47f318a2ef79e9351cb43e23b40dba00d987b20e825a0f888438d52",
+      "review": {
+        "scope": "Added module/session/preparation/original-catalog state; original API fields preserved; original-source and stale-context branches remain separately tested",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/state/game_store.gd",
+      "symbol": "preparation_catalog_ready",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "aa641784e9f1c68809dd1343bf97bf9c7fe8f4e5511c196974e8e80ba6e701a9",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "031ff6bc8d981a84fe8c86d183d01948681b95f4a4799c9f5c9ca2b9d0eb4c31",
+      "review": {
+        "scope": "Added module/session/preparation/original-catalog state; original API fields preserved; original-source and stale-context branches remain separately tested",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/state/game_store.gd",
+      "symbol": "preparation_deck_preview",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "aa641784e9f1c68809dd1343bf97bf9c7fe8f4e5511c196974e8e80ba6e701a9",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "adb1b3c2a8ac0f5843e785d22d4d911780e99f68790fa260206cf0c6900f6a49",
+      "review": {
+        "scope": "Added module/session/preparation/original-catalog state; original API fields preserved; original-source and stale-context branches remain separately tested",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/state/game_store.gd",
+      "symbol": "preparation_preview_snapshot",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "aa641784e9f1c68809dd1343bf97bf9c7fe8f4e5511c196974e8e80ba6e701a9",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "3648335a4f6122f37b83db190a1c707464dd7103e3db67e0886819997364ddbc",
+      "review": {
+        "scope": "Added module/session/preparation/original-catalog state; original API fields preserved; original-source and stale-context branches remain separately tested",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/state/game_store.gd",
+      "symbol": "prepare",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "aa641784e9f1c68809dd1343bf97bf9c7fe8f4e5511c196974e8e80ba6e701a9",
+      "before_symbol_sha256": "c0d2715caf5739d9c8855ea5259cf13d2174f28a62c1fa0d8fa55c0eae06a488",
+      "after_symbol_sha256": "9d3ff209be54c0a67632d3cc50182fcc7ef0a38c546e39bff992cdce8d6f255f",
+      "review": {
+        "scope": "Added module/session/preparation/original-catalog state; original API fields preserved; original-source and stale-context branches remain separately tested",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/state/game_store.gd",
+      "symbol": "read_historical_catalog",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "aa641784e9f1c68809dd1343bf97bf9c7fe8f4e5511c196974e8e80ba6e701a9",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "35def7b60c429ae8594b741224ce1283e7aa946884d504c34bd5fc7655d932ac",
+      "review": {
+        "scope": "Added module/session/preparation/original-catalog state; original API fields preserved; original-source and stale-context branches remain separately tested",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/state/game_store.gd",
+      "symbol": "refresh_cache",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "aa641784e9f1c68809dd1343bf97bf9c7fe8f4e5511c196974e8e80ba6e701a9",
+      "before_symbol_sha256": "0018e8015d2a16db72e5016db45d7270afe661a18f4cbe9432e7546e81f88610",
+      "after_symbol_sha256": "c5911ff99bf2c1e236a635863f00eac5a04a8c65a3cec5e7eb3b6145c2da199b",
+      "review": {
+        "scope": "Added module/session/preparation/original-catalog state; original API fields preserved; original-source and stale-context branches remain separately tested",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/state/game_store.gd",
+      "symbol": "refresh_lobby",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "aa641784e9f1c68809dd1343bf97bf9c7fe8f4e5511c196974e8e80ba6e701a9",
+      "before_symbol_sha256": "d0b632664e771f2ad225c353709a11be3907314df05345b5442a216df9cecfb9",
+      "after_symbol_sha256": "68957f258e1c5762fa458038ba3d6c2bfd54e99393d93a53a9a21c2c82561624",
+      "review": {
+        "scope": "Added module/session/preparation/original-catalog state; original API fields preserved; original-source and stale-context branches remain separately tested",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/state/game_store.gd",
+      "symbol": "room_catalog_index",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "aa641784e9f1c68809dd1343bf97bf9c7fe8f4e5511c196974e8e80ba6e701a9",
+      "before_symbol_sha256": "cde026f64babf0d1c9bd70db02f4a9a7b3267d27c366ae6923d29d4330133b8f",
+      "after_symbol_sha256": "61ab0888188c4c44daacbe830b1f1a7d44e0f8feb068cf2c2c87c68cfc995c55",
+      "review": {
+        "scope": "Added module/session/preparation/original-catalog state; original API fields preserved; original-source and stale-context branches remain separately tested",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/state/game_store.gd",
+      "symbol": "season_loot_preference",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "aa641784e9f1c68809dd1343bf97bf9c7fe8f4e5511c196974e8e80ba6e701a9",
+      "before_symbol_sha256": "bccb575560e9e8beb245d03940c04708f48299bb844f80c3f66a8695fdc158f6",
+      "after_symbol_sha256": "06a9d9613e98059f817d3a7a5c0aa2d56fd0b342ee0c50e8f31b31a8856b8e32",
+      "review": {
+        "scope": "Added module/session/preparation/original-catalog state; original API fields preserved; original-source and stale-context branches remain separately tested",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/battle_details.gd",
+      "symbol": "description",
+      "original_commit": "70f68c3ef4c1ff2fb535414ffbf81a8ea8ede78b",
+      "original_pin_sha256": "f9b7447096835a79530c7775e74c7e2159a8703e74a2aaf311d14d6d4d07e187",
+      "before_symbol_sha256": "a1e3af854b2f868f1952b64a68084bdf51a151c3d3d7bbd5414ec60a3924c949",
+      "after_symbol_sha256": "3cdacf0577a1d3a16607ee60aaeb2fdb25cf8a4b0de2b66cb7b258160154e3de",
+      "review": {
+        "scope": "New/old rhythm wording and numerical details",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/battle_details.gd",
+      "symbol": "passive_text",
+      "original_commit": "70f68c3ef4c1ff2fb535414ffbf81a8ea8ede78b",
+      "original_pin_sha256": "f9b7447096835a79530c7775e74c7e2159a8703e74a2aaf311d14d6d4d07e187",
+      "before_symbol_sha256": "d1ed4b9c1d137671f35fbfbe0c2177e051e201df2e042b4b75452f716001e334",
+      "after_symbol_sha256": "76eb02af8b8d48513caeb307f36b0db69c84f61dd223e039b349af3a401ae623",
+      "review": {
+        "scope": "New/old rhythm wording and numerical details",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/codex_view.gd",
+      "symbol": "_details",
+      "original_commit": "73d45dd3cde0f4081354fbaa8ac2cc46725789a0",
+      "original_pin_sha256": "5eabb8b1aa09d3bcb6a2b4fbb6aff3e13101c14eb35eca6fb13d4cb0084e4e31",
+      "before_symbol_sha256": "676568f561f6ec43b9f038d3beea8ce890531bff3c06575f13302eb2a862ae7e",
+      "after_symbol_sha256": "c030aed679e0fa60a4d5dc56f487c6d44a3ec92c777a9e4d4565781603e0a356",
+      "review": {
+        "scope": "Original catalog ownership/source and MAG10 new/old description; other draw geometry unchanged",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/confirmation_modal.gd",
+      "symbol": "__header__",
+      "original_commit": "73d45dd3cde0f4081354fbaa8ac2cc46725789a0",
+      "original_pin_sha256": "5ae97ba0889cc9d7f11676bc6c91dd2fa02ee9c19982816971b90b6936dc1765",
+      "before_symbol_sha256": "66b14fde3b9facd5de5f5e38e0c8b369199fac1c212a2c919f06560d44b389a5",
+      "after_symbol_sha256": "8712395de6f76a882b6e2cf6a4bdad2f9fe4e9ddeec5456e4457d7523a4e1d46",
+      "review": {
+        "scope": "Opt-in scroll path; ordinary options unchanged. Fresh-instance close and once-only callback directly checked",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ],
+        "current_bridge": "e02_confirm_plain"
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/confirmation_modal.gd",
+      "symbol": "_fit_description",
+      "original_commit": "73d45dd3cde0f4081354fbaa8ac2cc46725789a0",
+      "original_pin_sha256": "5ae97ba0889cc9d7f11676bc6c91dd2fa02ee9c19982816971b90b6936dc1765",
+      "before_symbol_sha256": "fbbf598470bf6be68244a8928f0273b64f6e3c11237e75a9f9b673de36ca4f14",
+      "after_symbol_sha256": "0a8b63d934bbbec37867a1dc97f1889f1365b879cd555cb532c67859bcb4f6cf",
+      "review": {
+        "scope": "Opt-in scroll path; ordinary options unchanged. Fresh-instance close and once-only callback directly checked",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ],
+        "current_bridge": "e02_confirm_plain"
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/confirmation_modal.gd",
+      "symbol": "configure",
+      "original_commit": "73d45dd3cde0f4081354fbaa8ac2cc46725789a0",
+      "original_pin_sha256": "5ae97ba0889cc9d7f11676bc6c91dd2fa02ee9c19982816971b90b6936dc1765",
+      "before_symbol_sha256": "4d846484278230f919c47724414cf54a7b19b924086485f4e44cfc540b6f0833",
+      "after_symbol_sha256": "08c440934103848b911df1c1c78c511b22853ae00d5758028389d993cb1ae39a",
+      "review": {
+        "scope": "Opt-in scroll path; ordinary options unchanged. Fresh-instance close and once-only callback directly checked",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ],
+        "current_bridge": "e02_confirm_plain"
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/deck_builder_view.gd",
+      "symbol": "__header__",
+      "original_commit": "73d45dd3cde0f4081354fbaa8ac2cc46725789a0",
+      "original_pin_sha256": "6182375521a4866ca111dfb20ca51b7ee6a19d3c8c261a85a6499526ecd844d0",
+      "before_symbol_sha256": "f5b06ca06411b14f88acfa37e7d533341fbb15c9e4023f5db16fc2147c636ade",
+      "after_symbol_sha256": "a43a7f47f4fa3f5f9dc5d0058f6865399a566ad51ec6015f4bd5dee5dfc95f0e",
+      "review": {
+        "scope": "Cosmetic card back display and original preparation deck",
+        "evidence": [
+          "evidence/C15-final-r1/result.json",
+          "evidence/A04-client-preparation-config-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/deck_builder_view.gd",
+      "symbol": "_deck_panel",
+      "original_commit": "73d45dd3cde0f4081354fbaa8ac2cc46725789a0",
+      "original_pin_sha256": "6182375521a4866ca111dfb20ca51b7ee6a19d3c8c261a85a6499526ecd844d0",
+      "before_symbol_sha256": "ca2aa57530be80713d58c2b787fff1b106d1877aeb564925c5dc5f165e332067",
+      "after_symbol_sha256": "8b0c5c9f359adf544fef869188551eca2cb76b127e348994c2eaf3e594efd600",
+      "review": {
+        "scope": "Cosmetic card back display and original preparation deck",
+        "evidence": [
+          "evidence/C15-final-r1/result.json",
+          "evidence/A04-client-preparation-config-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/exploration_view.gd",
+      "symbol": "__header__",
+      "original_commit": "efbca70ebacc5a3e49d6a8a119dc59c6bff2c43d",
+      "original_pin_sha256": "6f75db2bbc8a9f39fd5ed87faf75cfa6653605db2f711a6fb3117f4830a2608d",
+      "before_symbol_sha256": "d91f012f28969d44c75b6f508e9369c3cf5e99b345d0140e598b1593ba6a86f0",
+      "after_symbol_sha256": "e13b3748b225f50fb76568ebec11da9c924c37e652b1fd6d3c3857c435f8fbb7",
+      "review": {
+        "scope": "Original reward-value/replacement and theme backdrop dispatch",
+        "evidence": [
+          "evidence/E01-final-r1/result.json",
+          "evidence/C16-themes/core/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/exploration_view.gd",
+      "symbol": "_battle",
+      "original_commit": "efbca70ebacc5a3e49d6a8a119dc59c6bff2c43d",
+      "original_pin_sha256": "6f75db2bbc8a9f39fd5ed87faf75cfa6653605db2f711a6fb3117f4830a2608d",
+      "before_symbol_sha256": "5bd0100fe0fd16f77e19980d18bc3aab07bb3f75ef988a5871589ff3903a3935",
+      "after_symbol_sha256": "061b4deae485d53bb409bedfadfbca330d5459a4df277ff247c3ab20a81ea782",
+      "review": {
+        "scope": "Rhythm HUD/details and original passive wording",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/exploration_view.gd",
+      "symbol": "_passive",
+      "original_commit": "efbca70ebacc5a3e49d6a8a119dc59c6bff2c43d",
+      "original_pin_sha256": "6f75db2bbc8a9f39fd5ed87faf75cfa6653605db2f711a6fb3117f4830a2608d",
+      "before_symbol_sha256": "5b3fb9ec351d0478c599c0dbb375b06a778df512230499b2f274a0aea6442778",
+      "after_symbol_sha256": "b039fa338d1d34a802df9f9866d4143ff40952002079f8fc9ae6e1d47384f293",
+      "review": {
+        "scope": "Rhythm HUD/details and original passive wording",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/exploration_view.gd",
+      "symbol": "_reward_value_lines",
+      "original_commit": "efbca70ebacc5a3e49d6a8a119dc59c6bff2c43d",
+      "original_pin_sha256": "6f75db2bbc8a9f39fd5ed87faf75cfa6653605db2f711a6fb3117f4830a2608d",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "a29bf4033a6c1fd472658d1f93d636ae6268e2b4ce4d228686df57bcb6efc632",
+      "review": {
+        "scope": "Original reward-value/replacement and theme backdrop dispatch",
+        "evidence": [
+          "evidence/E01-final-r1/result.json",
+          "evidence/C16-themes/core/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/exploration_view.gd",
+      "symbol": "_rewards",
+      "original_commit": "efbca70ebacc5a3e49d6a8a119dc59c6bff2c43d",
+      "original_pin_sha256": "6f75db2bbc8a9f39fd5ed87faf75cfa6653605db2f711a6fb3117f4830a2608d",
+      "before_symbol_sha256": "701683584e89fa6c9b68713f61b10362e3654547f1c59e8f531031ce11d4d6e8",
+      "after_symbol_sha256": "7499eedefc36fe978cbfe0926135e1db75fdb7a0f122378c444113510500facc",
+      "review": {
+        "scope": "Original reward-value/replacement and theme backdrop dispatch",
+        "evidence": [
+          "evidence/E01-final-r1/result.json",
+          "evidence/C16-themes/core/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/exploration_view.gd",
+      "symbol": "build",
+      "original_commit": "efbca70ebacc5a3e49d6a8a119dc59c6bff2c43d",
+      "original_pin_sha256": "6f75db2bbc8a9f39fd5ed87faf75cfa6653605db2f711a6fb3117f4830a2608d",
+      "before_symbol_sha256": "86a405db1d8950bc97df07aa20194f93be658a7053630cd4c53f17b47ee53eef",
+      "after_symbol_sha256": "293cc78b30eaa06f93c7445d996225f3a84294ca656f0a3aa0b92ba3e9c4a2b9",
+      "review": {
+        "scope": "Original reward-value/replacement and theme backdrop dispatch",
+        "evidence": [
+          "evidence/E01-final-r1/result.json",
+          "evidence/C16-themes/core/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/inventory_view.gd",
+      "symbol": "can_add",
+      "original_commit": "5fa3b7702ae05d7307941ff2a00e8824b0da8c6f",
+      "original_pin_sha256": "6a6107f3daca5c361c315f77d0265481f2c93980bf41d786db157561551a574d",
+      "before_symbol_sha256": "b8c9cc88cc7bcc4a1822abb2230b7bf9ecfadc9029a3ec348cec72ff25ff2fa7",
+      "after_symbol_sha256": "0462cdd4bac43e6e63008d33c5d8bbefdec98e5c80adb234deb25cb417f2e391",
+      "review": {
+        "scope": "Public replacement-capacity model, same visible inventory layout",
+        "evidence": [
+          "evidence/E01-final-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/layered_backdrop.gd",
+      "symbol": "__header__",
+      "original_commit": "d8b82ed9ffa7094ba8c67e99cf3bf7b5e1d6617b",
+      "original_pin_sha256": "4baf907f26f448a5a7ece6196101259dce0ce01ec9c9b39e6c5340000d4d980b",
+      "before_symbol_sha256": "743fdd1abd1e0a82d686435fef1f4bae0d273769d6e451e136a3be29d5ae77e8",
+      "after_symbol_sha256": "e265b0572eaf830abb5c3aa8e4ac401624af9f9053f68457815b28508c7aa70a",
+      "review": {
+        "scope": "Exploration-only declared theme tint; non-exploration paths preserve palette",
+        "evidence": [
+          "evidence/C16-themes/core/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/layered_backdrop.gd",
+      "symbol": "_apply_theme",
+      "original_commit": "d8b82ed9ffa7094ba8c67e99cf3bf7b5e1d6617b",
+      "original_pin_sha256": "4baf907f26f448a5a7ece6196101259dce0ce01ec9c9b39e6c5340000d4d980b",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "4bddfef4ef2f7ed7ce902f14330ef88c4a79cfdbf37cfda488bac3b86b10b588",
+      "review": {
+        "scope": "Exploration-only declared theme tint; non-exploration paths preserve palette",
+        "evidence": [
+          "evidence/C16-themes/core/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/layered_backdrop.gd",
+      "symbol": "set_mode",
+      "original_commit": "d8b82ed9ffa7094ba8c67e99cf3bf7b5e1d6617b",
+      "original_pin_sha256": "4baf907f26f448a5a7ece6196101259dce0ce01ec9c9b39e6c5340000d4d980b",
+      "before_symbol_sha256": "8998dd2888bcf2cebcc65da10d598575c2d656ecfae462da6f4de5e96c700ca4",
+      "after_symbol_sha256": "cf2bf0ce99de7275f4616ab2e9a67d20a912165c9fc687d4b467811f626c9a0e",
+      "review": {
+        "scope": "Exploration-only declared theme tint; non-exploration paths preserve palette",
+        "evidence": [
+          "evidence/C16-themes/core/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/layered_backdrop.gd",
+      "symbol": "set_season_theme",
+      "original_commit": "d8b82ed9ffa7094ba8c67e99cf3bf7b5e1d6617b",
+      "original_pin_sha256": "4baf907f26f448a5a7ece6196101259dce0ce01ec9c9b39e6c5340000d4d980b",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "0a938ee8b56a6260ba56a9147afeead7e37e1efc9ed5721c3102a39d4c7fcd9f",
+      "review": {
+        "scope": "Exploration-only declared theme tint; non-exploration paths preserve palette",
+        "evidence": [
+          "evidence/C16-themes/core/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "__header__",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "a56c88ac89c6c77c5e2d87269b617290e6e70bf0f89243eacbf85e68197e4b43",
+      "after_symbol_sha256": "6a613c3ae16567437709f34ca78b6efcae3760f578cb3c282bbc83f05df964d6",
+      "review": {
+        "scope": "Additive archive/navigation/account-reset/controller wiring; old screen branches not removed",
+        "evidence": [
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_apply_account_mutation",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "2a1e1159221e79013234fdb4c8acf61711bf04a902225cb1e141efb0aa0efc5b",
+      "after_symbol_sha256": "87c5cbdee2940e79e184fe7fb4eba6c41c829dc81c48ecfc57b8b02c65755cc4",
+      "review": {
+        "scope": "Added inventory/discard branch and entry. Existing loadout/market branches retain original code",
+        "evidence": [
+          "evidence/E01-inventory-management-ui-r1/result.json",
+          "evidence/E01-inventory-native-wire-r1/result.json"
+        ],
+        "current_bridge": "e02_gear_entry"
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_apply_shop_purchase",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "1b9d0d8d298f7a0b37409a95cc13bde05e908bf4978111200b3554bc3742be95",
+      "after_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "review": {
+        "scope": "Seasonal shop source/receipt/cache flows; same current callback paths exercised",
+        "evidence": [
+          "evidence/C13-shop/result.json"
+        ],
+        "current_native_suites": [
+          "test_season_shop_model.gd",
+          "test_season_shop_controller.gd"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_card_action",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "e855a1c8a391e5bc9d175895d49431adf89accb29d4f2f6ace4405dc552b8191",
+      "after_symbol_sha256": "379eb5411663c848a53e1d90d1a97bc7a0c8da8b914493c152c7c0153afb2134",
+      "review": {
+        "scope": "Original preparation/deck/codex source and availability. Providers same as A04 verified functions; values and original-version behavior retain their scoped evidence",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json",
+          "evidence/C15-final-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_card_action_block_reason",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "fc7ac491166c60342faab135e311714162cc5b74a7c7dac1c09d06d8b300b46f",
+      "after_symbol_sha256": "2757cf2641fa6c2846fbcd574b112eccadfc29a5feb943a84e5a51bfb57cf232",
+      "review": {
+        "scope": "Original preparation/deck/codex source and availability. Providers same as A04 verified functions; values and original-version behavior retain their scoped evidence",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json",
+          "evidence/C15-final-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_card_button",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "54eb4b002432de10cdeda75115ca9db6099f70976faa5f6d3e8e0290bcea2492",
+      "after_symbol_sha256": "2457c0090d8dcc7adfff36253ac15eacda65b0086035f24914cac94aaf315e1a",
+      "review": {
+        "scope": "Original preparation/deck/codex source and availability. Providers same as A04 verified functions; values and original-version behavior retain their scoped evidence",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json",
+          "evidence/C15-final-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_card_text",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "39c059d9c1b21f4e81f0e3b0798b2c865eb2f475c38bcb5829eebb1f810bfacc",
+      "after_symbol_sha256": "4b0503074abb12a973509cd57dca222bd33bb34d9feea6a23d639a9c688b7b74",
+      "review": {
+        "scope": "Original preparation/deck/codex source and availability. Providers same as A04 verified functions; values and original-version behavior retain their scoped evidence",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json",
+          "evidence/C15-final-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_claim",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "180e0e818e3abcf8ae4d506eb2d2d3ec68342981741f203a3704262bcb03f5d1",
+      "after_symbol_sha256": "b2b778d6b1723e614463cfc3931b9da9623e6d1e526757ec233d88d7c8fafdd4",
+      "review": {
+        "scope": "Public reward value, original IDs, guarded replacement/confirmation",
+        "evidence": [
+          "evidence/E01-final-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_complete_shop_purchase",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "288510540ccca560d1e1032898e09bbe3608c154dc1207a04cb15c0fedd8765b",
+      "after_symbol_sha256": "d7c0fc387bfbcb6722f6f62d82a972a0077fc5a99c04ede297ef234ea670ecc4",
+      "review": {
+        "scope": "Seasonal shop source/receipt/cache flows; same current callback paths exercised",
+        "evidence": [
+          "evidence/C13-shop/result.json"
+        ],
+        "current_native_suites": [
+          "test_season_shop_model.gd",
+          "test_season_shop_controller.gd"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_equipment",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "d73d5f821a94593977b4198739b15ef3da04442181bc863cfa4b47db47cd6b71",
+      "after_symbol_sha256": "870de32e9653d7d7bbe9cb69caba91a157226fd3f6d94165b731438c1832bebf",
+      "review": {
+        "scope": "Added inventory/discard branch and entry. Existing loadout/market branches retain original code",
+        "evidence": [
+          "evidence/E01-inventory-management-ui-r1/result.json",
+          "evidence/E01-inventory-native-wire-r1/result.json"
+        ],
+        "current_bridge": "e02_gear_entry"
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_mutate",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "7f3d411c69b7ae19bf0b84921b0b29aa9b50b36bd848d24ff0aff57cc9b6c865",
+      "after_symbol_sha256": "9219e3f1aebf9d32c7ada4fbe116a4f4a60c690ecb2cfb8cbd53302279209e34",
+      "review": {
+        "scope": "Added inventory/discard branch and entry. Existing loadout/market branches retain original code",
+        "evidence": [
+          "evidence/E01-inventory-management-ui-r1/result.json",
+          "evidence/E01-inventory-native-wire-r1/result.json"
+        ],
+        "current_bridge": "e02_gear_entry"
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_navigate",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "430c866a19d488c5a28306e49f3a7fa85059333ecacd8b36476b258e9168c454",
+      "after_symbol_sha256": "8d0856cb00babe29d07abd01373879d66853129be5913a6b530ae96f2b8cf3ce",
+      "review": {
+        "scope": "Additive archive/navigation/account-reset/controller wiring; old screen branches not removed",
+        "evidence": [
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_preparation",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "bdc8cc792766d7769925d12f2ebb32569304c2b412a69ada6bc1d7dc901a39e6",
+      "after_symbol_sha256": "e4be0a12b1f0f6480af38b9c058ca19f350e4f4aa38832aeb50db552869ecd26",
+      "review": {
+        "scope": "Original preparation/deck/codex source and availability. Providers same as A04 verified functions; values and original-version behavior retain their scoped evidence",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json",
+          "evidence/C15-final-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_purchase_shop_item",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "a1d6f1f670e43f8decce761fd986fb68fd1782e55b20be65bc637a6d88be3dad",
+      "after_symbol_sha256": "260559124de3f202c69101ce5057c9d7474db372f29c00e9263991ff30a19acd",
+      "review": {
+        "scope": "Seasonal shop source/receipt/cache flows; same current callback paths exercised",
+        "evidence": [
+          "evidence/C13-shop/result.json"
+        ],
+        "current_native_suites": [
+          "test_season_shop_model.gd",
+          "test_season_shop_controller.gd"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_refresh_shop",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "ca001234777b66735249e2a1f77d3b49a8527cd1771c47c3b24fcd62b0c6bbbb",
+      "after_symbol_sha256": "ec09318a011dd8606cadf483d2ef3125f8813ca58ddf2a91a12c47067a70a852",
+      "review": {
+        "scope": "Seasonal shop source/receipt/cache flows; same current callback paths exercised",
+        "evidence": [
+          "evidence/C13-shop/result.json"
+        ],
+        "current_native_suites": [
+          "test_season_shop_model.gd",
+          "test_season_shop_controller.gd"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_refresh_shop_authority",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "8f860c9331fb3cd16bf35546b443ed7ddefe73dfd640bec6472f9f523cce2450",
+      "review": {
+        "scope": "Seasonal shop source/receipt/cache flows; same current callback paths exercised",
+        "evidence": [
+          "evidence/C13-shop/result.json"
+        ],
+        "current_native_suites": [
+          "test_season_shop_model.gd",
+          "test_season_shop_controller.gd"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_reload_shop_view",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "b672b6410cf9d70904c262be65336755492b4e6ccb91879bca0c30f7b454c4d1",
+      "review": {
+        "scope": "Seasonal shop source/receipt/cache flows; same current callback paths exercised",
+        "evidence": [
+          "evidence/C13-shop/result.json"
+        ],
+        "current_native_suites": [
+          "test_season_shop_model.gd",
+          "test_season_shop_controller.gd"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_render",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "a1dfacb593bb2ed802f7c82a75fd5bd14079253f9916bd1e11268c93d188842a",
+      "after_symbol_sha256": "2822d175cb9d8653aa50896e502d2c9632dff0f715d3646d1fac3e79001e7bb3",
+      "review": {
+        "scope": "Additive archive/navigation/account-reset/controller wiring; old screen branches not removed",
+        "evidence": [
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_reset_account_ui",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "54d10003e0eab48754ca343c149788a9a2ff1e27f4d381100c8d14a0962a5fb3",
+      "after_symbol_sha256": "c4ce2fa1620108aa491bc0d3bf452b90d049094fce5bd84b7551bde3f99a068b",
+      "review": {
+        "scope": "Additive archive/navigation/account-reset/controller wiring; old screen branches not removed",
+        "evidence": [
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_rewards",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "5d4ea6211322c36ed10874b5bed418454461506b9c5680654b881510e297dc31",
+      "after_symbol_sha256": "c877c6bf62058ba6a4215548d9ad5ea34e3bb8e842c3511eb96b22fa23c6b3fb",
+      "review": {
+        "scope": "Public reward value, original IDs, guarded replacement/confirmation",
+        "evidence": [
+          "evidence/E01-final-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_set_codex_action_busy",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "d7995de86e80d94975edd8f7a5f7bab068873cbcc29d9be0e76311f4b2a07e23",
+      "after_symbol_sha256": "83c82e0c6cdbdf7b526722fa02b9d015b55591a6ab1173cec1328e9a86b05fa5",
+      "review": {
+        "scope": "Original preparation/deck/codex source and availability. Providers same as A04 verified functions; values and original-version behavior retain their scoped evidence",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json",
+          "evidence/C15-final-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_shop",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "02fa98202d5cab5d1dc369540f5be593c7ed0b6bcf38407078c95ee9666dacc9",
+      "after_symbol_sha256": "fbe01c25c2e6120dc61fb78254f0373ac9673c2fc99c86e7d0bc9f569f64ddf2",
+      "review": {
+        "scope": "Seasonal shop source/receipt/cache flows; same current callback paths exercised",
+        "evidence": [
+          "evidence/C13-shop/result.json"
+        ],
+        "current_native_suites": [
+          "test_season_shop_model.gd",
+          "test_season_shop_controller.gd"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_show_battle_details",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "9ff301df2647b2fe4e5036aa3230185965ff7beafb2880b211e3c2e34bf6fe46",
+      "after_symbol_sha256": "b606f4fc8963acc64f231514b462e209a920f09256c070d88acfd3ecf359a6f0",
+      "review": {
+        "scope": "Opt-in current rhythm details and MAG10 original/new description",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_show_equipment_details",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "8c758917622923b90fbef42a86237614b141210cf64f006fd3675b87b1d75a5f",
+      "after_symbol_sha256": "d38e39930a416a3e45f34763b048d6f85db46f20e81c8c5fd92ef5fad905f2be",
+      "review": {
+        "scope": "Original preparation/deck/codex source and availability. Providers same as A04 verified functions; values and original-version behavior retain their scoped evidence",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json",
+          "evidence/C15-final-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_show_inventory_management",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "e9511789db2119301dc4e14c57e870a7a27f8026a729d9417da2ce753ad26124",
+      "review": {
+        "scope": "Added inventory/discard branch and entry. Existing loadout/market branches retain original code",
+        "evidence": [
+          "evidence/E01-inventory-management-ui-r1/result.json",
+          "evidence/E01-inventory-native-wire-r1/result.json"
+        ],
+        "current_bridge": "e02_gear_entry"
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "_show_preparation_deck",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "e40c9ee8416689065ffc9c5af123a548c45928be03f53b302ec8ed2311e5d7a1",
+      "review": {
+        "scope": "Original preparation/deck/codex source and availability. Providers same as A04 verified functions; values and original-version behavior retain their scoped evidence",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json",
+          "evidence/C15-final-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "card_description",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "ab27baadd38b1ecb013b6b36408485edf55d09c8ac7354c6d9c5b11af467ce6f",
+      "after_symbol_sha256": "62f5d5e2a775bd6f0454b612c33cba4076dce50a45295e91a9597b79b52d5c68",
+      "review": {
+        "scope": "Opt-in current rhythm details and MAG10 original/new description",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "display_catalog_index",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "28ac2b6edef676d4052d7e065991def7dbc3dd980196c58ef9779866ac24a261",
+      "review": {
+        "scope": "Original preparation/deck/codex source and availability. Providers same as A04 verified functions; values and original-version behavior retain their scoped evidence",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json",
+          "evidence/C15-final-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/main.gd",
+      "symbol": "display_hero_class",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "963d93a0276aad5a3681933d079863d124dd6166ba0573d6dced817c34048da2",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "d23bb481aaa05a098f1e74e720d676497fb564661604df3ac463a682a378eb18",
+      "review": {
+        "scope": "Original preparation/deck/codex source and availability. Providers same as A04 verified functions; values and original-version behavior retain their scoped evidence",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json",
+          "evidence/C15-final-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/numerical_details.gd",
+      "symbol": "show_compare",
+      "original_commit": "5fa3b7702ae05d7307941ff2a00e8824b0da8c6f",
+      "original_pin_sha256": "f5c32fd36f23c1393d273cdb8ff3d39e6d3843ee3ce713b09c3489a3bb549e2f",
+      "before_symbol_sha256": "dd19530e547976fad8c6ddc966ad62474c04652d84c4dbb6c0249873ae8acb68",
+      "after_symbol_sha256": "92b389454aa9618765f803626156c187c5c13c82b476ebcd4c0de29eed5939b5",
+      "review": {
+        "scope": "Original-catalog/class providers and opt-in preparation deck caption. Default blank caption and rendering geometry unchanged",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/numerical_details.gd",
+      "symbol": "show_lines",
+      "original_commit": "5fa3b7702ae05d7307941ff2a00e8824b0da8c6f",
+      "original_pin_sha256": "f5c32fd36f23c1393d273cdb8ff3d39e6d3843ee3ce713b09c3489a3bb549e2f",
+      "before_symbol_sha256": "d499e301be8de2c28f971a6045a1b65317fe0dda98e50b7894ffe6e181721eff",
+      "after_symbol_sha256": "dbabf4648a5b015fe6a77f40ecd508aadce572d8688b254f4d0d95b606f3dde8",
+      "review": {
+        "scope": "Original-catalog/class providers and opt-in preparation deck caption. Default blank caption and rendering geometry unchanged",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/reference_ui.gd",
+      "symbol": "__header__",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "bd06d8716e49face660462698ffb44316f0914c1707b4cbc4971e72a4b0f81e9",
+      "before_symbol_sha256": "fed266514f74ae96dd3a19881e7d31015248467975ba25673a8161f126119326",
+      "after_symbol_sha256": "82d67be969bf66435f1faf75942548453172d05a8592766627c2965158671ef7",
+      "review": {
+        "scope": "Additive screen dispatch/hall entries/preloads; prior market body and generic text/art helpers unchanged",
+        "evidence": [
+          "evidence/C13-shop/result.json",
+          "evidence/C14-activities/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/reference_ui.gd",
+      "symbol": "_enhance",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "bd06d8716e49face660462698ffb44316f0914c1707b4cbc4971e72a4b0f81e9",
+      "before_symbol_sha256": "a01fd000752127bd56db18b10eb4c7a5e1394d59ff7db69d2de1fefa0dcf1983",
+      "after_symbol_sha256": "2ca76a833b839098a192459e1326a30eb4ad0ea939ef95a3326798f93f654cfd",
+      "review": {
+        "scope": "Original catalog/class providers, preparation projection/availability and tooltips; equipment/caps/price tables unchanged, drawing paths retain prior geometry",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C05-integration/result.json",
+          "evidence/C06-enhancement/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/reference_ui.gd",
+      "symbol": "_equipment_attribute_lines",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "bd06d8716e49face660462698ffb44316f0914c1707b4cbc4971e72a4b0f81e9",
+      "before_symbol_sha256": "62dbe1abb2dacc2d9bfa7f9f9decd8d1addc42135f8cc7adcb3d3083c9d17d5e",
+      "after_symbol_sha256": "7cb38af123c74cb008aef4f1c0d8c010e3e8705b5455c1cf2f621ca376301b81",
+      "review": {
+        "scope": "Original catalog/class providers, preparation projection/availability and tooltips; equipment/caps/price tables unchanged, drawing paths retain prior geometry",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C05-integration/result.json",
+          "evidence/C06-enhancement/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/reference_ui.gd",
+      "symbol": "_equipment_set_lines",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "bd06d8716e49face660462698ffb44316f0914c1707b4cbc4971e72a4b0f81e9",
+      "before_symbol_sha256": "ceea4ff3af3124ae120ad33364eb44d7506eec453e5d8a531ee0081a1957b2a7",
+      "after_symbol_sha256": "2f3ecf02fc9b7e69d39d8ed2bac2b9054a470d4deb4214d9ef7e0bdb63024ced",
+      "review": {
+        "scope": "Original catalog/class providers, preparation projection/availability and tooltips; equipment/caps/price tables unchanged, drawing paths retain prior geometry",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C05-integration/result.json",
+          "evidence/C06-enhancement/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/reference_ui.gd",
+      "symbol": "_fit_shop_button",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "bd06d8716e49face660462698ffb44316f0914c1707b4cbc4971e72a4b0f81e9",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "29c8b5548adca72d5e38eaa8ac06c30439b98e30e06b0bf8533b7bea9caca6a6",
+      "review": {
+        "scope": "Original seasonal shop quotes/copy materials/current UI callbacks",
+        "evidence": [
+          "evidence/C13-shop/result.json"
+        ],
+        "current_native_suites": [
+          "test_season_shop_model.gd",
+          "test_season_shop_controller.gd"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/reference_ui.gd",
+      "symbol": "_gear",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "bd06d8716e49face660462698ffb44316f0914c1707b4cbc4971e72a4b0f81e9",
+      "before_symbol_sha256": "0c28bd85c66945cc21cb4aac89467ec8fdbdc2cd388ac0f3eb97b5046c190914",
+      "after_symbol_sha256": "fc0a35bdfb9822d754c829d9ee20aa4dd438c0070c7c093000c52b85e5c74983",
+      "review": {
+        "scope": "Management entry and shorter scroll region; bottom reachable",
+        "evidence": [
+          "evidence/E01-inventory-management-ui-r1/result.json"
+        ],
+        "current_bridge": "e02_gear_entry"
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/reference_ui.gd",
+      "symbol": "_hall",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "bd06d8716e49face660462698ffb44316f0914c1707b4cbc4971e72a4b0f81e9",
+      "before_symbol_sha256": "2c31602859ad2a7b5f32857668f87aebac89741b4fa1d2a0515ccc4533d0779d",
+      "after_symbol_sha256": "01e4ce922b556730dc4ef964ca98f99de962e00854d495bac47e05eb99995dd2",
+      "review": {
+        "scope": "Additive screen dispatch/hall entries/preloads; prior market body and generic text/art helpers unchanged",
+        "evidence": [
+          "evidence/C13-shop/result.json",
+          "evidence/C14-activities/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/reference_ui.gd",
+      "symbol": "_header",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "bd06d8716e49face660462698ffb44316f0914c1707b4cbc4971e72a4b0f81e9",
+      "before_symbol_sha256": "3b06c970087a472272c618a087cf11a000d1c72c1ebe204c76332ccd945babc1",
+      "after_symbol_sha256": "4604b35660dcc360a89a36f3d08750cef2da5e3ab97e30e8cc4b67ff745c0898",
+      "review": {
+        "scope": "Added names/selected title/frame; prior branch names unchanged",
+        "evidence": [
+          "evidence/C15-final-r1/result.json"
+        ],
+        "current_bridge": "e02_market_header"
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/reference_ui.gd",
+      "symbol": "_loadout",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "bd06d8716e49face660462698ffb44316f0914c1707b4cbc4971e72a4b0f81e9",
+      "before_symbol_sha256": "b3d0bc93b7aec2307337e59d5787e062cba5f7670d1591d74d98076c161aca89",
+      "after_symbol_sha256": "07ceeb4b7f1cc124e89379582b6c392e31f5fac1c549fcc7d87c777b067331bb",
+      "review": {
+        "scope": "Original catalog/class providers, preparation projection/availability and tooltips; equipment/caps/price tables unchanged, drawing paths retain prior geometry",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C05-integration/result.json",
+          "evidence/C06-enhancement/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/reference_ui.gd",
+      "symbol": "_preparation",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "bd06d8716e49face660462698ffb44316f0914c1707b4cbc4971e72a4b0f81e9",
+      "before_symbol_sha256": "12068471b485402346131bb7fcd22adb51e304dea5dc86ba3b55c1734a53c86c",
+      "after_symbol_sha256": "7359ce0b0e0c77d507411f6b633a234c76e430ca91b3b737731cf0fcf3d2754a",
+      "review": {
+        "scope": "Original catalog/class providers, preparation projection/availability and tooltips; equipment/caps/price tables unchanged, drawing paths retain prior geometry",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C05-integration/result.json",
+          "evidence/C06-enhancement/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/reference_ui.gd",
+      "symbol": "_season_selector_style",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "bd06d8716e49face660462698ffb44316f0914c1707b4cbc4971e72a4b0f81e9",
+      "before_symbol_sha256": "a22134758b815bab72e861f49b4aeedd080a3f7bbfb0df1b8293be44f341e181",
+      "after_symbol_sha256": "f2639aa327a3b91ca606b6efd67ce105dccb1c61eea61e07da06d15ae8fe8df5",
+      "review": {
+        "scope": "Original catalog/class providers, preparation projection/availability and tooltips; equipment/caps/price tables unchanged, drawing paths retain prior geometry",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C05-integration/result.json",
+          "evidence/C06-enhancement/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/reference_ui.gd",
+      "symbol": "_shop",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "bd06d8716e49face660462698ffb44316f0914c1707b4cbc4971e72a4b0f81e9",
+      "before_symbol_sha256": "0a3243510ca5821e73c586703f1f36124131eba1d0268511cfc462ec4e338643",
+      "after_symbol_sha256": "842b8b7f7d1c81c097c9b9a9de24d70143217c5decde965c1508a44f0d544fd3",
+      "review": {
+        "scope": "Original seasonal shop quotes/copy materials/current UI callbacks",
+        "evidence": [
+          "evidence/C13-shop/result.json"
+        ],
+        "current_native_suites": [
+          "test_season_shop_model.gd",
+          "test_season_shop_controller.gd"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/reference_ui.gd",
+      "symbol": "_shop_detail",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "bd06d8716e49face660462698ffb44316f0914c1707b4cbc4971e72a4b0f81e9",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "86cc0690bd6479db16ad8b1430b87dae993c01876995fa936bc718ccd1f42d96",
+      "review": {
+        "scope": "Original seasonal shop quotes/copy materials/current UI callbacks",
+        "evidence": [
+          "evidence/C13-shop/result.json"
+        ],
+        "current_native_suites": [
+          "test_season_shop_model.gd",
+          "test_season_shop_controller.gd"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/reference_ui.gd",
+      "symbol": "build",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "bd06d8716e49face660462698ffb44316f0914c1707b4cbc4971e72a4b0f81e9",
+      "before_symbol_sha256": "cc7e60dba2fdbf8b8853d8200332b6cae3787211144e5fec3ef481e219b175bb",
+      "after_symbol_sha256": "5add4d74eff8a2d0800b37869a57c4bcd09c0d4be2ec1377cc75218929ec4ab2",
+      "review": {
+        "scope": "Additive screen dispatch/hall entries/preloads; prior market body and generic text/art helpers unchanged",
+        "evidence": [
+          "evidence/C13-shop/result.json",
+          "evidence/C14-activities/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C12-market",
+      "path": "client/ui/reference_ui.gd",
+      "symbol": "sync_shop_state",
+      "original_commit": "6395a0a606f25ac07eba0ec40bee0c146c1c618d",
+      "original_pin_sha256": "bd06d8716e49face660462698ffb44316f0914c1707b4cbc4971e72a4b0f81e9",
+      "before_symbol_sha256": "3021abe269361cbba52b4bee962c6dc578c8e284e7e3a6bdf136f45ba008699a",
+      "after_symbol_sha256": "786aa0807e85e9401e27a420cfa9c4ec2768cbf2d5241d00d07e3a1c92a71ce4",
+      "review": {
+        "scope": "Original seasonal shop quotes/copy materials/current UI callbacks",
+        "evidence": [
+          "evidence/C13-shop/result.json"
+        ],
+        "current_native_suites": [
+          "test_season_shop_model.gd",
+          "test_season_shop_controller.gd"
+        ]
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/state/game_store.gd",
+      "symbol": "_calculate_combat_preview",
+      "original_commit": "81fca4193ba4cb0ecb6dfc0897f13246ca78ca18",
+      "original_pin_sha256": "e38b7a250134c22f8e73e41f15c81dcd1e780403e467df120773dbd35d1408a9",
+      "before_symbol_sha256": "5135e5acedbdf693eee09b63a2d48eecaddb37a3db340c9d06a404df189801bf",
+      "after_symbol_sha256": "7b2f89b17fd5f6df4a4109e1dcbe60b3b8ad78e2c528d3c6d6727ff51a57b5db",
+      "review": {
+        "scope": "New rate-budgeted rhythm preview only; not combat authority",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/state/game_store.gd",
+      "symbol": "read_historical_catalog",
+      "original_commit": "81fca4193ba4cb0ecb6dfc0897f13246ca78ca18",
+      "original_pin_sha256": "e38b7a250134c22f8e73e41f15c81dcd1e780403e467df120773dbd35d1408a9",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "35def7b60c429ae8594b741224ce1283e7aa946884d504c34bd5fc7655d932ac",
+      "review": {
+        "scope": "Added module/session/preparation/original-catalog state; original API fields preserved; original-source and stale-context branches remain separately tested",
+        "evidence": [
+          "evidence/A04-client-preparation-config-r1/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/battle_details.gd",
+      "symbol": "description",
+      "original_commit": "70f68c3ef4c1ff2fb535414ffbf81a8ea8ede78b",
+      "original_pin_sha256": "f9b7447096835a79530c7775e74c7e2159a8703e74a2aaf311d14d6d4d07e187",
+      "before_symbol_sha256": "a1e3af854b2f868f1952b64a68084bdf51a151c3d3d7bbd5414ec60a3924c949",
+      "after_symbol_sha256": "3cdacf0577a1d3a16607ee60aaeb2fdb25cf8a4b0de2b66cb7b258160154e3de",
+      "review": {
+        "scope": "New/old rhythm wording and numerical details",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/battle_details.gd",
+      "symbol": "passive_text",
+      "original_commit": "70f68c3ef4c1ff2fb535414ffbf81a8ea8ede78b",
+      "original_pin_sha256": "f9b7447096835a79530c7775e74c7e2159a8703e74a2aaf311d14d6d4d07e187",
+      "before_symbol_sha256": "d1ed4b9c1d137671f35fbfbe0c2177e051e201df2e042b4b75452f716001e334",
+      "after_symbol_sha256": "76eb02af8b8d48513caeb307f36b0db69c84f61dd223e039b349af3a401ae623",
+      "review": {
+        "scope": "New/old rhythm wording and numerical details",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/confirmation_modal.gd",
+      "symbol": "__header__",
+      "original_commit": "73d45dd3cde0f4081354fbaa8ac2cc46725789a0",
+      "original_pin_sha256": "5ae97ba0889cc9d7f11676bc6c91dd2fa02ee9c19982816971b90b6936dc1765",
+      "before_symbol_sha256": "66b14fde3b9facd5de5f5e38e0c8b369199fac1c212a2c919f06560d44b389a5",
+      "after_symbol_sha256": "8712395de6f76a882b6e2cf6a4bdad2f9fe4e9ddeec5456e4457d7523a4e1d46",
+      "review": {
+        "scope": "Opt-in scroll path; ordinary options unchanged. Fresh-instance close and once-only callback directly checked",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ],
+        "current_bridge": "e02_confirm_plain"
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/confirmation_modal.gd",
+      "symbol": "_fit_description",
+      "original_commit": "73d45dd3cde0f4081354fbaa8ac2cc46725789a0",
+      "original_pin_sha256": "5ae97ba0889cc9d7f11676bc6c91dd2fa02ee9c19982816971b90b6936dc1765",
+      "before_symbol_sha256": "fbbf598470bf6be68244a8928f0273b64f6e3c11237e75a9f9b673de36ca4f14",
+      "after_symbol_sha256": "0a8b63d934bbbec37867a1dc97f1889f1365b879cd555cb532c67859bcb4f6cf",
+      "review": {
+        "scope": "Opt-in scroll path; ordinary options unchanged. Fresh-instance close and once-only callback directly checked",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ],
+        "current_bridge": "e02_confirm_plain"
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/confirmation_modal.gd",
+      "symbol": "configure",
+      "original_commit": "73d45dd3cde0f4081354fbaa8ac2cc46725789a0",
+      "original_pin_sha256": "5ae97ba0889cc9d7f11676bc6c91dd2fa02ee9c19982816971b90b6936dc1765",
+      "before_symbol_sha256": "4d846484278230f919c47724414cf54a7b19b924086485f4e44cfc540b6f0833",
+      "after_symbol_sha256": "08c440934103848b911df1c1c78c511b22853ae00d5758028389d993cb1ae39a",
+      "review": {
+        "scope": "Opt-in scroll path; ordinary options unchanged. Fresh-instance close and once-only callback directly checked",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ],
+        "current_bridge": "e02_confirm_plain"
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/exploration_view.gd",
+      "symbol": "__header__",
+      "original_commit": "9b64657e4c38160ecb9c2e284fc78d8eeff324db",
+      "original_pin_sha256": "c0cc9f3b41fa64c6d5d82c6e98e5ceedb88ac8ca62190cb9f4d8be647617de4c",
+      "before_symbol_sha256": "ee5c4a5abf3b90ed3bb2adf25af5f6546a2400eb4c5b93b459428b1c1ae1015a",
+      "after_symbol_sha256": "e13b3748b225f50fb76568ebec11da9c924c37e652b1fd6d3c3857c435f8fbb7",
+      "review": {
+        "scope": "Original reward-value/replacement and theme backdrop dispatch",
+        "evidence": [
+          "evidence/E01-final-r1/result.json",
+          "evidence/C16-themes/core/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/exploration_view.gd",
+      "symbol": "_battle",
+      "original_commit": "9b64657e4c38160ecb9c2e284fc78d8eeff324db",
+      "original_pin_sha256": "c0cc9f3b41fa64c6d5d82c6e98e5ceedb88ac8ca62190cb9f4d8be647617de4c",
+      "before_symbol_sha256": "52c67a52e7e294e204a47bde452dd5b6f9720ca2a75bdc125f0996dfcdcbadb8",
+      "after_symbol_sha256": "061b4deae485d53bb409bedfadfbca330d5459a4df277ff247c3ab20a81ea782",
+      "review": {
+        "scope": "Rhythm HUD/details and original passive wording",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/exploration_view.gd",
+      "symbol": "_passive",
+      "original_commit": "9b64657e4c38160ecb9c2e284fc78d8eeff324db",
+      "original_pin_sha256": "c0cc9f3b41fa64c6d5d82c6e98e5ceedb88ac8ca62190cb9f4d8be647617de4c",
+      "before_symbol_sha256": "5b3fb9ec351d0478c599c0dbb375b06a778df512230499b2f274a0aea6442778",
+      "after_symbol_sha256": "b039fa338d1d34a802df9f9866d4143ff40952002079f8fc9ae6e1d47384f293",
+      "review": {
+        "scope": "Rhythm HUD/details and original passive wording",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/exploration_view.gd",
+      "symbol": "_reward_value_lines",
+      "original_commit": "9b64657e4c38160ecb9c2e284fc78d8eeff324db",
+      "original_pin_sha256": "c0cc9f3b41fa64c6d5d82c6e98e5ceedb88ac8ca62190cb9f4d8be647617de4c",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "a29bf4033a6c1fd472658d1f93d636ae6268e2b4ce4d228686df57bcb6efc632",
+      "review": {
+        "scope": "Original reward-value/replacement and theme backdrop dispatch",
+        "evidence": [
+          "evidence/E01-final-r1/result.json",
+          "evidence/C16-themes/core/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/exploration_view.gd",
+      "symbol": "_rewards",
+      "original_commit": "9b64657e4c38160ecb9c2e284fc78d8eeff324db",
+      "original_pin_sha256": "c0cc9f3b41fa64c6d5d82c6e98e5ceedb88ac8ca62190cb9f4d8be647617de4c",
+      "before_symbol_sha256": "89daa8506f07128d682b5587a8651858035add68957c0293fb391b2cdaeacaca",
+      "after_symbol_sha256": "7499eedefc36fe978cbfe0926135e1db75fdb7a0f122378c444113510500facc",
+      "review": {
+        "scope": "Original reward-value/replacement and theme backdrop dispatch",
+        "evidence": [
+          "evidence/E01-final-r1/result.json",
+          "evidence/C16-themes/core/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/inventory_view.gd",
+      "symbol": "can_add",
+      "original_commit": "5fa3b7702ae05d7307941ff2a00e8824b0da8c6f",
+      "original_pin_sha256": "6a6107f3daca5c361c315f77d0265481f2c93980bf41d786db157561551a574d",
+      "before_symbol_sha256": "b8c9cc88cc7bcc4a1822abb2230b7bf9ecfadc9029a3ec348cec72ff25ff2fa7",
+      "after_symbol_sha256": "0462cdd4bac43e6e63008d33c5d8bbefdec98e5c80adb234deb25cb417f2e391",
+      "review": {
+        "scope": "Public replacement-capacity model, same visible inventory layout",
+        "evidence": [
+          "evidence/E01-final-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/main.gd",
+      "symbol": "__header__",
+      "original_commit": "81fca4193ba4cb0ecb6dfc0897f13246ca78ca18",
+      "original_pin_sha256": "2ce057755e8337ba49c33d413416c20dae4311295b5ae3a4b2e803a16a8a6904",
+      "before_symbol_sha256": "a0f4ebcf8677f1f3f4a51c4a108178301984e1235f459dd0953dd84f018a24db",
+      "after_symbol_sha256": "6a613c3ae16567437709f34ca78b6efcae3760f578cb3c282bbc83f05df964d6",
+      "review": {
+        "scope": "Additive archive/navigation/account-reset/controller wiring; old screen branches not removed",
+        "evidence": [
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/main.gd",
+      "symbol": "_apply_account_mutation",
+      "original_commit": "81fca4193ba4cb0ecb6dfc0897f13246ca78ca18",
+      "original_pin_sha256": "2ce057755e8337ba49c33d413416c20dae4311295b5ae3a4b2e803a16a8a6904",
+      "before_symbol_sha256": "2a1e1159221e79013234fdb4c8acf61711bf04a902225cb1e141efb0aa0efc5b",
+      "after_symbol_sha256": "87c5cbdee2940e79e184fe7fb4eba6c41c829dc81c48ecfc57b8b02c65755cc4",
+      "review": {
+        "scope": "Added inventory/discard branch and entry. Existing loadout/market branches retain original code",
+        "evidence": [
+          "evidence/E01-inventory-management-ui-r1/result.json",
+          "evidence/E01-inventory-native-wire-r1/result.json"
+        ],
+        "current_bridge": "e02_gear_entry"
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/main.gd",
+      "symbol": "_claim",
+      "original_commit": "81fca4193ba4cb0ecb6dfc0897f13246ca78ca18",
+      "original_pin_sha256": "2ce057755e8337ba49c33d413416c20dae4311295b5ae3a4b2e803a16a8a6904",
+      "before_symbol_sha256": "180e0e818e3abcf8ae4d506eb2d2d3ec68342981741f203a3704262bcb03f5d1",
+      "after_symbol_sha256": "b2b778d6b1723e614463cfc3931b9da9623e6d1e526757ec233d88d7c8fafdd4",
+      "review": {
+        "scope": "Public reward value, original IDs, guarded replacement/confirmation",
+        "evidence": [
+          "evidence/E01-final-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/main.gd",
+      "symbol": "_equipment",
+      "original_commit": "81fca4193ba4cb0ecb6dfc0897f13246ca78ca18",
+      "original_pin_sha256": "2ce057755e8337ba49c33d413416c20dae4311295b5ae3a4b2e803a16a8a6904",
+      "before_symbol_sha256": "d73d5f821a94593977b4198739b15ef3da04442181bc863cfa4b47db47cd6b71",
+      "after_symbol_sha256": "870de32e9653d7d7bbe9cb69caba91a157226fd3f6d94165b731438c1832bebf",
+      "review": {
+        "scope": "Added inventory/discard branch and entry. Existing loadout/market branches retain original code",
+        "evidence": [
+          "evidence/E01-inventory-management-ui-r1/result.json",
+          "evidence/E01-inventory-native-wire-r1/result.json"
+        ],
+        "current_bridge": "e02_gear_entry"
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/main.gd",
+      "symbol": "_mutate",
+      "original_commit": "81fca4193ba4cb0ecb6dfc0897f13246ca78ca18",
+      "original_pin_sha256": "2ce057755e8337ba49c33d413416c20dae4311295b5ae3a4b2e803a16a8a6904",
+      "before_symbol_sha256": "7f3d411c69b7ae19bf0b84921b0b29aa9b50b36bd848d24ff0aff57cc9b6c865",
+      "after_symbol_sha256": "9219e3f1aebf9d32c7ada4fbe116a4f4a60c690ecb2cfb8cbd53302279209e34",
+      "review": {
+        "scope": "Added inventory/discard branch and entry. Existing loadout/market branches retain original code",
+        "evidence": [
+          "evidence/E01-inventory-management-ui-r1/result.json",
+          "evidence/E01-inventory-native-wire-r1/result.json"
+        ],
+        "current_bridge": "e02_gear_entry"
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/main.gd",
+      "symbol": "_navigate",
+      "original_commit": "81fca4193ba4cb0ecb6dfc0897f13246ca78ca18",
+      "original_pin_sha256": "2ce057755e8337ba49c33d413416c20dae4311295b5ae3a4b2e803a16a8a6904",
+      "before_symbol_sha256": "7bcc4e61dc34765985dd163c808cd7638bb73e647fb2213f0c6d7a63f77d15ec",
+      "after_symbol_sha256": "8d0856cb00babe29d07abd01373879d66853129be5913a6b530ae96f2b8cf3ce",
+      "review": {
+        "scope": "Additive archive/navigation/account-reset/controller wiring; old screen branches not removed",
+        "evidence": [
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/main.gd",
+      "symbol": "_reset_account_ui",
+      "original_commit": "81fca4193ba4cb0ecb6dfc0897f13246ca78ca18",
+      "original_pin_sha256": "2ce057755e8337ba49c33d413416c20dae4311295b5ae3a4b2e803a16a8a6904",
+      "before_symbol_sha256": "0012aaa4d3d6a34dba67fdb32e422145e0e77758697583e224e8c6e48c2123c9",
+      "after_symbol_sha256": "c4ce2fa1620108aa491bc0d3bf452b90d049094fce5bd84b7551bde3f99a068b",
+      "review": {
+        "scope": "Additive archive/navigation/account-reset/controller wiring; old screen branches not removed",
+        "evidence": [
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/main.gd",
+      "symbol": "_rewards",
+      "original_commit": "81fca4193ba4cb0ecb6dfc0897f13246ca78ca18",
+      "original_pin_sha256": "2ce057755e8337ba49c33d413416c20dae4311295b5ae3a4b2e803a16a8a6904",
+      "before_symbol_sha256": "5d4ea6211322c36ed10874b5bed418454461506b9c5680654b881510e297dc31",
+      "after_symbol_sha256": "c877c6bf62058ba6a4215548d9ad5ea34e3bb8e842c3511eb96b22fa23c6b3fb",
+      "review": {
+        "scope": "Public reward value, original IDs, guarded replacement/confirmation",
+        "evidence": [
+          "evidence/E01-final-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/main.gd",
+      "symbol": "_show_battle_details",
+      "original_commit": "81fca4193ba4cb0ecb6dfc0897f13246ca78ca18",
+      "original_pin_sha256": "2ce057755e8337ba49c33d413416c20dae4311295b5ae3a4b2e803a16a8a6904",
+      "before_symbol_sha256": "9ff301df2647b2fe4e5036aa3230185965ff7beafb2880b211e3c2e34bf6fe46",
+      "after_symbol_sha256": "b606f4fc8963acc64f231514b462e209a920f09256c070d88acfd3ecf359a6f0",
+      "review": {
+        "scope": "Opt-in current rhythm details and MAG10 original/new description",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/main.gd",
+      "symbol": "_show_inventory_management",
+      "original_commit": "81fca4193ba4cb0ecb6dfc0897f13246ca78ca18",
+      "original_pin_sha256": "2ce057755e8337ba49c33d413416c20dae4311295b5ae3a4b2e803a16a8a6904",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "e9511789db2119301dc4e14c57e870a7a27f8026a729d9417da2ce753ad26124",
+      "review": {
+        "scope": "Added inventory/discard branch and entry. Existing loadout/market branches retain original code",
+        "evidence": [
+          "evidence/E01-inventory-management-ui-r1/result.json",
+          "evidence/E01-inventory-native-wire-r1/result.json"
+        ],
+        "current_bridge": "e02_gear_entry"
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/main.gd",
+      "symbol": "card_description",
+      "original_commit": "81fca4193ba4cb0ecb6dfc0897f13246ca78ca18",
+      "original_pin_sha256": "2ce057755e8337ba49c33d413416c20dae4311295b5ae3a4b2e803a16a8a6904",
+      "before_symbol_sha256": "72ec6f123f6e7bc04ee322c662ce1c774bfe254cd0e36f70869fc613c93931a8",
+      "after_symbol_sha256": "62f5d5e2a775bd6f0454b612c33cba4076dce50a45295e91a9597b79b52d5c68",
+      "review": {
+        "scope": "Opt-in current rhythm details and MAG10 original/new description",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/reference_ui.gd",
+      "symbol": "_gear",
+      "original_commit": "a521e02f42306af477490397ff86809f6de06fcf",
+      "original_pin_sha256": "32f07e411328b3769326b9c5d426d7fb0ba5a39715d5397efef9be77676ed21d",
+      "before_symbol_sha256": "3660c319f397c0f35a830f39437c18085f53c91f47242c5b44607eace74dbf3f",
+      "after_symbol_sha256": "fc0a35bdfb9822d754c829d9ee20aa4dd438c0070c7c093000c52b85e5c74983",
+      "review": {
+        "scope": "Management entry and shorter scroll region; bottom reachable",
+        "evidence": [
+          "evidence/E01-inventory-management-ui-r1/result.json"
+        ],
+        "current_bridge": "e02_gear_entry"
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/reference_ui.gd",
+      "symbol": "_header",
+      "original_commit": "a521e02f42306af477490397ff86809f6de06fcf",
+      "original_pin_sha256": "32f07e411328b3769326b9c5d426d7fb0ba5a39715d5397efef9be77676ed21d",
+      "before_symbol_sha256": "6cc3456b8c6d1ee39ad2d1ed6b3dd36f51ec18e8fff38b5e05e8051c76bb80eb",
+      "after_symbol_sha256": "4604b35660dcc360a89a36f3d08750cef2da5e3ab97e30e8cc4b67ff745c0898",
+      "review": {
+        "scope": "Added names/selected title/frame; prior branch names unchanged",
+        "evidence": [
+          "evidence/C15-final-r1/result.json"
+        ],
+        "current_bridge": "e02_market_header"
+      }
+    },
+    {
+      "baseline": "C15-current",
+      "path": "client/ui/reference_ui.gd",
+      "symbol": "build",
+      "original_commit": "a521e02f42306af477490397ff86809f6de06fcf",
+      "original_pin_sha256": "32f07e411328b3769326b9c5d426d7fb0ba5a39715d5397efef9be77676ed21d",
+      "before_symbol_sha256": "716968d277c86b6850feb3653ac508663873868360f3ce9ef319c819cdb03580",
+      "after_symbol_sha256": "5add4d74eff8a2d0800b37869a57c4bcd09c0d4be2ec1377cc75218929ec4ab2",
+      "review": {
+        "scope": "Additive screen dispatch/hall entries/preloads; prior market body and generic text/art helpers unchanged",
+        "evidence": [
+          "evidence/C13-shop/result.json",
+          "evidence/C14-activities/result.json",
+          "evidence/C15-final-r1/result.json",
+          "evidence/E01-season-archive-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "E01-archive",
+      "path": "client/state/game_store.gd",
+      "symbol": "_calculate_combat_preview",
+      "original_commit": "2a80ac5c39dc01a6c6659a976d030e3f54c2ac7e",
+      "original_pin_sha256": "71cc3541d9f5de381a48adec2ea51dba721c24bbe8be1b3c94fda961b66a2056",
+      "before_symbol_sha256": "5135e5acedbdf693eee09b63a2d48eecaddb37a3db340c9d06a404df189801bf",
+      "after_symbol_sha256": "7b2f89b17fd5f6df4a4109e1dcbe60b3b8ad78e2c528d3c6d6727ff51a57b5db",
+      "review": {
+        "scope": "New rate-budgeted rhythm preview only; not combat authority",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "E01-archive",
+      "path": "client/ui/battle_details.gd",
+      "symbol": "description",
+      "original_commit": "70f68c3ef4c1ff2fb535414ffbf81a8ea8ede78b",
+      "original_pin_sha256": "f9b7447096835a79530c7775e74c7e2159a8703e74a2aaf311d14d6d4d07e187",
+      "before_symbol_sha256": "a1e3af854b2f868f1952b64a68084bdf51a151c3d3d7bbd5414ec60a3924c949",
+      "after_symbol_sha256": "3cdacf0577a1d3a16607ee60aaeb2fdb25cf8a4b0de2b66cb7b258160154e3de",
+      "review": {
+        "scope": "New/old rhythm wording and numerical details",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "E01-archive",
+      "path": "client/ui/battle_details.gd",
+      "symbol": "passive_text",
+      "original_commit": "70f68c3ef4c1ff2fb535414ffbf81a8ea8ede78b",
+      "original_pin_sha256": "f9b7447096835a79530c7775e74c7e2159a8703e74a2aaf311d14d6d4d07e187",
+      "before_symbol_sha256": "d1ed4b9c1d137671f35fbfbe0c2177e051e201df2e042b4b75452f716001e334",
+      "after_symbol_sha256": "76eb02af8b8d48513caeb307f36b0db69c84f61dd223e039b349af3a401ae623",
+      "review": {
+        "scope": "New/old rhythm wording and numerical details",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "E01-archive",
+      "path": "client/ui/confirmation_modal.gd",
+      "symbol": "__header__",
+      "original_commit": "73d45dd3cde0f4081354fbaa8ac2cc46725789a0",
+      "original_pin_sha256": "5ae97ba0889cc9d7f11676bc6c91dd2fa02ee9c19982816971b90b6936dc1765",
+      "before_symbol_sha256": "66b14fde3b9facd5de5f5e38e0c8b369199fac1c212a2c919f06560d44b389a5",
+      "after_symbol_sha256": "8712395de6f76a882b6e2cf6a4bdad2f9fe4e9ddeec5456e4457d7523a4e1d46",
+      "review": {
+        "scope": "Opt-in scroll path; ordinary options unchanged. Fresh-instance close and once-only callback directly checked",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ],
+        "current_bridge": "e02_confirm_plain"
+      }
+    },
+    {
+      "baseline": "E01-archive",
+      "path": "client/ui/confirmation_modal.gd",
+      "symbol": "_fit_description",
+      "original_commit": "73d45dd3cde0f4081354fbaa8ac2cc46725789a0",
+      "original_pin_sha256": "5ae97ba0889cc9d7f11676bc6c91dd2fa02ee9c19982816971b90b6936dc1765",
+      "before_symbol_sha256": "fbbf598470bf6be68244a8928f0273b64f6e3c11237e75a9f9b673de36ca4f14",
+      "after_symbol_sha256": "0a8b63d934bbbec37867a1dc97f1889f1365b879cd555cb532c67859bcb4f6cf",
+      "review": {
+        "scope": "Opt-in scroll path; ordinary options unchanged. Fresh-instance close and once-only callback directly checked",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ],
+        "current_bridge": "e02_confirm_plain"
+      }
+    },
+    {
+      "baseline": "E01-archive",
+      "path": "client/ui/confirmation_modal.gd",
+      "symbol": "configure",
+      "original_commit": "73d45dd3cde0f4081354fbaa8ac2cc46725789a0",
+      "original_pin_sha256": "5ae97ba0889cc9d7f11676bc6c91dd2fa02ee9c19982816971b90b6936dc1765",
+      "before_symbol_sha256": "4d846484278230f919c47724414cf54a7b19b924086485f4e44cfc540b6f0833",
+      "after_symbol_sha256": "08c440934103848b911df1c1c78c511b22853ae00d5758028389d993cb1ae39a",
+      "review": {
+        "scope": "Opt-in scroll path; ordinary options unchanged. Fresh-instance close and once-only callback directly checked",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ],
+        "current_bridge": "e02_confirm_plain"
+      }
+    },
+    {
+      "baseline": "E01-archive",
+      "path": "client/ui/exploration_view.gd",
+      "symbol": "__header__",
+      "original_commit": "9b64657e4c38160ecb9c2e284fc78d8eeff324db",
+      "original_pin_sha256": "c0cc9f3b41fa64c6d5d82c6e98e5ceedb88ac8ca62190cb9f4d8be647617de4c",
+      "before_symbol_sha256": "ee5c4a5abf3b90ed3bb2adf25af5f6546a2400eb4c5b93b459428b1c1ae1015a",
+      "after_symbol_sha256": "e13b3748b225f50fb76568ebec11da9c924c37e652b1fd6d3c3857c435f8fbb7",
+      "review": {
+        "scope": "Original reward-value/replacement and theme backdrop dispatch",
+        "evidence": [
+          "evidence/E01-final-r1/result.json",
+          "evidence/C16-themes/core/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "E01-archive",
+      "path": "client/ui/exploration_view.gd",
+      "symbol": "_battle",
+      "original_commit": "9b64657e4c38160ecb9c2e284fc78d8eeff324db",
+      "original_pin_sha256": "c0cc9f3b41fa64c6d5d82c6e98e5ceedb88ac8ca62190cb9f4d8be647617de4c",
+      "before_symbol_sha256": "52c67a52e7e294e204a47bde452dd5b6f9720ca2a75bdc125f0996dfcdcbadb8",
+      "after_symbol_sha256": "061b4deae485d53bb409bedfadfbca330d5459a4df277ff247c3ab20a81ea782",
+      "review": {
+        "scope": "Rhythm HUD/details and original passive wording",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "E01-archive",
+      "path": "client/ui/exploration_view.gd",
+      "symbol": "_passive",
+      "original_commit": "9b64657e4c38160ecb9c2e284fc78d8eeff324db",
+      "original_pin_sha256": "c0cc9f3b41fa64c6d5d82c6e98e5ceedb88ac8ca62190cb9f4d8be647617de4c",
+      "before_symbol_sha256": "5b3fb9ec351d0478c599c0dbb375b06a778df512230499b2f274a0aea6442778",
+      "after_symbol_sha256": "b039fa338d1d34a802df9f9866d4143ff40952002079f8fc9ae6e1d47384f293",
+      "review": {
+        "scope": "Rhythm HUD/details and original passive wording",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "E01-archive",
+      "path": "client/ui/exploration_view.gd",
+      "symbol": "_reward_value_lines",
+      "original_commit": "9b64657e4c38160ecb9c2e284fc78d8eeff324db",
+      "original_pin_sha256": "c0cc9f3b41fa64c6d5d82c6e98e5ceedb88ac8ca62190cb9f4d8be647617de4c",
+      "before_symbol_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_symbol_sha256": "a29bf4033a6c1fd472658d1f93d636ae6268e2b4ce4d228686df57bcb6efc632",
+      "review": {
+        "scope": "Original reward-value/replacement and theme backdrop dispatch",
+        "evidence": [
+          "evidence/E01-final-r1/result.json",
+          "evidence/C16-themes/core/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "E01-archive",
+      "path": "client/ui/exploration_view.gd",
+      "symbol": "_rewards",
+      "original_commit": "9b64657e4c38160ecb9c2e284fc78d8eeff324db",
+      "original_pin_sha256": "c0cc9f3b41fa64c6d5d82c6e98e5ceedb88ac8ca62190cb9f4d8be647617de4c",
+      "before_symbol_sha256": "89daa8506f07128d682b5587a8651858035add68957c0293fb391b2cdaeacaca",
+      "after_symbol_sha256": "7499eedefc36fe978cbfe0926135e1db75fdb7a0f122378c444113510500facc",
+      "review": {
+        "scope": "Original reward-value/replacement and theme backdrop dispatch",
+        "evidence": [
+          "evidence/E01-final-r1/result.json",
+          "evidence/C16-themes/core/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "E01-archive",
+      "path": "client/ui/inventory_view.gd",
+      "symbol": "can_add",
+      "original_commit": "5fa3b7702ae05d7307941ff2a00e8824b0da8c6f",
+      "original_pin_sha256": "6a6107f3daca5c361c315f77d0265481f2c93980bf41d786db157561551a574d",
+      "before_symbol_sha256": "b8c9cc88cc7bcc4a1822abb2230b7bf9ecfadc9029a3ec348cec72ff25ff2fa7",
+      "after_symbol_sha256": "0462cdd4bac43e6e63008d33c5d8bbefdec98e5c80adb234deb25cb417f2e391",
+      "review": {
+        "scope": "Public replacement-capacity model, same visible inventory layout",
+        "evidence": [
+          "evidence/E01-final-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "E01-archive",
+      "path": "client/ui/main.gd",
+      "symbol": "_claim",
+      "original_commit": "2a80ac5c39dc01a6c6659a976d030e3f54c2ac7e",
+      "original_pin_sha256": "5343d9934dc3b93e8297316ebbe00fa11e3cfc5a825f09449eb591634e870f28",
+      "before_symbol_sha256": "180e0e818e3abcf8ae4d506eb2d2d3ec68342981741f203a3704262bcb03f5d1",
+      "after_symbol_sha256": "b2b778d6b1723e614463cfc3931b9da9623e6d1e526757ec233d88d7c8fafdd4",
+      "review": {
+        "scope": "Public reward value, original IDs, guarded replacement/confirmation",
+        "evidence": [
+          "evidence/E01-final-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "E01-archive",
+      "path": "client/ui/main.gd",
+      "symbol": "_rewards",
+      "original_commit": "2a80ac5c39dc01a6c6659a976d030e3f54c2ac7e",
+      "original_pin_sha256": "5343d9934dc3b93e8297316ebbe00fa11e3cfc5a825f09449eb591634e870f28",
+      "before_symbol_sha256": "5d4ea6211322c36ed10874b5bed418454461506b9c5680654b881510e297dc31",
+      "after_symbol_sha256": "c877c6bf62058ba6a4215548d9ad5ea34e3bb8e842c3511eb96b22fa23c6b3fb",
+      "review": {
+        "scope": "Public reward value, original IDs, guarded replacement/confirmation",
+        "evidence": [
+          "evidence/E01-final-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "E01-archive",
+      "path": "client/ui/main.gd",
+      "symbol": "_show_battle_details",
+      "original_commit": "2a80ac5c39dc01a6c6659a976d030e3f54c2ac7e",
+      "original_pin_sha256": "5343d9934dc3b93e8297316ebbe00fa11e3cfc5a825f09449eb591634e870f28",
+      "before_symbol_sha256": "9ff301df2647b2fe4e5036aa3230185965ff7beafb2880b211e3c2e34bf6fe46",
+      "after_symbol_sha256": "b606f4fc8963acc64f231514b462e209a920f09256c070d88acfd3ecf359a6f0",
+      "review": {
+        "scope": "Opt-in current rhythm details and MAG10 original/new description",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "E01-archive",
+      "path": "client/ui/main.gd",
+      "symbol": "card_description",
+      "original_commit": "2a80ac5c39dc01a6c6659a976d030e3f54c2ac7e",
+      "original_pin_sha256": "5343d9934dc3b93e8297316ebbe00fa11e3cfc5a825f09449eb591634e870f28",
+      "before_symbol_sha256": "72ec6f123f6e7bc04ee322c662ce1c774bfe254cd0e36f70869fc613c93931a8",
+      "after_symbol_sha256": "62f5d5e2a775bd6f0454b612c33cba4076dce50a45295e91a9597b79b52d5c68",
+      "review": {
+        "scope": "Opt-in current rhythm details and MAG10 original/new description",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "E01-reward-value",
+      "path": "client/state/game_store.gd",
+      "symbol": "_calculate_combat_preview",
+      "original_commit": "2a80ac5c39dc01a6c6659a976d030e3f54c2ac7e",
+      "original_pin_sha256": "71cc3541d9f5de381a48adec2ea51dba721c24bbe8be1b3c94fda961b66a2056",
+      "before_symbol_sha256": "5135e5acedbdf693eee09b63a2d48eecaddb37a3db340c9d06a404df189801bf",
+      "after_symbol_sha256": "7b2f89b17fd5f6df4a4109e1dcbe60b3b8ad78e2c528d3c6d6727ff51a57b5db",
+      "review": {
+        "scope": "New rate-budgeted rhythm preview only; not combat authority",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "E01-reward-value",
+      "path": "client/ui/battle_details.gd",
+      "symbol": "description",
+      "original_commit": "70f68c3ef4c1ff2fb535414ffbf81a8ea8ede78b",
+      "original_pin_sha256": "f9b7447096835a79530c7775e74c7e2159a8703e74a2aaf311d14d6d4d07e187",
+      "before_symbol_sha256": "a1e3af854b2f868f1952b64a68084bdf51a151c3d3d7bbd5414ec60a3924c949",
+      "after_symbol_sha256": "3cdacf0577a1d3a16607ee60aaeb2fdb25cf8a4b0de2b66cb7b258160154e3de",
+      "review": {
+        "scope": "New/old rhythm wording and numerical details",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "E01-reward-value",
+      "path": "client/ui/battle_details.gd",
+      "symbol": "passive_text",
+      "original_commit": "70f68c3ef4c1ff2fb535414ffbf81a8ea8ede78b",
+      "original_pin_sha256": "f9b7447096835a79530c7775e74c7e2159a8703e74a2aaf311d14d6d4d07e187",
+      "before_symbol_sha256": "d1ed4b9c1d137671f35fbfbe0c2177e051e201df2e042b4b75452f716001e334",
+      "after_symbol_sha256": "76eb02af8b8d48513caeb307f36b0db69c84f61dd223e039b349af3a401ae623",
+      "review": {
+        "scope": "New/old rhythm wording and numerical details",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "E01-reward-value",
+      "path": "client/ui/confirmation_modal.gd",
+      "symbol": "__header__",
+      "original_commit": "73d45dd3cde0f4081354fbaa8ac2cc46725789a0",
+      "original_pin_sha256": "5ae97ba0889cc9d7f11676bc6c91dd2fa02ee9c19982816971b90b6936dc1765",
+      "before_symbol_sha256": "66b14fde3b9facd5de5f5e38e0c8b369199fac1c212a2c919f06560d44b389a5",
+      "after_symbol_sha256": "8712395de6f76a882b6e2cf6a4bdad2f9fe4e9ddeec5456e4457d7523a4e1d46",
+      "review": {
+        "scope": "Opt-in scroll path; ordinary options unchanged. Fresh-instance close and once-only callback directly checked",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ],
+        "current_bridge": "e02_confirm_plain"
+      }
+    },
+    {
+      "baseline": "E01-reward-value",
+      "path": "client/ui/confirmation_modal.gd",
+      "symbol": "_fit_description",
+      "original_commit": "73d45dd3cde0f4081354fbaa8ac2cc46725789a0",
+      "original_pin_sha256": "5ae97ba0889cc9d7f11676bc6c91dd2fa02ee9c19982816971b90b6936dc1765",
+      "before_symbol_sha256": "fbbf598470bf6be68244a8928f0273b64f6e3c11237e75a9f9b673de36ca4f14",
+      "after_symbol_sha256": "0a8b63d934bbbec37867a1dc97f1889f1365b879cd555cb532c67859bcb4f6cf",
+      "review": {
+        "scope": "Opt-in scroll path; ordinary options unchanged. Fresh-instance close and once-only callback directly checked",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ],
+        "current_bridge": "e02_confirm_plain"
+      }
+    },
+    {
+      "baseline": "E01-reward-value",
+      "path": "client/ui/confirmation_modal.gd",
+      "symbol": "configure",
+      "original_commit": "73d45dd3cde0f4081354fbaa8ac2cc46725789a0",
+      "original_pin_sha256": "5ae97ba0889cc9d7f11676bc6c91dd2fa02ee9c19982816971b90b6936dc1765",
+      "before_symbol_sha256": "4d846484278230f919c47724414cf54a7b19b924086485f4e44cfc540b6f0833",
+      "after_symbol_sha256": "08c440934103848b911df1c1c78c511b22853ae00d5758028389d993cb1ae39a",
+      "review": {
+        "scope": "Opt-in scroll path; ordinary options unchanged. Fresh-instance close and once-only callback directly checked",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ],
+        "current_bridge": "e02_confirm_plain"
+      }
+    },
+    {
+      "baseline": "E01-reward-value",
+      "path": "client/ui/exploration_view.gd",
+      "symbol": "_battle",
+      "original_commit": "e67280f1199cfe83b88248702d0e18edb8872cba",
+      "original_pin_sha256": "57ed256c8735d35c7cd3a9576b6035c1b0fba6bdd991c363de157f95a95aaefb",
+      "before_symbol_sha256": "52c67a52e7e294e204a47bde452dd5b6f9720ca2a75bdc125f0996dfcdcbadb8",
+      "after_symbol_sha256": "061b4deae485d53bb409bedfadfbca330d5459a4df277ff247c3ab20a81ea782",
+      "review": {
+        "scope": "Rhythm HUD/details and original passive wording",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "E01-reward-value",
+      "path": "client/ui/exploration_view.gd",
+      "symbol": "_passive",
+      "original_commit": "e67280f1199cfe83b88248702d0e18edb8872cba",
+      "original_pin_sha256": "57ed256c8735d35c7cd3a9576b6035c1b0fba6bdd991c363de157f95a95aaefb",
+      "before_symbol_sha256": "5b3fb9ec351d0478c599c0dbb375b06a778df512230499b2f274a0aea6442778",
+      "after_symbol_sha256": "b039fa338d1d34a802df9f9866d4143ff40952002079f8fc9ae6e1d47384f293",
+      "review": {
+        "scope": "Rhythm HUD/details and original passive wording",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "E01-reward-value",
+      "path": "client/ui/main.gd",
+      "symbol": "_show_battle_details",
+      "original_commit": "e67280f1199cfe83b88248702d0e18edb8872cba",
+      "original_pin_sha256": "782c662cb5f1aa5e4bdbdb70eec360601456818792eab343682bd24f3b7d4226",
+      "before_symbol_sha256": "9ff301df2647b2fe4e5036aa3230185965ff7beafb2880b211e3c2e34bf6fe46",
+      "after_symbol_sha256": "b606f4fc8963acc64f231514b462e209a920f09256c070d88acfd3ecf359a6f0",
+      "review": {
+        "scope": "Opt-in current rhythm details and MAG10 original/new description",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    },
+    {
+      "baseline": "E01-reward-value",
+      "path": "client/ui/main.gd",
+      "symbol": "card_description",
+      "original_commit": "e67280f1199cfe83b88248702d0e18edb8872cba",
+      "original_pin_sha256": "782c662cb5f1aa5e4bdbdb70eec360601456818792eab343682bd24f3b7d4226",
+      "before_symbol_sha256": "72ec6f123f6e7bc04ee322c662ce1c774bfe254cd0e36f70869fc613c93931a8",
+      "after_symbol_sha256": "62f5d5e2a775bd6f0454b612c33cba4076dce50a45295e91a9597b79b52d5c68",
+      "review": {
+        "scope": "Opt-in current rhythm details and MAG10 original/new description",
+        "evidence": [
+          "evidence/C01-config17-r1/result.json"
+        ]
+      }
+    }
+  ],
+  "semantic_audit": "e02-semantic-inputs-r3.derived.json",
+  "historical_integrity_audit": "e02-historical-frames-r1.derived.json",
+  "verified_original_PNG_entries": 5269,
+  "original_PNG_entries_are_not_new_passing_counts": true,
+  "old_locale_values_and_API_field_tags_retained": true,
+  "old_font_import_differences_are_line_endings_only": true,
+  "card_MAG10_and_rate_changed_UI_already_current231": true,
+  "unreviewed_changed_symbols": [],
+  "old_phase_false_and_failures_retained": true,
+  "new_products_changed": false,
+  "new_gameplay_campaign_cases": 0,
+  "new_native_capacity_cases": 0,
+  "B05_total": 330,
+  "D03_total": 284,
+  "D03_remaining": 16,
+  "class_efficiency_target": 1.15,
+  "production_modified": false,
+  "whole_goal_complete": false,
+  "next_progress": "32/35",
+  "remaining_items": [
+    "D03",
+    "F01",
+    "F03"
+  ]
+}

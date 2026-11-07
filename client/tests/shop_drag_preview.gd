@@ -58,7 +58,12 @@ func _verify(resolution: Vector2i) -> void:
 	if restored_scroll == null: return
 	var purchased_panel := restored_scroll.get_node_or_null("ShopProductRow/Product_drag-01")
 	var other_panel := restored_scroll.get_node_or_null("ShopProductRow/Product_drag-02")
-	$UI._apply_shop_purchase("drag-01", {"quantity": 1, "goldAfter": 99890})
+	# Simulate a newly fetched authoritative snapshot, not receipt-based credit.
+	var snapshot: Dictionary=$UI.shop.duplicate(true)
+	for product in snapshot.get("products",[]):
+		if product.get("productId")=="drag-01": product["purchased"]=1
+	Game.update_cache("shop",snapshot)
+	Game.update_cache("wallet",{"gold":99890,"diamond":0})
 	$UI._reference.sync_shop_state("drag-01")
 	await get_tree().process_frame
 	await get_tree().process_frame

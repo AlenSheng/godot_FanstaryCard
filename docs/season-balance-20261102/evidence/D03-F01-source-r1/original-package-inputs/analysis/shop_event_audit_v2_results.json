@@ -1,0 +1,3849 @@
+{
+  "scope": "document audit + deterministic expected-budget arithmetic; not live simulation",
+  "source_model": "season_model.json",
+  "source_status": "v1 candidate route/enhancement; existing shop rules; v2 event proposal",
+  "baseline": {
+    "difficulty": "D2",
+    "route_gold": 223,
+    "route_fragments": 40,
+    "success": 0.7,
+    "minutes_per_attempt": 18,
+    "rebuild_fragments": 66
+  },
+  "shop": {
+    "fragment": {
+      "price": 120,
+      "quantity": 20,
+      "daily_cap": 3
+    },
+    "warrior_soul": {
+      "price": 180,
+      "quantity": 20,
+      "daily_cap": 3
+    },
+    "class_soul": {
+      "price": 400,
+      "quantity": 12,
+      "daily_cap": 1
+    },
+    "card_pack": {
+      "price": 250,
+      "quantity": 3,
+      "daily_cap": 5
+    },
+    "potion": {
+      "price": 100,
+      "quantity": 1,
+      "daily_cap": 4,
+      "inventory_cap": 8,
+      "carry_cap": 2
+    },
+    "advanced_bag": {
+      "price": 800,
+      "capacity": 28,
+      "safe_slots": 1
+    },
+    "top_bag": {
+      "price": 2200,
+      "capacity": 36,
+      "safe_slots": 3
+    }
+  },
+  "unit_prices": [
+    {
+      "product": "fragment",
+      "price": 120,
+      "quantity": 20,
+      "gold_per_unit": 6,
+      "daily_cap": 3,
+      "daily_gold_max": 360
+    },
+    {
+      "product": "warrior_soul",
+      "price": 180,
+      "quantity": 20,
+      "gold_per_unit": 9,
+      "daily_cap": 3,
+      "daily_gold_max": 540
+    },
+    {
+      "product": "class_soul",
+      "price": 400,
+      "quantity": 12,
+      "gold_per_unit": 33.333333333,
+      "daily_cap": 1,
+      "daily_gold_max": 400
+    },
+    {
+      "product": "card_pack",
+      "price": 250,
+      "quantity": 3,
+      "gold_per_unit": 83.333333333,
+      "daily_cap": 5,
+      "daily_gold_max": 1250
+    },
+    {
+      "product": "potion",
+      "price": 100,
+      "quantity": 1,
+      "gold_per_unit": 100,
+      "daily_cap": 4,
+      "daily_gold_max": 400
+    },
+    {
+      "product": "advanced_bag",
+      "price": 800,
+      "quantity": 1,
+      "gold_per_unit": 800,
+      "daily_cap": null,
+      "daily_gold_max": null
+    },
+    {
+      "product": "top_bag",
+      "price": 2200,
+      "quantity": 1,
+      "gold_per_unit": 2200,
+      "daily_cap": null,
+      "daily_gold_max": null
+    }
+  ],
+  "purchase_ceiling": [
+    {
+      "minutes": 30,
+      "mode": "continuous",
+      "attempts": 1.666666667,
+      "gold_per_day": 260.166666667,
+      "fragment_3packs_share_of_gold": 1.383728379,
+      "gold_after_3packs_1potion": -199.833333333,
+      "gold_after_3packs_2potions": -299.833333333,
+      "gold_after_all_resource_packs": -1039.833333333
+    },
+    {
+      "minutes": 30,
+      "mode": "whole_daily",
+      "attempts": 1,
+      "gold_per_day": 156.1,
+      "fragment_3packs_share_of_gold": 2.306213965,
+      "gold_after_3packs_1potion": -303.9,
+      "gold_after_3packs_2potions": -403.9,
+      "gold_after_all_resource_packs": -1143.9
+    },
+    {
+      "minutes": 60,
+      "mode": "continuous",
+      "attempts": 3.333333333,
+      "gold_per_day": 520.333333333,
+      "fragment_3packs_share_of_gold": 0.69186419,
+      "gold_after_3packs_1potion": 60.333333333,
+      "gold_after_3packs_2potions": -39.666666667,
+      "gold_after_all_resource_packs": -779.666666667
+    },
+    {
+      "minutes": 60,
+      "mode": "whole_daily",
+      "attempts": 3,
+      "gold_per_day": 468.3,
+      "fragment_3packs_share_of_gold": 0.768737988,
+      "gold_after_3packs_1potion": 8.3,
+      "gold_after_3packs_2potions": -91.7,
+      "gold_after_all_resource_packs": -831.7
+    },
+    {
+      "minutes": 120,
+      "mode": "continuous",
+      "attempts": 6.666666667,
+      "gold_per_day": 1040.666666667,
+      "fragment_3packs_share_of_gold": 0.345932095,
+      "gold_after_3packs_1potion": 580.666666667,
+      "gold_after_3packs_2potions": 480.666666667,
+      "gold_after_all_resource_packs": -259.333333333
+    },
+    {
+      "minutes": 120,
+      "mode": "whole_daily",
+      "attempts": 6,
+      "gold_per_day": 936.6,
+      "fragment_3packs_share_of_gold": 0.384368994,
+      "gold_after_3packs_1potion": 476.6,
+      "gold_after_3packs_2potions": 376.6,
+      "gold_after_all_resource_packs": -363.4
+    },
+    {
+      "minutes": 150,
+      "mode": "continuous",
+      "attempts": 8.333333333,
+      "gold_per_day": 1300.833333333,
+      "fragment_3packs_share_of_gold": 0.276745676,
+      "gold_after_3packs_1potion": 840.833333333,
+      "gold_after_3packs_2potions": 740.833333333,
+      "gold_after_all_resource_packs": 0.833333333
+    },
+    {
+      "minutes": 150,
+      "mode": "whole_daily",
+      "attempts": 8,
+      "gold_per_day": 1248.8,
+      "fragment_3packs_share_of_gold": 0.288276746,
+      "gold_after_3packs_1potion": 788.8,
+      "gold_after_3packs_2potions": 688.8,
+      "gold_after_all_resource_packs": -51.2
+    },
+    {
+      "minutes": 180,
+      "mode": "continuous",
+      "attempts": 10,
+      "gold_per_day": 1561,
+      "fragment_3packs_share_of_gold": 0.230621397,
+      "gold_after_3packs_1potion": 1101,
+      "gold_after_3packs_2potions": 1001,
+      "gold_after_all_resource_packs": 261
+    },
+    {
+      "minutes": 180,
+      "mode": "whole_daily",
+      "attempts": 10,
+      "gold_per_day": 1561,
+      "fragment_3packs_share_of_gold": 0.230621397,
+      "gold_after_3packs_1potion": 1101,
+      "gold_after_3packs_2potions": 1001,
+      "gold_after_all_resource_packs": 261
+    }
+  ],
+  "cost_pressure": [
+    {
+      "days": 30,
+      "target": "regular_plus3",
+      "fragments": 52,
+      "gold_shadow_cost": 312,
+      "packs_from_zero_stock": 3,
+      "gold_outlay_from_zero_stock": 360,
+      "min_shop_reset_windows": 1,
+      "unspent_fragments_from_last_pack": 8
+    },
+    {
+      "days": 30,
+      "target": "regular_plus3_reforge",
+      "fragments": 58,
+      "gold_shadow_cost": 348,
+      "packs_from_zero_stock": 3,
+      "gold_outlay_from_zero_stock": 360,
+      "min_shop_reset_windows": 1,
+      "unspent_fragments_from_last_pack": 2
+    },
+    {
+      "days": 30,
+      "target": "max_plus5",
+      "fragments": 573,
+      "gold_shadow_cost": 3438,
+      "packs_from_zero_stock": 29,
+      "gold_outlay_from_zero_stock": 3480,
+      "min_shop_reset_windows": 10,
+      "unspent_fragments_from_last_pack": 7
+    },
+    {
+      "days": 30,
+      "target": "weapon_plus5",
+      "fragments": 248,
+      "gold_shadow_cost": 1488,
+      "packs_from_zero_stock": 13,
+      "gold_outlay_from_zero_stock": 1560,
+      "min_shop_reset_windows": 5,
+      "unspent_fragments_from_last_pack": 12
+    },
+    {
+      "days": 42,
+      "target": "regular_plus3",
+      "fragments": 60,
+      "gold_shadow_cost": 360,
+      "packs_from_zero_stock": 3,
+      "gold_outlay_from_zero_stock": 360,
+      "min_shop_reset_windows": 1,
+      "unspent_fragments_from_last_pack": 0
+    },
+    {
+      "days": 42,
+      "target": "regular_plus3_reforge",
+      "fragments": 66,
+      "gold_shadow_cost": 396,
+      "packs_from_zero_stock": 4,
+      "gold_outlay_from_zero_stock": 480,
+      "min_shop_reset_windows": 2,
+      "unspent_fragments_from_last_pack": 14
+    },
+    {
+      "days": 42,
+      "target": "max_plus5",
+      "fragments": 780,
+      "gold_shadow_cost": 4680,
+      "packs_from_zero_stock": 39,
+      "gold_outlay_from_zero_stock": 4680,
+      "min_shop_reset_windows": 13,
+      "unspent_fragments_from_last_pack": 0
+    },
+    {
+      "days": 42,
+      "target": "weapon_plus5",
+      "fragments": 248,
+      "gold_shadow_cost": 1488,
+      "packs_from_zero_stock": 13,
+      "gold_outlay_from_zero_stock": 1560,
+      "min_shop_reset_windows": 5,
+      "unspent_fragments_from_last_pack": 12
+    },
+    {
+      "days": 60,
+      "target": "regular_plus3",
+      "fragments": 60,
+      "gold_shadow_cost": 360,
+      "packs_from_zero_stock": 3,
+      "gold_outlay_from_zero_stock": 360,
+      "min_shop_reset_windows": 1,
+      "unspent_fragments_from_last_pack": 0
+    },
+    {
+      "days": 60,
+      "target": "regular_plus3_reforge",
+      "fragments": 66,
+      "gold_shadow_cost": 396,
+      "packs_from_zero_stock": 4,
+      "gold_outlay_from_zero_stock": 480,
+      "min_shop_reset_windows": 2,
+      "unspent_fragments_from_last_pack": 14
+    },
+    {
+      "days": 60,
+      "target": "max_plus5",
+      "fragments": 780,
+      "gold_shadow_cost": 4680,
+      "packs_from_zero_stock": 39,
+      "gold_outlay_from_zero_stock": 4680,
+      "min_shop_reset_windows": 13,
+      "unspent_fragments_from_last_pack": 0
+    },
+    {
+      "days": 60,
+      "target": "weapon_plus5",
+      "fragments": 248,
+      "gold_shadow_cost": 1488,
+      "packs_from_zero_stock": 13,
+      "gold_outlay_from_zero_stock": 1560,
+      "min_shop_reset_windows": 5,
+      "unspent_fragments_from_last_pack": 12
+    }
+  ],
+  "old_set_costs": {
+    "plus3": 1344,
+    "plus5": 5952
+  },
+  "wallet_scenarios": [
+    {
+      "minutes": 30,
+      "mode": "whole_daily",
+      "days": 42,
+      "potions_per_day": 0,
+      "card_packs_per_day": 0,
+      "reserve_per_day": 0,
+      "attempts_per_day": 1,
+      "gross_gold_per_day": 156.1,
+      "requested_fixed_gold_per_day": 0,
+      "priority_budget_feasible": true,
+      "fragment_packs": 54,
+      "shop_fragments": 1080,
+      "shop_fragment_gold_sink": 6480,
+      "other_shop_gold_sink": 0,
+      "reserved_gold_not_sink": 0,
+      "free_gold_close": 76.2,
+      "drop_fragments": 1176,
+      "regular_rebuild_fragments": 831.6,
+      "choice_fragments_included": false,
+      "fragment_close_after_regular_rebuild": 1424.4,
+      "average_shop_fragments_per_day": 25.714285714,
+      "ledger": [
+        {
+          "day": 1,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 36.1
+        },
+        {
+          "day": 2,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 72.2
+        },
+        {
+          "day": 3,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 108.3
+        },
+        {
+          "day": 4,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 24.4
+        },
+        {
+          "day": 5,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 60.5
+        },
+        {
+          "day": 6,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 96.6
+        },
+        {
+          "day": 7,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 12.7
+        },
+        {
+          "day": 8,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 48.8
+        },
+        {
+          "day": 9,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 84.9
+        },
+        {
+          "day": 10,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 1
+        },
+        {
+          "day": 11,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 37.1
+        },
+        {
+          "day": 12,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 73.2
+        },
+        {
+          "day": 13,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 109.3
+        },
+        {
+          "day": 14,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 25.4
+        },
+        {
+          "day": 15,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 61.5
+        },
+        {
+          "day": 16,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 97.6
+        },
+        {
+          "day": 17,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 13.7
+        },
+        {
+          "day": 18,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 49.8
+        },
+        {
+          "day": 19,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 85.9
+        },
+        {
+          "day": 20,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 2
+        },
+        {
+          "day": 21,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 38.1
+        },
+        {
+          "day": 22,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 74.2
+        },
+        {
+          "day": 23,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 110.3
+        },
+        {
+          "day": 24,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 26.4
+        },
+        {
+          "day": 25,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 62.5
+        },
+        {
+          "day": 26,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 98.6
+        },
+        {
+          "day": 27,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 14.7
+        },
+        {
+          "day": 28,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 50.8
+        },
+        {
+          "day": 29,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 86.9
+        },
+        {
+          "day": 30,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 3
+        },
+        {
+          "day": 31,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 39.1
+        },
+        {
+          "day": 32,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 75.2
+        },
+        {
+          "day": 33,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 111.3
+        },
+        {
+          "day": 34,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 27.4
+        },
+        {
+          "day": 35,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 63.5
+        },
+        {
+          "day": 36,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 99.6
+        },
+        {
+          "day": 37,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 15.7
+        },
+        {
+          "day": 38,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 51.8
+        },
+        {
+          "day": 39,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 87.9
+        },
+        {
+          "day": 40,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 4
+        },
+        {
+          "day": 41,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 40.1
+        },
+        {
+          "day": 42,
+          "gold_in": 156.1,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 76.2
+        }
+      ]
+    },
+    {
+      "minutes": 30,
+      "mode": "whole_daily",
+      "days": 42,
+      "potions_per_day": 1,
+      "card_packs_per_day": 0,
+      "reserve_per_day": 0,
+      "attempts_per_day": 1,
+      "gross_gold_per_day": 156.1,
+      "requested_fixed_gold_per_day": 100,
+      "priority_budget_feasible": true,
+      "fragment_packs": 19,
+      "shop_fragments": 380,
+      "shop_fragment_gold_sink": 2280,
+      "other_shop_gold_sink": 4200,
+      "reserved_gold_not_sink": 0,
+      "free_gold_close": 76.2,
+      "drop_fragments": 1176,
+      "regular_rebuild_fragments": 831.6,
+      "choice_fragments_included": false,
+      "fragment_close_after_regular_rebuild": 724.4,
+      "average_shop_fragments_per_day": 9.047619048,
+      "ledger": [
+        {
+          "day": 1,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 56.1
+        },
+        {
+          "day": 2,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 112.2
+        },
+        {
+          "day": 3,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 48.3
+        },
+        {
+          "day": 4,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 104.4
+        },
+        {
+          "day": 5,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 40.5
+        },
+        {
+          "day": 6,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 96.6
+        },
+        {
+          "day": 7,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 32.7
+        },
+        {
+          "day": 8,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 88.8
+        },
+        {
+          "day": 9,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 24.9
+        },
+        {
+          "day": 10,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 81
+        },
+        {
+          "day": 11,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 17.1
+        },
+        {
+          "day": 12,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 73.2
+        },
+        {
+          "day": 13,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 9.3
+        },
+        {
+          "day": 14,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 65.4
+        },
+        {
+          "day": 15,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 1.5
+        },
+        {
+          "day": 16,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 57.6
+        },
+        {
+          "day": 17,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 113.7
+        },
+        {
+          "day": 18,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 49.8
+        },
+        {
+          "day": 19,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 105.9
+        },
+        {
+          "day": 20,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 42
+        },
+        {
+          "day": 21,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 98.1
+        },
+        {
+          "day": 22,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 34.2
+        },
+        {
+          "day": 23,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 90.3
+        },
+        {
+          "day": 24,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 26.4
+        },
+        {
+          "day": 25,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 82.5
+        },
+        {
+          "day": 26,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 18.6
+        },
+        {
+          "day": 27,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 74.7
+        },
+        {
+          "day": 28,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 10.8
+        },
+        {
+          "day": 29,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 66.9
+        },
+        {
+          "day": 30,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 3
+        },
+        {
+          "day": 31,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 59.1
+        },
+        {
+          "day": 32,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 115.2
+        },
+        {
+          "day": 33,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 51.3
+        },
+        {
+          "day": 34,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 107.4
+        },
+        {
+          "day": 35,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 43.5
+        },
+        {
+          "day": 36,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 99.6
+        },
+        {
+          "day": 37,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 35.7
+        },
+        {
+          "day": 38,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 91.8
+        },
+        {
+          "day": 39,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 27.9
+        },
+        {
+          "day": 40,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 84
+        },
+        {
+          "day": 41,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 20.1
+        },
+        {
+          "day": 42,
+          "gold_in": 156.1,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 76.2
+        }
+      ]
+    },
+    {
+      "minutes": 60,
+      "mode": "continuous",
+      "days": 42,
+      "potions_per_day": 0,
+      "card_packs_per_day": 0,
+      "reserve_per_day": 0,
+      "attempts_per_day": 3.333333333,
+      "gross_gold_per_day": 520.333333333,
+      "requested_fixed_gold_per_day": 0,
+      "priority_budget_feasible": true,
+      "fragment_packs": 126,
+      "shop_fragments": 2520,
+      "shop_fragment_gold_sink": 15120,
+      "other_shop_gold_sink": 0,
+      "reserved_gold_not_sink": 0,
+      "free_gold_close": 6734,
+      "drop_fragments": 3920,
+      "regular_rebuild_fragments": 2772,
+      "choice_fragments_included": false,
+      "fragment_close_after_regular_rebuild": 3668,
+      "average_shop_fragments_per_day": 60,
+      "ledger": [
+        {
+          "day": 1,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 160.333333333
+        },
+        {
+          "day": 2,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 320.666666667
+        },
+        {
+          "day": 3,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 481
+        },
+        {
+          "day": 4,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 641.333333333
+        },
+        {
+          "day": 5,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 801.666666667
+        },
+        {
+          "day": 6,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 962
+        },
+        {
+          "day": 7,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 1122.333333333
+        },
+        {
+          "day": 8,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 1282.666666667
+        },
+        {
+          "day": 9,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 1443
+        },
+        {
+          "day": 10,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 1603.333333333
+        },
+        {
+          "day": 11,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 1763.666666667
+        },
+        {
+          "day": 12,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 1924
+        },
+        {
+          "day": 13,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 2084.333333333
+        },
+        {
+          "day": 14,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 2244.666666667
+        },
+        {
+          "day": 15,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 2405
+        },
+        {
+          "day": 16,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 2565.333333333
+        },
+        {
+          "day": 17,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 2725.666666667
+        },
+        {
+          "day": 18,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 2886
+        },
+        {
+          "day": 19,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 3046.333333333
+        },
+        {
+          "day": 20,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 3206.666666667
+        },
+        {
+          "day": 21,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 3367
+        },
+        {
+          "day": 22,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 3527.333333333
+        },
+        {
+          "day": 23,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 3687.666666667
+        },
+        {
+          "day": 24,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 3848
+        },
+        {
+          "day": 25,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 4008.333333333
+        },
+        {
+          "day": 26,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 4168.666666667
+        },
+        {
+          "day": 27,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 4329
+        },
+        {
+          "day": 28,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 4489.333333333
+        },
+        {
+          "day": 29,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 4649.666666667
+        },
+        {
+          "day": 30,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 4810
+        },
+        {
+          "day": 31,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 4970.333333333
+        },
+        {
+          "day": 32,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 5130.666666667
+        },
+        {
+          "day": 33,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 5291
+        },
+        {
+          "day": 34,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 5451.333333333
+        },
+        {
+          "day": 35,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 5611.666666667
+        },
+        {
+          "day": 36,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 5772
+        },
+        {
+          "day": 37,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 5932.333333333
+        },
+        {
+          "day": 38,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 6092.666666667
+        },
+        {
+          "day": 39,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 6253
+        },
+        {
+          "day": 40,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 6413.333333333
+        },
+        {
+          "day": 41,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 6573.666666667
+        },
+        {
+          "day": 42,
+          "gold_in": 520.333333333,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 6734
+        }
+      ]
+    },
+    {
+      "minutes": 60,
+      "mode": "whole_daily",
+      "days": 42,
+      "potions_per_day": 0,
+      "card_packs_per_day": 0,
+      "reserve_per_day": 0,
+      "attempts_per_day": 3,
+      "gross_gold_per_day": 468.3,
+      "requested_fixed_gold_per_day": 0,
+      "priority_budget_feasible": true,
+      "fragment_packs": 126,
+      "shop_fragments": 2520,
+      "shop_fragment_gold_sink": 15120,
+      "other_shop_gold_sink": 0,
+      "reserved_gold_not_sink": 0,
+      "free_gold_close": 4548.6,
+      "drop_fragments": 3528,
+      "regular_rebuild_fragments": 2494.8,
+      "choice_fragments_included": false,
+      "fragment_close_after_regular_rebuild": 3553.2,
+      "average_shop_fragments_per_day": 60,
+      "ledger": [
+        {
+          "day": 1,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 108.3
+        },
+        {
+          "day": 2,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 216.6
+        },
+        {
+          "day": 3,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 324.9
+        },
+        {
+          "day": 4,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 433.2
+        },
+        {
+          "day": 5,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 541.5
+        },
+        {
+          "day": 6,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 649.8
+        },
+        {
+          "day": 7,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 758.1
+        },
+        {
+          "day": 8,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 866.4
+        },
+        {
+          "day": 9,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 974.7
+        },
+        {
+          "day": 10,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 1083
+        },
+        {
+          "day": 11,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 1191.3
+        },
+        {
+          "day": 12,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 1299.6
+        },
+        {
+          "day": 13,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 1407.9
+        },
+        {
+          "day": 14,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 1516.2
+        },
+        {
+          "day": 15,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 1624.5
+        },
+        {
+          "day": 16,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 1732.8
+        },
+        {
+          "day": 17,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 1841.1
+        },
+        {
+          "day": 18,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 1949.4
+        },
+        {
+          "day": 19,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 2057.7
+        },
+        {
+          "day": 20,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 2166
+        },
+        {
+          "day": 21,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 2274.3
+        },
+        {
+          "day": 22,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 2382.6
+        },
+        {
+          "day": 23,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 2490.9
+        },
+        {
+          "day": 24,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 2599.2
+        },
+        {
+          "day": 25,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 2707.5
+        },
+        {
+          "day": 26,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 2815.8
+        },
+        {
+          "day": 27,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 2924.1
+        },
+        {
+          "day": 28,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 3032.4
+        },
+        {
+          "day": 29,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 3140.7
+        },
+        {
+          "day": 30,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 3249
+        },
+        {
+          "day": 31,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 3357.3
+        },
+        {
+          "day": 32,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 3465.6
+        },
+        {
+          "day": 33,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 3573.9
+        },
+        {
+          "day": 34,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 3682.2
+        },
+        {
+          "day": 35,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 3790.5
+        },
+        {
+          "day": 36,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 3898.8
+        },
+        {
+          "day": 37,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 4007.1
+        },
+        {
+          "day": 38,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 4115.4
+        },
+        {
+          "day": 39,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 4223.7
+        },
+        {
+          "day": 40,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 4332
+        },
+        {
+          "day": 41,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 4440.3
+        },
+        {
+          "day": 42,
+          "gold_in": 468.3,
+          "fixed_sink": 0,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 4548.6
+        }
+      ]
+    },
+    {
+      "minutes": 60,
+      "mode": "whole_daily",
+      "days": 42,
+      "potions_per_day": 1,
+      "card_packs_per_day": 0,
+      "reserve_per_day": 0,
+      "attempts_per_day": 3,
+      "gross_gold_per_day": 468.3,
+      "requested_fixed_gold_per_day": 100,
+      "priority_budget_feasible": true,
+      "fragment_packs": 126,
+      "shop_fragments": 2520,
+      "shop_fragment_gold_sink": 15120,
+      "other_shop_gold_sink": 4200,
+      "reserved_gold_not_sink": 0,
+      "free_gold_close": 348.6,
+      "drop_fragments": 3528,
+      "regular_rebuild_fragments": 2494.8,
+      "choice_fragments_included": false,
+      "fragment_close_after_regular_rebuild": 3553.2,
+      "average_shop_fragments_per_day": 60,
+      "ledger": [
+        {
+          "day": 1,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 8.3
+        },
+        {
+          "day": 2,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 16.6
+        },
+        {
+          "day": 3,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 24.9
+        },
+        {
+          "day": 4,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 33.2
+        },
+        {
+          "day": 5,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 41.5
+        },
+        {
+          "day": 6,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 49.8
+        },
+        {
+          "day": 7,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 58.1
+        },
+        {
+          "day": 8,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 66.4
+        },
+        {
+          "day": 9,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 74.7
+        },
+        {
+          "day": 10,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 83
+        },
+        {
+          "day": 11,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 91.3
+        },
+        {
+          "day": 12,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 99.6
+        },
+        {
+          "day": 13,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 107.9
+        },
+        {
+          "day": 14,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 116.2
+        },
+        {
+          "day": 15,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 124.5
+        },
+        {
+          "day": 16,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 132.8
+        },
+        {
+          "day": 17,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 141.1
+        },
+        {
+          "day": 18,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 149.4
+        },
+        {
+          "day": 19,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 157.7
+        },
+        {
+          "day": 20,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 166
+        },
+        {
+          "day": 21,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 174.3
+        },
+        {
+          "day": 22,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 182.6
+        },
+        {
+          "day": 23,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 190.9
+        },
+        {
+          "day": 24,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 199.2
+        },
+        {
+          "day": 25,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 207.5
+        },
+        {
+          "day": 26,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 215.8
+        },
+        {
+          "day": 27,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 224.1
+        },
+        {
+          "day": 28,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 232.4
+        },
+        {
+          "day": 29,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 240.7
+        },
+        {
+          "day": 30,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 249
+        },
+        {
+          "day": 31,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 257.3
+        },
+        {
+          "day": 32,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 265.6
+        },
+        {
+          "day": 33,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 273.9
+        },
+        {
+          "day": 34,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 282.2
+        },
+        {
+          "day": 35,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 290.5
+        },
+        {
+          "day": 36,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 298.8
+        },
+        {
+          "day": 37,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 307.1
+        },
+        {
+          "day": 38,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 315.4
+        },
+        {
+          "day": 39,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 323.7
+        },
+        {
+          "day": 40,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 332
+        },
+        {
+          "day": 41,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 340.3
+        },
+        {
+          "day": 42,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 348.6
+        }
+      ]
+    },
+    {
+      "minutes": 60,
+      "mode": "whole_daily",
+      "days": 42,
+      "potions_per_day": 2,
+      "card_packs_per_day": 0,
+      "reserve_per_day": 0,
+      "attempts_per_day": 3,
+      "gross_gold_per_day": 468.3,
+      "requested_fixed_gold_per_day": 200,
+      "priority_budget_feasible": true,
+      "fragment_packs": 93,
+      "shop_fragments": 1860,
+      "shop_fragment_gold_sink": 11160,
+      "other_shop_gold_sink": 8400,
+      "reserved_gold_not_sink": 0,
+      "free_gold_close": 108.6,
+      "drop_fragments": 3528,
+      "regular_rebuild_fragments": 2494.8,
+      "choice_fragments_included": false,
+      "fragment_close_after_regular_rebuild": 2893.2,
+      "average_shop_fragments_per_day": 44.285714286,
+      "ledger": [
+        {
+          "day": 1,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 28.3
+        },
+        {
+          "day": 2,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 56.6
+        },
+        {
+          "day": 3,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 84.9
+        },
+        {
+          "day": 4,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 113.2
+        },
+        {
+          "day": 5,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 21.5
+        },
+        {
+          "day": 6,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 49.8
+        },
+        {
+          "day": 7,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 78.1
+        },
+        {
+          "day": 8,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 106.4
+        },
+        {
+          "day": 9,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 14.7
+        },
+        {
+          "day": 10,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 43
+        },
+        {
+          "day": 11,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 71.3
+        },
+        {
+          "day": 12,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 99.6
+        },
+        {
+          "day": 13,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 7.9
+        },
+        {
+          "day": 14,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 36.2
+        },
+        {
+          "day": 15,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 64.5
+        },
+        {
+          "day": 16,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 92.8
+        },
+        {
+          "day": 17,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 1.1
+        },
+        {
+          "day": 18,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 29.4
+        },
+        {
+          "day": 19,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 57.7
+        },
+        {
+          "day": 20,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 86
+        },
+        {
+          "day": 21,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 114.3
+        },
+        {
+          "day": 22,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 22.6
+        },
+        {
+          "day": 23,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 50.9
+        },
+        {
+          "day": 24,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 79.2
+        },
+        {
+          "day": 25,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 107.5
+        },
+        {
+          "day": 26,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 15.8
+        },
+        {
+          "day": 27,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 44.1
+        },
+        {
+          "day": 28,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 72.4
+        },
+        {
+          "day": 29,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 100.7
+        },
+        {
+          "day": 30,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 9
+        },
+        {
+          "day": 31,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 37.3
+        },
+        {
+          "day": 32,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 65.6
+        },
+        {
+          "day": 33,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 93.9
+        },
+        {
+          "day": 34,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 2.2
+        },
+        {
+          "day": 35,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 30.5
+        },
+        {
+          "day": 36,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 58.8
+        },
+        {
+          "day": 37,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 87.1
+        },
+        {
+          "day": 38,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 115.4
+        },
+        {
+          "day": 39,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 23.7
+        },
+        {
+          "day": 40,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 52
+        },
+        {
+          "day": 41,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 80.3
+        },
+        {
+          "day": 42,
+          "gold_in": 468.3,
+          "fixed_sink": 200,
+          "reserved_gold": 0,
+          "fragment_packs": 2,
+          "free_cash_close": 108.6
+        }
+      ]
+    },
+    {
+      "minutes": 60,
+      "mode": "whole_daily",
+      "days": 42,
+      "potions_per_day": 1,
+      "card_packs_per_day": 0,
+      "reserve_per_day": 100,
+      "attempts_per_day": 3,
+      "gross_gold_per_day": 468.3,
+      "requested_fixed_gold_per_day": 100,
+      "priority_budget_feasible": true,
+      "fragment_packs": 93,
+      "shop_fragments": 1860,
+      "shop_fragment_gold_sink": 11160,
+      "other_shop_gold_sink": 4200,
+      "reserved_gold_not_sink": 4200,
+      "free_gold_close": 108.6,
+      "drop_fragments": 3528,
+      "regular_rebuild_fragments": 2494.8,
+      "choice_fragments_included": false,
+      "fragment_close_after_regular_rebuild": 2893.2,
+      "average_shop_fragments_per_day": 44.285714286,
+      "ledger": [
+        {
+          "day": 1,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 28.3
+        },
+        {
+          "day": 2,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 56.6
+        },
+        {
+          "day": 3,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 84.9
+        },
+        {
+          "day": 4,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 113.2
+        },
+        {
+          "day": 5,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 3,
+          "free_cash_close": 21.5
+        },
+        {
+          "day": 6,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 49.8
+        },
+        {
+          "day": 7,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 78.1
+        },
+        {
+          "day": 8,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 106.4
+        },
+        {
+          "day": 9,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 3,
+          "free_cash_close": 14.7
+        },
+        {
+          "day": 10,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 43
+        },
+        {
+          "day": 11,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 71.3
+        },
+        {
+          "day": 12,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 99.6
+        },
+        {
+          "day": 13,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 3,
+          "free_cash_close": 7.9
+        },
+        {
+          "day": 14,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 36.2
+        },
+        {
+          "day": 15,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 64.5
+        },
+        {
+          "day": 16,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 92.8
+        },
+        {
+          "day": 17,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 3,
+          "free_cash_close": 1.1
+        },
+        {
+          "day": 18,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 29.4
+        },
+        {
+          "day": 19,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 57.7
+        },
+        {
+          "day": 20,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 86
+        },
+        {
+          "day": 21,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 114.3
+        },
+        {
+          "day": 22,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 3,
+          "free_cash_close": 22.6
+        },
+        {
+          "day": 23,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 50.9
+        },
+        {
+          "day": 24,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 79.2
+        },
+        {
+          "day": 25,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 107.5
+        },
+        {
+          "day": 26,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 3,
+          "free_cash_close": 15.8
+        },
+        {
+          "day": 27,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 44.1
+        },
+        {
+          "day": 28,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 72.4
+        },
+        {
+          "day": 29,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 100.7
+        },
+        {
+          "day": 30,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 3,
+          "free_cash_close": 9
+        },
+        {
+          "day": 31,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 37.3
+        },
+        {
+          "day": 32,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 65.6
+        },
+        {
+          "day": 33,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 93.9
+        },
+        {
+          "day": 34,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 3,
+          "free_cash_close": 2.2
+        },
+        {
+          "day": 35,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 30.5
+        },
+        {
+          "day": 36,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 58.8
+        },
+        {
+          "day": 37,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 87.1
+        },
+        {
+          "day": 38,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 115.4
+        },
+        {
+          "day": 39,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 3,
+          "free_cash_close": 23.7
+        },
+        {
+          "day": 40,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 52
+        },
+        {
+          "day": 41,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 80.3
+        },
+        {
+          "day": 42,
+          "gold_in": 468.3,
+          "fixed_sink": 100,
+          "reserved_gold": 100,
+          "fragment_packs": 2,
+          "free_cash_close": 108.6
+        }
+      ]
+    },
+    {
+      "minutes": 60,
+      "mode": "whole_daily",
+      "days": 42,
+      "potions_per_day": 1,
+      "card_packs_per_day": 1,
+      "reserve_per_day": 0,
+      "attempts_per_day": 3,
+      "gross_gold_per_day": 468.3,
+      "requested_fixed_gold_per_day": 350,
+      "priority_budget_feasible": true,
+      "fragment_packs": 41,
+      "shop_fragments": 820,
+      "shop_fragment_gold_sink": 4920,
+      "other_shop_gold_sink": 14700,
+      "reserved_gold_not_sink": 0,
+      "free_gold_close": 48.6,
+      "drop_fragments": 3528,
+      "regular_rebuild_fragments": 2494.8,
+      "choice_fragments_included": false,
+      "fragment_close_after_regular_rebuild": 1853.2,
+      "average_shop_fragments_per_day": 19.523809524,
+      "ledger": [
+        {
+          "day": 1,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 0,
+          "free_cash_close": 118.3
+        },
+        {
+          "day": 2,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 116.6
+        },
+        {
+          "day": 3,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 114.9
+        },
+        {
+          "day": 4,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 113.2
+        },
+        {
+          "day": 5,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 111.5
+        },
+        {
+          "day": 6,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 109.8
+        },
+        {
+          "day": 7,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 108.1
+        },
+        {
+          "day": 8,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 106.4
+        },
+        {
+          "day": 9,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 104.7
+        },
+        {
+          "day": 10,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 103
+        },
+        {
+          "day": 11,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 101.3
+        },
+        {
+          "day": 12,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 99.6
+        },
+        {
+          "day": 13,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 97.9
+        },
+        {
+          "day": 14,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 96.2
+        },
+        {
+          "day": 15,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 94.5
+        },
+        {
+          "day": 16,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 92.8
+        },
+        {
+          "day": 17,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 91.1
+        },
+        {
+          "day": 18,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 89.4
+        },
+        {
+          "day": 19,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 87.7
+        },
+        {
+          "day": 20,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 86
+        },
+        {
+          "day": 21,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 84.3
+        },
+        {
+          "day": 22,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 82.6
+        },
+        {
+          "day": 23,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 80.9
+        },
+        {
+          "day": 24,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 79.2
+        },
+        {
+          "day": 25,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 77.5
+        },
+        {
+          "day": 26,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 75.8
+        },
+        {
+          "day": 27,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 74.1
+        },
+        {
+          "day": 28,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 72.4
+        },
+        {
+          "day": 29,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 70.7
+        },
+        {
+          "day": 30,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 69
+        },
+        {
+          "day": 31,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 67.3
+        },
+        {
+          "day": 32,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 65.6
+        },
+        {
+          "day": 33,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 63.9
+        },
+        {
+          "day": 34,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 62.2
+        },
+        {
+          "day": 35,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 60.5
+        },
+        {
+          "day": 36,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 58.8
+        },
+        {
+          "day": 37,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 57.1
+        },
+        {
+          "day": 38,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 55.4
+        },
+        {
+          "day": 39,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 53.7
+        },
+        {
+          "day": 40,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 52
+        },
+        {
+          "day": 41,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 50.3
+        },
+        {
+          "day": 42,
+          "gold_in": 468.3,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 1,
+          "free_cash_close": 48.6
+        }
+      ]
+    },
+    {
+      "minutes": 120,
+      "mode": "whole_daily",
+      "days": 42,
+      "potions_per_day": 1,
+      "card_packs_per_day": 1,
+      "reserve_per_day": 0,
+      "attempts_per_day": 6,
+      "gross_gold_per_day": 936.6,
+      "requested_fixed_gold_per_day": 350,
+      "priority_budget_feasible": true,
+      "fragment_packs": 126,
+      "shop_fragments": 2520,
+      "shop_fragment_gold_sink": 15120,
+      "other_shop_gold_sink": 14700,
+      "reserved_gold_not_sink": 0,
+      "free_gold_close": 9517.2,
+      "drop_fragments": 7056,
+      "regular_rebuild_fragments": 4989.6,
+      "choice_fragments_included": false,
+      "fragment_close_after_regular_rebuild": 4586.4,
+      "average_shop_fragments_per_day": 60,
+      "ledger": [
+        {
+          "day": 1,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 226.6
+        },
+        {
+          "day": 2,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 453.2
+        },
+        {
+          "day": 3,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 679.8
+        },
+        {
+          "day": 4,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 906.4
+        },
+        {
+          "day": 5,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 1133
+        },
+        {
+          "day": 6,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 1359.6
+        },
+        {
+          "day": 7,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 1586.2
+        },
+        {
+          "day": 8,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 1812.8
+        },
+        {
+          "day": 9,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 2039.4
+        },
+        {
+          "day": 10,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 2266
+        },
+        {
+          "day": 11,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 2492.6
+        },
+        {
+          "day": 12,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 2719.2
+        },
+        {
+          "day": 13,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 2945.8
+        },
+        {
+          "day": 14,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 3172.4
+        },
+        {
+          "day": 15,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 3399
+        },
+        {
+          "day": 16,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 3625.6
+        },
+        {
+          "day": 17,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 3852.2
+        },
+        {
+          "day": 18,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 4078.8
+        },
+        {
+          "day": 19,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 4305.4
+        },
+        {
+          "day": 20,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 4532
+        },
+        {
+          "day": 21,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 4758.6
+        },
+        {
+          "day": 22,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 4985.2
+        },
+        {
+          "day": 23,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 5211.8
+        },
+        {
+          "day": 24,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 5438.4
+        },
+        {
+          "day": 25,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 5665
+        },
+        {
+          "day": 26,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 5891.6
+        },
+        {
+          "day": 27,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 6118.2
+        },
+        {
+          "day": 28,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 6344.8
+        },
+        {
+          "day": 29,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 6571.4
+        },
+        {
+          "day": 30,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 6798
+        },
+        {
+          "day": 31,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 7024.6
+        },
+        {
+          "day": 32,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 7251.2
+        },
+        {
+          "day": 33,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 7477.8
+        },
+        {
+          "day": 34,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 7704.4
+        },
+        {
+          "day": 35,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 7931
+        },
+        {
+          "day": 36,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 8157.6
+        },
+        {
+          "day": 37,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 8384.2
+        },
+        {
+          "day": 38,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 8610.8
+        },
+        {
+          "day": 39,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 8837.4
+        },
+        {
+          "day": 40,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 9064
+        },
+        {
+          "day": 41,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 9290.6
+        },
+        {
+          "day": 42,
+          "gold_in": 936.6,
+          "fixed_sink": 350,
+          "reserved_gold": 0,
+          "fragment_packs": 3,
+          "free_cash_close": 9517.2
+        }
+      ]
+    }
+  ],
+  "accumulation": [
+    {
+      "mode": "continuous",
+      "shop_fragments_per_day": 0,
+      "net_while_wearing_plus3": 27.333333333,
+      "upgrade_from_plus3_to_plus5_gap": 720,
+      "expected_saving_days_for_gap": 26.341463415,
+      "net_if_already_wearing_plus5": -692.666666667,
+      "break_even_plus5_with_shop": 0.95157385
+    },
+    {
+      "mode": "continuous",
+      "shop_fragments_per_day": 40,
+      "net_while_wearing_plus3": 67.333333333,
+      "upgrade_from_plus3_to_plus5_gap": 720,
+      "expected_saving_days_for_gap": 10.693069307,
+      "net_if_already_wearing_plus5": -652.666666667,
+      "break_even_plus5_with_shop": 0.937046005
+    },
+    {
+      "mode": "continuous",
+      "shop_fragments_per_day": 60,
+      "net_while_wearing_plus3": 87.333333333,
+      "upgrade_from_plus3_to_plus5_gap": 720,
+      "expected_saving_days_for_gap": 8.244274809,
+      "net_if_already_wearing_plus5": -632.666666667,
+      "break_even_plus5_with_shop": 0.929782082
+    },
+    {
+      "mode": "whole_daily",
+      "shop_fragments_per_day": 0,
+      "net_while_wearing_plus3": 24.6,
+      "upgrade_from_plus3_to_plus5_gap": 720,
+      "expected_saving_days_for_gap": 29.268292683,
+      "net_if_already_wearing_plus5": -623.4,
+      "break_even_plus5_with_shop": 0.95157385
+    },
+    {
+      "mode": "whole_daily",
+      "shop_fragments_per_day": 40,
+      "net_while_wearing_plus3": 64.6,
+      "upgrade_from_plus3_to_plus5_gap": 720,
+      "expected_saving_days_for_gap": 11.145510836,
+      "net_if_already_wearing_plus5": -583.4,
+      "break_even_plus5_with_shop": 0.9354318
+    },
+    {
+      "mode": "whole_daily",
+      "shop_fragments_per_day": 60,
+      "net_while_wearing_plus3": 84.6,
+      "upgrade_from_plus3_to_plus5_gap": 720,
+      "expected_saving_days_for_gap": 8.510638298,
+      "net_if_already_wearing_plus5": -563.4,
+      "break_even_plus5_with_shop": 0.927360775
+    }
+  ],
+  "card_pack": {
+    "expected_counts_per_pack": [
+      1.5,
+      0.9,
+      0.45,
+      0.15
+    ],
+    "prob_at_least_one_purple_per_pack": 0.142625,
+    "prob_at_least_one_purple_at_daily_cap": 0.53670877,
+    "expected_soul_replacement_upper_bound": 75,
+    "expected_rotating_price_reference": 456,
+    "expected_unique_unlocks": "unknown_without_per_card_probabilities_and_collection_state"
+  },
+  "event": {
+    "status": "proposed_not_current",
+    "season_days": 42,
+    "event_count": 2,
+    "duration_days_each": 3,
+    "tokens_per_event": 12,
+    "participation": 0.6,
+    "completion_conditional": 0.8,
+    "redemption_conditional": 0.9,
+    "direct_gold": 0,
+    "direct_diamonds": 0,
+    "direct_equipment": 0
+  },
+  "event_branches": [
+    {
+      "branch": "all_fragments",
+      "tokens_spent_per_event": 12,
+      "per_event_full": {
+        "fragments": 40,
+        "warrior_souls": 0,
+        "class_souls": 0,
+        "potions": 0
+      },
+      "per_season_full": {
+        "fragments": 80,
+        "warrior_souls": 0,
+        "class_souls": 0,
+        "potions": 0
+      },
+      "per_eligible_account_season_expected": {
+        "fragments": 34.56,
+        "warrior_souls": 0,
+        "class_souls": 0,
+        "potions": 0
+      },
+      "gold_shop_replacement_reference_per_event": 240,
+      "actual_direct_gold_issued": 0
+    },
+    {
+      "branch": "all_warrior_souls",
+      "tokens_spent_per_event": 12,
+      "per_event_full": {
+        "fragments": 0,
+        "warrior_souls": 24,
+        "class_souls": 0,
+        "potions": 0
+      },
+      "per_season_full": {
+        "fragments": 0,
+        "warrior_souls": 48,
+        "class_souls": 0,
+        "potions": 0
+      },
+      "per_eligible_account_season_expected": {
+        "fragments": 0,
+        "warrior_souls": 20.736,
+        "class_souls": 0,
+        "potions": 0
+      },
+      "gold_shop_replacement_reference_per_event": 216,
+      "actual_direct_gold_issued": 0
+    },
+    {
+      "branch": "all_class_souls",
+      "tokens_spent_per_event": 12,
+      "per_event_full": {
+        "fragments": 0,
+        "warrior_souls": 0,
+        "class_souls": 8,
+        "potions": 0
+      },
+      "per_season_full": {
+        "fragments": 0,
+        "warrior_souls": 0,
+        "class_souls": 16,
+        "potions": 0
+      },
+      "per_eligible_account_season_expected": {
+        "fragments": 0,
+        "warrior_souls": 0,
+        "class_souls": 6.912,
+        "potions": 0
+      },
+      "gold_shop_replacement_reference_per_event": 266.666666667,
+      "actual_direct_gold_issued": 0
+    },
+    {
+      "branch": "mixed_resources",
+      "tokens_spent_per_event": 12,
+      "per_event_full": {
+        "fragments": 20,
+        "warrior_souls": 6,
+        "class_souls": 2,
+        "potions": 0
+      },
+      "per_season_full": {
+        "fragments": 40,
+        "warrior_souls": 12,
+        "class_souls": 4,
+        "potions": 0
+      },
+      "per_eligible_account_season_expected": {
+        "fragments": 17.28,
+        "warrior_souls": 5.184,
+        "class_souls": 1.728,
+        "potions": 0
+      },
+      "gold_shop_replacement_reference_per_event": 240.666666667,
+      "actual_direct_gold_issued": 0
+    },
+    {
+      "branch": "potion_and_fragments",
+      "tokens_spent_per_event": 12,
+      "per_event_full": {
+        "fragments": 20,
+        "warrior_souls": 0,
+        "class_souls": 0,
+        "potions": 1
+      },
+      "per_season_full": {
+        "fragments": 40,
+        "warrior_souls": 0,
+        "class_souls": 0,
+        "potions": 2
+      },
+      "per_eligible_account_season_expected": {
+        "fragments": 17.28,
+        "warrior_souls": 0,
+        "class_souls": 0,
+        "potions": 0.864
+      },
+      "gold_shop_replacement_reference_per_event": 220,
+      "actual_direct_gold_issued": 0
+    }
+  ],
+  "event_peak": {
+    "effective_fraction": 0.432,
+    "max_fragment_claim_single_event": 40,
+    "max_fragments_per_full_participant_season": 80,
+    "expected_fragments_per_eligible_account_season": 34.56,
+    "season_average_fragments_per_eligible_account_day": 0.822857143,
+    "event_uniform_three_day_average": 5.76,
+    "event_concentrated_one_day_peak": 17.28,
+    "1000_eligible_season_fragments": 34560,
+    "1000_eligible_single_claim_day_fragments": 17280,
+    "1000_eligible_season_shop_gold_sink_reduction_upper_bound": 207360
+  },
+  "bag_pressure": [
+    {
+      "kind": "advanced_bag",
+      "purchase_price": 800,
+      "expected_cost_per_attempt_at_p70": 240,
+      "gross_gold_per_attempt_no_safety": 156.1,
+      "net_before_other_spend_no_safety": -83.9,
+      "break_even_success_no_safety": 0.782013685,
+      "max_possible_failure_gold_if_full_route_before_death": 223,
+      "cost_per_attempt_even_if_all_route_gold_secured": -17
+    },
+    {
+      "kind": "top_bag",
+      "purchase_price": 2200,
+      "expected_cost_per_attempt_at_p70": 660,
+      "gross_gold_per_attempt_no_safety": 156.1,
+      "net_before_other_spend_no_safety": -503.9,
+      "break_even_success_no_safety": 0.907965332,
+      "max_possible_failure_gold_if_full_route_before_death": 223,
+      "cost_per_attempt_even_if_all_route_gold_secured": -437
+    }
+  ],
+  "choice_proposal": {
+    "gear_rate": 0.75,
+    "fragment_rate": 0.15,
+    "healing_rate": 0.1,
+    "double_bias_conditional_rate": 0.5,
+    "status": "proposed_not_measured"
+  },
+  "combined_v2": {
+    "mode": "whole_daily",
+    "minutes": 60,
+    "attempts": 3,
+    "shop_fragment_packs_per_day": 1,
+    "base_route_fragments": 40,
+    "double_choice_route_fragments": 86.5,
+    "choice_fragments_per_attempt": 6.64125,
+    "choice_fragments_per_day": 19.92375,
+    "base_fragments_net_after_plus3_rebuild_per_day": 24.6,
+    "shop_fragments_per_day": 20,
+    "activity_fragments_per_day": 0.822857143,
+    "full_fragment_net_per_day": 65.346607143,
+    "gold_after_one_fragment_pack_one_potion_per_day": 248.3
+  }
+}

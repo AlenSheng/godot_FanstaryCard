@@ -17,8 +17,10 @@ var _loadout: Array
 var _action: Callable
 var _action_title := ""
 var _busy := false
+var _catalog_index: Dictionary = {}
 
-func open(selected: Dictionary, current: Dictionary, loadout: Array, action: Callable = Callable(), action_title: String = "", busy: bool = false) -> void:
+func open(selected: Dictionary, current: Dictionary, loadout: Array, action: Callable = Callable(), action_title: String = "", busy: bool = false, catalog_index: Dictionary = {}) -> void:
+	_catalog_index = catalog_index
 	_selected = selected
 	_current = current
 	_loadout = loadout
@@ -88,7 +90,7 @@ func _build() -> void:
 	_section_title(content, _t("set_changes"))
 	var before := _loadout
 	var after := CompareModel.replace_slot(_loadout, _selected)
-	var changes := CompareModel.changed_sets(before, after)
+	var changes := CompareModel.changed_sets(before, after, _catalog_index)
 	var set_row := HBoxContainer.new()
 	set_row.add_theme_constant_override("separation", 12)
 	content.add_child(set_row)
@@ -154,7 +156,7 @@ func _attribute_card(parent: Node, item: Dictionary, heading: String, footer: St
 	if item.is_empty():
 		_label(panel, _t("empty"), 19, P.MUTED)
 	else:
-		for entry in CompareModel.attribute_rows(item):
+		for entry in CompareModel.attribute_rows(item, _catalog_index):
 			var line := HBoxContainer.new()
 			panel.add_child(line)
 			var text := _label(line, _attribute_name(entry), 19, P.PAPER)
@@ -162,13 +164,19 @@ func _attribute_card(parent: Node, item: Dictionary, heading: String, footer: St
 			var value := _label(line, _signed_percent(float(entry.value)), 20, P.ELEMENT.get(entry.element, P.PAPER), "number")
 			value.custom_minimum_size.x = 110
 			value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		var unique: String = EquipmentDetails.unique_name(CompareModel.gear(item))
+		if not unique.is_empty():
+			_label(panel,unique,20,P.GOLD)
+			var hint := _label(panel,EquipmentDetails.unique_description(item,_catalog_index),19,P.PAPER)
+			hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			hint.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var footer_label := _label(panel, footer, 18, footer_color)
 	footer_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 
 func _affix_card(parent: Node, item: Dictionary, tint: Color) -> void:
 	var panel := _panel(parent, PANEL)
 	panel.get_parent().size_flags_stretch_ratio = 1.0
-	var contribution := CompareModel.affix_contributions(item)
+	var contribution := CompareModel.affix_contributions(item, _catalog_index)
 	if contribution.kind.is_empty():
 		_label(panel, "—", 20, P.MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		return

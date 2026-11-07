@@ -1,0 +1,22 @@
+{
+  "original_batch_failed": "r1 600s observation stopped Mage during database initialization;Priest actualcompleted481.504s,2matches; original r1 logs/source/rawresult retained, no completebatchTRX.",
+  "D02_used_after_original_batch": 93,
+  "remaining": 207,
+  "followup_heroes": [
+    "Mage",
+    "Guardian"
+  ],
+  "Priest_not_repeated": true,
+  "per_case_max_wall_seconds": 900,
+  "per_case_planned_match_attempts": 2,
+  "reason": "Healthy isolated database; long wall-clock setup/roundtrips. Split unfinished cases rather than re-running completed Priest; observation-window adjustment only.",
+  "functional_contracts_relaxed": false,
+  "source_or_binary_changed": false,
+  "local_reserve_GiB": 2,
+  "startup_GiB": 1,
+  "cloud_ram_MiB": 500,
+  "cloud_disk_GiB": 3,
+  "cloud_disk_percent": 5,
+  "owned_schema_left_by_kill": "Only oldMage schema, now ownership-proven cleanup verified absent; PG left running.",
+  "registered_before_followups": true
+}

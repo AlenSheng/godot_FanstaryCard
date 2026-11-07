@@ -7,6 +7,7 @@ using System.Text.Json;
 using FantasyCard.Contracts.Matchmaking;
 using FantasyCard.Contracts.Players;
 using FantasyCard.Domain.Combat;
+using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Players;
 using FantasyCard.Domain.Rooms;
 using FantasyCard.Server.Common;
@@ -350,7 +351,7 @@ public sealed class PostgresLifecycleRecoveryTests
 
     private static BattleRoom CreateRoom(Guid roomId, params Guid[] playerIds)
     {
-        var room = new BattleRoom(roomId, "test", CombatCardCatalog.CreatePrototype(), 73);
+        var room = new BattleRoom(roomId, GameConfigCatalog.Current.Version, CombatCardCatalog.Create(GameConfigCatalog.Current), 73);
         foreach (var playerId in playerIds)
             room.AddPlayer(new(playerId, HeroClass.Mage,
                 Enumerable.Range(1, 20).Select(index => $"common-{index:D2}").ToArray(), null));
@@ -392,10 +393,11 @@ public sealed class PostgresLifecycleRecoveryTests
     private static async Task InsertMatchAsync(PostgresTestSchema database, Guid matchId, Guid roomId, string status, params Guid[] playerIds)
     {
         await using var match = database.DataSource.CreateCommand(
-            "INSERT INTO matches(match_id,room_id,mode,difficulty,seed,config_version,status,created_at) VALUES($1,$2,'ChaosRealm','Standard',73,'test',$3,CURRENT_TIMESTAMP)");
+            "INSERT INTO matches(match_id,room_id,mode,difficulty,seed,config_version,status,created_at) VALUES($1,$2,'ChaosRealm','Standard',73,$4,$3,CURRENT_TIMESTAMP)");
         match.Parameters.AddWithValue(matchId);
         match.Parameters.AddWithValue(roomId);
         match.Parameters.AddWithValue(status);
+        match.Parameters.AddWithValue(GameConfigCatalog.Current.Version);
         await match.ExecuteNonQueryAsync(TestContext.Current.CancellationToken);
         foreach (var playerId in playerIds)
         {

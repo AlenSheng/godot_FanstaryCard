@@ -1,0 +1,80 @@
+{
+  "checks": 59,
+  "ok": true,
+  "suites": {
+    "test_season_activity_controller.gd": {
+      "checks": {
+        "A B A confirmation invalidated": true,
+        "actual Main activity navigation reloads authoritative event": true,
+        "actual Main navigation invalidates original confirmation": true,
+        "actual intent submits original shared budget version": true,
+        "authoritative read restores pending entitlement": true,
+        "changed budget version invalidates confirmation": true,
+        "changed class invalidates previous confirmation": true,
+        "changed reward cannot claim twice": true,
+        "claim path uses immutable original reward": true,
+        "completed history has no further request": true,
+        "current authenticated read loads its own budget": true,
+        "failed refreshed page blocks cached exchange": true,
+        "fresh bootstrap supplies current balance": true,
+        "history cursor is sent as bounded original offset": true,
+        "history page appends without changing original selection": true,
+        "mutation response cannot credit funds or budget": true,
+        "nonadvancing cursor rejects page": true,
+        "old A read cannot replace current A": true,
+        "old account reply neither credits nor clears new busy state": true
+      },
+      "ok": true
+    },
+    "test_season_activity_model.gd": {
+      "checks": {
+        "all class choices share original rule counter": true,
+        "class choice captured": true,
+        "client may not widen reward amounts": true,
+        "different period has a distinct balance key": true,
+        "earned cap cannot be widened by client": true,
+        "inconsistent shared budget rejected": true,
+        "late original event can use only its own balance": true,
+        "one potion limit shared": true,
+        "red and gold cannot be injected": true,
+        "source event and exact int64 account version captured": true,
+        "spent balance blocks potion": true,
+        "unavailable never redeemable": true,
+        "unknown class cannot submit": true,
+        "upcoming is never redeemable": true
+      },
+      "ok": true
+    },
+    "test_season_journey.gd": {
+      "checks": {
+        "Arabic current next fraction remains LTR": true,
+        "Arabic current total fraction remains LTR": true,
+        "Arabic season picker keeps complete ISO date together": true,
+        "Arabic weekly progress target fraction remains LTR": true,
+        "absent original is not current progress": true,
+        "actual Main routes both pages and starts current read": true,
+        "actual navigation A B A rejects previous identical source": true,
+        "all actions are GET and never optimistically change wallets": true,
+        "catch-up and completed tracks accepted": true,
+        "collection levels cannot masquerade as main levels": true,
+        "complete authoritative level metadata accepted": true,
+        "current response supplies level20 only": true,
+        "exact int64 version retained": true,
+        "history cursor retains original selected scope": true,
+        "history selection sends exact original season": true,
+        "inconsistent aggregate rejected": true,
+        "invalid server projection displays unavailable rather than cached XP": true,
+        "missing original never falls back to previous XP": true,
+        "old account reply cannot replace progress or clear new busy state": true,
+        "progress may not exceed original target": true,
+        "same week and kind cannot duplicate": true,
+        "superseded same-old-season read ignored": true,
+        "unavailable source retains recorded XP without deriving levels": true,
+        "unknown multiplier rejected": true,
+        "upcoming has no opened contracts": true,
+        "wrong current-level projection rejected": true
+      },
+      "ok": true
+    }
+  }
+}

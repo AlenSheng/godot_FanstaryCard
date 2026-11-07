@@ -1,0 +1,17 @@
+{
+  "container_id": "b61a0b590ffa20a52dce2d5a058b86b2e6e211297f2d7c0253be45b4c621200d",
+  "name": "fc-season-a03-storage-20261102-r60",
+  "database_container": "803968e390014540be88f60b9ac43203946d0145bf886fc61d9d9d4d04bc3b1a",
+  "source_base": "e8dfb2ca170d3a8e0331901229dddf5eaa803896",
+  "archive_sha256": "689bc6344a52227e4031ad35b0aaf3d3d5563e1c16c078efbcdb9d73c10b2b1b",
+  "image_id": "sha256:4beef5b8919dcaa2dc924233bd069257e883cc7a061e09088a97d152d6a48510",
+  "cpu": 1,
+  "memory_mib": 1200,
+  "server_command": "dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter \"FullyQualifiedName~PostgresSeason|FullyQualifiedName~PostgresEnhancementQuoteTests|FullyQualifiedName~FantasyCard.Server.Tests.Config|FullyQualifiedName~SeasonWallet|FullyQualifiedName~PostgresDifficultyUnlockTests|FullyQualifiedName~Settlement\" --logger \"trx;LogFileName=season-crafting-server.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "server_evidence_source": null,
+  "domain_command": "dotnet test tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj --filter \"FullyQualifiedName!~SeasonResourceLoopTests&FullyQualifiedName!~MonsterPoolBaselineContractTests\" --logger \"trx;LogFileName=season-crafting-domain.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "domain_evidence_source": null,
+  "production_database_used": false,
+  "available_ram_before": 2547359744,
+  "free_disk_before": 3511959552
+}

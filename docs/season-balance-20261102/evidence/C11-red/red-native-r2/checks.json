@@ -1,0 +1,23 @@
+{
+  "checks": 11,
+  "ok": true,
+  "suites": {
+    "test_season_red_reward.gd": {
+      "checks": {
+        "claim confirmation waits for authoritative item removal": true,
+        "confirm sends exact reserved id and replacement": true,
+        "old wire defaults stay absent or false": true,
+        "opening picker does not send a claim": true,
+        "other red id is rejected": true,
+        "pending red is a valid claim intent": true,
+        "pending view uses reserved item and replacement control": true,
+        "selecting a replacement requires confirmation": true,
+        "shared revision cannot confirm an unclaimed red": true,
+        "stale confirmation after authoritative removal cannot send": true,
+        "wire preserves pending evaluation and original red": true
+      },
+      "ok": true,
+      "scope": "Actual controller, replacement UI callbacks and binary codec using captured offline transport. Render and database evidence are separate."
+    }
+  }
+}

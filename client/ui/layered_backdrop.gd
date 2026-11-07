@@ -16,6 +16,7 @@ var _mid: TextureRect
 var _near: Control
 var _glow: Polygon2D
 var _mode := ""
+var _theme := ""
 var _time := 0.0
 
 func _ready() -> void:
@@ -129,6 +130,19 @@ func set_mode(mode: String) -> void:
 	_apply_parallax()
 	if is_instance_valid(_glow) and is_codex: _glow.color.a = 0.0
 	set_process(not is_codex)
+	_apply_theme()
+
+func set_season_theme(element: String) -> void:
+	if element==_theme: return
+	_theme=element;_apply_theme()
+
+func _apply_theme() -> void:
+	if _mode!="exploration" or not is_instance_valid(_far): return
+	var tint: Color={"Wood":Color("8dbb91"),"Fire":Color("d7a78c"),"Earth":Color("c3b78d"),"Metal":Color("bdc6d0"),"Water":Color("8abccc")}.get(_theme,Color.WHITE)
+	# Only the existing 2D scenery is tinted; UI fonts, portraits and stat
+	# colours remain on their established palette.
+	_far.modulate=Color(0.72,0.89,0.98,1.0)*Color.WHITE.lerp(tint,0.24)
+	_mid.modulate=Color(0.62,0.78,0.86,0.72)*Color.WHITE.lerp(tint,0.18)
 
 func _process(delta: float) -> void:
 	_time += delta

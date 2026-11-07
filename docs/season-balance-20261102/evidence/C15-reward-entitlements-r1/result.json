@@ -1,0 +1,166 @@
+{
+  "status": "durable_pending_journey_entitlements_and_frozen_packs_verified_claims_still_open",
+  "overall_completed_items": 20,
+  "C15_complete": false,
+  "formal_config": "season-v1-config-14",
+  "migration": "V050__season_journey_reward_entitlements.sql",
+  "actual_final_passed": 21,
+  "actual_final_failed": 0,
+  "actual_final_skipped": 0,
+  "initial_passed": 20,
+  "initial_failed": 1,
+  "initial_missing_archive_fixture_retained": true,
+  "initial_declared_count_20_corrected_to_actual_21": true,
+  "assertions_or_game_acceptance_relaxed": false,
+  "pending_entitlements_only": true,
+  "claims_and_asset_minting_implemented": false,
+  "cosmetic_selection_verified": false,
+  "high_level_storage_tests_use_declared_seed_aggregates_not_completed_routes": true,
+  "runs": {
+    "runtime-r106": {
+      "counts": {
+        "total": "21",
+        "executed": "21",
+        "passed": "20",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "classes": {
+        "FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests": {
+          "passed": 7,
+          "failed": 1
+        },
+        "FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests": {
+          "passed": 10,
+          "failed": 0
+        },
+        "FantasyCard.Server.Tests.Persistence.PostgresMigrationTests": {
+          "passed": 1,
+          "failed": 0
+        },
+        "FantasyCard.Server.Tests.Progression.EconomyReconciliationReportTests": {
+          "passed": 2,
+          "failed": 0
+        }
+      },
+      "public_archive_sha256": "1ad823700feecb763b59807047be02990900325206eaf11d9227602698ba7b67",
+      "source_binary_unchanged": true,
+      "oom_killed": false,
+      "minimum_ram_bytes": 2445180928,
+      "minimum_disk_bytes": 3280654336,
+      "minimum_disk_fraction": 0.05183524523048256,
+      "owned_runtime_and_private_environment_removed": true
+    },
+    "runtime-r107": {
+      "counts": {
+        "total": "21",
+        "executed": "21",
+        "passed": "21",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "classes": {
+        "FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests": {
+          "passed": 8,
+          "failed": 0
+        },
+        "FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests": {
+          "passed": 10,
+          "failed": 0
+        },
+        "FantasyCard.Server.Tests.Progression.EconomyReconciliationReportTests": {
+          "passed": 2,
+          "failed": 0
+        },
+        "FantasyCard.Server.Tests.Persistence.PostgresMigrationTests": {
+          "passed": 1,
+          "failed": 0
+        }
+      },
+      "public_archive_sha256": "05e0b5bca6c34d827bbc7d03ca82dcc8d16f2211db90674e4a739b2c810637f8",
+      "source_binary_unchanged": true,
+      "oom_killed": false,
+      "minimum_ram_bytes": 2454827008,
+      "minimum_disk_bytes": 3282505728,
+      "minimum_disk_fraction": 0.05186449773577843,
+      "owned_runtime_and_private_environment_removed": true
+    }
+  },
+  "full_binary_and_transport_originals_external": {
+    "runtime-r106": {
+      "delta.tar.gz": {
+        "bytes": 4384035,
+        "sha256": "d8bf42b3f2bcd1d85d6ecaba8be79deff8820546246c265a45e02437c15dd376",
+        "original_path": "G:\\PR13Evidence\\season-balance-20261102-r1\\runtime-r106\\delta.tar.gz"
+      },
+      "payload.tar.gz": {
+        "bytes": 9492178,
+        "sha256": "2d56f962d2bc8fbef22430526f455ce139be67d39d25a9e7c7901cca28c8343c",
+        "original_path": "G:\\PR13Evidence\\season-balance-20261102-r1\\runtime-r106\\payload.tar.gz"
+      },
+      "public-evidence.tar.gz": {
+        "bytes": 847060,
+        "sha256": "1ad823700feecb763b59807047be02990900325206eaf11d9227602698ba7b67",
+        "original_path": "G:\\PR13Evidence\\season-balance-20261102-r1\\runtime-r106\\public-evidence.tar.gz"
+      },
+      "transport-stream-file-r1.bin": {
+        "bytes": 4419716,
+        "sha256": "b287177dd84630af2eaa7f2de4f128b94e644cacd3baea780f4e76ef7aa9a24b",
+        "original_path": "G:\\PR13Evidence\\season-balance-20261102-r1\\runtime-r106\\transport-stream-file-r1.bin"
+      }
+    },
+    "runtime-r107": {
+      "delta.tar.gz": {
+        "bytes": 4042127,
+        "sha256": "a8caeee01fa3366f8766a648d5108727b51bdffba3b2a7fd36ff3764c1427af4",
+        "original_path": "G:\\PR13Evidence\\season-balance-20261102-r1\\runtime-r107\\delta.tar.gz"
+      },
+      "payload.tar.gz": {
+        "bytes": 9492886,
+        "sha256": "642de3cc175200bc098ae46f6e77ab840f26bbc868f7a45f09a059fac7865694",
+        "original_path": "G:\\PR13Evidence\\season-balance-20261102-r1\\runtime-r107\\payload.tar.gz"
+      },
+      "public-evidence.tar.gz": {
+        "bytes": 846006,
+        "sha256": "05e0b5bca6c34d827bbc7d03ca82dcc8d16f2211db90674e4a739b2c810637f8",
+        "original_path": "G:\\PR13Evidence\\season-balance-20261102-r1\\runtime-r107\\public-evidence.tar.gz"
+      },
+      "transport-stream-file-r1.bin": {
+        "bytes": 4077135,
+        "sha256": "c5e641f867472938c03611b7ca366a7f49fe2ccad4c9fc1ae8787c50b5936c5e",
+        "original_path": "G:\\PR13Evidence\\season-balance-20261102-r1\\runtime-r107\\transport-stream-file-r1.bin"
+      }
+    }
+  },
+  "driver_versions_latest_with_per_attempt_settings_preserved_in_runtime_records": true,
+  "new_full_routes": 0,
+  "new_encounters": 0,
+  "B05_total": 291,
+  "C16_total": 121,
+  "capacity100_retest": false,
+  "production_activated": false,
+  "production_restarted": false,
+  "cloud_SDK_started": false
+}

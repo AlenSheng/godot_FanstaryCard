@@ -1,0 +1,375 @@
+An issue was encountered verifying workloads. For more information, run "dotnet workload update".
+  Determining projects to restore...
+  Restored /workspace/server/tools/FantasyCard.ConfigExporter/FantasyCard.ConfigExporter.csproj (in 100 ms).
+  Restored /workspace/server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj (in 502 ms).
+  Restored /workspace/server/src/FantasyCard.Server/FantasyCard.Server.csproj (in 7 ms).
+  Restored /workspace/server/src/FantasyCard.Domain/FantasyCard.Domain.csproj (in 1 ms).
+  Restored /workspace/server/src/FantasyCard.Contracts/FantasyCard.Contracts.csproj (in 4 ms).
+  FantasyCard.Contracts -> /workspace/server/src/FantasyCard.Contracts/bin/Debug/net10.0/FantasyCard.Contracts.dll
+  FantasyCard.Domain -> /workspace/server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Server -> /workspace/server/src/FantasyCard.Server/bin/Debug/net10.0/FantasyCard.Server.dll
+  FantasyCard.ConfigExporter -> /workspace/server/tools/FantasyCard.ConfigExporter/bin/Debug/net10.0/FantasyCard.ConfigExporter.dll
+  FantasyCard.Server.Tests -> /workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll
+Test run for /workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:05.05]     FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.CurrentInventoryExcludesLegacyArchivedAndFutureEquipment [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.CurrentInventoryExcludesLegacyArchivedAndFutureEquipment [2 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.CurrentInventoryExcludesLegacyArchivedAndFutureEquipment() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonReadModelTests.cs:line 31
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.CurrentInventoryExcludesLegacyArchivedAndFutureEquipment() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonReadModelTests.cs:line 49
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:06.69]     FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.AnnouncedFirstSeasonRetainsLegacyUntilItsExactStart [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.AnnouncedFirstSeasonRetainsLegacyUntilItsExactStart [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.AnnouncedFirstSeasonRetainsLegacyUntilItsExactStart() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonReadModelTests.cs:line 107
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.AnnouncedFirstSeasonRetainsLegacyUntilItsExactStart() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonReadModelTests.cs:line 121
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:08.50]     FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.BootstrapSeparatesSeasonBalancesWithoutResettingPermanentDataOrReopeningClosedEconomy [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.BootstrapSeparatesSeasonBalancesWithoutResettingPermanentDataOrReopeningClosedEconomy [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.BootstrapSeparatesSeasonBalancesWithoutResettingPermanentDataOrReopeningClosedEconomy() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonReadModelTests.cs:line 61
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.BootstrapSeparatesSeasonBalancesWithoutResettingPermanentDataOrReopeningClosedEconomy() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonReadModelTests.cs:line 95
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:40.15]     FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(preference: "") [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(preference: "") [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(String preference) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLootPreferenceTests.cs:line 19
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(String preference) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLootPreferenceTests.cs:line 27
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:42.37]     FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(preference: "fire") [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(preference: "fire") [2 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(String preference) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLootPreferenceTests.cs:line 19
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(String preference) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLootPreferenceTests.cs:line 27
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:44.18]     FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(preference: "None") [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(preference: "None") [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(String preference) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLootPreferenceTests.cs:line 19
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(String preference) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLootPreferenceTests.cs:line 27
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:46.00]     FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.PreferenceParticipatesInDurableReplayIdentityAndCannotChangeUnderTheSameKey [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.PreferenceParticipatesInDurableReplayIdentityAndCannotChangeUnderTheSameKey [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.PreferenceParticipatesInDurableReplayIdentityAndCannotChangeUnderTheSameKey() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLootPreferenceTests.cs:line 36
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.PreferenceParticipatesInDurableReplayIdentityAndCannotChangeUnderTheSameKey() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLootPreferenceTests.cs:line 46
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:47.68]     FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LockedDifficultyAndWrongConfigurationCannotCreateMembershipOrPreparation [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LockedDifficultyAndWrongConfigurationCannotCreateMembershipOrPreparation [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LockedDifficultyAndWrongConfigurationCannotCreateMembershipOrPreparation() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonPreparationTests.cs:line 102
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LockedDifficultyAndWrongConfigurationCannotCreateMembershipOrPreparation() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonPreparationTests.cs:line 109
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:49.50]     FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.PreparationExpiresAtSeasonEndAndDoesNotFallBackToLegacyAfterClosure [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.PreparationExpiresAtSeasonEndAndDoesNotFallBackToLegacyAfterClosure [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.PreparationExpiresAtSeasonEndAndDoesNotFallBackToLegacyAfterClosure() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonPreparationTests.cs:line 118
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.PreparationExpiresAtSeasonEndAndDoesNotFallBackToLegacyAfterClosure() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonPreparationTests.cs:line 126
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:51.17]     FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 0, quality: "Purple", accepted: False) [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 0, quality: "Purple", accepted: False) [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(Int32 difficulty, String quality, Boolean accepted) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonPreparationTests.cs:line 66
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(Int32 difficulty, String quality, Boolean accepted) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonPreparationTests.cs:line 77
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:52.79]     FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 1, quality: "Orange", accepted: False) [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 1, quality: "Orange", accepted: False) [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(Int32 difficulty, String quality, Boolean accepted) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonPreparationTests.cs:line 66
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(Int32 difficulty, String quality, Boolean accepted) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonPreparationTests.cs:line 77
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:54.48]     FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 2, quality: "Orange", accepted: True) [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 2, quality: "Orange", accepted: True) [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(Int32 difficulty, String quality, Boolean accepted) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonPreparationTests.cs:line 66
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(Int32 difficulty, String quality, Boolean accepted) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonPreparationTests.cs:line 77
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:56.19]     FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.SnapshotPinsContextAndProjectsLevelsWithoutChangingPermanentProgression [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.SnapshotPinsContextAndProjectsLevelsWithoutChangingPermanentProgression [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.SnapshotPinsContextAndProjectsLevelsWithoutChangingPermanentProgression() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonPreparationTests.cs:line 27
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.SnapshotPinsContextAndProjectsLevelsWithoutChangingPermanentProgression() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonPreparationTests.cs:line 53
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:57.88]     FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LegacyOrMismatchedStatsEquipmentCannotEnterSeasonPreparation(season: "current", stats: "wrong-stats") [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LegacyOrMismatchedStatsEquipmentCannotEnterSeasonPreparation(season: "current", stats: "wrong-stats") [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LegacyOrMismatchedStatsEquipmentCannotEnterSeasonPreparation(String season, String stats) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonPreparationTests.cs:line 88
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LegacyOrMismatchedStatsEquipmentCannotEnterSeasonPreparation(String season, String stats) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonPreparationTests.cs:line 93
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:59.59]     FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LegacyOrMismatchedStatsEquipmentCannotEnterSeasonPreparation(season: null, stats: null) [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LegacyOrMismatchedStatsEquipmentCannotEnterSeasonPreparation(season: null, stats: null) [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LegacyOrMismatchedStatsEquipmentCannotEnterSeasonPreparation(String season, String stats) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonPreparationTests.cs:line 88
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LegacyOrMismatchedStatsEquipmentCannotEnterSeasonPreparation(String season, String stats) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonPreparationTests.cs:line 93
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:03.66]     FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ConcurrentWorkersCommitEachOriginalItemExactlyOnce [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ConcurrentWorkersCommitEachOriginalItemExactlyOnce [2 s]
+  Error Message:
+   Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Seasons.SeasonRepository.AdvanceArchivePageAsync(Guid playerId, String seasonId, Int32 pageSize, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs:line 82
+   at FantasyCard.Server.Seasons.SeasonRepository.AdvanceArchivePageAsync(Guid playerId, String seasonId, Int32 pageSize, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs:line 83
+   at FantasyCard.Server.Seasons.SeasonRepository.AdvanceArchivePageAsync(Guid playerId, String seasonId, Int32 pageSize, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs:line 143
+   at FantasyCard.Server.Seasons.SeasonRepository.AdvanceArchivePageAsync(Guid playerId, String seasonId, Int32 pageSize, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs:line 143
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ConcurrentWorkersCommitEachOriginalItemExactlyOnce() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonArchiveTests.cs:line 50
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ConcurrentWorkersCommitEachOriginalItemExactlyOnce() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonArchiveTests.cs:line 54
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:05.38]     FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.BoundedPagesResumeWithOriginalLoadoutAndNeverMoveNewSeasonOrPermanentAssets [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.BoundedPagesResumeWithOriginalLoadoutAndNeverMoveNewSeasonOrPermanentAssets [1 s]
+  Error Message:
+   Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.CraftingTestInputs.SqlAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/CraftingTestInputs.cs:line 56
+   at FantasyCard.Server.Tests.Persistence.CraftingTestInputs.SqlAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/CraftingTestInputs.cs:line 56
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.BoundedPagesResumeWithOriginalLoadoutAndNeverMoveNewSeasonOrPermanentAssets() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonArchiveTests.cs:line 22
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.BoundedPagesResumeWithOriginalLoadoutAndNeverMoveNewSeasonOrPermanentAssets() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonArchiveTests.cs:line 42
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:07.25]     FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ArchivedWalletStillAcceptsOnlyOriginalLateCreditAndNeverFundsTheNextSeason [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ArchivedWalletStillAcceptsOnlyOriginalLateCreditAndNeverFundsTheNextSeason [1 s]
+  Error Message:
+   Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Seasons.SeasonRepository.AdvanceArchivePageAsync(Guid playerId, String seasonId, Int32 pageSize, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs:line 82
+   at FantasyCard.Server.Seasons.SeasonRepository.AdvanceArchivePageAsync(Guid playerId, String seasonId, Int32 pageSize, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs:line 83
+   at FantasyCard.Server.Seasons.SeasonRepository.AdvanceArchivePageAsync(Guid playerId, String seasonId, Int32 pageSize, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs:line 143
+   at FantasyCard.Server.Seasons.SeasonRepository.AdvanceArchivePageAsync(Guid playerId, String seasonId, Int32 pageSize, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs:line 143
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ArchivedWalletStillAcceptsOnlyOriginalLateCreditAndNeverFundsTheNextSeason() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonArchiveTests.cs:line 123
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ArchivedWalletStillAcceptsOnlyOriginalLateCreditAndNeverFundsTheNextSeason() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonArchiveTests.cs:line 129
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:08.99]     FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.UnsettledOldMatchRemainsWaitingAndItsOriginalEquipmentIsNotTakenFromTheRoom [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.UnsettledOldMatchRemainsWaitingAndItsOriginalEquipmentIsNotTakenFromTheRoom [1 s]
+  Error Message:
+   Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.CraftingTestInputs.SqlAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/CraftingTestInputs.cs:line 56
+   at FantasyCard.Server.Tests.Persistence.CraftingTestInputs.SqlAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/CraftingTestInputs.cs:line 56
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.UnsettledOldMatchRemainsWaitingAndItsOriginalEquipmentIsNotTakenFromTheRoom() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonArchiveTests.cs:line 85
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.UnsettledOldMatchRemainsWaitingAndItsOriginalEquipmentIsNotTakenFromTheRoom() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonArchiveTests.cs:line 99
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:10.78]     FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.MidPageDatabaseFaultRollsBackItemsAndCursorThenRecreatedWorkerContinuesTheSameJob [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.MidPageDatabaseFaultRollsBackItemsAndCursorThenRecreatedWorkerContinuesTheSameJob [1 s]
+  Error Message:
+   Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Seasons.SeasonRepository.AdvanceArchivePageAsync(Guid playerId, String seasonId, Int32 pageSize, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs:line 82
+   at FantasyCard.Server.Seasons.SeasonRepository.AdvanceArchivePageAsync(Guid playerId, String seasonId, Int32 pageSize, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs:line 83
+   at FantasyCard.Server.Seasons.SeasonRepository.AdvanceArchivePageAsync(Guid playerId, String seasonId, Int32 pageSize, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs:line 143
+   at FantasyCard.Server.Seasons.SeasonRepository.AdvanceArchivePageAsync(Guid playerId, String seasonId, Int32 pageSize, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs:line 143
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.MidPageDatabaseFaultRollsBackItemsAndCursorThenRecreatedWorkerContinuesTheSameJob() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonArchiveTests.cs:line 62
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.MidPageDatabaseFaultRollsBackItemsAndCursorThenRecreatedWorkerContinuesTheSameJob() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonArchiveTests.cs:line 77
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:12.75]     FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.FullWarehouseExpiryRetainsTheOriginalHeldItemAndArchiveNeedsNoFreeActiveSlot [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.FullWarehouseExpiryRetainsTheOriginalHeldItemAndArchiveNeedsNoFreeActiveSlot [1 s]
+  Error Message:
+   Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Seasons.SeasonRepository.AdvanceArchivePageAsync(Guid playerId, String seasonId, Int32 pageSize, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs:line 82
+   at FantasyCard.Server.Seasons.SeasonRepository.AdvanceArchivePageAsync(Guid playerId, String seasonId, Int32 pageSize, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs:line 83
+   at FantasyCard.Server.Seasons.SeasonRepository.AdvanceArchivePageAsync(Guid playerId, String seasonId, Int32 pageSize, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs:line 143
+   at FantasyCard.Server.Seasons.SeasonRepository.AdvanceArchivePageAsync(Guid playerId, String seasonId, Int32 pageSize, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs:line 143
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.FullWarehouseExpiryRetainsTheOriginalHeldItemAndArchiveNeedsNoFreeActiveSlot() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonArchiveTests.cs:line 111
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.FullWarehouseExpiryRetainsTheOriginalHeldItemAndArchiveNeedsNoFreeActiveSlot() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonArchiveTests.cs:line 116
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:14.46]     FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ActiveAndUnknownSeasonsCannotCreateArchiveJobsAndScanBoundsRemainExplicit [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ActiveAndUnknownSeasonsCannotCreateArchiveJobsAndScanBoundsRemainExplicit [1 s]
+  Error Message:
+   Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Seasons.SeasonRepository.AdvanceArchivePageAsync(Guid playerId, String seasonId, Int32 pageSize, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs:line 82
+   at FantasyCard.Server.Seasons.SeasonRepository.AdvanceArchivePageAsync(Guid playerId, String seasonId, Int32 pageSize, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs:line 83
+   at FantasyCard.Server.Seasons.SeasonRepository.AdvanceArchivePageAsync(Guid playerId, String seasonId, Int32 pageSize, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs:line 143
+   at FantasyCard.Server.Seasons.SeasonRepository.AdvanceArchivePageAsync(Guid playerId, String seasonId, Int32 pageSize, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs:line 143
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ActiveAndUnknownSeasonsCannotCreateArchiveJobsAndScanBoundsRemainExplicit() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonArchiveTests.cs:line 145
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ActiveAndUnknownSeasonsCannotCreateArchiveJobsAndScanBoundsRemainExplicit() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonArchiveTests.cs:line 146
+--- End of stack trace from previous location ---
+[xUnit.net 00:03:15.48]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AStartingMatchAtSeasonEndIsAbortedWithoutCreatingARoomOrConsumingAssets [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AStartingMatchAtSeasonEndIsAbortedWithoutCreatingARoomOrConsumingAssets [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AStartingMatchAtSeasonEndIsAbortedWithoutCreatingARoomOrConsumingAssets() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 162
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AStartingMatchAtSeasonEndIsAbortedWithoutCreatingARoomOrConsumingAssets() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 182
+--- End of stack trace from previous location ---
+[xUnit.net 00:03:17.07]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: "context") [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: "context") [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(String corruption) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 217
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(String corruption) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 234
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: "projection") [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(String corruption) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 217
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(String corruption) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 234
+--- End of stack trace from previous location ---
+[xUnit.net 00:03:18.58]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: "projection") [FAIL]
+[xUnit.net 00:03:20.16]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnAdmittedLaunchingMatchRecoversAfterSeasonEndWithNoAdditionalAssetSpend [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnAdmittedLaunchingMatchRecoversAfterSeasonEndWithNoAdditionalAssetSpend [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnAdmittedLaunchingMatchRecoversAfterSeasonEndWithNoAdditionalAssetSpend() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 191
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnAdmittedLaunchingMatchRecoversAfterSeasonEndWithNoAdditionalAssetSpend() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 206
+--- End of stack trace from previous location ---
+[xUnit.net 00:03:21.76]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.InterleavedDifficultiesNeverShareAMatchAndLaunchReplayPreservesThePinnedContext [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.InterleavedDifficultiesNeverShareAMatchAndLaunchReplayPreservesThePinnedContext [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.InterleavedDifficultiesNeverShareAMatchAndLaunchReplayPreservesThePinnedContext() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 29
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.InterleavedDifficultiesNeverShareAMatchAndLaunchReplayPreservesThePinnedContext() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 64
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AReservationWaitingForAPlayerLockCannotSpendAssetsAfterSeasonEnd [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AReservationWaitingForAPlayerLockCannotSpendAssetsAfterSeasonEnd() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 243
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AReservationWaitingForAPlayerLockCannotSpendAssetsAfterSeasonEnd() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 277
+--- End of stack trace from previous location ---
+[xUnit.net 00:03:23.28]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AReservationWaitingForAPlayerLockCannotSpendAssetsAfterSeasonEnd [FAIL]
+[xUnit.net 00:03:24.87]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.FirstSeasonStartInvalidatesBothLegacyQueueAndUnqueuedLegacyPreparation [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.FirstSeasonStartInvalidatesBothLegacyQueueAndUnqueuedLegacyPreparation [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.FirstSeasonStartInvalidatesBothLegacyQueueAndUnqueuedLegacyPreparation() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 141
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.FirstSeasonStartInvalidatesBothLegacyQueueAndUnqueuedLegacyPreparation() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 153
+--- End of stack trace from previous location ---
+[xUnit.net 00:03:26.49]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.QueuedSeasonEndCancelsTheTicketAndReleasesEquipmentWithoutSpendingPotions [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.QueuedSeasonEndCancelsTheTicketAndReleasesEquipmentWithoutSpendingPotions [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.QueuedSeasonEndCancelsTheTicketAndReleasesEquipmentWithoutSpendingPotions() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 122
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.QueuedSeasonEndCancelsTheTicketAndReleasesEquipmentWithoutSpendingPotions() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 132
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnOlderIncompleteGroupDoesNotBlockAnotherFullDifficultyGroup [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnOlderIncompleteGroupDoesNotBlockAnotherFullDifficultyGroup() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 73
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnOlderIncompleteGroupDoesNotBlockAnotherFullDifficultyGroup() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 89
+--- End of stack trace from previous location ---
+[xUnit.net 00:03:28.09]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnOlderIncompleteGroupDoesNotBlockAnotherFullDifficultyGroup [FAIL]
+[xUnit.net 00:03:29.59]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.ConcurrentMatchersNeverAssignATicketTwiceOrMixDifficulties [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.ConcurrentMatchersNeverAssignATicketTwiceOrMixDifficulties [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Server/Seasons/SeasonRepository.cs:line 33
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.ConcurrentMatchersNeverAssignATicketTwiceOrMixDifficulties() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 98
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.ConcurrentMatchersNeverAssignATicketTwiceOrMixDifficulties() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 113
+--- End of stack trace from previous location ---
+Results File: /workspace/results/season-archive-server.trx
+
+Failed!  - Failed:    32, Passed:    73, Skipped:     0, Total:   105, Duration: 3 m 26 s - FantasyCard.Server.Tests.dll (net10.0)

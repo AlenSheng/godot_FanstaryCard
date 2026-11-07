@@ -1,4 +1,5 @@
 using FantasyCard.Domain.Combat;
+using FantasyCard.Domain.Configuration;
 
 namespace FantasyCard.Domain.Rooms;
 
@@ -77,7 +78,7 @@ public sealed class ChaosMapState
 
 public static class ChaosMapGenerator
 {
-    public static ChaosMapState Generate(int seed, int playerCount)
+    public static ChaosMapState Generate(int seed, int playerCount,SeasonThemeConfig? theme=null)
     {
         if (playerCount is < 1 or > 4) throw new ArgumentOutOfRangeException(nameof(playerCount));
         var random = new Random(seed);
@@ -97,7 +98,7 @@ public static class ChaosMapGenerator
         var spawnPositions = PickSpawns(random, positions.Where(p => layers[p] == ChaosMapLayer.Outer).ToArray(), playerCount);
         var cells = positions.Select(position => new ChaosMapCell(
             position, layers[position], position == boss, springs.Contains(position), evacuations.Contains(position),
-            position == boss ? "BOSS" : GroupFor(random, layers[position], position, spawnPositions.Contains(position)))).ToArray();
+            position == boss ? "BOSS" : GroupFor(random, layers[position], position, spawnPositions.Contains(position),theme))).ToArray();
         // Keep existing map rolls stable while pinning each treasure's position and element once.
         var treasureRandom = new Random(unchecked(seed ^ 0x54524541));
         var treasureCount = RollTreasureCount(treasureRandom.Next(100));
@@ -139,12 +140,20 @@ public static class ChaosMapGenerator
 
     private static int WeightedCount(Random random, int first, int second, int firstWeight) => random.Next(100) < firstWeight ? first : second;
 
-    private static string GroupFor(Random random, ChaosMapLayer layer, MapPosition position, bool isSpawn) => layer switch
+    private static string GroupFor(Random random,ChaosMapLayer layer,MapPosition position,bool isSpawn,SeasonThemeConfig? theme)
     {
-        ChaosMapLayer.Outer => $"O{random.Next(1, isSpawn ? 6 : 9)}",
-        ChaosMapLayer.Middle when position.Row is 1 or 4 && position.Column is 1 or 4 => $"M{random.Next(1, 6)}",
-        _ => $"E{random.Next(1, 7)}"
-    };
+        if(theme is not null)
+        {
+            var tier=layer==ChaosMapLayer.Outer?"outer":layer==ChaosMapLayer.Middle&&position.Row is 1 or 4&&position.Column is 1 or 4?"middle":"elite";
+            return theme.Roll(tier,isSpawn,random);
+        }
+        return layer switch
+        {
+            ChaosMapLayer.Outer=>$"O{random.Next(1,isSpawn?6:9)}",
+            ChaosMapLayer.Middle when position.Row is 1 or 4&&position.Column is 1 or 4=>$"M{random.Next(1,6)}",
+            _=>$"E{random.Next(1,7)}"
+        };
+    }
 
     private static void AddRandom(Random random, HashSet<MapPosition> destination, IReadOnlyList<MapPosition> source, int count)
     {

@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using FantasyCard.Contracts.Realtime;
 using FantasyCard.Domain.Combat;
+using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Players;
 using FantasyCard.Domain.Rooms;
 using FantasyCard.Server.Common;
@@ -28,7 +29,7 @@ public sealed class PostgresTerminalContextTests
         var oldRoom = CreateRoom(player.UserId);
         var snapshot = oldRoom.Capture();
         snapshot = snapshot with { Players = snapshot.Players.Select(value => value with { Phase = phase, Pve = null }).ToArray() };
-        await Sql(db, "INSERT INTO matches(match_id,room_id,mode,difficulty,seed,config_version,status,created_at) VALUES($1,$2,'ChaosRealm','Standard',17,'test','Running',now())", match, oldRoom.RoomId);
+        await Sql(db, "INSERT INTO matches(match_id,room_id,mode,difficulty,seed,config_version,status,created_at) VALUES($1,$2,'ChaosRealm','Standard',17,$3,'Running',now())", match, oldRoom.RoomId, GameConfigCatalog.Current.Version);
         await Sql(db, "INSERT INTO match_players(match_id,player_id,is_bot,state) VALUES($1,$2,false,'Settled')", match, player.UserId);
         using var metrics = new ServerMetrics();
         var snapshots = new RoomSnapshotRepository(db.DataSource, TimeProvider.System, metrics);
@@ -69,7 +70,7 @@ public sealed class PostgresTerminalContextTests
         var room = CreateRoom(owner.UserId);
         using var metrics = new ServerMetrics();
         var snapshots = new RoomSnapshotRepository(db.DataSource, TimeProvider.System, metrics);
-        await Sql(db, "INSERT INTO matches(match_id,room_id,mode,difficulty,seed,config_version,status,created_at) VALUES($1,$2,'ChaosRealm','Standard',17,'test','Running',now())", match, room.RoomId);
+        await Sql(db, "INSERT INTO matches(match_id,room_id,mode,difficulty,seed,config_version,status,created_at) VALUES($1,$2,'ChaosRealm','Standard',17,$3,'Running',now())", match, room.RoomId, GameConfigCatalog.Current.Version);
         await Sql(db, "INSERT INTO match_players(match_id,player_id,is_bot,state) VALUES($1,$2,false,'Settled')", match, owner.UserId);
         await snapshots.SaveIfDueAsync(room.Capture(), ct);
         Assert.Null(await snapshots.GetOwnedTerminalAsync(owner.UserId, room.RoomId, match, ct));
@@ -87,7 +88,7 @@ public sealed class PostgresTerminalContextTests
 
     private static BattleRoom CreateRoom(Guid playerId)
     {
-        var room = new BattleRoom(Guid.NewGuid(), "test", CombatCardCatalog.CreatePrototype(), 17);
+        var room = new BattleRoom(Guid.NewGuid(), GameConfigCatalog.Current.Version, CombatCardCatalog.Create(GameConfigCatalog.Current), 17);
         room.AddPlayer(new(playerId, HeroClass.Mage, Enumerable.Range(1, 20).Select(i => $"common-{i:D2}").ToArray(), null));
         room.InitializeMap(ChaosMapGenerator.Generate(17, 1));
         return room;

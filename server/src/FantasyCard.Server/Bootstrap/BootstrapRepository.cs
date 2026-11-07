@@ -2,12 +2,16 @@ using FantasyCard.Contracts.Bootstrap;
 using FantasyCard.Contracts.Matchmaking;
 using FantasyCard.Contracts.Players;
 using FantasyCard.Contracts.Progression;
+using FantasyCard.Contracts.Seasons;
 using FantasyCard.Server.Mail;
 using FantasyCard.Server.Matchmaking;
 using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Players;
+using FantasyCard.Domain.Seasons;
 using FantasyCard.Server.Players;
 using FantasyCard.Server.Progression;
+using FantasyCard.Server.Seasons;
+using FantasyCard.Server.Settlement;
 using Npgsql;
 using System.Text.Json;
 
@@ -27,39 +31,78 @@ public sealed class BootstrapRepository(
         PlayerProfile player,
         CancellationToken cancellationToken)
     {
+        var snapshotTime = timeProvider.GetUtcNow();
+        var seasons = new SeasonRepository(dataSource, timeProvider);
+        var schedule = await seasons.GetScheduleAtAsync(snapshotTime, cancellationToken);
+        var seasonContext = schedule.Current?.ContextFor(0);
+        var seasonWalletTask = seasonContext is null ? Task.FromResult<SeasonWalletSnapshot?>(null)
+            : seasons.GetWalletAsync(player.UserId, seasonContext, cancellationToken);
+        var seasonWalletsTask = seasons.GetWalletsAsync(player.UserId, snapshotTime, cancellationToken);
         var decksTask = progressionRepository.GetDecksAsync(player.UserId, cancellationToken);
         var cardsTask = progressionRepository.GetCardsAsync(player.UserId, cancellationToken);
         var coreTask = GetCoreStateAsync(player.UserId, cancellationToken);
-        var inventoryFullTask = progressionRepository.GetInventoryAsync(player.UserId, cancellationToken);
-        var shopTask = economyRepository.GetShopAsync(player.UserId, cancellationToken);
-        var marketTask = economyRepository.GetMarketAsync(cancellationToken);
+        var inventoryFullTask = progressionRepository.GetInventoryForScheduleAsync(player.UserId, schedule, cancellationToken);
+        var shopTask = economyRepository.GetShopForScheduleAsync(player.UserId,schedule,cancellationToken);
+        var marketTask = economyRepository.GetMarketForScheduleAsync(schedule,cancellationToken);
         var mailTask = mailRepository.GetAsync(player.UserId, cancellationToken);
         var activePreparationTask = preparationRepository.GetActiveAsync(player.UserId, cancellationToken);
 
         await Task.WhenAll(decksTask, cardsTask, coreTask, inventoryFullTask, shopTask, marketTask, mailTask,
-            activePreparationTask);
+            activePreparationTask, seasonWalletTask, seasonWalletsTask);
         var core = await coreTask;
+        var seasonWallet = await seasonWalletTask;
+        var wallet = schedule.LegacyAllowed ? core.Wallet
+            : core.Wallet with { Gold = seasonWallet?.Gold ?? 0 };
+        var materials = schedule.LegacyAllowed ? core.Materials
+            : core.Materials with { EquipmentFragments = seasonWallet?.EquipmentFragments ?? 0 };
+        var inventory = await inventoryFullTask;
+        var visibleEquipment = inventory.Equipments.Select(item => item.InstanceId).ToHashSet();
+        var loadouts = schedule.LegacyAllowed ? core.Loadouts
+            : core.Loadouts.Select(loadout => loadout with
+            {
+                EquipmentIds = loadout.EquipmentIds.Select(id => id.HasValue && visibleEquipment.Contains(id.Value) ? id : null).ToArray(),
+                SeasonId = schedule.Current?.SeasonId
+            }).ToArray();
+        SeasonSummaryResponse? season = null;
+        if (schedule.Stage != SeasonLifecycleStage.Legacy)
+        {
+            var current = schedule.Current;
+            var unlocked = current is null || seasonWallet is null ? 0
+                : await seasons.GetUnlockedDifficultyAsync(player.UserId, current.SeasonId, cancellationToken);
+            season = new(schedule.Stage.ToString(), current?.SeasonId, current?.RulesetId, current?.ConfigVersion,
+                current?.StatsVersion, current?.StartsAtUtc, current?.EndsAtUtc, current?.HighestOpenDifficulty ?? 0,
+                Math.Min(unlocked, current?.HighestOpenDifficulty ?? 0), schedule.LegacyAllowed ? 5 : 0,
+                core.Materials.EquipmentFragments, schedule.Next?.SeasonId, schedule.Next?.StartsAtUtc,
+                seasonWallet is null ? null : WalletResponseFor(seasonWallet, true),
+                (await seasonWalletsTask).Select(entry => WalletResponseFor(entry.Wallet, entry.CanFundWeapon)).ToArray(),
+                seasonWallet is not null, seasonContext?.DifficultyId ?? "");
+        }
         return new BootstrapResponse(
-            timeProvider.GetUtcNow(),
+            snapshotTime,
             CurrentConfigVersion,
             player.ToResponse(),
-            core.Wallet,
-            core.Materials,
+            wallet,
+            materials,
             core.Weapons,
-            core.Loadouts,
+            loadouts,
             await decksTask,
             await cardsTask,
-            (await inventoryFullTask).Summary,
+            inventory.Summary,
             core.Match,
             core.Settlement)
         {
-            Inventory = await inventoryFullTask,
+            Inventory = inventory,
             Shop = await shopTask,
             Market = await marketTask,
             Mail = await mailTask,
-            ActivePreparation = await activePreparationTask
+            ActivePreparation = await activePreparationTask,
+            Season = season
         };
     }
+
+    private static SeasonWalletResponse WalletResponseFor(SeasonWalletSnapshot wallet, bool canFundWeapon) =>
+        new(wallet.SeasonId, wallet.Gold, wallet.EquipmentFragments, wallet.ChallengeMarks,
+            wallet.Version, wallet.ArchivedAt, canFundWeapon,wallet.BlueprintMarks,wallet.OrangeBlueprintMarks);
 
     public async Task<BootstrapSettlementProjection> GetSettlementAsync(
         Guid playerId,
@@ -68,7 +111,8 @@ public sealed class BootstrapRepository(
     {
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await using var command = new NpgsqlCommand("""
-            SELECT s.settlement_id,s.match_id,s.player_id,s.result,s.details_json::text,s.created_at
+            SELECT s.settlement_id,s.match_id,s.player_id,s.result,s.details_json::text,s.created_at,
+                   s.config_version,s.season_id,s.difficulty_id,s.ruleset_id,s.stats_version
             FROM match_settlements s
             WHERE s.player_id=$1 AND s.match_id=$2
               AND s.acknowledged_at IS NULL
@@ -84,9 +128,7 @@ public sealed class BootstrapRepository(
         SettlementResponse? settlement = null;
         if (await reader.ReadAsync(cancellationToken))
         {
-            using var details = JsonDocument.Parse(reader.GetString(4));
-            settlement = new SettlementResponse(reader.GetGuid(0), reader.GetGuid(1), reader.GetGuid(2),
-                reader.GetString(3), details.RootElement.Clone(), reader.GetFieldValue<DateTimeOffset>(5));
+            settlement = SettlementRepository.ReadResponse(reader);
         }
         return new BootstrapSettlementProjection(timeProvider.GetUtcNow(), CurrentConfigVersion, settlement);
     }
@@ -120,7 +162,8 @@ public sealed class BootstrapRepository(
             LIMIT 1
             """,
             """
-            SELECT s.settlement_id,s.match_id,s.player_id,s.result,s.details_json::text,s.created_at
+            SELECT s.settlement_id,s.match_id,s.player_id,s.result,s.details_json::text,s.created_at,
+                   s.config_version,s.season_id,s.difficulty_id,s.ruleset_id,s.stats_version
             FROM match_settlements s
             WHERE s.player_id=$1
               AND s.acknowledged_at IS NULL
@@ -165,9 +208,7 @@ public sealed class BootstrapRepository(
         SettlementResponse? settlement = null;
         if (await reader.ReadAsync(cancellationToken))
         {
-            using var details = JsonDocument.Parse(reader.GetString(4));
-            settlement = new SettlementResponse(reader.GetGuid(0), reader.GetGuid(1), reader.GetGuid(2),
-                reader.GetString(3), details.RootElement.Clone(), reader.GetFieldValue<DateTimeOffset>(5));
+            settlement = SettlementRepository.ReadResponse(reader);
         }
         return new CoreState(wallet, materials, weapons, loadouts, match, settlement);
     }

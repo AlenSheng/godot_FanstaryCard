@@ -1,0 +1,16 @@
+{
+  "container_id": "62116966ebb102bee309d058ee7d51990f2ba7d4dadafb76b558b88d296ac17b",
+  "name": "fc-season-a03-storage-20261102-r17",
+  "database_container": "803968e390014540be88f60b9ac43203946d0145bf886fc61d9d9d4d04bc3b1a",
+  "source_base": "cf24099122d382438655d2b03e53c75646b538b0",
+  "archive_sha256": "3155e60b5d9f876f5ac110e04397a904933fbe15303baf64d882e0e360dc596f",
+  "image_id": "sha256:4beef5b8919dcaa2dc924233bd069257e883cc7a061e09088a97d152d6a48510",
+  "cpu": 1,
+  "memory_mib": 1200,
+  "server_command": "dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter \"FullyQualifiedName~PostgresSeason|FullyQualifiedName~SeasonWallet|FullyQualifiedName~BootstrapProjectionEncodingTests|FullyQualifiedName~ReadyLobbyRulesTests|FullyQualifiedName~PostgresLifecycleRecoveryTests|FullyQualifiedName~Four_humans_enqueue_ready_and_launch_one_persisted_room|FullyQualifiedName~PostgresTerminalContextTests|FullyQualifiedName~PostgresCombatPreviewTests|FullyQualifiedName~SeasonRoomProtocolTests|FullyQualifiedName~GameplayProtocolTests|FullyQualifiedName~RoomCheckpointPolicyTests|FullyQualifiedName~SettlementEncodingTests|FullyQualifiedName~Extraction_settlement_commits_all_assets_once_and_releases_notification|FullyQualifiedName~Settlement_asset_commit_rolls_back_the_whole_batch_and_withholds_notification|FullyQualifiedName~Death_settlement_moves_worn_equipment_to_relic_and_clears_loadout|FullyQualifiedName~RoomActor_extraction_commits_settlement_and_removes_terminal_room|FullyQualifiedName~RoomActor_death_preserves_safe_assets_and_moves_losses_to_relic|FullyQualifiedName~Settlement_worker_restart_recovers_pending_holds_exactly_once\" --logger \"trx;LogFileName=settlement.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "domain_command": null,
+  "domain_evidence_source": "storage-r16",
+  "production_database_used": false,
+  "available_ram_before": 2562662400,
+  "free_disk_before": 3565531136
+}

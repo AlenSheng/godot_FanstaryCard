@@ -1,0 +1,67 @@
+{
+  "status": "partial_C01_client_archive_transport_cache_and_numeric_views_passed_full_season_content_pending",
+  "domain_tests_passed": 477,
+  "server_tests_passed": 98,
+  "native_boolean_checks_passed": 209,
+  "standalone_native_http_checks_passed": 27,
+  "ui_scripts_load_checked": 5,
+  "locale_packs_audited": 11,
+  "public_archive_sha256": "4b85df8b3508964076b4f001bf63107d499ea49960843b23eedfb4fd877c99a8",
+  "verified": [
+    "Real HTTP authentication, exact current/archived published bytes, typed 401/404 and JSON rejection",
+    "CSharp-generated HTTP envelopes decoded by actual Godot; complete config hash/type/scope validation",
+    "Per-store per-origin cache, auth reset and delayed origin/generation rejection",
+    "Bootstrap fetches original package before publishing the unfinished route",
+    "Card/growth/equipment indices and local damage previews consume selected version; lobby remains built-in",
+    "Card face growth, equipment comparisons, pending settlement selection and monster-card descriptions accept selected indices",
+    "Localized archive failure text and eleven-language numeric text checks",
+    "Season bounded single/multi-core draw estimates match their separate policy; legacy estimate preserved"
+  ],
+  "limits": [
+    "No rendered frames or resolution matrix; E02 remains pending",
+    "Final seasonal statistics/difficulty/economy consumers and remaining configuration fields are incomplete",
+    "Bot version projection, full archived admitted-launch and production archive deployment remain pending",
+    "C01 remains in_progress and the running production bundle is unchanged"
+  ],
+  "history": [
+    {
+      "stage": "config-client-native-r1",
+      "status": "90s timeout: standalone SceneTree fixture called as run_test; engine log recovered, captured stdout unavailable"
+    },
+    {
+      "stage": "config-client-native-r2",
+      "status": "same fixture entrypoint timeout; full native output retained"
+    },
+    {
+      "stage": "config-client-native-r3",
+      "passed_checks": 181
+    },
+    {
+      "stage": "config-client-native-r4",
+      "passed_checks": 207
+    },
+    {
+      "stage": "config-client-native-r5",
+      "passed_checks": 209
+    },
+    {
+      "stage": "config-http-native-r1",
+      "passed_checks": 27,
+      "standalone_entrypoint": true
+    },
+    {
+      "stage": "config-ui-check-r1",
+      "status": "check-only lacked autoload Game; fixture invocation issue"
+    },
+    {
+      "stage": "config-ui-check-r2",
+      "scripts_passed": 5,
+      "actual_project_autoload_context": true
+    }
+  ],
+  "production_deployed": false,
+  "active_runtime_bundle_replaced": false,
+  "capacity_retest_performed": false,
+  "B05_matches_consumed": 0,
+  "B05_remaining": 9
+}

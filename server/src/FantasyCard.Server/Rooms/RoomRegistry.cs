@@ -14,7 +14,7 @@ public sealed partial class RoomRegistry(
     ServerMetrics? metrics = null,
     ILogger<RoomRegistry>? logger = null,
     RealtimeEventStore? eventStore = null,
-    ConnectionRegistry? connections = null) : IAsyncDisposable
+    ConnectionRegistry? connections = null,SeasonRedDropCoordinator? redDrops=null) : IAsyncDisposable
 {
     private readonly object _gate = new();
     private readonly Dictionary<Guid, RoomActor> _rooms = [];
@@ -105,7 +105,8 @@ public sealed partial class RoomRegistry(
                     }
                 });
             var actor = new RoomActor(room, timeProvider, startTicker, observer, metrics,
-                transitionPublisher is null ? null : transitionPublisher.ObserveCombatAsync);
+                transitionPublisher is null ? null : transitionPublisher.ObserveCombatAsync,
+                redDrops is not null && matchId is { } redMatch && room.RedPolicy is not null ? value=>redDrops.ProcessAsync(redMatch,value):null);
             _rooms.Add(room.RoomId, actor);
             _roomMatches.Add(room.RoomId, matchId);
             if (lifecycleTracker is not null)

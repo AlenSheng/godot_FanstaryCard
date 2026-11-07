@@ -1,4 +1,6 @@
 using FantasyCard.Contracts.Players;
+using FantasyCard.Contracts.Seasons;
+using System.Text.Json.Serialization;
 
 namespace FantasyCard.Contracts.Matchmaking;
 
@@ -16,7 +18,10 @@ public sealed record CreatePreparationRequest(
     BackpackTierDto BackpackTier,
     IReadOnlyList<int>? SafeSlotIndexes,
     int PotionCount,
-    string? Difficulty);
+    string? Difficulty,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? SeasonId = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] bool UseBorrowedDeck = false,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? LootPreferenceElement = null);
 
 public sealed record PreparationSnapshotResponse(
     HeroClassDto HeroClass,
@@ -31,7 +36,12 @@ public sealed record PreparationSnapshotResponse(
     string Difficulty,
     string ConfigVersion,
     IReadOnlyList<PreparationEquipmentSnapshotResponse>? EquipmentSnapshots = null,
-    IReadOnlyList<int>? CardLevels = null);
+    IReadOnlyList<int>? CardLevels = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] SeasonContextResponse? Season = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] IReadOnlyList<int>? ActualCardLevels = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] int? ActualClassWeaponLevel = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? BorrowedTemplateId = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? LootPreferenceElement = null);
 
 public sealed record PreparationEquipmentSnapshotResponse(
     Guid InstanceId,
@@ -40,7 +50,10 @@ public sealed record PreparationEquipmentSnapshotResponse(
     int Level,
     string Element,
     string? EffectAffix,
-    string? SecondaryTrait);
+    string? SecondaryTrait,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? UniqueAffix = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? UniqueElement = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? StatsVersion = null);
 
 public sealed record PreparationResponse(
     Guid PreparationId,

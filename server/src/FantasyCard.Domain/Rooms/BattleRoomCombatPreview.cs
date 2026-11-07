@@ -16,6 +16,7 @@ public sealed partial class BattleRoom
             throw new FantasyCard.Domain.Players.DomainValidationException(
                 $"Room revision conflict. Expected {expectedRevision}, current {Revision}.");
         var previewRoom = Restore(Capture(), _catalog, 0);
+        previewRoom._combatPreview = true;
         return previewRoom.PlayCards(playerId, battleId, targetId, cardInstanceIds, expectedRevision, now)
             with { RoomRevision = Revision };
     }

@@ -1,0 +1,27 @@
+{"cid": "e4955a7e0307f2e7cca8559beb67c71704d03ca9af7b1ad9d055a754ff419704", "state": "exited", "exit": 1, "oom": false, "guard_terminal": true}
+  FantasyCard.Server.Tests -> /workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll
+Test run for /workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:04.48]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMarketTests.HeldReturnPaginationIsCompleteAndNeverIncludesAnotherPlayersItems [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonMarketTests.HeldReturnPaginationIsCompleteAndNeverIncludesAnotherPlayersItems [1 s]
+  Error Message:
+   Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.CraftingTestInputs.SqlAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/CraftingTestInputs.cs:line 56
+   at FantasyCard.Server.Tests.Persistence.CraftingTestInputs.SqlAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/CraftingTestInputs.cs:line 56
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMarketTests.HeldReturnPaginationIsCompleteAndNeverIncludesAnotherPlayersItems() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMarketTests.cs:line 185
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMarketTests.HeldReturnPaginationIsCompleteAndNeverIncludesAnotherPlayersItems() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMarketTests.cs:line 199
+--- End of stack trace from previous location ---
+Results File: /workspace/results/market-race-pagination.trx
+
+Failed!  - Failed:     1, Passed:     1, Skipped:     0, Total:     2, Duration: 3 s - FantasyCard.Server.Tests.dll (net10.0)
+

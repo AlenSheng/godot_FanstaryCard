@@ -18,7 +18,7 @@ import time
 import uuid
 
 GIB = 1024 ** 3
-RESERVE = 6 * GIB
+RESERVE = 2 * GIB
 START_BUDGET = GIB
 
 
@@ -100,8 +100,8 @@ def run(args):
                 "FANTASYCARD_LOAD_CLIENT_ID": "hidden-ui-validator",
                 "FANTASYCARD_LOAD_PROCESS_EPOCH": epoch,
                 "FANTASYCARD_REVIEW_ISOLATED_DESKTOP": "1",
-                "FANTASYCARD_REVIEW_WIDTHS": str(args.width),
-                "FANTASYCARD_REVIEW_LOCALES": args.locale,
+                "FANTASYCARD_REVIEW_WIDTHS": "960,1280,1920" if args.all_widths else str(args.width),
+                "FANTASYCARD_REVIEW_LOCALES": ",".join(json.loads((root / "client/data/localization_registry.json").read_text(encoding="utf-8"))["languages"]) if args.all_locales else args.locale,
                 "FANTASYCARD_REVIEW_SCREENS": args.screens,
                 "FANTASYCARD_REVIEW_CARD_REGRESSION": "1" if args.card_regression else "0"})
     flags = subprocess.CREATE_NO_WINDOW | subprocess.BELOW_NORMAL_PRIORITY_CLASS
@@ -164,6 +164,9 @@ def run(args):
 
 
 def render_private(root, output, args, env, flags, kernel, user, free_memory):
+    render_timeout = getattr(args, "render_timeout_seconds", 180)
+    if not 30 <= render_timeout <= 600:
+        raise ValueError("The owned renderer window must be between 30 and 600 seconds")
     user.GetProcessWindowStation.restype = W.HANDLE
     user.GetThreadDesktop.restype = W.HANDLE
     user.GetThreadDesktop.argtypes = [W.DWORD]
@@ -232,11 +235,12 @@ def render_private(root, output, args, env, flags, kernel, user, free_memory):
             kernel.CloseHandle(info.thread)
             write_json(output / "started.original.json", {"pid": info.pid, "thread_id": info.tid, "command": command,
                        "desktop": startup.desktop, "input_desktop_before": input_before,
-                       "desktop_switch_calls": 0, "at": datetime.datetime.now().isoformat()})
+                       "desktop_switch_calls": 0, "render_timeout_seconds": render_timeout,
+                       "at": datetime.datetime.now().isoformat()})
             while kernel.WaitForSingleObject(process, 0) == 258:
                 if free_memory() < RESERVE:
                     reason = "MemoryReserveBreached"
-                if time.monotonic() - start > 180:
+                if time.monotonic() - start > render_timeout:
                     reason = "OwnedRendererDeadline"
                 tail = (output / "stderr.original.log").read_bytes()[-16384:]
                 if b"SCRIPT ERROR:" in tail or b"Parse Error:" in tail:
@@ -265,6 +269,7 @@ def render_private(root, output, args, env, flags, kernel, user, free_memory):
                 "private_desktop_checks": len(checks), "all_checked_threads_private": bool(checks) and set(checks) == {name},
                 "input_desktop_unchanged": input_before == input_after if input_before is not None and input_after is not None else None,
                 "desktop_switch_calls": 0, "seconds": round(time.monotonic() - start, 2),
+                "render_timeout_seconds": render_timeout,
                 "PNGs": len(list(output.glob("*.png"))), "actual_game_matches": 0}
     finally:
         if process:
@@ -287,11 +292,17 @@ if __name__ == "__main__":
     registry = json.loads((Path(__file__).resolve().parents[1] / "client/data/localization_registry.json").read_text(encoding="utf-8"))
     parser.add_argument("--locale", choices=["zh-CN", "en"] + list(registry.get("languages", {})), default="zh-CN")
     parser.add_argument("--width", type=int, choices=[960, 1280, 1920], default=960)
+    parser.add_argument("--all-widths", action="store_true", help="Review all three supported widths in one owned renderer")
+    parser.add_argument("--all-locales", action="store_true", help="Review every registered locale in one owned renderer")
     parser.add_argument("--screens", default="", help="Comma-separated screen families; empty means all")
     parser.add_argument("--scene", choices=["ui_visual_review", "codex_preview", "deck_builder_preview", "equipment_compare_preview", "ui_typography_probe", "ui_branch_sync_preview"], default="ui_visual_review")
     parser.add_argument("--wait-seconds", type=int, default=0, help="Admission wait; does not reduce the fixed memory reserve")
+    parser.add_argument("--render-timeout-seconds", type=int, default=180,
+                        help="Owned renderer observation window, 30 to 600 seconds; memory protection is unchanged")
     parser.add_argument("--verbose", action="store_true", help="Keep native verbose diagnostics in evidence logs")
     options = parser.parse_args()
     if options.wait_seconds < 0 or not options.godot.is_file():
         parser.error("Use a valid Godot executable and nonnegative admission wait")
+    if not 30 <= options.render_timeout_seconds <= 600:
+        parser.error("Use a renderer observation window between 30 and 600 seconds")
     raise SystemExit(run(options))

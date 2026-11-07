@@ -1,0 +1,31 @@
+{
+  "unique_tests": 15,
+  "passed": 15,
+  "failed": 0,
+  "original_failures_retained": [
+    {
+      "stage": "e01-discard-cloud-runtime-r2",
+      "test": "FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: \\\"legacy\\\")",
+      "outcome": "Failed"
+    }
+  ],
+  "single_all_green_batch": false,
+  "not_new_game_matches": true,
+  "latest_by_test_name": {
+    "FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.SecondMovementFailureRollsBackEveryItemAndReceiptThenSameRequestRetries": "Passed",
+    "FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ConcurrentSameRequestReplaysAndCompetingRequestCannotDestroyTheBodyAgain": "Passed",
+    "FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.LegacyInventoryCanDiscardWithoutInventingSeasonOrChangingPermanentBalances": "Passed",
+    "FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.SavedLoadoutInAnotherClassIsProtectedAndExplicitSeasonIdentityIsRequired": "Passed",
+    "FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: \\\"Equipped\\\")": "Passed",
+    "FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: \\\"PreparationLocked\\\")": "Passed",
+    "FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: \\\"MarketListed\\\")": "Passed",
+    "FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: \\\"InMatchBackpack\\\")": "Passed",
+    "FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: \\\"Recycled\\\")": "Passed",
+    "FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.BatchRetainsPhysicalHistoryAndRecipesWithoutAnyResourceRefundAndReplaysAfterSeasonEnd": "Passed",
+    "FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: \\\"stale\\\")": "Passed",
+    "FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: \\\"owner\\\")": "Passed",
+    "FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: \\\"legacy\\\")": "Passed",
+    "FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: \\\"Borrowed\\\")": "Passed",
+    "FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: \\\"BotReward\\\")": "Passed"
+  }
+}

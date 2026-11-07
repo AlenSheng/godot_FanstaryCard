@@ -1,0 +1,43 @@
+{
+  "fault_scenarios_union_passed": 4,
+  "pass_selection": {
+    "r1": [
+      "ack-committed-response-lost"
+    ],
+    "r2": [
+      "hold-before-commit",
+      "notification-before-mark"
+    ],
+    "r3_retry1": [
+      "notification-mark-rollback"
+    ]
+  },
+  "one_fresh_four_case_green_batch": false,
+  "raw_prior_two_deadlock_failures_retained": true,
+  "successful_path_process_identities": 12,
+  "all_process_identities_including_failures": 14,
+  "PG_backend_signals": 1,
+  "only_owned_unique_application_and_gate_sessions_signaled": true,
+  "autocommit_notification_both_outcomes_actually_observed": true,
+  "same_receipt_actual_redelivery_after_marker_rollback": true,
+  "explicit_mixed_asset_transaction_rolled_back": true,
+  "committed_ACK_response_loss_then_restart_replay_same_bytes": true,
+  "schemas_removed": 6,
+  "containers_env_tmpfs_cleaned": 3,
+  "prior_A03_manifest_files_verified": 268,
+  "prior_PG_unique_passed_rederived": 121,
+  "prior_PG_failures_not_overwritten": 5,
+  "prior_ACK_reuse_limit": "Old passing ACK assertions and unchanged production bytes reused. Current extra outbox-wait statement is not claimed to have run in that old ACK case.",
+  "production_sources_unchanged": true,
+  "current_test_source_pinned": true,
+  "capital_banks_unchanged": true,
+  "min_cloud_RAM": 2385158144,
+  "min_cloud_disk": 3457228800,
+  "min_cloud_disk_fraction": 0.054625170564109975,
+  "new_completed_gameplay_encounters": 0,
+  "new_B05_encounters": 0,
+  "new_D03_encounters": 0,
+  "production_modified": false,
+  "F02_composite_status": "Pending final requirement mapping, not set by this fault-only audit",
+  "whole_goal_complete": false
+}

@@ -1,0 +1,17 @@
+{
+  "container_id": "70f42d91e71d5c797481c4a86948cfeb99f9811eb019a427b884e940584147b1",
+  "name": "fc-season-a03-storage-20261102-r91",
+  "database_container": "803968e390014540be88f60b9ac43203946d0145bf886fc61d9d9d4d04bc3b1a",
+  "source_base": "2c42e89bdb461c7277504eabff6159152ccbca60",
+  "archive_sha256": "cb8e7d474fe127e4764fbb23c48394d3cb0d4f91b88753e30cffc8a11b9cbbf9",
+  "image_id": "sha256:4beef5b8919dcaa2dc924233bd069257e883cc7a061e09088a97d152d6a48510",
+  "cpu": 1,
+  "memory_mib": 1200,
+  "server_command": "dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter \"FullyQualifiedName~PostgresSeasonArchiveTests|FullyQualifiedName~PostgresSeasonAssetDomainTests|FullyQualifiedName~PostgresSeasonPreparationTests|FullyQualifiedName~PostgresSeasonMatchmakingTests|FullyQualifiedName~PostgresSeasonLoadoutTests|FullyQualifiedName~PostgresSeasonMarketTests|FullyQualifiedName~PostgresSeasonSettlementTests|FullyQualifiedName~PostgresMigrationTests|FullyQualifiedName~PostgresSeasonShopTests|FullyQualifiedName~PostgresSeasonReadModelTests\" --logger \"trx;LogFileName=season-archive-server.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "server_evidence_source": null,
+  "domain_command": "true",
+  "domain_evidence_source": null,
+  "production_database_used": false,
+  "available_ram_before": 2558869504,
+  "free_disk_before": 3501568000
+}

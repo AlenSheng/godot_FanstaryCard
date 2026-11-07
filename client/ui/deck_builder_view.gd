@@ -5,6 +5,7 @@ const P = preload("res://ui/palette.gd")
 const DragScroll = preload("res://ui/drag_scroll.gd")
 const CardGridView = preload("res://ui/card_grid_view.gd")
 const CardDetails = preload("res://ui/card_details.gd")
+const CosmeticArt = preload("res://ui/season_cosmetic_art.gd")
 const PREFIX := "UI/CardCodex/card_codex_"
 const ROW_PREFIX := "UI/Codex/deck_row_"
 const DECK_SIZE := 20
@@ -98,9 +99,17 @@ static func _fill_owned_grid(host: Control, grid: GridContainer, scroll: ScrollC
 static func _deck_panel(ui: Control, host: Control) -> void:
 	ui.panel(Rect2(1250, 114, 650, 911)).name = "DeckBuilderPanel"
 	ui.picture(Art.texture("UI/Codex/deck_title_bar.png"), Rect2(1266, 126, 618, 82)).name = "DeckTitleLayer"
-	var title: Label = ui.text(P.localized("current_deck_count").format({"count": host.deck_draft.size(), "total": DECK_SIZE}), Rect2(1300, 142, 550, 48), 30, P.GOLD)
+	var card_back := CosmeticArt.equipped("CardBack")
+	var title: Label = ui.text(P.localized("current_deck_count").format({"count": host.deck_draft.size(), "total": DECK_SIZE}), Rect2(1300, 142, 470 if not card_back.is_empty() else 550, 48), 30, P.GOLD)
 	title.name = "DeckCount"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	if not card_back.is_empty():
+		var back_texture := CosmeticArt.texture(card_back)
+		if back_texture != null:
+			var back: TextureRect = ui.picture(back_texture, Rect2(1792, 130, 48, 72))
+			back.name = "EquippedDeckCardBack"
+			back.mouse_filter = Control.MOUSE_FILTER_PASS
+			back.tooltip_text = P.localized(str(CosmeticArt.entry(card_back).get("nameKey", "journey_card_back")))
 	var limits := _orange_counts(host)
 	var limit_text := P.localized("deck_orange_limits").format({"general": limits.general, "class": limits.class})
 	var limit_label: Label = ui.text(limit_text, Rect2(1290, 211, 570, 32), 19, P.MUTED)

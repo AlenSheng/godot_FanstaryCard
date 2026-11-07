@@ -62,7 +62,7 @@ message RoomCombatant { int32 hp = 1; int32 maximum_hp = 2; int32 effective_maxi
 message RoomStat { string key = 1; string value = 2; }
 message RoomSet { string kind = 1; int32 count = 2; int32 required = 3; bool active = 4; }
 message RoomBattleStatus { string passive_kind = 1; int32 combo = 2; string core_element = 3; repeated RoomStat bonuses = 4; repeated RoomSet sets = 5; string draw_interval_seconds = 6; int32 charge_level = 7; }
-message RoomEquipment { string slot = 1; string quality = 2; string element = 3; string effect_affix = 4; string secondary_trait = 5; int32 level = 6; bool is_bound = 7; }
+message RoomEquipment { string slot = 1; string quality = 2; string element = 3; string effect_affix = 4; string secondary_trait = 5; int32 level = 6; bool is_bound = 7; optional string unique_affix = 8; optional string unique_element = 9; optional string stats_version = 10; }
 message RoomInventoryItem { string item_id = 1; string kind = 2; int32 quantity = 3; bool is_safe = 4; RoomEquipment equipment = 5; optional int32 slot_index = 6; }
 message RoomRelicPile { string pile_id = 1; string owner_name = 2; int64 version = 3; repeated RoomInventoryItem items = 4; optional bool owner_name_is_fallback = 5; }
 message RoomMonster {
@@ -121,7 +121,12 @@ message RoomPlayer {
   string base_draw_interval_seconds = 19;
   RoomMonsterPool monster_pool = 20;
   RoomNumericalState numerical_state = 21;
+  RoomCombatActionState combat_action = 22;
+  optional string borrowed_template_id = 23;
+  bool red_evaluation_pending = 24;
+  RoomInventoryItem pending_red_item = 25;
 }
+message RoomCombatActionState { int64 next_sequence = 1; int64 remaining_ms = 2; }
 message RoomSnapshotEvent {
   string room_id = 1;
   string match_id = 2;
@@ -139,6 +144,14 @@ message RoomSnapshotEvent {
   optional int64 spring_remaining_ms = 14;
   repeated string allowed_actions = 15;
   int32 map_player_count = 16;
+  RoomSeasonContext season = 17;
+}
+message RoomSeasonContext {
+  string season_id = 1;
+  string difficulty_id = 2;
+  string ruleset_id = 3;
+  string config_version = 4;
+  string stats_version = 5;
 }
 message RoomStartedEvent {
   string match_id = 1;
@@ -156,6 +169,7 @@ message BattlePlayCardsCommand {
   string battle_id = 1;
   string target_id = 2;
   repeated string card_instance_ids = 3;
+  string combat_action_id = 4;
 }
 
 message BattleComboResolvedEvent {
@@ -185,6 +199,8 @@ message BattleComboResolvedEvent {
   string resonance_multiplier = 24;
   int32 conflict_pair_count = 25;
   string conflict_cancellation = 26;
+  string combat_action_id = 27;
+  bool action_replayed = 28;
 }
 message CombatDamageSegment { string kind = 1; int32 amount = 2; }
 message BattleSelectTargetCommand { string battle_id = 1; string target_id = 2; }
@@ -221,6 +237,14 @@ message MarketEquipment {
   string element = 8;
   string effect_affix = 9;
   string secondary_trait = 10;
+  string unique_affix = 11;
+  string unique_element = 12;
+  string stats_version = 13;
+  string origin_season_id = 14;
+  string season_id = 15;
+  string asset_scope = 16;
+  string source_kind = 17;
+  optional bool recipe_extracted = 18;
 }
 message MarketListing {
   string listing_id = 1;
@@ -232,12 +256,20 @@ message MarketListing {
   int64 created_at_unix_ms = 7;
   int64 expires_at_unix_ms = 8;
   MarketEquipment equipment = 9;
+  string currency = 10;
+  optional int64 price = 11;
+  string season_id = 12;
+  string config_version = 13;
+  optional int64 season_ends_at_unix_ms = 14;
+  optional int64 fee = 15;
+  optional int64 seller_net = 16;
 }
 message InventoryChangedEvent {
   string action = 1;
   string item_id = 2;
   MarketListing listing = 3;
   optional int64 seller_gold_after = 4;
+  bool seller_wallet_changed = 5;
 }
 message RoomMoveCommand { int32 row = 1; int32 column = 2; }
 message DuelLeaveCommand { string duel_id = 1; }
@@ -259,4 +291,10 @@ message MapPlayerCountEvent { int32 player_count = 1; }
 // Numerical integration v1. Additive; no existing tag reuse.
 message MonsterCardChooseCommand { string candidate_id = 1; bool accept = 2; string replace_instance_id = 3; }
 message RoomMonsterPool { int32 capacity = 1; repeated RoomCard pending = 2; repeated RoomCard active = 3; }
-message RoomNumericalState { string fenxian_policy = 1; string guardian_policy = 2; int32 guardian_remainder_tenths = 3; }
+message RoomNumericalState {
+  string fenxian_policy = 1;
+  string guardian_policy = 2;
+  int32 guardian_remainder_tenths = 3;
+  optional string fenxian_return_credit = 4;
+  optional int32 fenxian_return_rate_basis_points = 5;
+}

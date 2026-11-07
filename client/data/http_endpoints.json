@@ -4,20 +4,44 @@
   "error": "HttpError",
   "endpoints": [
     {
-      "method": "POST",
-      "path": "/api/v1/auth/local",
-      "request": "LocalSignInRequest",
-      "response": "LocalSignInResponse",
+      "method": "DELETE",
+      "path": "/api/v1/mail/read",
+      "request": "Empty",
+      "response": "MailDeleteResponse",
       "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Identity/IdentityEndpoints.cs"
+      "source": "server/src/FantasyCard.Server/Mail/MailEndpoints.cs"
     },
     {
-      "method": "POST",
-      "path": "/api/v1/auth/steam",
-      "request": "SteamSignInRequest",
-      "response": "LocalSignInResponse",
+      "method": "DELETE",
+      "path": "/api/v1/mail/{mailId:guid}",
+      "request": "Empty",
+      "response": "MailDeleteResponse",
       "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Identity/IdentityEndpoints.cs"
+      "source": "server/src/FantasyCard.Server/Mail/MailEndpoints.cs"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/market/listings/{listingId:guid}",
+      "request": "Empty",
+      "response": "Empty",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/matches/tickets/{ticketId:guid}",
+      "request": "Empty",
+      "response": "Empty",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Matchmaking/MatchmakingEndpoints.cs"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/preparations/{preparationId:guid}",
+      "request": "Empty",
+      "response": "Empty",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Matchmaking/PreparationEndpoints.cs"
     },
     {
       "method": "GET",
@@ -34,6 +58,238 @@
       "response": "CardListResponse",
       "unwrap_items": true,
       "source": "server/src/FantasyCard.Server/Progression/ProgressionEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/class-weapons/{heroClass}/enhancement-quote",
+      "request": "Empty",
+      "response": "EnhancementQuoteResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/ProgressionEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/config/{configVersion}",
+      "request": "Empty",
+      "response": "PublishedConfigurationResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Rooms/ConfigurationEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cosmetics",
+      "request": "Empty",
+      "response": "CosmeticsResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonJourneyRewardEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/decks",
+      "request": "Empty",
+      "response": "DeckListResponse",
+      "unwrap_items": true,
+      "source": "server/src/FantasyCard.Server/Progression/ProgressionEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/economy/context",
+      "request": "Empty",
+      "response": "EconomyContextResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/economy/wallet",
+      "request": "Empty",
+      "response": "WalletResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/{equipmentId:guid}/enhancement-quote",
+      "request": "Empty",
+      "response": "EnhancementQuoteResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/ProgressionEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/inventory",
+      "request": "Empty",
+      "response": "InventoryResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/ProgressionEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/loadouts/{heroClass}",
+      "request": "Empty",
+      "response": "LoadoutResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/ProgressionEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/mail",
+      "request": "Empty",
+      "response": "MailListResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Mail/MailEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/market",
+      "request": "Empty",
+      "response": "MarketListResponse",
+      "unwrap_items": true,
+      "source": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/market/context",
+      "request": "Empty",
+      "response": "MarketInventoryContextResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/market/returns",
+      "request": "Empty",
+      "response": "MarketReturnsResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/matches/tickets/{ticketId:guid}",
+      "request": "Empty",
+      "response": "MatchTicketResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Matchmaking/MatchmakingEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/matches/{matchId:guid}/settlement",
+      "request": "Empty",
+      "response": "SettlementResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Settlement/SettlementEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/players/me",
+      "request": "Empty",
+      "response": "PlayerProfileResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Players/PlayerEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/preparations",
+      "request": "Empty",
+      "response": "PreparationResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Matchmaking/PreparationEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/season-activities",
+      "request": "Empty",
+      "response": "SeasonActivitiesResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonActivityEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/season-archives",
+      "request": "Empty",
+      "response": "SeasonArchivesResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonArchiveReadEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/season-archives/{seasonId}/{section}",
+      "request": "Empty",
+      "response": "SeasonArchiveSectionResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonArchiveReadEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/season-crafting",
+      "request": "Empty",
+      "response": "SeasonCraftingResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonCraftingEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/season-crafting/reforge-quote",
+      "request": "Empty",
+      "response": "ReforgeQuoteResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonCraftingEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/season-journey",
+      "request": "Empty",
+      "response": "SeasonJourneyResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonJourneyEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/season-journey/rewards",
+      "request": "Empty",
+      "response": "JourneyRewardsResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonJourneyRewardEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/settlements/{settlementId:guid}",
+      "request": "Empty",
+      "response": "SettlementResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Settlement/SettlementEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/shop",
+      "request": "Empty",
+      "response": "ShopResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/shop/context",
+      "request": "Empty",
+      "response": "ShopInventoryContextResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/local",
+      "request": "LocalSignInRequest",
+      "response": "LocalSignInResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Identity/IdentityEndpoints.cs"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/steam",
+      "request": "SteamSignInRequest",
+      "response": "LocalSignInResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Identity/IdentityEndpoints.cs"
     },
     {
       "method": "POST",
@@ -68,46 +324,6 @@
       "source": "server/src/FantasyCard.Server/Progression/ProgressionEndpoints.cs"
     },
     {
-      "method": "GET",
-      "path": "/api/v1/class-weapons/{heroClass}/enhancement-quote",
-      "request": "Empty",
-      "response": "EnhancementQuoteResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Progression/ProgressionEndpoints.cs"
-    },
-    {
-      "method": "GET",
-      "path": "/api/v1/decks",
-      "request": "Empty",
-      "response": "DeckListResponse",
-      "unwrap_items": true,
-      "source": "server/src/FantasyCard.Server/Progression/ProgressionEndpoints.cs"
-    },
-    {
-      "method": "PUT",
-      "path": "/api/v1/decks/{heroClass}",
-      "request": "UpdateDeckRequest",
-      "response": "DeckResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Progression/ProgressionEndpoints.cs"
-    },
-    {
-      "method": "GET",
-      "path": "/api/v1/economy/context",
-      "request": "Empty",
-      "response": "EconomyContextResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs"
-    },
-    {
-      "method": "GET",
-      "path": "/api/v1/economy/wallet",
-      "request": "Empty",
-      "response": "WalletResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs"
-    },
-    {
       "method": "POST",
       "path": "/api/v1/equipment/{equipmentId:guid}/enhance",
       "request": "EnhanceEquipmentRequest",
@@ -116,44 +332,12 @@
       "source": "server/src/FantasyCard.Server/Progression/ProgressionEndpoints.cs"
     },
     {
-      "method": "GET",
-      "path": "/api/v1/equipment/{equipmentId:guid}/enhancement-quote",
-      "request": "Empty",
-      "response": "EnhancementQuoteResponse",
+      "method": "POST",
+      "path": "/api/v1/inventory/discard",
+      "request": "DiscardEquipmentRequest",
+      "response": "DiscardEquipmentResponse",
       "unwrap_items": false,
       "source": "server/src/FantasyCard.Server/Progression/ProgressionEndpoints.cs"
-    },
-    {
-      "method": "GET",
-      "path": "/api/v1/inventory",
-      "request": "Empty",
-      "response": "InventoryResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Progression/ProgressionEndpoints.cs"
-    },
-    {
-      "method": "GET",
-      "path": "/api/v1/loadouts/{heroClass}",
-      "request": "Empty",
-      "response": "LoadoutResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Progression/ProgressionEndpoints.cs"
-    },
-    {
-      "method": "PUT",
-      "path": "/api/v1/loadouts/{heroClass}",
-      "request": "UpdateLoadoutRequest",
-      "response": "LoadoutResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Progression/ProgressionEndpoints.cs"
-    },
-    {
-      "method": "GET",
-      "path": "/api/v1/mail",
-      "request": "Empty",
-      "response": "MailListResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Mail/MailEndpoints.cs"
     },
     {
       "method": "POST",
@@ -164,26 +348,10 @@
       "source": "server/src/FantasyCard.Server/Mail/MailEndpoints.cs"
     },
     {
-      "method": "DELETE",
-      "path": "/api/v1/mail/read",
-      "request": "Empty",
-      "response": "MailDeleteResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Mail/MailEndpoints.cs"
-    },
-    {
       "method": "POST",
       "path": "/api/v1/mail/read-all",
       "request": "Empty",
       "response": "Empty",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Mail/MailEndpoints.cs"
-    },
-    {
-      "method": "DELETE",
-      "path": "/api/v1/mail/{mailId:guid}",
-      "request": "Empty",
-      "response": "MailDeleteResponse",
       "unwrap_items": false,
       "source": "server/src/FantasyCard.Server/Mail/MailEndpoints.cs"
     },
@@ -204,22 +372,6 @@
       "source": "server/src/FantasyCard.Server/Mail/MailEndpoints.cs"
     },
     {
-      "method": "GET",
-      "path": "/api/v1/market",
-      "request": "Empty",
-      "response": "MarketListResponse",
-      "unwrap_items": true,
-      "source": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs"
-    },
-    {
-      "method": "GET",
-      "path": "/api/v1/market/context",
-      "request": "Empty",
-      "response": "MarketInventoryContextResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs"
-    },
-    {
       "method": "POST",
       "path": "/api/v1/market/listings",
       "request": "CreateMarketListingRequest",
@@ -228,10 +380,18 @@
       "source": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs"
     },
     {
-      "method": "DELETE",
-      "path": "/api/v1/market/listings/{listingId:guid}",
-      "request": "Empty",
-      "response": "Empty",
+      "method": "POST",
+      "path": "/api/v1/market/listings/{listingId:guid}/relist",
+      "request": "RelistMarketListingRequest",
+      "response": "MarketListingResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/market/returns/{returnId:guid}/claim",
+      "request": "ClaimMarketReturnRequest",
+      "response": "EquipmentResponse",
       "unwrap_items": false,
       "source": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs"
     },
@@ -252,66 +412,10 @@
       "source": "server/src/FantasyCard.Server/Matchmaking/MatchmakingEndpoints.cs"
     },
     {
-      "method": "DELETE",
-      "path": "/api/v1/matches/tickets/{ticketId:guid}",
-      "request": "Empty",
-      "response": "Empty",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Matchmaking/MatchmakingEndpoints.cs"
-    },
-    {
-      "method": "GET",
-      "path": "/api/v1/matches/tickets/{ticketId:guid}",
-      "request": "Empty",
-      "response": "MatchTicketResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Matchmaking/MatchmakingEndpoints.cs"
-    },
-    {
-      "method": "GET",
-      "path": "/api/v1/matches/{matchId:guid}/settlement",
-      "request": "Empty",
-      "response": "SettlementResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Settlement/SettlementEndpoints.cs"
-    },
-    {
-      "method": "GET",
-      "path": "/api/v1/players/me",
-      "request": "Empty",
-      "response": "PlayerProfileResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Players/PlayerEndpoints.cs"
-    },
-    {
-      "method": "PUT",
-      "path": "/api/v1/players/me",
-      "request": "UpdatePlayerProfileRequest",
-      "response": "PlayerProfileResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Players/PlayerEndpoints.cs"
-    },
-    {
-      "method": "GET",
-      "path": "/api/v1/preparations",
-      "request": "Empty",
-      "response": "PreparationResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Matchmaking/PreparationEndpoints.cs"
-    },
-    {
       "method": "POST",
       "path": "/api/v1/preparations",
       "request": "CreatePreparationRequest",
       "response": "PreparationResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Matchmaking/PreparationEndpoints.cs"
-    },
-    {
-      "method": "DELETE",
-      "path": "/api/v1/preparations/{preparationId:guid}",
-      "request": "Empty",
-      "response": "Empty",
       "unwrap_items": false,
       "source": "server/src/FantasyCard.Server/Matchmaking/PreparationEndpoints.cs"
     },
@@ -324,12 +428,52 @@
       "source": "server/src/FantasyCard.Server/Realtime/RealtimeEndpoints.cs"
     },
     {
-      "method": "GET",
-      "path": "/api/v1/settlements/{settlementId:guid}",
+      "method": "POST",
+      "path": "/api/v1/season-activities/rewards/{rewardId}/claim",
       "request": "Empty",
-      "response": "SettlementResponse",
+      "response": "ActivityClaimResponse",
       "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Settlement/SettlementEndpoints.cs"
+      "source": "server/src/FantasyCard.Server/Progression/SeasonActivityEndpoints.cs"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/season-activities/{eventId}/exchanges",
+      "request": "ActivityExchangeRequest",
+      "response": "ActivityExchangeResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonActivityEndpoints.cs"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/season-crafting/craft",
+      "request": "CraftEquipmentRequest",
+      "response": "CraftEquipmentResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonCraftingEndpoints.cs"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/season-crafting/recipes/learn",
+      "request": "LearnSeasonRecipeRequest",
+      "response": "LearnSeasonRecipeResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonCraftingEndpoints.cs"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/season-crafting/reforge",
+      "request": "ReforgeEquipmentRequest",
+      "response": "ReforgeEquipmentResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonCraftingEndpoints.cs"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/season-journey/rewards/{rewardId:guid}/claim",
+      "request": "JourneyClaimRequest",
+      "response": "JourneyClaimResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonJourneyRewardEndpoints.cs"
     },
     {
       "method": "POST",
@@ -338,22 +482,6 @@
       "response": "SettlementAcknowledgementResponse",
       "unwrap_items": false,
       "source": "server/src/FantasyCard.Server/Settlement/SettlementEndpoints.cs"
-    },
-    {
-      "method": "GET",
-      "path": "/api/v1/shop",
-      "request": "Empty",
-      "response": "ShopResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs"
-    },
-    {
-      "method": "GET",
-      "path": "/api/v1/shop/context",
-      "request": "Empty",
-      "response": "ShopInventoryContextResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs"
     },
     {
       "method": "POST",
@@ -370,6 +498,38 @@
       "response": "ShopResponse",
       "unwrap_items": false,
       "source": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/cosmetics/selection",
+      "request": "CosmeticSelectionRequest",
+      "response": "CosmeticSelectionResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonJourneyRewardEndpoints.cs"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/decks/{heroClass}",
+      "request": "UpdateDeckRequest",
+      "response": "DeckResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/ProgressionEndpoints.cs"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/loadouts/{heroClass}",
+      "request": "UpdateLoadoutRequest",
+      "response": "LoadoutResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/ProgressionEndpoints.cs"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/players/me",
+      "request": "UpdatePlayerProfileRequest",
+      "response": "PlayerProfileResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Players/PlayerEndpoints.cs"
     }
   ]
 }

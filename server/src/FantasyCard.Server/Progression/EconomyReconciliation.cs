@@ -8,11 +8,12 @@ public sealed record EconomyReconciliationReport(
     long OrphanMarketListedEquipmentCount,
     long SoldListingMismatchCount,
     long MarketTransactionAmountMismatchCount,
-    long LedgerChainMismatchCount)
+    long LedgerChainMismatchCount,long PendingMarketReturnMismatchCount=0,long CardCopyLedgerMismatchCount=0,long ActivityBudgetMismatchCount=0,
+    long JourneyExperienceMismatchCount=0)
 {
     public long TotalViolationCount => NegativeAccountCount + ActiveListingAssetMismatchCount
         + OrphanMarketListedEquipmentCount + SoldListingMismatchCount
-        + MarketTransactionAmountMismatchCount + LedgerChainMismatchCount;
+        + MarketTransactionAmountMismatchCount + LedgerChainMismatchCount + PendingMarketReturnMismatchCount + CardCopyLedgerMismatchCount + ActivityBudgetMismatchCount + JourneyExperienceMismatchCount;
 
     public bool IsHealthy => TotalViolationCount == 0;
 }
@@ -26,10 +27,26 @@ public sealed class EconomyReconciliationRepository(NpgsqlDataSource dataSource)
             WITH ledger_chain AS (
                 SELECT player_id, currency, delta, balance_after,
                     lag(balance_after) OVER (
-                        PARTITION BY player_id, currency
-                        ORDER BY created_at, ledger_id) AS previous_balance
+                        PARTITION BY player_id,currency,
+                            CASE WHEN currency IN ('Gold','EquipmentFragments','ChallengeMarks','BlueprintMarks','OrangeBlueprintMarks') THEN season_id END
+                        ORDER BY created_at,ledger_sequence,ledger_id) AS previous_balance
                 FROM economy_ledger
                 WHERE currency <> 'ClassSoul'
+            ), card_copy_chain AS (
+                SELECT player_id,card_id,delta,balance_after,
+                    lag(balance_after) OVER(PARTITION BY player_id,card_id ORDER BY ledger_sequence) AS previous_balance,
+                    row_number() OVER(PARTITION BY player_id,card_id ORDER BY ledger_sequence DESC) AS latest
+                FROM card_copy_ledger
+            ), activity_chain AS (
+                SELECT player_id,season_id,event_id,delta,balance_after,
+                    lag(balance_after) OVER(PARTITION BY player_id,season_id,event_id ORDER BY ledger_sequence) AS previous_balance,
+                    row_number() OVER(PARTITION BY player_id,season_id,event_id ORDER BY ledger_sequence DESC) AS latest
+                FROM season_activity_token_ledger
+            ), journey_chain AS (
+                SELECT player_id,season_id,amount,balance_after,
+                    lag(balance_after) OVER(PARTITION BY player_id,season_id ORDER BY sequence) AS previous_balance,
+                    row_number() OVER(PARTITION BY player_id,season_id ORDER BY sequence DESC) AS latest
+                FROM season_journey_ledger
             )
             SELECT
                 (SELECT count(*) FROM player_wallets WHERE gold < 0 OR diamond < 0)
@@ -37,7 +54,8 @@ public sealed class EconomyReconciliationRepository(NpgsqlDataSource dataSource)
                    WHERE warrior_soul < 0 OR priest_soul < 0 OR mage_soul < 0
                       OR guardian_soul < 0 OR equipment_fragments < 0)
                 + (SELECT count(*) FROM player_consumables
-                   WHERE health_potion_count < 0 OR advanced_bag_count < 0 OR top_bag_count < 0),
+                   WHERE health_potion_count < 0 OR advanced_bag_count < 0 OR top_bag_count < 0)
+                + (SELECT count(*) FROM player_season_wallets WHERE gold<0 OR equipment_fragments<0 OR challenge_marks<0 OR blueprint_marks<0 OR orange_blueprint_marks<0),
                 (SELECT count(*)
                  FROM market_listings AS listing
                  LEFT JOIN equipments AS equipment ON equipment.instance_id = listing.equipment_id
@@ -54,11 +72,53 @@ public sealed class EconomyReconciliationRepository(NpgsqlDataSource dataSource)
                  LEFT JOIN market_transactions AS txn ON txn.listing_id = listing.listing_id
                  WHERE listing.status = 'Sold'
                    AND (txn.transaction_id IS NULL OR txn.seller_id <> listing.seller_id
-                        OR txn.price_gold <> listing.price_gold)),
+                        OR txn.currency<>listing.currency OR COALESCE(txn.price,txn.price_gold)<>COALESCE(listing.price,listing.price_gold)
+                        OR (txn.price IS NOT NULL AND txn.season_id IS DISTINCT FROM listing.season_id))),
                 (SELECT count(*) FROM market_transactions
-                 WHERE seller_net_gold + fee_gold <> price_gold OR buyer_id = seller_id),
+                 WHERE COALESCE(seller_net,seller_net_gold)+COALESCE(fee,fee_gold)<>COALESCE(price,price_gold) OR buyer_id=seller_id),
                 (SELECT count(*) FROM ledger_chain
-                 WHERE previous_balance IS NOT NULL AND previous_balance + delta <> balance_after)
+                 WHERE previous_balance IS NOT NULL AND previous_balance + delta <> balance_after),
+                (SELECT count(*) FROM market_return_holds h LEFT JOIN equipments e ON e.instance_id=h.equipment_id
+                 WHERE h.state='Pending' AND (e.instance_id IS NULL OR e.owner_id<>h.player_id OR e.location<>'MarketReturnPending'
+                    OR e.season_id IS DISTINCT FROM h.season_id))
+                + (SELECT count(*) FROM equipments e LEFT JOIN market_return_holds h ON h.equipment_id=e.instance_id AND h.state='Pending'
+                   WHERE e.location='MarketReturnPending' AND h.return_id IS NULL),
+                (SELECT count(*) FROM card_copy_chain
+                 WHERE previous_balance IS NOT NULL AND previous_balance::bigint+delta<>balance_after)
+                + (SELECT count(*) FROM card_copy_chain l
+                   LEFT JOIN player_cards c USING(player_id,card_id)
+                   LEFT JOIN player_card_reserves r USING(player_id,card_id)
+                   WHERE l.latest=1 AND (c.player_id IS NULL OR l.balance_after<>c.copy_count+COALESCE(r.extra_count,0))),
+                (SELECT count(*) FROM activity_chain WHERE previous_balance IS NOT NULL AND previous_balance+delta<>balance_after)
+                + (SELECT count(*) FROM player_season_activity_accounts a WHERE
+                    a.earned-a.spent<>COALESCE((SELECT balance_after FROM activity_chain l WHERE l.player_id=a.player_id AND l.season_id=a.season_id AND l.event_id=a.event_id AND l.latest=1),0)
+                    OR a.spent<>(SELECT COALESCE(sum(r.token_cost),0) FROM season_activity_redemptions r WHERE r.player_id=a.player_id AND r.season_id=a.season_id AND r.event_id=a.event_id)
+                    OR a.earned<>(SELECT COALESCE(sum(r.credited_tokens),0) FROM season_activity_completions r WHERE r.player_id=a.player_id AND r.season_id=a.season_id AND r.event_id=a.event_id))
+                + (SELECT count(*) FROM season_activity_redemptions r LEFT JOIN season_activity_reward_ledger l USING(reward_id)
+                   WHERE (r.state='Claimed')<>(l.reward_id IS NOT NULL) OR l.reward_id IS NOT NULL AND
+                    (l.player_id<>r.player_id OR l.season_id<>r.season_id OR l.event_id<>r.event_id OR l.reward_kind<>r.reward_kind OR l.reward_amount<>r.reward_amount))
+                + (SELECT count(*) FROM season_activity_completions c JOIN season_activity_events e USING(season_id,event_id)
+                   WHERE c.occurred_at<e.starts_at OR c.occurred_at>=e.ends_at OR c.config_version<>e.config_version),
+                (SELECT count(*) FROM journey_chain WHERE COALESCE(previous_balance,0)+amount<>balance_after)
+                + (SELECT count(*) FROM player_season_journeys j JOIN season_definitions d USING(season_id)
+                   WHERE j.config_version<>d.config_version
+                    OR j.experience<>COALESCE((SELECT balance_after FROM journey_chain l WHERE l.player_id=j.player_id AND l.season_id=j.season_id AND l.latest=1),0)
+                    OR j.experience<>(SELECT COALESCE(sum(s.credited_experience),0) FROM season_journey_sources s WHERE s.player_id=j.player_id AND s.season_id=j.season_id)
+                        +(SELECT COALESCE(sum(w.credited_experience),0) FROM player_season_weekly_contracts w WHERE w.player_id=j.player_id AND w.season_id=j.season_id)
+                    OR j.experience>(SELECT sum(((200+15*level)*LEAST(42,EXTRACT(DAY FROM d.ends_at-d.starts_at)::integer)+41)/42) FROM generate_series(0,29) levels(level)))
+                + (SELECT count(*) FROM season_journey_sources s LEFT JOIN season_journey_ledger l USING(source_id)
+                   WHERE (s.credited_experience>0)<>(l.source_id IS NOT NULL) OR l.source_id IS NOT NULL AND
+                    (l.player_id<>s.player_id OR l.season_id<>s.season_id OR l.amount<>s.credited_experience OR l.balance_after<>s.experience_after))
+                + (SELECT count(*) FROM player_season_weekly_contracts w
+                   LEFT JOIN season_journey_ledger l ON l.player_id=w.player_id AND l.season_id=w.season_id AND l.contract_week=w.week_number AND l.contract_id=w.contract_id
+                   WHERE w.progress<>(SELECT count(*) FROM season_weekly_contract_events e WHERE e.player_id=w.player_id AND e.season_id=w.season_id AND e.week_number=w.week_number AND e.contract_id=w.contract_id)
+                    OR (w.credited_experience>0)<>(l.contract_id IS NOT NULL) OR l.contract_id IS NOT NULL AND l.amount<>w.credited_experience)
+                + (SELECT count(*) FROM season_weekly_contract_events e JOIN season_journey_sources s USING(source_id)
+                   JOIN player_season_weekly_contracts w ON w.player_id=e.player_id AND w.season_id=e.season_id AND w.week_number=e.week_number AND w.contract_id=e.contract_id
+                   WHERE s.player_id<>e.player_id OR s.season_id<>e.season_id OR s.completion_kind<>w.completion_kind OR s.occurred_at<w.opens_at OR e.progress_after>w.target)
+                + (SELECT count(*) FROM season_journey_sources s JOIN season_definitions d ON d.season_id=s.season_id JOIN matches m USING(match_id)
+                   WHERE s.occurred_at<d.starts_at OR s.occurred_at>=d.ends_at OR s.occurred_at<m.created_at OR s.occurred_at>s.recorded_at
+                    OR s.config_version<>d.config_version OR s.room_id<>m.room_id OR s.season_id IS DISTINCT FROM m.season_id OR s.config_version<>m.config_version)
             """;
 
         await using var command = dataSource.CreateCommand(sql);
@@ -68,6 +128,6 @@ public sealed class EconomyReconciliationRepository(NpgsqlDataSource dataSource)
 
         return new EconomyReconciliationReport(
             reader.GetInt64(0), reader.GetInt64(1), reader.GetInt64(2),
-            reader.GetInt64(3), reader.GetInt64(4), reader.GetInt64(5));
+            reader.GetInt64(3), reader.GetInt64(4), reader.GetInt64(5),reader.GetInt64(6),reader.GetInt64(7),reader.GetInt64(8),reader.GetInt64(9));
     }
 }

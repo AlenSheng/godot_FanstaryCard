@@ -1,0 +1,19 @@
+  Determining projects to restore...
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\FantasyCard.Domain.csproj (in 105 ms).
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\FantasyCard.Domain.Tests.csproj (in 306 ms).
+  FantasyCard.Domain -> G:\PR13Evidence\season-balance-20261102-r1\d03-sustain-domain-r3\build\bin\FantasyCard.Domain\debug\FantasyCard.Domain.dll
+  FantasyCard.Domain.Tests -> G:\PR13Evidence\season-balance-20261102-r1\d03-sustain-domain-r3\build\bin\FantasyCard.Domain.Tests\debug\FantasyCard.Domain.Tests.dll
+Test run for G:\PR13Evidence\season-balance-20261102-r1\d03-sustain-domain-r3\build\bin\FantasyCard.Domain.Tests\debug\FantasyCard.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+  Failed FantasyCard.Domain.Tests.Combat.SeasonMageSustainBudgetTests.ExplicitRateIsSavedAndRestoredRatherThanReplacedByTheNewDefault [3 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : A player combat snapshot cannot change immutable combat attributes.
+  Stack Trace:
+     at FantasyCard.Domain.Combat.PlayerCombatState.Restore(PlayerCombatSnapshot snapshot) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Combat\PlayerCombatState.cs:line 483
+   at FantasyCard.Domain.Tests.Combat.SeasonMageSustainBudgetTests.ExplicitRateIsSavedAndRestoredRatherThanReplacedByTheNewDefault() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Combat\SeasonMageSustainBudgetTests.cs:line 95
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+Results File: G:\PR13Evidence\season-balance-20261102-r1\d03-sustain-domain-r3\results\contracts.trx
+
+Failed!  - Failed:     1, Passed:     9, Skipped:     0, Total:    10, Duration: 246 ms - FantasyCard.Domain.Tests.dll (net10.0)
+[xUnit.net 00:00:01.44]     FantasyCard.Domain.Tests.Combat.SeasonMageSustainBudgetTests.ExplicitRateIsSavedAndRestoredRatherThanReplacedByTheNewDefault [FAIL]

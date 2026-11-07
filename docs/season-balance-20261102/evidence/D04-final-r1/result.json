@@ -1,0 +1,455 @@
+{
+  "at_utc": "2026-11-06T16:18:57.602396+00:00",
+  "head": "5933fc32893023d6f3380874faf4c1d94082ae06",
+  "D04_complete": true,
+  "acceptance_scope": "Current implementation and explicitly bounded local/isolated runtime diagnostic fixtures. Not historical completeness, human cohorts, economic balance or production load acceptance.",
+  "whole_goal_complete": false,
+  "next_progress": "31/35",
+  "verified_stage_results": {
+    "D04-currency-r1": {
+      "result_sha256": "a727d3fc3626f1e80012c3b15acefc49ee7c84a5a3b69222c1d6c50cc06b9e76",
+      "manifest_sha256": "0b3231af56f1f0a7bf462f46fbdce4af984bc94d5fb8a09921abeaee8d46ad9d",
+      "manifest_files_verified": 116,
+      "passing_scope": "currency_projection_subchain_verified",
+      "historic_stage_D04_complete": false
+    },
+    "D04-playtime-r1": {
+      "result_sha256": "d8ad64da78be0bcbaa1550301467e73dd5dada52a0c0b1063ebd554628ed5829",
+      "manifest_sha256": "a3c7673c04d7f427895fba037e605416e6f2501e258d40ceabdd7857ed609732",
+      "manifest_files_verified": 84,
+      "passing_scope": "playtime_subchain_verified",
+      "historic_stage_D04_complete": false
+    },
+    "D04-crafting-events-r1": {
+      "result_sha256": "da694a079b343482f44da5f1ca79d5b5f2cf411316c6bcb461c67def24cdfbed",
+      "manifest_sha256": "fb77e123983552fc976b4c2bf9ea480508b9da9e80b4fd527bfd45695ba05d0a",
+      "manifest_files_verified": 54,
+      "passing_scope": "crafting_event_subchain_verified",
+      "historic_stage_D04_complete": false
+    },
+    "D04-lifecycle-events-r1": {
+      "result_sha256": "adf5f02ce74a0b82d6687f9372a555ed20191801384776d5e55b307f10dd8ee4",
+      "manifest_sha256": "abce593b60bf34c631dafd953001050d8b5186eba5012a210b682d615a46128c",
+      "manifest_files_verified": 60,
+      "passing_scope": "lifecycle_event_subchain_verified",
+      "historic_stage_D04_complete": false
+    },
+    "D04-room-events-r1": {
+      "result_sha256": "59e1b6857a439a5a24ba32570b536b016a2a0de34203ec6cdc3639df31b165a4",
+      "manifest_sha256": "26cc2fa684f2fc98c5d450bb09ee8e319f569e505e267fd2856af1852a8d8d58",
+      "manifest_files_verified": 130,
+      "passing_scope": "room_event_subchain_verified",
+      "historic_stage_D04_complete": false
+    },
+    "D04-build-dimensions-r1": {
+      "result_sha256": "b6d764ec593540a2c9faf449e0b2c13c97c118c249d747f8d88c49c473a51ffc",
+      "manifest_sha256": "469047e539d54ce0cb19941fda9ac9ab96fba340d107e1d642e1137401164651",
+      "manifest_files_verified": 159,
+      "passing_scope": "build_dimension_subchain_verified",
+      "historic_stage_D04_complete": false
+    },
+    "D04-combat-measure-r1": {
+      "result_sha256": "52950b4bf00d90fd99c6bd4bb3571aed82a19712caf94a587d4f22aeeb0e9951",
+      "manifest_sha256": "83da8e81a760272afb657e63d757c7b8d73bac5edb116aa9fbead1bcf7a79092",
+      "manifest_files_verified": 138,
+      "passing_scope": "combat_measurement_subchain_verified",
+      "historic_stage_D04_complete": false
+    },
+    "D04-physical-flow-r1": {
+      "result_sha256": "b09b9b55914b4578dd8a355d96cb844365524302cd29e485b2157202d0d6669a",
+      "manifest_sha256": "249da6e0962cebc961d8e459468958667ab3757bf98370cd6e8440c2a61a255b",
+      "manifest_files_verified": 66,
+      "passing_scope": "physical_equipment_subchain_verified",
+      "historic_stage_D04_complete": false
+    },
+    "D04-diagnostics-r1": {
+      "result_sha256": "a67110e1fe54cb524c44c2b48ca1db535b2f82f63cd3d2ef7eeb89fbe3abc048",
+      "manifest_sha256": "febfbe1ccc9abb85e8df27bc59e2ec3c8ffa3b79d5f164cac4e64a0945b85c0e",
+      "manifest_files_verified": 122,
+      "passing_scope": "diagnostics_subchain_verified",
+      "historic_stage_D04_complete": false
+    }
+  },
+  "original_manifest_files_verified": 929,
+  "named_events": [
+    "battle_finished",
+    "craft_completed",
+    "difficulty_cleared",
+    "item_destroyed",
+    "loot_chosen",
+    "loot_extracted",
+    "loot_generated",
+    "loot_lost",
+    "pity_triggered",
+    "recipe_learned",
+    "season_asset_archived"
+  ],
+  "source_coverage": [
+    {
+      "path": "server/src/FantasyCard.Server/Telemetry/CombatMeasurementProjection.cs",
+      "sha256": "81dfaed0ef8d14336cc1e989d25172ad1f72ea197b47a25fc3f5ae610507c823",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-combat-measure-r1/local/d04-combat-measure-server-r2/source-pin.json",
+      "pin_sha256": "f91384168abcb9a2fe65cb30595c303f223b798f89380023dad0c335aaae5b63",
+      "behavior_scope": "Original bounded report/projection cases plus subsequent explicitly affected-source checks; not a new full suite."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Telemetry/CraftingEventObservation.cs",
+      "sha256": "fece38bb3e2bc3a51296b2c1d524b77c15ccc1d7b5b90bd1700307e8ce465d8e",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-build-dimensions-r1/local/d04-build-dimensions-build-r4/source-pin.json",
+      "pin_sha256": "80c2f3a7e2178e94ac9177d66e01f6e4bebd7bbad6db5e00dae54eb818981b99",
+      "behavior_scope": "Original bounded report/projection cases plus subsequent explicitly affected-source checks; not a new full suite."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Telemetry/CraftingEventTelemetryRepository.cs",
+      "sha256": "5203d8ed2178f6a1d23f30602186c5d08c0ec4504cf13af74b7543665e715b84",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-build-dimensions-r1/local/d04-build-dimensions-build-r4/source-pin.json",
+      "pin_sha256": "80c2f3a7e2178e94ac9177d66e01f6e4bebd7bbad6db5e00dae54eb818981b99",
+      "behavior_scope": "Original bounded report/projection cases plus subsequent explicitly affected-source checks; not a new full suite."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Telemetry/EconomyFlow.cs",
+      "sha256": "d1dc9ade527f0b568342cbada6abdcd426adc75a4686e5f88bcfd05c956d09b7",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-currency-r1/builds/d04-currency-build-r4/source-pin.json",
+      "pin_sha256": "6db2dd347d09a8bbbd13556463c74235f1bd3faf72ecbd064e1edf12f3aa60bb",
+      "behavior_scope": "Original bounded report/projection cases plus subsequent explicitly affected-source checks; not a new full suite."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Telemetry/EconomyTelemetryMetrics.cs",
+      "sha256": "f9022487a5d9b0a48755528e68db4482ed922f3014ff34e322ff70ede6a8b4da",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-currency-r1/builds/d04-currency-build-r4/source-pin.json",
+      "pin_sha256": "6db2dd347d09a8bbbd13556463c74235f1bd3faf72ecbd064e1edf12f3aa60bb",
+      "behavior_scope": "Original bounded report/projection cases plus subsequent explicitly affected-source checks; not a new full suite."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Telemetry/EconomyTelemetryRepository.cs",
+      "sha256": "2492c83260f5ed63d35bda85cfd1290bbc4a59ba8eb2526f4b1dbf1b86abb466",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-currency-r1/builds/d04-currency-build-r4/source-pin.json",
+      "pin_sha256": "6db2dd347d09a8bbbd13556463c74235f1bd3faf72ecbd064e1edf12f3aa60bb",
+      "behavior_scope": "Original bounded report/projection cases plus subsequent explicitly affected-source checks; not a new full suite."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Telemetry/LifecycleEventTelemetryRepository.cs",
+      "sha256": "99cda776fce310963affc996fb2d97177820695de3ee7556f35f559c104acdad",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-physical-flow-r1/local/d04-physical-flow-server-r2/source-pin.json",
+      "pin_sha256": "8eafe4ca37c706aad84e33541d8d4d399dcba4f9feca8f0a993f9def6912eca6",
+      "behavior_scope": "Original bounded report/projection cases plus subsequent explicitly affected-source checks; not a new full suite."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Telemetry/PhysicalEquipmentFlow.cs",
+      "sha256": "38ac2930a24e2b11e53ac3b1c4b415d104a7009a706dcc6baa80d96bd1e88c07",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-physical-flow-r1/local/d04-physical-flow-server-r2/source-pin.json",
+      "pin_sha256": "8eafe4ca37c706aad84e33541d8d4d399dcba4f9feca8f0a993f9def6912eca6",
+      "behavior_scope": "Original bounded report/projection cases plus subsequent explicitly affected-source checks; not a new full suite."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Telemetry/PhysicalEquipmentTelemetryRepository.cs",
+      "sha256": "fb752b903d381d0f51bb91713845ed1cce97a5ad25734866b9e388796df4b024",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-physical-flow-r1/local/d04-physical-flow-server-r2/source-pin.json",
+      "pin_sha256": "8eafe4ca37c706aad84e33541d8d4d399dcba4f9feca8f0a993f9def6912eca6",
+      "behavior_scope": "Original bounded report/projection cases plus subsequent explicitly affected-source checks; not a new full suite."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Telemetry/PlaytimeStatistics.cs",
+      "sha256": "1652e1b2207739a35dbcd63ac2ef315ae3dcc634976ef1c17e1446ca26f4e016",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-playtime-r1/builds/d04-playtime-server-r5/source-pin.json",
+      "pin_sha256": "a58f8b56eaf519fb016aee5673e4c6549561d32b255e8fde1d74693c0b8d1faa",
+      "behavior_scope": "Original bounded report/projection cases plus subsequent explicitly affected-source checks; not a new full suite."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Telemetry/PlaytimeTelemetryRepository.cs",
+      "sha256": "363084c40788c7b9955734787d9d67818ad1c9761c562ee10c5fcd697d522ba8",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-playtime-r1/builds/d04-playtime-server-r5/source-pin.json",
+      "pin_sha256": "a58f8b56eaf519fb016aee5673e4c6549561d32b255e8fde1d74693c0b8d1faa",
+      "behavior_scope": "Original bounded report/projection cases plus subsequent explicitly affected-source checks; not a new full suite."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Telemetry/RoomEventTelemetryRepository.cs",
+      "sha256": "0fecebff186af3996059c0814c19c084e58f0a0f7d704f2880d6fd5e0922b896",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-combat-measure-r1/local/d04-combat-measure-server-r2/source-pin.json",
+      "pin_sha256": "f91384168abcb9a2fe65cb30595c303f223b798f89380023dad0c335aaae5b63",
+      "behavior_scope": "Original bounded report/projection cases plus subsequent explicitly affected-source checks; not a new full suite."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Telemetry/SeasonDiagnosticProjection.cs",
+      "sha256": "6799540400689c1a3df36701d0f668d1fd70b72ff4b9f94ec2f145651019ec1c",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-diagnostics-r1/local/d04-diagnostics-server-r2/source-pin.json",
+      "pin_sha256": "ce6051951792d9c1daab0a69a01df569ee801059f8f8230e4020fcb45369f4ad",
+      "behavior_scope": "Original bounded report/projection cases plus subsequent explicitly affected-source checks; not a new full suite."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Telemetry/SeasonEventDimensionRules.cs",
+      "sha256": "5ad890695974f749383fe13ab39ce166a491228897fb3eb9b1cb6412e548132a",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-build-dimensions-r1/local/d04-build-dimensions-build-r4/source-pin.json",
+      "pin_sha256": "80c2f3a7e2178e94ac9177d66e01f6e4bebd7bbad6db5e00dae54eb818981b99",
+      "behavior_scope": "Original bounded report/projection cases plus subsequent explicitly affected-source checks; not a new full suite."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Telemetry/SeasonTelemetryDiagnosticsRepository.cs",
+      "sha256": "12a29797bb30b6ca09c61616f5b77b05830c698f3c0d0bbc0e6f20c329e38880",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-diagnostics-r1/local/d04-diagnostics-server-r2/source-pin.json",
+      "pin_sha256": "ce6051951792d9c1daab0a69a01df569ee801059f8f8230e4020fcb45369f4ad",
+      "behavior_scope": "Original bounded report/projection cases plus subsequent explicitly affected-source checks; not a new full suite."
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/RoomBuildProfile.cs",
+      "sha256": "28a11feb47b85a704d36020ec555b40a44ab9721f259356c21343aab2fa6e433",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-build-dimensions-r1/local/d04-build-dimensions-build-r4/source-pin.json",
+      "pin_sha256": "80c2f3a7e2178e94ac9177d66e01f6e4bebd7bbad6db5e00dae54eb818981b99",
+      "behavior_scope": "Original build/combat behavior unchanged; new optional bias/base HP metadata and old JSON compatibility checked in36Domain cases."
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/RoomCombatObservations.cs",
+      "sha256": "b93d5a40c7982345aff7d183a18859d0ee8350a70b3956b6901bcfe28ffbac17",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-combat-measure-r1/local/d04-combat-measure-server-r2/source-pin.json",
+      "pin_sha256": "f91384168abcb9a2fe65cb30595c303f223b798f89380023dad0c335aaae5b63",
+      "behavior_scope": "Original build/combat behavior unchanged; new optional bias/base HP metadata and old JSON compatibility checked in36Domain cases."
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/RoomObservationJournal.cs",
+      "sha256": "e15b27cbbb624159585c6a556ffbaa2efce8ae4ea0dad6c8c2ce11385cf53f75",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-diagnostics-r1/local/d04-diagnostics-server-r2/source-pin.json",
+      "pin_sha256": "ce6051951792d9c1daab0a69a01df569ee801059f8f8230e4020fcb45369f4ad",
+      "behavior_scope": "Original build/combat behavior unchanged; new optional bias/base HP metadata and old JSON compatibility checked in36Domain cases."
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/BattleRoom.cs",
+      "sha256": "bdb70e96efe5053e626ee7e89b364945c549198b9649ad5afea7142587dab4f4",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-diagnostics-r1/local/d04-diagnostics-server-r2/source-pin.json",
+      "pin_sha256": "ce6051951792d9c1daab0a69a01df569ee801059f8f8230e4020fcb45369f4ad",
+      "behavior_scope": "Original build/combat behavior unchanged; new optional bias/base HP metadata and old JSON compatibility checked in36Domain cases."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Admin/AdminEndpoints.cs",
+      "sha256": "ace3711198d6febcd32981fc1d82fc2f3f609c5073a8774c4718c65286ca3f3a",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-diagnostics-r1/local/d04-diagnostics-server-r2/source-pin.json",
+      "pin_sha256": "ce6051951792d9c1daab0a69a01df569ee801059f8f8230e4020fcb45369f4ad",
+      "behavior_scope": "Latest full Program401/403/200 private-no-store, actual loopback HTTP with forwarded HTTPS header, not external TLS handshake."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Admin/AdminTelemetryEndpoints.cs",
+      "sha256": "0e9208705aa321187189627cfa6926f7dff4f00d15aef4523b9238868e9169cb",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-diagnostics-r1/local/d04-diagnostics-server-r2/source-pin.json",
+      "pin_sha256": "ce6051951792d9c1daab0a69a01df569ee801059f8f8230e4020fcb45369f4ad",
+      "behavior_scope": "Latest full Program401/403/200 private-no-store, actual loopback HTTP with forwarded HTTPS header, not external TLS handshake."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/EconomyRepository.cs",
+      "sha256": "3ad61d6cede159a62035d9d5b356ca00fb89f4b5811332bd9bf9600e7978fce4",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-physical-flow-r1/local/d04-physical-flow-server-r2/source-pin.json",
+      "pin_sha256": "8eafe4ca37c706aad84e33541d8d4d399dcba4f9feca8f0a993f9def6912eca6",
+      "behavior_scope": "V055 actual original transactions/ownership/hold/archive checks; no subsequent production byte changes."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/MarketTransactions.cs",
+      "sha256": "b2216fd438498444579c36dda0868ea3c7a466269e212ee09aebfce2896ba688",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-physical-flow-r1/local/d04-physical-flow-server-r2/source-pin.json",
+      "pin_sha256": "8eafe4ca37c706aad84e33541d8d4d399dcba4f9feca8f0a993f9def6912eca6",
+      "behavior_scope": "V055 actual original transactions/ownership/hold/archive checks; no subsequent production byte changes."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/ProgressionRepository.cs",
+      "sha256": "fdba9c539383068f681beb45062364a6e1b5c233c70d298e21fef3ffbf548f0b",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-physical-flow-r1/local/d04-physical-flow-server-r2/source-pin.json",
+      "pin_sha256": "8eafe4ca37c706aad84e33541d8d4d399dcba4f9feca8f0a993f9def6912eca6",
+      "behavior_scope": "V055 actual original transactions/ownership/hold/archive checks; no subsequent production byte changes."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs",
+      "sha256": "efc43f076c47b461f4bf753fb996ccd0e976f6fa1ba2188be45df339d4538aed",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-physical-flow-r1/local/d04-physical-flow-server-r2/source-pin.json",
+      "pin_sha256": "8eafe4ca37c706aad84e33541d8d4d399dcba4f9feca8f0a993f9def6912eca6",
+      "behavior_scope": "V055 actual original transactions/ownership/hold/archive checks; no subsequent production byte changes."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Settlement/SettlementRepository.cs",
+      "sha256": "2a068fd5b718687067348df079ed83edd6ed8c2bd60ec92b0f5dacfd9d701f82",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-physical-flow-r1/local/d04-physical-flow-server-r2/source-pin.json",
+      "pin_sha256": "8eafe4ca37c706aad84e33541d8d4d399dcba4f9feca8f0a993f9def6912eca6",
+      "behavior_scope": "V055 actual original transactions/ownership/hold/archive checks; no subsequent production byte changes."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/PreparationRepository.cs",
+      "sha256": "8e8026aa20e709f91b15522882fe5b3ebb42b0a0615214edfd9e82739ba5b62c",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-physical-flow-r1/local/d04-physical-flow-server-r2/source-pin.json",
+      "pin_sha256": "8eafe4ca37c706aad84e33541d8d4d399dcba4f9feca8f0a993f9def6912eca6",
+      "behavior_scope": "V055 actual original transactions/ownership/hold/archive checks; no subsequent production byte changes."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs",
+      "sha256": "eccd0d4b021d04da57afbf77f45cce7b43974db858d925cbc728717254716de9",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-physical-flow-r1/local/d04-physical-flow-server-r2/source-pin.json",
+      "pin_sha256": "8eafe4ca37c706aad84e33541d8d4d399dcba4f9feca8f0a993f9def6912eca6",
+      "behavior_scope": "V055 actual original transactions/ownership/hold/archive checks; no subsequent production byte changes."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Mail/MailRepository.cs",
+      "sha256": "1fbecfbdafc1ff78f9564d59df517efce5eda82914749f5c21bdf61284d88557",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-physical-flow-r1/local/d04-physical-flow-server-r2/source-pin.json",
+      "pin_sha256": "8eafe4ca37c706aad84e33541d8d4d399dcba4f9feca8f0a993f9def6912eca6",
+      "behavior_scope": "V055 actual original transactions/ownership/hold/archive checks; no subsequent production byte changes."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Admin/AdminRepository.cs",
+      "sha256": "cedaf224637d2dd614bb3cdbd20c6c09ed31644400a4cd4d52cfd3a9e9d13cc3",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-physical-flow-r1/local/d04-physical-flow-server-r2/source-pin.json",
+      "pin_sha256": "8eafe4ca37c706aad84e33541d8d4d399dcba4f9feca8f0a993f9def6912eca6",
+      "behavior_scope": "V055 actual original transactions/ownership/hold/archive checks; no subsequent production byte changes."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V053__refresh_applied_observation_time.sql",
+      "sha256": "8de81cd6d268d0bb61b108bf042d4a05b2a049c0c770d61f5e5a8342df200e3e",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-currency-r1/builds/d04-currency-build-r4/source-pin.json",
+      "pin_sha256": "6db2dd347d09a8bbbd13556463c74235f1bd3faf72ecbd064e1edf12f3aa60bb",
+      "behavior_scope": "Immutable additive migration, original isolated runtime checks; no historical data backfill."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V054__crafting_event_observation.sql",
+      "sha256": "028315facb6ea87f8230d28fc2e4c923c1510488cf718b81be2f1a26e14257df",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-build-dimensions-r1/local/d04-build-dimensions-build-r4/source-pin.json",
+      "pin_sha256": "80c2f3a7e2178e94ac9177d66e01f6e4bebd7bbad6db5e00dae54eb818981b99",
+      "behavior_scope": "Immutable additive migration, original isolated runtime checks; no historical data backfill."
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V055__inventory_owner_observation.sql",
+      "sha256": "056ad5529dccc545aa878e65cbf9b6a8e8375c73a6df787cc3fcedbee441d3c1",
+      "verified_source_pin": "docs/season-balance-20261102/evidence/D04-physical-flow-r1/local/d04-physical-flow-server-r2/source-pin.json",
+      "pin_sha256": "8eafe4ca37c706aad84e33541d8d4d399dcba4f9feca8f0a993f9def6912eca6",
+      "behavior_scope": "Immutable additive migration, original isolated runtime checks; no historical data backfill."
+    }
+  ],
+  "latest_changed_production_paths": [
+    "server/src/FantasyCard.Domain/Rooms/BattleRoom.cs",
+    "server/src/FantasyCard.Domain/Rooms/RoomObservationJournal.cs",
+    "server/src/FantasyCard.Server/Admin/AdminEndpoints.cs",
+    "server/src/FantasyCard.Server/Admin/AdminTelemetryEndpoints.cs",
+    "server/src/FantasyCard.Server/Telemetry/SeasonDiagnosticProjection.cs",
+    "server/src/FantasyCard.Server/Telemetry/SeasonTelemetryDiagnosticsRepository.cs"
+  ],
+  "requirements": [
+    {
+      "id": "named-events",
+      "design_lines": "486-490",
+      "sources": [
+        "D04-room-events-r1",
+        "D04-crafting-events-r1",
+        "D04-lifecycle-events-r1",
+        "D04-physical-flow-r1"
+      ],
+      "verdict": "accepted_current_implementation",
+      "meaning": "11 original identities; potential choice, pending custody and committed assets separate; archive is domain movement."
+    },
+    {
+      "id": "uniform-dimensions",
+      "design_lines": "488",
+      "sources": [
+        "D04-build-dimensions-r1",
+        "D04-physical-flow-r1"
+      ],
+      "verdict": "accepted_current_implementation",
+      "meaning": "Season/difficulty/class/build/growth/player kind/cell/version/result. Immutable original profiles; lobby not-played fields and old missing remain unknown."
+    },
+    {
+      "id": "currency-and-physical-accounting",
+      "design_lines": "490,735-737,755",
+      "sources": [
+        "D04-currency-r1",
+        "D04-physical-flow-r1"
+      ],
+      "verdict": "accepted_current_implementation",
+      "meaning": "Exact per-currency sources/sinks/transfers; one physical identity mint, canonical destruction, custody/archive separate. Known subset conservation not global economic health."
+    },
+    {
+      "id": "actual-time-percentiles",
+      "design_lines": "490",
+      "sources": [
+        "D04-playtime-r1"
+      ],
+      "verdict": "accepted_current_implementation",
+      "meaning": "Authoritative player room intervals clipped/unioned; negative/zero rates and P10/P50/P90 exact nearest rank. Not human active time or unknown-duration zero imputation."
+    },
+    {
+      "id": "combat-details",
+      "design_lines": "490",
+      "sources": [
+        "D04-combat-measure-r1"
+      ],
+      "verdict": "accepted_current_implementation",
+      "meaning": "Natural/effective interval and draws, empty/full, instant/opening/chain, casts/replay and zero attack intents, control union/actual suppression, heal/shield requested/applied/overflow. Cumulative rows never window deltas."
+    },
+    {
+      "id": "choice-health-and-cohorts",
+      "design_lines": "688,755",
+      "sources": [
+        "D04-diagnostics-r1"
+      ],
+      "verdict": "accepted_current_implementation",
+      "meaning": "Original option/bias/base HP; legal80/70 kept. Original account facts/entry levels/outcomes/clear cells; age/prior-season not measured skill."
+    },
+    {
+      "id": "extraction-recovery-tradability",
+      "design_lines": "555,755",
+      "sources": [
+        "D04-physical-flow-r1",
+        "D04-diagnostics-r1"
+      ],
+      "verdict": "accepted_current_implementation",
+      "meaning": "Exact committed holds; earliest equipment extraction and observed recovery, right censoring explicit. Current unbound realm property counts not universal listing eligibility or historical share."
+    },
+    {
+      "id": "market-depth-conversion-prices",
+      "design_lines": "611-613,661,755",
+      "sources": [
+        "D04-diagnostics-r1"
+      ],
+      "verdict": "accepted_current_implementation",
+      "meaning": "Current separate currency depths; mature48h numerator/denominator and censored/shortened/relisted counts; immutable traded template/price/fee/units."
+    },
+    {
+      "id": "zero-shop-activity",
+      "design_lines": "714,755",
+      "sources": [
+        "D04-diagnostics-r1"
+      ],
+      "verdict": "accepted_current_implementation",
+      "meaning": "Wallet denominator and known missing; original total spend and post balance; actual claimed branches and peak issuance, known-account budget. No causal crowding or sum of exclusive choices."
+    },
+    {
+      "id": "red-instance-lifetime",
+      "design_lines": "585,755",
+      "sources": [
+        "D04-physical-flow-r1",
+        "D04-diagnostics-r1"
+      ],
+      "verdict": "accepted_current_implementation",
+      "meaning": "Original quota scope/week, mint attempt and item custody/owner trail. Legacy unknown and1000-row truncation explicit; no quota refund inferred."
+    },
+    {
+      "id": "operational-boundaries",
+      "design_lines": "490",
+      "sources": [
+        "D04-currency-r1",
+        "D04-diagnostics-r1"
+      ],
+      "verdict": "accepted_current_implementation",
+      "meaning": "Read-only/RepeatableRead/deadline/window/source caps/private admin/no-store. IDs not metrics labels; existing low resource protections and no production deployment."
+    }
+  ],
+  "old_stage_verdicts_unchanged": true,
+  "first_red_schema_identity_gap_retained": true,
+  "all_historical_failures_retained": true,
+  "new_gameplay_campaign_cases": 0,
+  "new_native_capacity_cases": 0,
+  "new_rendered_UI_frames": 0,
+  "B05_total": 330,
+  "D03_total": 284,
+  "D03_remaining": 16,
+  "class_efficiency_target": 1.15,
+  "capital_banks_unchanged": true,
+  "production_modified": false,
+  "remaining_items": [
+    "D03",
+    "E02",
+    "F01",
+    "F03"
+  ]
+}

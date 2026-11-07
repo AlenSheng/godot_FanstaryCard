@@ -19,7 +19,8 @@ public sealed record ExplorationItem(
     bool IsSafe = false,
     EquipmentRewardData? Equipment = null,
     int SlotIndex = -1,
-    bool? IsGenerated = null);
+    bool? IsGenerated = null,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)] bool IsCombatProjection = false);
 
 public sealed record PendingChoiceReplacement(
     Guid Token,
@@ -37,10 +38,12 @@ public sealed class ExplorationInventory
 {
     private readonly List<ExplorationItem> _items = [];
     private PendingChoiceReplacement? _pendingReplacement;
+    private readonly GameConfigCatalog _configuration;
 
-    public ExplorationInventory(int capacity, int safeSlots, IReadOnlyList<int>? safeSlotIndexes = null)
+    public ExplorationInventory(int capacity, int safeSlots, IReadOnlyList<int>? safeSlotIndexes = null, GameConfigCatalog? configuration = null)
     {
-        if (!GameConfigCatalog.Current.Backpacks.Any(item => item.Capacity == capacity && item.SafeSlots == safeSlots))
+        _configuration = configuration ?? GameConfigCatalog.Current;
+        if (!_configuration.Backpacks.Any(item => item.Capacity == capacity && item.SafeSlots == safeSlots))
             throw new ArgumentOutOfRangeException(nameof(capacity), "Use a configured exploration inventory tier.");
         ArgumentOutOfRangeException.ThrowIfNegative(safeSlots);
         Capacity = capacity;
@@ -106,7 +109,8 @@ public sealed class ExplorationInventory
 
     internal void Apply(ExplorationInventory staged)
     {
-        if (staged.Capacity != Capacity || !staged.SafeSlotIndexes.SequenceEqual(SafeSlotIndexes))
+        if (staged.Capacity != Capacity || !staged.SafeSlotIndexes.SequenceEqual(SafeSlotIndexes) ||
+            staged._configuration.ContentHash != _configuration.ContentHash)
             throw new InvalidOperationException("Staged inventory has different slots.");
         _items.Clear();
         _items.AddRange(staged._items);
@@ -173,10 +177,12 @@ public sealed class ExplorationInventory
     public ExplorationInventorySnapshot Capture() =>
         new(Capacity, SafeSlots, _items.ToArray(), _pendingReplacement, SafeSlotIndexes);
 
-    public static ExplorationInventory Restore(ExplorationInventorySnapshot snapshot)
+    internal ExplorationInventory Clone() => Restore(Capture(), _configuration);
+
+    public static ExplorationInventory Restore(ExplorationInventorySnapshot snapshot, GameConfigCatalog? configuration = null)
     {
         ArgumentNullException.ThrowIfNull(snapshot);
-        var inventory = new ExplorationInventory(snapshot.Capacity, snapshot.SafeSlots, snapshot.SafeSlotIndexes);
+        var inventory = new ExplorationInventory(snapshot.Capacity, snapshot.SafeSlots, snapshot.SafeSlotIndexes, configuration);
         // Old snapshots used flags without slots; reserve their safe items before assigning other slots.
         IEnumerable<ExplorationItem> items = snapshot.Items.All(item => item.SlotIndex < 0)
             ? snapshot.Items.OrderByDescending(item => item.IsSafe)

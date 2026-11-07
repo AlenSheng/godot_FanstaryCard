@@ -1,5 +1,6 @@
 using FantasyCard.Server.ProtobufHttp;
 using FantasyCard.Contracts.Mail;
+using FantasyCard.Domain.Players;
 using FantasyCard.Server.Common;
 using FantasyCard.Server.Identity;
 
@@ -72,7 +73,7 @@ public static class MailEndpoints
             var result = await repository.ClaimAsync(player.UserId, mailId, requestId, cancellationToken);
             return result is null ? Results.NotFound() : Results.Ok(result);
         }
-        catch (InvalidOperationException exception)
+        catch (Exception exception) when (exception is InvalidOperationException or DomainValidationException or OverflowException)
         {
             return Results.Problem(statusCode: 400, title: "Invalid mail attachment", detail: exception.Message);
         }
@@ -95,7 +96,7 @@ public static class MailEndpoints
         {
             return Results.Ok(await repository.ClaimAllAsync(player.UserId, requestId, cancellationToken));
         }
-        catch (InvalidOperationException exception)
+        catch (Exception exception) when (exception is InvalidOperationException or DomainValidationException or OverflowException)
         {
             return Results.Problem(statusCode: 400, title: "Invalid mail attachment", detail: exception.Message);
         }

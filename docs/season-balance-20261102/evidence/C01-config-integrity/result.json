@@ -1,0 +1,29 @@
+{
+  "status": "partial_C01_integrity_and_version_registry_passed_room_consumption_pending",
+  "server_configuration_tests_passed": 43,
+  "domain_configuration_tests_passed": 4,
+  "tests_failed": 0,
+  "tests_skipped": 0,
+  "public_archive_sha256": "7c26b4182680ae1ed5ddead1d69b5c1523fe0ca6d52dc8e6aef178f54e207af4",
+  "verified": [
+    "Current embedded bundle hash and original catalog regression",
+    "Two published versions with different card base damage and per-level growth remain separately readable",
+    "Tampered, truncated, missing-hash and repeated-hash bundles rejected",
+    "Expected version/hash mismatch cannot register a version",
+    "Same-version replacement rejected without changing original catalog",
+    "Concurrent identical registrations return one retained catalog",
+    "Unknown version fails without choosing current config",
+    "Candidate exports remain byte identical to r27 on both sides"
+  ],
+  "pending": [
+    "Server archive-directory loading and published identity source",
+    "Room creation/recovery/card-level/equipment/loot/inventory consumers pinned to the resolved catalog",
+    "Typed seasonal configuration consumption, remaining fields/tables and unified active bundle publication",
+    "Client compatibility and actual cross-configuration room recovery tests"
+  ],
+  "transport_history": "First premature extraction failed before any SDK/test started; same completed SCP then verified by SHA256 and source manifest. Original failure record retained.",
+  "production_deployed": false,
+  "active_runtime_bundle_replaced": false,
+  "capacity_retest_performed": false,
+  "B05_matches_consumed": 0
+}

@@ -1,0 +1,17 @@
+{
+  "container_id": "462217adbd0b55ca434e9b56470958087761310ee1669682d0f398522e50da33",
+  "name": "fc-season-a03-storage-20261102-r63",
+  "database_container": "803968e390014540be88f60b9ac43203946d0145bf886fc61d9d9d4d04bc3b1a",
+  "source_base": "e8dfb2ca170d3a8e0331901229dddf5eaa803896",
+  "archive_sha256": "575980cda3dfd90bb4eba1c32420bda0718bab16c7a3f0b91538674f71569a17",
+  "image_id": "sha256:4beef5b8919dcaa2dc924233bd069257e883cc7a061e09088a97d152d6a48510",
+  "cpu": 1,
+  "memory_mib": 1200,
+  "server_command": "dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter \"FullyQualifiedName~PostgresSeason|FullyQualifiedName~PostgresEnhancementQuoteTests|FullyQualifiedName~FantasyCard.Server.Tests.Config|FullyQualifiedName~SeasonWallet|FullyQualifiedName~PostgresDifficultyUnlockTests|FullyQualifiedName~Settlement|FullyQualifiedName~SeasonCraftingEncodingTests\" --logger \"trx;LogFileName=season-crafting-server.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "server_evidence_source": null,
+  "domain_command": "true",
+  "domain_evidence_source": "r61 559 unchanged + r62 corrected2; domain runtime unchanged",
+  "production_database_used": false,
+  "available_ram_before": 2546077696,
+  "free_disk_before": 3490578432
+}

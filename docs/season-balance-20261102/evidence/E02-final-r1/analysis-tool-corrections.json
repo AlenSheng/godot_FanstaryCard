@@ -1,0 +1,20 @@
+{
+  "scope": "offline analysis scripts, no engine/gameplay failure or business-assertion relaxation",
+  "corrections": [
+    {
+      "original": "audit-e02-semantic-inputs-r1.py",
+      "issue": "Suffix catalog.json also matched server_error_catalog.json; KeyError tables, no output proof produced",
+      "correction": "Exact catalog path, original script retained"
+    },
+    {
+      "original": "audit-e02-semantic-inputs-r2.py",
+      "issue": "Locale diff at outer strings map was too coarse",
+      "correction": "r3 compares leaf strings and keeps all old values; r2 output retained"
+    },
+    {
+      "original": "audit-e02-current-closure-r1.py",
+      "issue": "Product count included unchanged tools/validate_ui_hidden.py:117 instead of client-only116",
+      "correction": "r2 uses client product paths; every hash already matched; original count assertion retained"
+    }
+  ]
+}

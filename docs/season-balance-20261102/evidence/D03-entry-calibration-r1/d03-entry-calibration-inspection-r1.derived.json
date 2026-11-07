@@ -1,0 +1,116 @@
+{
+  "status": "D03_entry_fix_observed_formal16_local_not_whole_acceptance",
+  "new_matches": 42,
+  "stages": [
+    {
+      "stage": "d03-support-r1",
+      "cases": 12,
+      "outcomes": {
+        "Dead": 12
+      },
+      "versions": {
+        "season-v1-config-15": {
+          "Dead": 12
+        }
+      },
+      "casts": 1717,
+      "resource_changes": 100
+    },
+    {
+      "stage": "d03-d0-candidates-r1",
+      "cases": 12,
+      "outcomes": {
+        "Dead": 3,
+        "Extracted": 9
+      },
+      "versions": {
+        "d03-d0-hp-shield-7000-dev-v1": {
+          "Dead": 3,
+          "Extracted": 3
+        },
+        "d03-d0-hp-shield-5000-dev-v1": {
+          "Extracted": 6
+        }
+      },
+      "casts": 1534,
+      "resource_changes": 106
+    },
+    {
+      "stage": "d03-d0-holdout-r1",
+      "cases": 6,
+      "outcomes": {
+        "Extracted": 6
+      },
+      "versions": {
+        "d03-d0-hp-shield-5000-dev-v1": {
+          "Extracted": 6
+        }
+      },
+      "casts": 592,
+      "resource_changes": 66
+    },
+    {
+      "stage": "d03-d0-holdout-control-r1",
+      "cases": 6,
+      "outcomes": {
+        "Dead": 3,
+        "Extracted": 3
+      },
+      "versions": {
+        "season-v1-config-15": {
+          "Dead": 3,
+          "Extracted": 3
+        }
+      },
+      "casts": 887,
+      "resource_changes": 93
+    },
+    {
+      "stage": "d03-formal16-routes-r1",
+      "cases": 6,
+      "outcomes": {
+        "Extracted": 6
+      },
+      "versions": {
+        "season-v1-config-16": {
+          "Extracted": 6
+        }
+      },
+      "casts": 440,
+      "resource_changes": 45
+    }
+  ],
+  "selected_D0_hp_shield_basis": 5000,
+  "damage_interval_rewards_playerHP_unchanged": true,
+  "workbook_only2cells_changed": true,
+  "old15_retained": true,
+  "formal16_fresh6_extracted": true,
+  "source_sha256": {
+    "d03-support-r1/result.json": "66d6506c031cb5ba050ac705ff619aa1e13eb0a00fd655cf2cb9e0672de6a13e",
+    "d03-support-r1/observations/attempts.original.jsonl": "fc4dd9eaede214e2a8f6f292cd01b24acb488497de27b4985ebe6e4fdd287af9",
+    "d03-support-r1/observations/routes.original.jsonl": "0142c90fce26635be0862088886262b2ffdf311ef8f3f45725670cb1ead18951",
+    "d03-support-r1/observations/events.original.jsonl": "04aca1d71e7ff3af87aceb4e81827b9ae2c57267c3dca48ca7e1769269bd155c",
+    "d03-d0-candidates-r1/result.json": "e1a366636419846889fae9b35c42c9e67aeba6b8c4d9bd3e39a151709caed0d8",
+    "d03-d0-candidates-r1/observations/attempts.original.jsonl": "f3cebfccd98b4555e8f0c7b004645eea67f5a39c77144c77c88963dc516b2c0c",
+    "d03-d0-candidates-r1/observations/routes.original.jsonl": "f76bb8527d657008e9fb7f65e51327d2cde15a64b0a22c0bc2c981c397619fd4",
+    "d03-d0-candidates-r1/observations/events.original.jsonl": "c7ece809443dc3ead8ca9eae0fd4081b7988c683b6f1983a9a04f43a7f671816",
+    "d03-d0-holdout-r1/result.json": "372923d48827ea581b3f477112bf24d67b9211097641b6e5856c8a8051efa373",
+    "d03-d0-holdout-r1/observations/attempts.original.jsonl": "e2383749fe0b4f082bc9095a8fd8d475bd26319be84f31d3b079d59d61b6225a",
+    "d03-d0-holdout-r1/observations/routes.original.jsonl": "b7558f15bb8b43835342630bb93ad129894eb4fed0af34c18cfc7f85e216d29b",
+    "d03-d0-holdout-r1/observations/events.original.jsonl": "7877f6beb556bd431fab6c4138c456b6bc00478d47628c68be47161afb7d0bc2",
+    "d03-d0-holdout-control-r1/result.json": "14504f0a382fc2dc2ee86906933a453f049050ae6bfee912362263ae30f3ef7e",
+    "d03-d0-holdout-control-r1/observations/attempts.original.jsonl": "d8418f5fb5d7ef1a05b5c878b4dee59c60e345d8a1989cbbf21124d6db7b4555",
+    "d03-d0-holdout-control-r1/observations/routes.original.jsonl": "0e0a2c1b391e0f7f668a5d1436f3d7e59bb6f62a9d84284b64d197c22fb4f6be",
+    "d03-d0-holdout-control-r1/observations/events.original.jsonl": "7ae3886a72b27a1018cd96b08ec1c485b806b324db071dfddb2cb11a0a40f9e2",
+    "d03-formal16-routes-r1/result.json": "5f6e62b98a232969c6d726a4d9721c499d2469f66815e3b5b41d12ebddc555f7",
+    "d03-formal16-routes-r1/observations/attempts.original.jsonl": "5a0482de3456976814c3639fd683bdd2ab3b75f2a4cc938595ab047c217ddb2a",
+    "d03-formal16-routes-r1/observations/routes.original.jsonl": "8b6e4b7dffa6f0efaa36426397a1e4862339c98a00c7637084d4f5a6cfcd5a16",
+    "d03-formal16-routes-r1/observations/events.original.jsonl": "a9cebd37588494d201fb185c003f2ee264686c960d21f66d4a3aa7dea933d481"
+  },
+  "D03_complete": false,
+  "D03_used": 114,
+  "D03_remaining": 186,
+  "population_P50_P90_and_class15_not_passed": true,
+  "branch_income_not_merged_into_observed_banks": true,
+  "production_not_activated": true
+}

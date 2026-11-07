@@ -1,0 +1,17 @@
+  Discovering: FantasyCard.Domain.Tests
+  Discovered:  FantasyCard.Domain.Tests
+  Starting:    FantasyCard.Domain.Tests
+    FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests.FinalNinePublishedR1RoutesKeepEveryDrawWithinItsPrintedAndPassiveBudget [STARTING]
+    FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests.FinalNinePublishedR1RoutesKeepEveryDrawWithinItsPrintedAndPassiveBudget [FAIL]
+      FantasyCard.Domain.Players.DomainValidationException : Resolve the independent red drop before continuing normal rewards.
+      Stack Trace:
+        server\src\FantasyCard.Domain\Rooms\BattleRoomRedRewards.cs(83,0): at FantasyCard.Domain.Rooms.BattleRoom.RequireRedChoiceResolved(RoomPlayerState player)
+        server\src\FantasyCard.Domain\Rooms\BattleRoom.cs(552,0): at FantasyCard.Domain.Rooms.BattleRoom.ClaimReward(Guid playerId, String optionId, String replaceItemId, Boolean equip)
+        server\tests\FantasyCard.Domain.Tests\Combat\SeasonResourceLoopTargetedTests.cs(94,0): at FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests.RunPublishedR1(HeroClass hero, String build, String[] deck, CombatCardCatalog catalog, Int32 seed, StreamWriter trace)
+        server\tests\FantasyCard.Domain.Tests\Combat\SeasonResourceLoopTargetedTests.cs(45,0): at FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests.FinalNinePublishedR1RoutesKeepEveryDrawWithinItsPrintedAndPassiveBudget()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests.FinalNinePublishedR1RoutesKeepEveryDrawWithinItsPrintedAndPassiveBudget [FINISHED] Time: 0.9297098s
+  Finished:    FantasyCard.Domain.Tests (ID = '48ffbb3db26321595d10f660d0a3cd3db4ef4a076258a119641fc2e0b40b9034')
+=== TEST EXECUTION SUMMARY ===
+   FantasyCard.Domain.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 1.076s

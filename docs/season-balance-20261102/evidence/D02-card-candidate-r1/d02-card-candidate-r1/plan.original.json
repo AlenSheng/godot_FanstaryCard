@@ -1,0 +1,125 @@
+{
+  "prior_used": 100,
+  "maximum_new": 12,
+  "candidate_version": "season-v1-config-16-mage10-probe-r1",
+  "candidate_content_hash": "84676c84e02c915b1f2b3435808d2fff491cf34203f95dcba55424cc0df9f967",
+  "policy": {
+    "scope": "Affected candidate PVP functional boundaries, not randomPvPwinrate. Initialduelhand declared/reorderedonce, same20physicalIDs/RNG retained; no later manipulation. MAG10reallycast for everyMage; 700/800ms late,400/500ms action, disconnectfreeze/14.9vs15/recovery/replay/originalPVEbudget.",
+    "sustain_basis_points": 500,
+    "class15_not_relaxed": true,
+    "old_matrix_replay": false,
+    "B05_additional_cases": 0,
+    "local_reserve_GiB": 2,
+    "startup_GiB": 1
+  },
+  "cases": [
+    {
+      "id": "D02-CARD-PVP-001",
+      "first": "Mage",
+      "late": "Mage",
+      "difficulty": 0,
+      "outcome": "Reconnect",
+      "disconnect_role": "First",
+      "seed": 1800100
+    },
+    {
+      "id": "D02-CARD-PVP-002",
+      "first": "Mage",
+      "late": "Mage",
+      "difficulty": 0,
+      "outcome": "Expire",
+      "disconnect_role": "First",
+      "seed": 1800101
+    },
+    {
+      "id": "D02-CARD-PVP-003",
+      "first": "Mage",
+      "late": "Priest",
+      "difficulty": 0,
+      "outcome": "Expire",
+      "disconnect_role": "Late",
+      "seed": 1800102
+    },
+    {
+      "id": "D02-CARD-PVP-004",
+      "first": "Priest",
+      "late": "Mage",
+      "difficulty": 0,
+      "outcome": "Reconnect",
+      "disconnect_role": "Late",
+      "seed": 1800103
+    },
+    {
+      "id": "D02-CARD-PVP-005",
+      "first": "Mage",
+      "late": "Guardian",
+      "difficulty": 0,
+      "outcome": "Reconnect",
+      "disconnect_role": "First",
+      "seed": 1800104
+    },
+    {
+      "id": "D02-CARD-PVP-006",
+      "first": "Guardian",
+      "late": "Mage",
+      "difficulty": 0,
+      "outcome": "Expire",
+      "disconnect_role": "First",
+      "seed": 1800105
+    },
+    {
+      "id": "D02-CARD-PVP-007",
+      "first": "Mage",
+      "late": "Mage",
+      "difficulty": 5,
+      "outcome": "Expire",
+      "disconnect_role": "Late",
+      "seed": 1800106
+    },
+    {
+      "id": "D02-CARD-PVP-008",
+      "first": "Mage",
+      "late": "Mage",
+      "difficulty": 5,
+      "outcome": "Reconnect",
+      "disconnect_role": "Late",
+      "seed": 1800107
+    },
+    {
+      "id": "D02-CARD-PVP-009",
+      "first": "Mage",
+      "late": "Priest",
+      "difficulty": 5,
+      "outcome": "Reconnect",
+      "disconnect_role": "First",
+      "seed": 1800108
+    },
+    {
+      "id": "D02-CARD-PVP-010",
+      "first": "Priest",
+      "late": "Mage",
+      "difficulty": 5,
+      "outcome": "Expire",
+      "disconnect_role": "First",
+      "seed": 1800109
+    },
+    {
+      "id": "D02-CARD-PVP-011",
+      "first": "Mage",
+      "late": "Guardian",
+      "difficulty": 5,
+      "outcome": "Expire",
+      "disconnect_role": "Late",
+      "seed": 1800110
+    },
+    {
+      "id": "D02-CARD-PVP-012",
+      "first": "Guardian",
+      "late": "Mage",
+      "difficulty": 5,
+      "outcome": "Reconnect",
+      "disconnect_role": "Late",
+      "seed": 1800111
+    }
+  ]
+}

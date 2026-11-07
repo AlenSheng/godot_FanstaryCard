@@ -1,0 +1,19 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+{"test_combat_preview_state.gd":{"message":"Combat previews reject stale state, include printed direct damage, and preserve first-card core selection","ok":true},"test_mage_return_budget.gd":{},"test_protobuf.gd":{"message":"Golden wire, nested defaults, unknown fields and truncation passed","ok":true}}
+SCRIPT ERROR: Invalid access to property or key 'online' on a base object of type 'Nil'.
+   at: allowed (res://state/game_store.gd:1063)
+   GDScript backtrace (most recent call first):
+       [0] allowed (res://state/game_store.gd:1063)
+       [1] _calculate_combat_preview (res://state/game_store.gd:1312)
+       [2] run_test (res://tests/test_mage_return_budget.gd:28)
+       [3] run (res://run.gd:8)
+SCRIPT ERROR: Invalid access to property or key 'immediate_draw' on a base object of type 'Dictionary'.
+   at: run_test (res://tests/test_mage_return_budget.gd:29)
+   GDScript backtrace (most recent call first):
+       [0] run_test (res://tests/test_mage_return_budget.gd:29)
+       [1] run (res://run.gd:8)
+WARNING: 5 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 1 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)

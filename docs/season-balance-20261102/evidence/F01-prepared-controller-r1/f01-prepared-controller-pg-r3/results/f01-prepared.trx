@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="4811eff4-92c6-422a-973b-0aa8f21fe67c" name="shengjiahao@YK-SHENGJIAHAO 2026-11-07 05:11:29" runUser="DOBEST\shengjiahao" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-07T05:11:29.3085709+08:00" queuing="2026-11-07T05:11:29.3085712+08:00" start="2026-11-07T05:11:24.5166048+08:00" finish="2026-11-07T05:11:29.3165226+08:00" />
+  <TestSettings name="default" id="8ad33af2-4f63-41b5-b80e-34dd334e0719">
+    <Deployment runDeploymentRoot="shengjiahao_YK-SHENGJIAHAO_2026-11-07_05_11_29" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="f5fc45a1-ed88-49f9-b469-0752392281e7" testId="b8b53513-d2fd-9f68-8f6e-6ad37e3c34d4" testName="FantasyCard.Server.Tests.Persistence.PostgresFirstFortnightPreparationTests.PreparedControllerRetainsLegalArmorAndActualBagPotionHoldsAndRejectsMismatchedInputs" computerName="YK-SHENGJIAHAO" duration="00:00:02.4934021" startTime="2026-11-07T05:11:26.6610727+08:00" endTime="2026-11-07T05:11:29.1895167+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f5fc45a1-ed88-49f9-b469-0752392281e7">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidCastException : Unable to cast object of type 'System.Int32' to type 'System.Int64'.</Message>
+          <StackTrace>   at FantasyCard.Server.Tests.Persistence.PostgresTestSchema.ScalarAsync[T](String sql, Object[] parameters)&#xD;
+   at FantasyCard.Server.Tests.Persistence.PostgresTestSchema.ScalarAsync[T](String sql, Object[] parameters) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresRuntimeIntegrationTests.cs:line 2026&#xD;
+   at FantasyCard.Server.Tests.Persistence.PostgresFirstFortnightPreparationTests.PreparedControllerRetainsLegalArmorAndActualBagPotionHoldsAndRejectsMismatchedInputs() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresFirstFortnightPreparationTests.cs:line 169&#xD;
+   at FantasyCard.Server.Tests.Persistence.PostgresFirstFortnightPreparationTests.PreparedControllerRetainsLegalArmorAndActualBagPotionHoldsAndRejectsMismatchedInputs() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresFirstFortnightPreparationTests.cs:line 178&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresFirstFortnightPreparationTests.PreparedControllerRetainsLegalArmorAndActualBagPotionHoldsAndRejectsMismatchedInputs" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\f01-prepared-build-r4\bin\fantasycard.server.tests\release\fantasycard.server.tests.dll" id="b8b53513-d2fd-9f68-8f6e-6ad37e3c34d4">
+      <Execution id="f5fc45a1-ed88-49f9-b469-0752392281e7" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\f01-prepared-build-r4\bin\FantasyCard.Server.Tests\release\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresFirstFortnightPreparationTests" name="PreparedControllerRetainsLegalArmorAndActualBagPotionHoldsAndRejectsMismatchedInputs" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="b8b53513-d2fd-9f68-8f6e-6ad37e3c34d4" executionId="f5fc45a1-ed88-49f9-b469-0752392281e7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="1" executed="1" passed="0" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)&#xD;
+[xUnit.net 00:00:00.40]   Discovering: FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:00:01.21]   Discovered:  FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:00:01.63]   Starting:    FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:00:04.14]       System.InvalidCastException : Unable to cast object of type 'System.Int32' to type 'System.Int64'.&#xD;
+[xUnit.net 00:00:04.14]       Stack Trace:&#xD;
+[xUnit.net 00:00:04.14]            at FantasyCard.Server.Tests.Persistence.PostgresTestSchema.ScalarAsync[T](String sql, Object[] parameters)&#xD;
+[xUnit.net 00:00:04.14]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresRuntimeIntegrationTests.cs(2026,0): at FantasyCard.Server.Tests.Persistence.PostgresTestSchema.ScalarAsync[T](String sql, Object[] parameters)&#xD;
+[xUnit.net 00:00:04.14]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresFirstFortnightPreparationTests.cs(169,0): at FantasyCard.Server.Tests.Persistence.PostgresFirstFortnightPreparationTests.PreparedControllerRetainsLegalArmorAndActualBagPotionHoldsAndRejectsMismatchedInputs()&#xD;
+[xUnit.net 00:00:04.14]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresFirstFortnightPreparationTests.cs(178,0): at FantasyCard.Server.Tests.Persistence.PostgresFirstFortnightPreparationTests.PreparedControllerRetainsLegalArmorAndActualBagPotionHoldsAndRejectsMismatchedInputs()&#xD;
+[xUnit.net 00:00:04.14]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:00:04.17]   Finished:    FantasyCard.Server.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="YK-SHENGJIAHAO" outcome="Error" timestamp="2026-11-07T05:11:29.1989859+08:00">
+        <Text>[xUnit.net 00:00:04.14]     FantasyCard.Server.Tests.Persistence.PostgresFirstFortnightPreparationTests.PreparedControllerRetainsLegalArmorAndActualBagPotionHoldsAndRejectsMismatchedInputs [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

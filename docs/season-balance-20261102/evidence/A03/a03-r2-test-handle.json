@@ -1,0 +1,28 @@
+{
+  "stage": "a03-r2",
+  "name": "fc-season-a03-r2-20261102",
+  "container_id": "2859b5c3113a5f816449d240c5ebf8071c7d55da97dc2fc0ef297b50ad1d95c3",
+  "source_base": "77498c868e6dc6ad547daf954f378761fede5244",
+  "archive_sha256": "587d5799fbf0d3f2a3cb5941081d4d667d29f08f51bce98c652ff2a7d2f2eb62",
+  "memory_limit_mib": 1200,
+  "cpu_limit": 1,
+  "available_ram_before": 2659520512,
+  "disk_free_before": 4588494848,
+  "image_id": "sha256:4beef5b8919dcaa2dc924233bd069257e883cc7a061e09088a97d152d6a48510",
+  "command": [
+    "dotnet",
+    "test",
+    "tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj",
+    "--filter",
+    "FullyQualifiedName~FantasyCard.Domain.Tests.Seasons.SeasonAssetDomainTests",
+    "--logger",
+    "trx;LogFileName=a03-r2.trx",
+    "--results-directory",
+    "/workspace/results",
+    "--verbosity",
+    "minimal",
+    "-m:1",
+    "-p:UseSharedCompilation=false"
+  ],
+  "started_at": "2026-11-02T09:36:38.788424+00:00"
+}

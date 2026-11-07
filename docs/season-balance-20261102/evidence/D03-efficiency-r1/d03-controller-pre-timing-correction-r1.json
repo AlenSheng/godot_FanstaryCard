@@ -1,0 +1,10 @@
+{
+  "scope": "Before any D03 timed encounter; preflight1 passed input/math only.",
+  "findings": [
+    "Draft.DrawBlock already includes ResolveControl, so forecast must use actual card printed max/2 then ResolveControl once, exactly like BattleRoom.PlayCards.",
+    "ApplyDrawSpeed replaces on longer duration OR stronger modifier; use isolated scratch real ApplyDrawSpeed/ApplyDrawBlockSpeed instead of duplicating predicate."
+  ],
+  "production_modified": false,
+  "new_encounters": 0,
+  "original_preflight1_source_and_result_retained": true
+}

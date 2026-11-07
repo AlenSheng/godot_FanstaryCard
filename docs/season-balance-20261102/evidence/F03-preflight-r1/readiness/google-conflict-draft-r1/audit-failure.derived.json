@@ -1,0 +1,8 @@
+{
+  "stage": "draft structural audit only",
+  "failure": "assert all target locale values preserved",
+  "evidence": "Google inherited unchanged Gold Market/nav_market and hall_entry_market; goal intentionally renamed to Player market for dual currencies. No scalar three-way conflict.",
+  "fix": "r2 preserves both parents changed/new keys; unchanged base labels follow explicit goal updates. No runtime or game test assertion changed.",
+  "branch_or_worktree_changed": false,
+  "runtime_started": false
+}

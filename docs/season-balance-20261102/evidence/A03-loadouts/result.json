@@ -1,0 +1,36 @@
+{
+  "status": "loadout_writes_and_read_scoping_verified_preparation_pending",
+  "server_tests": 32,
+  "reused_domain_tests": 49,
+  "domain_evidence": "../A03-api-readmodels/r5/domain.trx; Domain input hashes unchanged",
+  "godot_codec_checks": 12,
+  "failed": 0,
+  "skipped": 0,
+  "history": [
+    {
+      "run": "r6",
+      "classification": "compile_signature_error",
+      "tests_executed": 0,
+      "cause": "The seasonId parameter was added to the adjacent economy log helper instead of the inventory movement helper. Original source manifest and compiler log retained."
+    },
+    {
+      "run": "r7",
+      "passed": 32,
+      "failed": 0
+    }
+  ],
+  "scope": [
+    "Current realm equipment ownership and archive/future rejection",
+    "Loadout replay and no cross-domain unequip",
+    "Preparation-locked current references remain visible",
+    "Season closure and lock-wait admission use current server time",
+    "Inventory movement rows carry season IDs"
+  ],
+  "production_deployed": false,
+  "remaining": [
+    "Preparation and matchmaking context",
+    "Room snapshot, combat and settlement propagation",
+    "Season equipment enhancement and economy routing",
+    "Archive jobs and complete UI verification"
+  ]
+}

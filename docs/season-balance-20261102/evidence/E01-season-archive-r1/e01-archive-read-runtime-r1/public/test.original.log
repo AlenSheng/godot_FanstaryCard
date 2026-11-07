@@ -1,0 +1,43 @@
+  Discovering: FantasyCard.Server.Tests
+  Discovered:  FantasyCard.Server.Tests
+  Starting:    FantasyCard.Server.Tests
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveReadTests.RecipesPityAndOriginalLoadoutReferencesAreBoundedAndDoNotUseCurrentPolicyOrLoadouts [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveReadTests.RecipesPityAndOriginalLoadoutReferencesAreBoundedAndDoNotUseCurrentPolicyOrLoadouts [FINISHED] Time: 2.2276235s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveReadTests.EndedOriginalPagesRetainAllLocationsAndExactMetadataWithoutAnyWriteOrCurrentSeasonFallback [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveReadTests.EndedOriginalPagesRetainAllLocationsAndExactMetadataWithoutAnyWriteOrCurrentSeasonFallback [FAIL]
+      FantasyCard.Domain.Players.DomainValidationException : The selected season is not accepting new entries.
+      Stack Trace:
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Seasons\SeasonRepository.cs(152,0): at FantasyCard.Server.Seasons.SeasonRepository.EnsurePlayerWithinTransactionAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, Guid playerId, SeasonContext context, DateTimeOffset now, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Seasons\SeasonRepository.cs(142,0): at FantasyCard.Server.Seasons.SeasonRepository.EnsurePlayerAsync(Guid playerId, SeasonContext context, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Seasons\SeasonRepository.cs(143,0): at FantasyCard.Server.Seasons.SeasonRepository.EnsurePlayerAsync(Guid playerId, SeasonContext context, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Seasons\SeasonRepository.cs(143,0): at FantasyCard.Server.Seasons.SeasonRepository.EnsurePlayerAsync(Guid playerId, SeasonContext context, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresSeasonArchiveReadTests.cs(63,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveReadTests.EndedOriginalPagesRetainAllLocationsAndExactMetadataWithoutAnyWriteOrCurrentSeasonFallback()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresSeasonArchiveReadTests.cs(81,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveReadTests.EndedOriginalPagesRetainAllLocationsAndExactMetadataWithoutAnyWriteOrCurrentSeasonFallback()
+        --- End of stack trace from previous location ---
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveReadTests.EndedOriginalPagesRetainAllLocationsAndExactMetadataWithoutAnyWriteOrCurrentSeasonFallback [FINISHED] Time: 1.9536891s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveReadTests.LegacyMarkerKeepsUnknownDatesVersionsAndOpaqueBalancesWhileCurrentSeasonIsActive [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveReadTests.LegacyMarkerKeepsUnknownDatesVersionsAndOpaqueBalancesWhileCurrentSeasonIsActive [FAIL]
+      Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+      Stack Trace:
+           at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+           at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+           at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+           at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+           at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+           at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+           at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+           at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+           at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\CraftingTestInputs.cs(56,0): at FantasyCard.Server.Tests.Persistence.CraftingTestInputs.SqlAsync(PostgresTestSchema db, String sql, Object[] values)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\CraftingTestInputs.cs(56,0): at FantasyCard.Server.Tests.Persistence.CraftingTestInputs.SqlAsync(PostgresTestSchema db, String sql, Object[] values)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresSeasonArchiveReadTests.cs(125,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveReadTests.LegacyMarkerKeepsUnknownDatesVersionsAndOpaqueBalancesWhileCurrentSeasonIsActive()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresSeasonArchiveReadTests.cs(132,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveReadTests.LegacyMarkerKeepsUnknownDatesVersionsAndOpaqueBalancesWhileCurrentSeasonIsActive()
+        --- End of stack trace from previous location ---
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveReadTests.LegacyMarkerKeepsUnknownDatesVersionsAndOpaqueBalancesWhileCurrentSeasonIsActive [FINISHED] Time: 1.8007226s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveReadTests.ForeignAndActiveMembershipsAreNotExposedAndEndedSeasonsPaginateDeterministically [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveReadTests.ForeignAndActiveMembershipsAreNotExposedAndEndedSeasonsPaginateDeterministically [FINISHED] Time: 1.9842808s
+  Finished:    FantasyCard.Server.Tests (ID = '6ee669e14c23cde1f2477b274c3439cfdbe74d65b2c3c78a4e3decb2498b8f0e')
+=== TEST EXECUTION SUMMARY ===
+   FantasyCard.Server.Tests  Total: 4, Errors: 0, Failed: 2, Skipped: 0, Not Run: 0, Time: 8.106s
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory

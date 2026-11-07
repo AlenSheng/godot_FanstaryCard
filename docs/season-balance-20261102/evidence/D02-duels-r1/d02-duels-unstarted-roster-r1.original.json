@@ -1,0 +1,654 @@
+{
+  "prior_used": 3,
+  "policy": {
+    "scope": "Actual published-season domain PVP, not network/capacity. Explicit authoritative StartDuel; natural collision/movement is separate route evidence.",
+    "required": [
+      "late actor0.8s gate",
+      "first actor succeeds immediately and500ms gate rejects duplicate timing",
+      "both actors actual cards and current return/control semantics",
+      "frozen original PVE unchanged",
+      "JSON roundtrip while disconnected",
+      "action replay idempotent before/after recovery",
+      "reconnect withinleavewindow restores original PVE via both leave requests",
+      "expiry at15seconds kills only disconnected participant, restores survivor, preserves deadgear in original pile"
+    ],
+    "PVP_matches_counted": 72,
+    "max_D02_cases": 300,
+    "B05_new_runs": 0,
+    "C16_new_runs": 0,
+    "D01_new_runs": 0,
+    "relaxation": false
+  },
+  "cases": [
+    {
+      "id": "D02-PVP-002",
+      "first": "Mage",
+      "late": "Mage",
+      "difficulty": 0,
+      "outcome": "Reconnect",
+      "disconnect_role": "Late",
+      "seed": 920002
+    },
+    {
+      "id": "D02-PVP-003",
+      "first": "Mage",
+      "late": "Mage",
+      "difficulty": 0,
+      "outcome": "Expire",
+      "disconnect_role": "First",
+      "seed": 920003
+    },
+    {
+      "id": "D02-PVP-005",
+      "first": "Mage",
+      "late": "Priest",
+      "difficulty": 0,
+      "outcome": "Reconnect",
+      "disconnect_role": "First",
+      "seed": 920005
+    },
+    {
+      "id": "D02-PVP-006",
+      "first": "Mage",
+      "late": "Priest",
+      "difficulty": 0,
+      "outcome": "Reconnect",
+      "disconnect_role": "Late",
+      "seed": 920006
+    },
+    {
+      "id": "D02-PVP-007",
+      "first": "Mage",
+      "late": "Priest",
+      "difficulty": 0,
+      "outcome": "Expire",
+      "disconnect_role": "First",
+      "seed": 920007
+    },
+    {
+      "id": "D02-PVP-008",
+      "first": "Mage",
+      "late": "Priest",
+      "difficulty": 0,
+      "outcome": "Expire",
+      "disconnect_role": "Late",
+      "seed": 920008
+    },
+    {
+      "id": "D02-PVP-009",
+      "first": "Mage",
+      "late": "Guardian",
+      "difficulty": 0,
+      "outcome": "Reconnect",
+      "disconnect_role": "First",
+      "seed": 920009
+    },
+    {
+      "id": "D02-PVP-010",
+      "first": "Mage",
+      "late": "Guardian",
+      "difficulty": 0,
+      "outcome": "Reconnect",
+      "disconnect_role": "Late",
+      "seed": 920010
+    },
+    {
+      "id": "D02-PVP-011",
+      "first": "Mage",
+      "late": "Guardian",
+      "difficulty": 0,
+      "outcome": "Expire",
+      "disconnect_role": "First",
+      "seed": 920011
+    },
+    {
+      "id": "D02-PVP-012",
+      "first": "Mage",
+      "late": "Guardian",
+      "difficulty": 0,
+      "outcome": "Expire",
+      "disconnect_role": "Late",
+      "seed": 920012
+    },
+    {
+      "id": "D02-PVP-013",
+      "first": "Priest",
+      "late": "Mage",
+      "difficulty": 0,
+      "outcome": "Reconnect",
+      "disconnect_role": "First",
+      "seed": 920013
+    },
+    {
+      "id": "D02-PVP-014",
+      "first": "Priest",
+      "late": "Mage",
+      "difficulty": 0,
+      "outcome": "Reconnect",
+      "disconnect_role": "Late",
+      "seed": 920014
+    },
+    {
+      "id": "D02-PVP-015",
+      "first": "Priest",
+      "late": "Mage",
+      "difficulty": 0,
+      "outcome": "Expire",
+      "disconnect_role": "First",
+      "seed": 920015
+    },
+    {
+      "id": "D02-PVP-016",
+      "first": "Priest",
+      "late": "Mage",
+      "difficulty": 0,
+      "outcome": "Expire",
+      "disconnect_role": "Late",
+      "seed": 920016
+    },
+    {
+      "id": "D02-PVP-017",
+      "first": "Priest",
+      "late": "Priest",
+      "difficulty": 0,
+      "outcome": "Reconnect",
+      "disconnect_role": "First",
+      "seed": 920017
+    },
+    {
+      "id": "D02-PVP-018",
+      "first": "Priest",
+      "late": "Priest",
+      "difficulty": 0,
+      "outcome": "Reconnect",
+      "disconnect_role": "Late",
+      "seed": 920018
+    },
+    {
+      "id": "D02-PVP-019",
+      "first": "Priest",
+      "late": "Priest",
+      "difficulty": 0,
+      "outcome": "Expire",
+      "disconnect_role": "First",
+      "seed": 920019
+    },
+    {
+      "id": "D02-PVP-020",
+      "first": "Priest",
+      "late": "Priest",
+      "difficulty": 0,
+      "outcome": "Expire",
+      "disconnect_role": "Late",
+      "seed": 920020
+    },
+    {
+      "id": "D02-PVP-021",
+      "first": "Priest",
+      "late": "Guardian",
+      "difficulty": 0,
+      "outcome": "Reconnect",
+      "disconnect_role": "First",
+      "seed": 920021
+    },
+    {
+      "id": "D02-PVP-022",
+      "first": "Priest",
+      "late": "Guardian",
+      "difficulty": 0,
+      "outcome": "Reconnect",
+      "disconnect_role": "Late",
+      "seed": 920022
+    },
+    {
+      "id": "D02-PVP-023",
+      "first": "Priest",
+      "late": "Guardian",
+      "difficulty": 0,
+      "outcome": "Expire",
+      "disconnect_role": "First",
+      "seed": 920023
+    },
+    {
+      "id": "D02-PVP-024",
+      "first": "Priest",
+      "late": "Guardian",
+      "difficulty": 0,
+      "outcome": "Expire",
+      "disconnect_role": "Late",
+      "seed": 920024
+    },
+    {
+      "id": "D02-PVP-025",
+      "first": "Guardian",
+      "late": "Mage",
+      "difficulty": 0,
+      "outcome": "Reconnect",
+      "disconnect_role": "First",
+      "seed": 920025
+    },
+    {
+      "id": "D02-PVP-026",
+      "first": "Guardian",
+      "late": "Mage",
+      "difficulty": 0,
+      "outcome": "Reconnect",
+      "disconnect_role": "Late",
+      "seed": 920026
+    },
+    {
+      "id": "D02-PVP-027",
+      "first": "Guardian",
+      "late": "Mage",
+      "difficulty": 0,
+      "outcome": "Expire",
+      "disconnect_role": "First",
+      "seed": 920027
+    },
+    {
+      "id": "D02-PVP-028",
+      "first": "Guardian",
+      "late": "Mage",
+      "difficulty": 0,
+      "outcome": "Expire",
+      "disconnect_role": "Late",
+      "seed": 920028
+    },
+    {
+      "id": "D02-PVP-029",
+      "first": "Guardian",
+      "late": "Priest",
+      "difficulty": 0,
+      "outcome": "Reconnect",
+      "disconnect_role": "First",
+      "seed": 920029
+    },
+    {
+      "id": "D02-PVP-030",
+      "first": "Guardian",
+      "late": "Priest",
+      "difficulty": 0,
+      "outcome": "Reconnect",
+      "disconnect_role": "Late",
+      "seed": 920030
+    },
+    {
+      "id": "D02-PVP-031",
+      "first": "Guardian",
+      "late": "Priest",
+      "difficulty": 0,
+      "outcome": "Expire",
+      "disconnect_role": "First",
+      "seed": 920031
+    },
+    {
+      "id": "D02-PVP-032",
+      "first": "Guardian",
+      "late": "Priest",
+      "difficulty": 0,
+      "outcome": "Expire",
+      "disconnect_role": "Late",
+      "seed": 920032
+    },
+    {
+      "id": "D02-PVP-033",
+      "first": "Guardian",
+      "late": "Guardian",
+      "difficulty": 0,
+      "outcome": "Reconnect",
+      "disconnect_role": "First",
+      "seed": 920033
+    },
+    {
+      "id": "D02-PVP-034",
+      "first": "Guardian",
+      "late": "Guardian",
+      "difficulty": 0,
+      "outcome": "Reconnect",
+      "disconnect_role": "Late",
+      "seed": 920034
+    },
+    {
+      "id": "D02-PVP-035",
+      "first": "Guardian",
+      "late": "Guardian",
+      "difficulty": 0,
+      "outcome": "Expire",
+      "disconnect_role": "First",
+      "seed": 920035
+    },
+    {
+      "id": "D02-PVP-036",
+      "first": "Guardian",
+      "late": "Guardian",
+      "difficulty": 0,
+      "outcome": "Expire",
+      "disconnect_role": "Late",
+      "seed": 920036
+    },
+    {
+      "id": "D02-PVP-037",
+      "first": "Mage",
+      "late": "Mage",
+      "difficulty": 5,
+      "outcome": "Reconnect",
+      "disconnect_role": "First",
+      "seed": 920037
+    },
+    {
+      "id": "D02-PVP-038",
+      "first": "Mage",
+      "late": "Mage",
+      "difficulty": 5,
+      "outcome": "Reconnect",
+      "disconnect_role": "Late",
+      "seed": 920038
+    },
+    {
+      "id": "D02-PVP-039",
+      "first": "Mage",
+      "late": "Mage",
+      "difficulty": 5,
+      "outcome": "Expire",
+      "disconnect_role": "First",
+      "seed": 920039
+    },
+    {
+      "id": "D02-PVP-040",
+      "first": "Mage",
+      "late": "Mage",
+      "difficulty": 5,
+      "outcome": "Expire",
+      "disconnect_role": "Late",
+      "seed": 920040
+    },
+    {
+      "id": "D02-PVP-041",
+      "first": "Mage",
+      "late": "Priest",
+      "difficulty": 5,
+      "outcome": "Reconnect",
+      "disconnect_role": "First",
+      "seed": 920041
+    },
+    {
+      "id": "D02-PVP-042",
+      "first": "Mage",
+      "late": "Priest",
+      "difficulty": 5,
+      "outcome": "Reconnect",
+      "disconnect_role": "Late",
+      "seed": 920042
+    },
+    {
+      "id": "D02-PVP-043",
+      "first": "Mage",
+      "late": "Priest",
+      "difficulty": 5,
+      "outcome": "Expire",
+      "disconnect_role": "First",
+      "seed": 920043
+    },
+    {
+      "id": "D02-PVP-044",
+      "first": "Mage",
+      "late": "Priest",
+      "difficulty": 5,
+      "outcome": "Expire",
+      "disconnect_role": "Late",
+      "seed": 920044
+    },
+    {
+      "id": "D02-PVP-045",
+      "first": "Mage",
+      "late": "Guardian",
+      "difficulty": 5,
+      "outcome": "Reconnect",
+      "disconnect_role": "First",
+      "seed": 920045
+    },
+    {
+      "id": "D02-PVP-046",
+      "first": "Mage",
+      "late": "Guardian",
+      "difficulty": 5,
+      "outcome": "Reconnect",
+      "disconnect_role": "Late",
+      "seed": 920046
+    },
+    {
+      "id": "D02-PVP-047",
+      "first": "Mage",
+      "late": "Guardian",
+      "difficulty": 5,
+      "outcome": "Expire",
+      "disconnect_role": "First",
+      "seed": 920047
+    },
+    {
+      "id": "D02-PVP-048",
+      "first": "Mage",
+      "late": "Guardian",
+      "difficulty": 5,
+      "outcome": "Expire",
+      "disconnect_role": "Late",
+      "seed": 920048
+    },
+    {
+      "id": "D02-PVP-049",
+      "first": "Priest",
+      "late": "Mage",
+      "difficulty": 5,
+      "outcome": "Reconnect",
+      "disconnect_role": "First",
+      "seed": 920049
+    },
+    {
+      "id": "D02-PVP-050",
+      "first": "Priest",
+      "late": "Mage",
+      "difficulty": 5,
+      "outcome": "Reconnect",
+      "disconnect_role": "Late",
+      "seed": 920050
+    },
+    {
+      "id": "D02-PVP-051",
+      "first": "Priest",
+      "late": "Mage",
+      "difficulty": 5,
+      "outcome": "Expire",
+      "disconnect_role": "First",
+      "seed": 920051
+    },
+    {
+      "id": "D02-PVP-052",
+      "first": "Priest",
+      "late": "Mage",
+      "difficulty": 5,
+      "outcome": "Expire",
+      "disconnect_role": "Late",
+      "seed": 920052
+    },
+    {
+      "id": "D02-PVP-053",
+      "first": "Priest",
+      "late": "Priest",
+      "difficulty": 5,
+      "outcome": "Reconnect",
+      "disconnect_role": "First",
+      "seed": 920053
+    },
+    {
+      "id": "D02-PVP-054",
+      "first": "Priest",
+      "late": "Priest",
+      "difficulty": 5,
+      "outcome": "Reconnect",
+      "disconnect_role": "Late",
+      "seed": 920054
+    },
+    {
+      "id": "D02-PVP-055",
+      "first": "Priest",
+      "late": "Priest",
+      "difficulty": 5,
+      "outcome": "Expire",
+      "disconnect_role": "First",
+      "seed": 920055
+    },
+    {
+      "id": "D02-PVP-056",
+      "first": "Priest",
+      "late": "Priest",
+      "difficulty": 5,
+      "outcome": "Expire",
+      "disconnect_role": "Late",
+      "seed": 920056
+    },
+    {
+      "id": "D02-PVP-057",
+      "first": "Priest",
+      "late": "Guardian",
+      "difficulty": 5,
+      "outcome": "Reconnect",
+      "disconnect_role": "First",
+      "seed": 920057
+    },
+    {
+      "id": "D02-PVP-058",
+      "first": "Priest",
+      "late": "Guardian",
+      "difficulty": 5,
+      "outcome": "Reconnect",
+      "disconnect_role": "Late",
+      "seed": 920058
+    },
+    {
+      "id": "D02-PVP-059",
+      "first": "Priest",
+      "late": "Guardian",
+      "difficulty": 5,
+      "outcome": "Expire",
+      "disconnect_role": "First",
+      "seed": 920059
+    },
+    {
+      "id": "D02-PVP-060",
+      "first": "Priest",
+      "late": "Guardian",
+      "difficulty": 5,
+      "outcome": "Expire",
+      "disconnect_role": "Late",
+      "seed": 920060
+    },
+    {
+      "id": "D02-PVP-061",
+      "first": "Guardian",
+      "late": "Mage",
+      "difficulty": 5,
+      "outcome": "Reconnect",
+      "disconnect_role": "First",
+      "seed": 920061
+    },
+    {
+      "id": "D02-PVP-062",
+      "first": "Guardian",
+      "late": "Mage",
+      "difficulty": 5,
+      "outcome": "Reconnect",
+      "disconnect_role": "Late",
+      "seed": 920062
+    },
+    {
+      "id": "D02-PVP-063",
+      "first": "Guardian",
+      "late": "Mage",
+      "difficulty": 5,
+      "outcome": "Expire",
+      "disconnect_role": "First",
+      "seed": 920063
+    },
+    {
+      "id": "D02-PVP-064",
+      "first": "Guardian",
+      "late": "Mage",
+      "difficulty": 5,
+      "outcome": "Expire",
+      "disconnect_role": "Late",
+      "seed": 920064
+    },
+    {
+      "id": "D02-PVP-065",
+      "first": "Guardian",
+      "late": "Priest",
+      "difficulty": 5,
+      "outcome": "Reconnect",
+      "disconnect_role": "First",
+      "seed": 920065
+    },
+    {
+      "id": "D02-PVP-066",
+      "first": "Guardian",
+      "late": "Priest",
+      "difficulty": 5,
+      "outcome": "Reconnect",
+      "disconnect_role": "Late",
+      "seed": 920066
+    },
+    {
+      "id": "D02-PVP-067",
+      "first": "Guardian",
+      "late": "Priest",
+      "difficulty": 5,
+      "outcome": "Expire",
+      "disconnect_role": "First",
+      "seed": 920067
+    },
+    {
+      "id": "D02-PVP-068",
+      "first": "Guardian",
+      "late": "Priest",
+      "difficulty": 5,
+      "outcome": "Expire",
+      "disconnect_role": "Late",
+      "seed": 920068
+    },
+    {
+      "id": "D02-PVP-069",
+      "first": "Guardian",
+      "late": "Guardian",
+      "difficulty": 5,
+      "outcome": "Reconnect",
+      "disconnect_role": "First",
+      "seed": 920069
+    },
+    {
+      "id": "D02-PVP-070",
+      "first": "Guardian",
+      "late": "Guardian",
+      "difficulty": 5,
+      "outcome": "Reconnect",
+      "disconnect_role": "Late",
+      "seed": 920070
+    },
+    {
+      "id": "D02-PVP-071",
+      "first": "Guardian",
+      "late": "Guardian",
+      "difficulty": 5,
+      "outcome": "Expire",
+      "disconnect_role": "First",
+      "seed": 920071
+    },
+    {
+      "id": "D02-PVP-072",
+      "first": "Guardian",
+      "late": "Guardian",
+      "difficulty": 5,
+      "outcome": "Expire",
+      "disconnect_role": "Late",
+      "seed": 920072
+    }
+  ]
+}

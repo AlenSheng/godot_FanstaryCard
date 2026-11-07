@@ -1,0 +1,684 @@
+{
+  "ruleset_id": "season-v1",
+  "source_zip_sha256": "ac593d3600b4c68dac4f136b0bee1808899ecf0a452b59e02605fe8b2018b64c",
+  "overall_status": "in_progress",
+  "items": [
+    {
+      "id": "A01",
+      "status": "complete",
+      "requirement": "原件、39项包内清单、新旧规则差异和实施范围冻结",
+      "evidence": [
+        "source/manifest.json",
+        "source/Season_Balance_Design.md",
+        "README.md",
+        "../../GDD.md",
+        "evidence/A01/source-freeze-validation.json"
+      ]
+    },
+    {
+      "id": "A02",
+      "status": "complete",
+      "requirement": "42日默认、30至60日、上海时区、左闭右开与04点业务日分离",
+      "evidence": [
+        "evidence/A02/result.json",
+        "evidence/A02/a02.trx",
+        "evidence/A03-storage/r2/domain.trx"
+      ],
+      "note": "Original 17 checks retained; the current 44-check season domain run adds reserved legacy archive rejection. Full runtime/configuration propagation is still tracked by A04/C01."
+    },
+    {
+      "id": "A03",
+      "status": "complete",
+      "requirement": "永久资产、赛季资产、来源季、归档域、专武钱包及历史物品分离",
+      "note": "结算/托管单和钱包/物品流水贯穿固定上下文，原季金币/碎片、永久魂、晚结算归档及配装保护通过135项服务端和19项原生编码检查；领域74项输入未变。精细掉落、其他经济写入、跨配置恢复和归档仍未完成。 后续C05至C14经济模块及A05分页归档已分别实现/验证；前述“仍未完成”为早期记录，当前条目仍待综合来源/上下文审计后收口，不把历史缺口重复当作尚未开发。 本批补齐活动永久魂通用流水的完整原版本字段，异版大厅下旧季领取、坏/缺原包、魂回滚重试等13项实际PG通过。准备/匹配仍全局限制CurrentConfigVersion且部分属性直接取当前目录，已识别为下一真实缺口，A03/A04不计通过。 原包准备→匹配→开局已实现，含原模板/背包/品质帽/偏好与补位容量，实际PG分批联合34通过。r95数字/文本难度比较错误及既有FK先拒绝、r96不完整副属性夹具、r97补位默认背包失败全部保留；最终r98的11项全过。不完整历史副属性、其余来源审计和客户端原目录预览仍未完成，A03/A04不计通过。 空副属性按历史契约保留null与零加成，不再自动补抽牌；新铸造严格拒绝空属性。非法装备准备前拒绝、旧Active释放、Ready取消回滚/重试及跨季合法空属性补开局已通过领域74/单批PG76；11语言三宽三状态99最终帧11385检查通过，原编译/音频退出诊断和126原帧保留。其余来源审计、运行中/损坏Launching全故障与原准备客户端预览仍未完成，整体20/35。 市场所有装备移动按原季补齐完整版本字段，异版新大厅下旧托管领取等实际PG9项全过；旧行不回写。下一缺口为三选一刷新仍以当前目录报价且预留/退款用历史永久金币，需按原房付款域改造，A03/A04仍未通过。 三选一刷新现由原房actor报价，临时金币不足只从原季钱包预留并按实际付款域退款；V049保留迁移前真实LegacyWallet及未知NULL版本。最终本机7/PG单批16全过，联合前批迁移控制去重17；r102的15通过/2个准备单关联夹具失败及本机夹具/编译失败原件全部保留。r101未启动，r102/r103已取证验SHA并清理终态容器/私有env。正式表/UI未变；刷新按钮硬编码价格及原准备目录预览仍归E01/E02，其他来源与完整F02仍未完成，A03/A04不计通过。 刷新原价显示子链路已落实：候选13只将正式LootRules.refresh_gold范围由server改both、原数值不变，候选12原三件套归档。旧包兼容读取校验后的原价、缺原价禁用；本机6/原生45检查通过，11语言三宽三状态99最终帧5145检查及代表图通过。354原帧和空卡表夹具、日文贴边、法葡18项失败、错误5:1假设全部保留，最终按原4:1图和固定32号字/完整至多2行修复。无新PG/HTTP网络/容量/完整路线或生产重启。此子项不收口其余原目录预览、来源、C15/C16或D/E/F，整体仍20/35。 准备页原目录子链路已验证：实际PG最终1项覆盖自有/借用两组准备前后Bootstrap，原生255项通过；11语言三宽八状态264最终帧39693逐帧检查和代表图通过，377原帧保留。默认元素/背包/安全格/模板/文字按原包，缺包保留取消并禁准备匹配，身份/地址/哈希并发保护完整。D帽只作用卡牌专武，合法防具5不投影；首轮错误预期1及草稿纠正已留证，不改服务端数值。typed-array、葡语42项裁字、默认灰菜单与传输/资源失败均保留。其余来源、完整UI与D/F未完成，A03/A04/E01/E02不据此计整体通过。 综合来源审计识别邮件Card附件未接永久副本；已准备按原mailId聚合数量、账号先锁、事务储备/账本及8项隔离PG用例。旧账号激活语义保留，无版本邮件不按当前季猜测归属；本修正尚未编译/PG验证，不计通过，且其余邮件/资产来源审计仍待。 卡写入审计另识别管理员全部解锁缺副本流水；源码已准备同事务+1链及2项PG用例，邮件8项合计10项，仍未编译/运行通过。实际原SQL/账本INSERT/对账查询在隔离PG精简TEMP表反例为0→1→0→0并整体回滚，不能替代Repository/HTTP或完整迁移验证。 本机r3已实际编译Contracts/Domain/Server/Exporter四组件；测试程序集10条CS8752为单参params的new()推断数组，已改显式附件类型，仍待成功复验。r4启动后触发持续6GiB保护，r5复用相同字节依赖的完整测试编译在准入前被拒绝，均无用例通过；原日志/源码和预构建误名更正保留。10项PG仍0执行，不能用已有DLL或旧测试程序集替代。 邮件8及管理员2项永久副本Repository真实PG已在r109全部通过，当前本机25及运行时56零跳过；测试程序集CS8752已成功复验。该子链路通过，不替代其余来源和完整故障审计。 邮件通用资源来源子链路已完成：本机25/隔离r110实际25全过，7币精确LegacyMail来源、真实制卡后余额链、单领全领/回放/回滚及装备GUID移动已验证；原6加原19用例，不造原季元数据。自有tmpfs输入逐字节校验后已卸载，云端保护未降低，所有旧输入/失败保留。管理员职业魂聚合ClassSoul与季装撤销上下文仍为下一缺口，整体21/35不提升。 管理员撤销子链路已验证：三职业精确币种、旧ClassSoul不回写、原季装移动上下文与NULL旧物、并发幂等/故障回滚原键重试经本机34/隔离r111单批33全过，新增8项。原准入及控制文件碰撞记录保留；输入/程序集验SHA、容器env与tmpfs已清理。下一批量装备发放逐物来源及其余资产/进程故障审计仍待，整体21/35不提升。 管理员批量装备逐物来源子链路已完成：实际新件GUID与AdminGrant移动同事务、旧规格和已有物品保留、并发不同键只铸一次、移动故障回滚/原键重试经本机34/隔离r112单批36全过，新增3项。r109基底不变，原件验SHA后容器env和tmpfs清理。下一步逐资产类别综合证据矩阵与原包恢复边界，整体21/35不提升。 当前综合验收通过：九类来源/24源码审计，本机原34与配置14全过，隔离PG按testName联合121通过（r115原116通过及r116仅复验原5失败，不称一次全绿）。实际30次领取后归档永久账号完整相等，旧季/永久碎片不入新防具而可明确支付永久专武。r113占位哈希/磁盘保护/缺终态原件、r114实际外观版本和r115旧主题夹具失败均保留；原预估114按TRX实际121更正，不改断言。旧专项按原范围复用，23证据根1493项已有清单复核一致；完整进程F02及广泛E01/E02仍独立未完成。临时PG WAL已恢复1GB/80MB，本机2GiB+1GiB启动、云端原保护不变。整体23/35，无新路线/遭遇/100人或生产重启。",
+      "evidence": [
+        "evidence/A03/result.json",
+        "evidence/A03/a03-r2.trx",
+        "evidence/A03-storage/result.json",
+        "evidence/A03-api-readmodels/result.json",
+        "evidence/A03-loadouts/result.json",
+        "evidence/A04-preparation/result.json",
+        "evidence/A04-matchmaking/result.json",
+        "evidence/A04-rooms/result.json",
+        "evidence/A04-settlement/result.json",
+        "evidence/C04/result.json",
+        "A03-A04-CONTEXT-AUDIT.md",
+        "evidence/A04-activity-context-r1/result.json",
+        "evidence/A04-preparation-config-r1/result.json",
+        "evidence/A04-preparation-config-r1/case-union.json",
+        "evidence/A03-A04-historical-equipment-r1/result.json",
+        "evidence/A03-A04-historical-equipment-r1/ui/final-frame-manifest.json",
+        "evidence/A04-market-movements-r1/result.json",
+        "evidence/A04-reward-refresh-funding-r1/result.json",
+        "evidence/A04-reward-refresh-funding-r1/case-union.json",
+        "evidence/C01-refresh-price-ui/result.json",
+        "evidence/A04-client-preparation-config-r1/result.json",
+        "PREPARATION-ARMOR-LEVEL-ERRATUM.md",
+        "A03-MAIL-COPY-DRAFT.md",
+        "A03-ADMIN-COPY-LEDGER-DRAFT.md",
+        "evidence/C15-native17-admin-sql-r1/admin-card-ledger-sql-r1/validation.json",
+        "A03-MAIL-BUILD-PROGRESS.md",
+        "evidence/A03-mail-build-progress-r1/result.json",
+        "evidence/C15-final-r1/result.json",
+        "A03-MAIL-RESOURCE-LEDGER.md",
+        "evidence/A03-mail-resource-ledger-r1/result.json",
+        "A03-ADMIN-REVOKE-CONTEXT.md",
+        "evidence/A03-admin-revoke-r1/result.json",
+        "A03-ADMIN-EQUIPMENT-PROVENANCE.md",
+        "evidence/A03-admin-equipment-r1/result.json",
+        "A03-A04-ASSET-CONTEXT-ACCEPTANCE.md",
+        "evidence/A03-A04-final-r1/result.json",
+        "evidence/A03-A04-final-r1/asset-context-matrix-r1.original.json"
+      ]
+    },
+    {
+      "id": "A04",
+      "status": "complete",
+      "requirement": "准备、匹配、房间、快照、掉落、结算、市场与流水锁定赛季/难度/规则/配置版本",
+      "evidence": [
+        "evidence/A03-api-readmodels/result.json",
+        "evidence/A04-preparation/result.json",
+        "evidence/A04-matchmaking/result.json",
+        "evidence/A04-rooms/result.json",
+        "evidence/A04-settlement/result.json",
+        "evidence/C04/result.json",
+        "A03-A04-CONTEXT-AUDIT.md",
+        "evidence/A04-activity-context-r1/result.json",
+        "evidence/A04-preparation-config-r1/result.json",
+        "evidence/A04-preparation-config-r1/case-union.json",
+        "evidence/A03-A04-historical-equipment-r1/result.json",
+        "evidence/A03-A04-historical-equipment-r1/ui/final-frame-manifest.json",
+        "evidence/A04-market-movements-r1/result.json",
+        "evidence/A04-reward-refresh-funding-r1/result.json",
+        "evidence/A04-reward-refresh-funding-r1/case-union.json",
+        "evidence/C01-refresh-price-ui/result.json",
+        "evidence/A04-client-preparation-config-r1/result.json",
+        "PREPARATION-ARMOR-LEVEL-ERRATUM.md",
+        "A03-MAIL-COPY-DRAFT.md",
+        "A03-ADMIN-COPY-LEDGER-DRAFT.md",
+        "evidence/C15-native17-admin-sql-r1/admin-card-ledger-sql-r1/validation.json",
+        "A03-MAIL-BUILD-PROGRESS.md",
+        "evidence/A03-mail-build-progress-r1/result.json",
+        "evidence/C15-final-r1/result.json",
+        "A03-MAIL-RESOURCE-LEDGER.md",
+        "evidence/A03-mail-resource-ledger-r1/result.json",
+        "A03-ADMIN-REVOKE-CONTEXT.md",
+        "evidence/A03-admin-revoke-r1/result.json",
+        "A03-ADMIN-EQUIPMENT-PROVENANCE.md",
+        "evidence/A03-admin-equipment-r1/result.json",
+        "A03-A04-ASSET-CONTEXT-ACCEPTANCE.md",
+        "evidence/A03-A04-final-r1/result.json",
+        "evidence/A03-A04-final-r1/asset-context-matrix-r1.original.json"
+      ],
+      "note": "结算/托管单和钱包/物品流水贯穿固定上下文，原季金币/碎片、永久魂、晚结算归档及配装保护通过135项服务端和19项原生编码检查；领域74项输入未变。精细掉落、其他经济写入、跨配置恢复和归档仍未完成。 后续C05至C14经济模块及A05分页归档已分别实现/验证；前述“仍未完成”为早期记录，当前条目仍待综合来源/上下文审计后收口，不把历史缺口重复当作尚未开发。 本批补齐活动永久魂通用流水的完整原版本字段，异版大厅下旧季领取、坏/缺原包、魂回滚重试等13项实际PG通过。准备/匹配仍全局限制CurrentConfigVersion且部分属性直接取当前目录，已识别为下一真实缺口，A03/A04不计通过。 原包准备→匹配→开局已实现，含原模板/背包/品质帽/偏好与补位容量，实际PG分批联合34通过。r95数字/文本难度比较错误及既有FK先拒绝、r96不完整副属性夹具、r97补位默认背包失败全部保留；最终r98的11项全过。不完整历史副属性、其余来源审计和客户端原目录预览仍未完成，A03/A04不计通过。 空副属性按历史契约保留null与零加成，不再自动补抽牌；新铸造严格拒绝空属性。非法装备准备前拒绝、旧Active释放、Ready取消回滚/重试及跨季合法空属性补开局已通过领域74/单批PG76；11语言三宽三状态99最终帧11385检查通过，原编译/音频退出诊断和126原帧保留。其余来源审计、运行中/损坏Launching全故障与原准备客户端预览仍未完成，整体20/35。 市场所有装备移动按原季补齐完整版本字段，异版新大厅下旧托管领取等实际PG9项全过；旧行不回写。下一缺口为三选一刷新仍以当前目录报价且预留/退款用历史永久金币，需按原房付款域改造，A03/A04仍未通过。 三选一刷新现由原房actor报价，临时金币不足只从原季钱包预留并按实际付款域退款；V049保留迁移前真实LegacyWallet及未知NULL版本。最终本机7/PG单批16全过，联合前批迁移控制去重17；r102的15通过/2个准备单关联夹具失败及本机夹具/编译失败原件全部保留。r101未启动，r102/r103已取证验SHA并清理终态容器/私有env。正式表/UI未变；刷新按钮硬编码价格及原准备目录预览仍归E01/E02，其他来源与完整F02仍未完成，A03/A04不计通过。 刷新原价显示子链路已落实：候选13只将正式LootRules.refresh_gold范围由server改both、原数值不变，候选12原三件套归档。旧包兼容读取校验后的原价、缺原价禁用；本机6/原生45检查通过，11语言三宽三状态99最终帧5145检查及代表图通过。354原帧和空卡表夹具、日文贴边、法葡18项失败、错误5:1假设全部保留，最终按原4:1图和固定32号字/完整至多2行修复。无新PG/HTTP网络/容量/完整路线或生产重启。此子项不收口其余原目录预览、来源、C15/C16或D/E/F，整体仍20/35。 准备页原目录子链路已验证：实际PG最终1项覆盖自有/借用两组准备前后Bootstrap，原生255项通过；11语言三宽八状态264最终帧39693逐帧检查和代表图通过，377原帧保留。默认元素/背包/安全格/模板/文字按原包，缺包保留取消并禁准备匹配，身份/地址/哈希并发保护完整。D帽只作用卡牌专武，合法防具5不投影；首轮错误预期1及草稿纠正已留证，不改服务端数值。typed-array、葡语42项裁字、默认灰菜单与传输/资源失败均保留。其余来源、完整UI与D/F未完成，A03/A04/E01/E02不据此计整体通过。 综合来源审计识别邮件Card附件未接永久副本；已准备按原mailId聚合数量、账号先锁、事务储备/账本及8项隔离PG用例。旧账号激活语义保留，无版本邮件不按当前季猜测归属；本修正尚未编译/PG验证，不计通过，且其余邮件/资产来源审计仍待。 卡写入审计另识别管理员全部解锁缺副本流水；源码已准备同事务+1链及2项PG用例，邮件8项合计10项，仍未编译/运行通过。实际原SQL/账本INSERT/对账查询在隔离PG精简TEMP表反例为0→1→0→0并整体回滚，不能替代Repository/HTTP或完整迁移验证。 本机r3已实际编译Contracts/Domain/Server/Exporter四组件；测试程序集10条CS8752为单参params的new()推断数组，已改显式附件类型，仍待成功复验。r4启动后触发持续6GiB保护，r5复用相同字节依赖的完整测试编译在准入前被拒绝，均无用例通过；原日志/源码和预构建误名更正保留。10项PG仍0执行，不能用已有DLL或旧测试程序集替代。 邮件8及管理员2项永久副本Repository真实PG已在r109全部通过，当前本机25及运行时56零跳过；测试程序集CS8752已成功复验。该子链路通过，不替代其余来源和完整故障审计。 邮件通用资源来源子链路已完成：本机25/隔离r110实际25全过，7币精确LegacyMail来源、真实制卡后余额链、单领全领/回放/回滚及装备GUID移动已验证；原6加原19用例，不造原季元数据。自有tmpfs输入逐字节校验后已卸载，云端保护未降低，所有旧输入/失败保留。管理员职业魂聚合ClassSoul与季装撤销上下文仍为下一缺口，整体21/35不提升。 管理员撤销子链路已验证：三职业精确币种、旧ClassSoul不回写、原季装移动上下文与NULL旧物、并发幂等/故障回滚原键重试经本机34/隔离r111单批33全过，新增8项。原准入及控制文件碰撞记录保留；输入/程序集验SHA、容器env与tmpfs已清理。下一批量装备发放逐物来源及其余资产/进程故障审计仍待，整体21/35不提升。 管理员批量装备逐物来源子链路已完成：实际新件GUID与AdminGrant移动同事务、旧规格和已有物品保留、并发不同键只铸一次、移动故障回滚/原键重试经本机34/隔离r112单批36全过，新增3项。r109基底不变，原件验SHA后容器env和tmpfs清理。下一步逐资产类别综合证据矩阵与原包恢复边界，整体21/35不提升。 当前综合验收通过：九类来源/24源码审计，本机原34与配置14全过，隔离PG按testName联合121通过（r115原116通过及r116仅复验原5失败，不称一次全绿）。实际30次领取后归档永久账号完整相等，旧季/永久碎片不入新防具而可明确支付永久专武。r113占位哈希/磁盘保护/缺终态原件、r114实际外观版本和r115旧主题夹具失败均保留；原预估114按TRX实际121更正，不改断言。旧专项按原范围复用，23证据根1493项已有清单复核一致；完整进程F02及广泛E01/E02仍独立未完成。临时PG WAL已恢复1GB/80MB，本机2GiB+1GiB启动、云端原保护不变。整体23/35，无新路线/遭遇/100人或生产重启。"
+    },
+    {
+      "id": "A05",
+      "status": "complete",
+      "requirement": "跨季停止旧准备、市场退回、旧房收尾、分页归档任务、满仓托管与失败恢复",
+      "evidence": [
+        "evidence/A04-matchmaking/result.json",
+        "evidence/A04-rooms/result.json",
+        "evidence/A04-settlement/result.json",
+        "A05-ARCHIVE.md",
+        "evidence/A05-archive/result.json",
+        "evidence/A05-archive/server-case-union.json",
+        "evidence/A05-archive/manifest.json",
+        "ENTRY-QUALITY-ERRATUM.md",
+        "evidence/entry-quality-erratum-r1/result.json"
+      ],
+      "note": "后端本轮验收通过：V048原物收藏/原季配装记录、有界分页及账号先锁、市场托管/旧房等待、原钱包晚入账和失败游标恢复。r92本机预编译程序集在云端运行时真实PG34/34、零跳过，含8归档控制和实际取消开局后的收口；与r91通过项去重联合106，不是一次106全跑。r91的32失败、r2编译失败、r3观察超时及最终7通过/27连接失败原件全部保留。归档UI仍E01/E02、整进程故障仍F02；旧房未被强制结束，未部署/重启生产或补测100人。 口径更正：D0蓝装合法，原将2误读为绿是报告错误；产品规则未变。r93恢复蓝装夹具及D0蓝/D1紫上限正控15项全过，去重联合108；原78414732和全部失败/绿装证据保留。"
+    },
+    {
+      "id": "B01",
+      "status": "complete",
+      "requirement": "v0.70黄金向量与职业合法70/80/100生命保持，通过真实Resolver回归",
+      "evidence": [
+        "evidence/B01-B02-B04/result.json"
+      ],
+      "note": "实际CombatResolver既有向量、三职业合法生命、旧策略与快照回归通过；本批186领域/135服务端/20原生编码检查，未改变旧公式。"
+    },
+    {
+      "id": "B02",
+      "status": "complete",
+      "requirement": "R小于2清连携且无本命即时抽牌；R至少2保留节奏并限制到实际消耗减1",
+      "evidence": [
+        "evidence/B01-B02-B04/result.json"
+      ],
+      "note": "独立新季策略：单核心清C无被动即时抽牌，多核心旧档位并受真实消耗减1上限；合法20张、明确抽牌、混合消耗、预览和恢复均已验证。持续资源循环仍归B05。"
+    },
+    {
+      "id": "B03",
+      "status": "complete",
+      "requirement": "两次成功连放至少500ms，同combatActionId幂等，重连与快照恢复不绕过",
+      "evidence": [
+        "evidence/B03/result.json"
+      ],
+      "note": "500ms服务端房间时钟、序号动作ID、64项有界结果与持久高水位、确认前快照、冷恢复和终态只读回放通过；194领域/145服务端/114原生布尔检查，原失败与启动保护记录保留。"
+    },
+    {
+      "id": "B04",
+      "status": "complete",
+      "requirement": "新季有效PVE正伤害意图减免后最低1，取消/纯效果/免疫/PVP/旧房排除",
+      "evidence": [
+        "evidence/B01-B02-B04/result.json"
+      ],
+      "note": "完成有效正基础、抗性和盾职减伤后的单次最低1，再扣盾血；真实意图时钟及取消/纯效果/零基础/明确未命中与免疫输入/死亡/PVP/旧房排除已验证。"
+    },
+    {
+      "id": "B05",
+      "status": "complete",
+      "requirement": "合法完整卡组、水系调节、蓄能、满手轮空与真实击杀加入怪物卡，禁同时间循环",
+      "evidence": [
+        "evidence/B05/result.json",
+        "evidence/B05/test-budget.json",
+        "B05-RESOURCE-ACCEPTANCE.md",
+        "B05-BUDGET.json",
+        "evidence/B05-final-r1/result.json",
+        "evidence/B05-final-r1/b05-final-inspection.derived.json",
+        "D03-FLOW-PROGRESS.md",
+        "evidence/D03-flow-r1/b05-extra30-user-authorization-20261106.original.json",
+        "B05-APPROVED-SUPPLEMENT.md",
+        "evidence/B05-approved-supplement-r1/result.json",
+        "evidence/B05-approved-supplement-r1/plans-runners-audits/b05-approved-supplement-final-inspection-r1.derived.json"
+      ],
+      "note": "288真实计时路线：132撤离/114死亡/42观察窗未结束；资源/实例/怪物卡及500ms检查未报错，3边界夹具通过。额外1200秒全扫描终局门槛未通过，不报血量异常或同时间无限循环。累计291/300，余9，不重跑整组，正式难度/属性及D03仍待评估。 当前资源契约收口：正式14条件R1新增9尝试，2214原施法独立核对零资源违例；旧3满手控制按已验旧Git原件和精确逻辑差异复用。旧42全图超时及新首批红裁决衔接失败不追认为通过；8实际终态3撤离/5死亡，1祭司draw-engine打完Boss后缺终态。只续跑未开始7组合通过，原骰8423按真实Hits=false处理领域Miss，不冒称PG配额。账本现300/300余0，权威B05-BUDGET.json，禁止追加或用D项换名重跑。职业效率/完整路线/群体平衡仍D02/D03及C16，整体24/35。 用户2026-11-06为后续受影响返牌机制明确授权额外专项最多30场，原300场及完成范围不重置；合计上限330，当前专项0/30，不重跑原完整矩阵。原当前机制继续按原证据验收，后续新候选须另行专项通过。 用户批准的受影响专项已执行24+3+3共30/30全部Win，B05合计330，余0，不再自动追加。2064施法逐笔手牌/牌池ID/额度独立对账，30次重放及零时间门禁、3整房间JSON恢复、3原V1隔离、3D1套激活边界通过；不是实际进程/数据库重启或PVP通过，候选未正式化。原300及所有失败保持。"
+    },
+    {
+      "id": "C01",
+      "status": "complete",
+      "requirement": "正式Excel配置源、五行元数据、强校验、双端Protobuf导出、版本与哈希",
+      "evidence": [
+        "evidence/C01-config-source/result.json",
+        "C01-CONFIG.md",
+        "evidence/C01-config-integrity/result.json",
+        "evidence/C01-config-rooms/result.json",
+        "CONFIG_ARCHIVES.md",
+        "evidence/C01-config-client/result.json",
+        "evidence/C01-refresh-price-ui/result.json",
+        "evidence/A04-client-preparation-config-r1/result.json",
+        "PREPARATION-ARMOR-LEVEL-ERRATUM.md",
+        "C01-MONSTER-TUNING-PLAN.md",
+        "C01-MONSTER-TUNING-IMPLEMENTED.md",
+        "evidence/C01-monster-tuning-r1/result.json",
+        "evidence/C01-monster-tuning-r1/case-union.derived.json",
+        "C01-CONFIG17-MAGE-RETURN.md",
+        "evidence/C01-config17-r1/result.json"
+      ],
+      "note": "七份样例72行合入正式五行表；原14表/8公式/2原生表/17600单元格样式保留。37配置检查通过，双端候选20表1671行同字节及哈希、旧13表消息体未变。r26编译失败原件保留。类型化消费、剩余表、跨配置恢复与统一运行包发布待完成，未部署。 r28配置43项/领域4项通过；内容哈希验证、异版数值目录、不可替换/缺版本拒绝和并发注册通过，房间实际消费尚未接入。 r30领域477全过，r31服务端93全过；固定原配置贯穿房间/恢复/终态补读/成长/换装/奖励/背包副本，旧包缺失或损坏按房间隔离。原7夹具失败和GDD15%抗性核对保留，客户端归档包与后续内容仍待完成。 客户端原包HTTP/校验/缓存及版本化卡牌成长与装备比较接入：r32领域477/服务端98通过，Godot209布尔/独立HTTP27/自动加载5脚本通过；11语种文本与语言包审计通过，非分辨率渲染验收。 刷新原价显示子链路已落实：候选13只将正式LootRules.refresh_gold范围由server改both、原数值不变，候选12原三件套归档。旧包兼容读取校验后的原价、缺原价禁用；本机6/原生45检查通过，11语言三宽三状态99最终帧5145检查及代表图通过。354原帧和空卡表夹具、日文贴边、法葡18项失败、错误5:1假设全部保留，最终按原4:1图和固定32号字/完整至多2行修复。无新PG/HTTP网络/容量/完整路线或生产重启。此子项不收口其余原目录预览、来源、C15/C16或D/E/F，整体仍20/35。 准备页原目录子链路已验证：实际PG最终1项覆盖自有/借用两组准备前后Bootstrap，原生255项通过；11语言三宽八状态264最终帧39693逐帧检查和代表图通过，377原帧保留。默认元素/背包/安全格/模板/文字按原包，缺包保留取消并禁准备匹配，身份/地址/哈希并发保护完整。D帽只作用卡牌专武，合法防具5不投影；首轮错误预期1及草稿纠正已留证，不改服务端数值。typed-array、葡语42项裁字、默认灰菜单与传输/资源失败均保留。其余来源、完整UI与D/F未完成，A03/A04/E01/E02不据此计整体通过。 C16校准核对确认PveBattleFactory基础怪组未由锁定表读取；在改参数前，需可选季赛组/成员覆盖表与编译/加载强校验，旧14固定基准保持。35成员58意图已从原程序集冻结，四精英覆盖值仅待验证草案，未写工作簿/导出候选15。 当前候选15源链验收通过：正式工作簿追加4行server-only SeasonMonsterTuning，旧37表消息体/32公开表和38旧工作表完整保留。原14三件套精确归档，按原房catalog初始化/移动，覆盖先于难度缩放，旧/未分季/未列成员不漂移。服务端去重联合52、领域联合4及原生19项通过，所有构建/夹具/封存分类失败保留，不称一次全绿。只完成源/发布契约，C16计时平衡未通过，217/300余83未消耗；整体25/35，未部署/重启生产。 2026-11-06本地正式17：MAG10打印即时抽1改0及六档返牌500bp入原工作簿，12格变化、39表/20070原样式保留，原16完整归档。真实导出三件套、10配置/投影/双编码器、68Godot具名检查加原两套通过；生产未部署，D03平衡和F03仍独立。"
+    },
+    {
+      "id": "C02",
+      "status": "complete",
+      "requirement": "D0至D5生命/盾/意图/间隔、基点取整顺序、Boss相对阶段阈值与解锁",
+      "evidence": [
+        "evidence/C02/result.json",
+        "C02-DIFFICULTY.md"
+      ],
+      "note": "新季六档定点怪物曲线/含前摇间隔/Boss同生命池/冻结策略及逐档解锁完成；r37领域497、服务端153全通过，原生209回归通过。r34/r35编译零用例和r36四个旧计时夹具失败保留；只按GDD修观察点，70/80/100与最小伤害断言保持。D03最终构筑/时长/资源平衡仍待，未部署。"
+    },
+    {
+      "id": "C03",
+      "status": "complete",
+      "requirement": "卡与专武有效等级帽、三职业合法20张借用模板、PVE/PVP同一投影",
+      "evidence": [
+        "evidence/C03/result.json",
+        "C03-BORROWED-DECKS.md"
+      ],
+      "note": "三职业固定合法20张模板、永久/借用等级投影、准备及恢复来源核对完成。领域505/服务端170/补充配置拒绝7/最终来源恢复27/原生250通过；新增准备控件11语言×3分辨率×3状态99帧通过。编译分析器、缺缓存与132处重叠原失败保留；E02全界面和整包发布仍待，未部署。"
+    },
+    {
+      "id": "C04",
+      "status": "complete",
+      "requirement": "难度/格类型掉落矩阵、一次升档、外层帽、所有来源最终帽与入场品质帽",
+      "note": "24行正式矩阵、一次升档/来源与难度帽、按怪组归类精英、血包价值偏置、来源快照/结算及V037全来源难度硬帽完成。领域526通过；生产源码不变，r45非配置119+r46配置66联合185项通过，原523/525与181/183失败保留。未部署，完整属性/经济/平衡及UI仍待。",
+      "evidence": [
+        "evidence/C04/result.json",
+        "C04-LOOT.md"
+      ]
+    },
+    {
+      "id": "C05",
+      "status": "complete",
+      "requirement": "新季statsVersion、五品质及红装属性、鞋词条、有效抗性/溢出和抽牌地板",
+      "note": "正式属性版本贯通库存/准备/匹配/房间/换装/恢复/结算及HTTP/WSS；旧归档与不同元素旧焚元保留。领域联合550、服务端联合196（非单次全跑），117项原生模型/协议/红装资源与250项旧客户端回归通过；8状态×11语言×3分辨率264唯一帧、41092检查通过。原始失败及资源停止保留；C06经济、C11红装新铸配额和E02全项目UI仍待，未部署。",
+      "evidence": [
+        "evidence/C05-calculator/result.json",
+        "C05-EQUIPMENT.md",
+        "evidence/C05-integration/result.json",
+        "evidence/C05-integration/final-frame-manifest.json"
+      ]
+    },
+    {
+      "id": "C06",
+      "status": "complete",
+      "requirement": "防具强化60/780碎基准、重铸6碎、真实同品质材料、红390碎与专武248碎分离",
+      "note": "原强化链验证保留；r64两项真实五本体控例已完成学习、同ID重铸扣6碎及后续强化，+3/+5累计66/786碎，+5销毁两橙八紫真实材料。C06收口；C07/C08新界面和联调仍各自待验，不互相冒充。",
+      "evidence": [
+        "C06-ENHANCEMENT.md",
+        "evidence/C06-enhancement/result.json",
+        "evidence/C06-enhancement/final-frame-manifest.json",
+        "evidence/C07-C08-backend/result.json",
+        "C07-C08-BACKEND.md"
+      ]
+    },
+    {
+      "id": "C07",
+      "status": "complete",
+      "requirement": "印记独立来源、品质门槛、定向元素与效果心愿、首件尾部保底",
+      "note": "实际打造/配方/市场样本状态界面、五条真实Protobuf HTTP路由和新增并发/托管/回滚通过；领域沿用561，服务端针对联合265（非单次全量），原生154。C07 231帧/C08 264帧覆盖11语言三分辨率，联合30723检查通过。首轮文本裁切、7字符测试键及测试音频退出残留原件保留；C09基础资源/自然元素、C12完整市场和E02/F02仍独立待验。",
+      "evidence": [
+        "C07-C08-BACKEND.md",
+        "evidence/C07-C08-backend/result.json",
+        "C07-C08-ACCEPTANCE.md",
+        "evidence/C07-C08-ui/result.json",
+        "evidence/C07-C08-ui/final-frame-manifest.json"
+      ]
+    },
+    {
+      "id": "C08",
+      "status": "complete",
+      "requirement": "原始样本一次提取、配方按季、重铸1入1出、绑定/来源继承及并发幂等",
+      "note": "实际打造/配方/市场样本状态界面、五条真实Protobuf HTTP路由和新增并发/托管/回滚通过；领域沿用561，服务端针对联合265（非单次全量），原生154。C07 231帧/C08 264帧覆盖11语言三分辨率，联合30723检查通过。首轮文本裁切、7字符测试键及测试音频退出残留原件保留；C09基础资源/自然元素、C12完整市场和E02/F02仍独立待验。",
+      "evidence": [
+        "C07-C08-BACKEND.md",
+        "evidence/C07-C08-backend/result.json",
+        "C07-C08-ACCEPTANCE.md",
+        "evidence/C07-C08-ui/result.json",
+        "evidence/C07-C08-ui/final-frame-manifest.json"
+      ]
+    },
+    {
+      "id": "C09",
+      "status": "complete",
+      "requirement": "独立掉落与心愿RNG、各资源倍率、三选一偏置的先乘后取整",
+      "note": "基础资源原整数×冻结倍率floor一次及寻宝40/15偏好已贯通正式配置5、准备/队列/房间/奖励刷新/原始来源恢复；旧配置4和旧请求幂等输入保留。领域581、服务端针对联合298（非一次全跑；2个F02跳过未算通过）、原生213通过；132最终帧覆盖11语言三分辨率，19665检查含99父面板边界通过。4个旧夹具/断言失败、原生语言夹具缺失与说明弹窗退回/57项边界失败原件保留，未放宽规则。",
+      "evidence": [
+        "C09-RESOURCES.md",
+        "evidence/C09-base-resources/result.json",
+        "evidence/C09-base-resources/domain-case-union.json",
+        "C09-LOOT-PREFERENCE.md",
+        "evidence/C09-loot-preference/result.json",
+        "evidence/C09-loot-preference/final-frame-manifest.json"
+      ]
+    },
+    {
+      "id": "C10",
+      "status": "complete",
+      "requirement": "机器人战斗投影与可带出实物隔离、真实死亡及来源/材料/每局奖励限制",
+      "note": "候选6投影/实物分离、真实死亡/撤离留置、每真人一次独立低额奖励、单独RNG及数据库凭据/唯一预算通过。领域联合595、bot/撤离针对28、服务端联合309（非一次全跑；2项F02跳过保留）、原生213通过；真实绑定+5数据库原物经机器人撤离再取回保留ID/强化/绑定/来源且无复制。首轮编译/异常分类/测试参数错误均保留；无新增UI，未部署或补测容量。",
+      "evidence": [
+        "C10-BOTS.md",
+        "evidence/C10-bots/result.json",
+        "evidence/C10-bots/domain-case-union.json",
+        "evidence/C10-bots/server-case-union.json"
+      ]
+    },
+    {
+      "id": "C11",
+      "status": "complete",
+      "requirement": "每逻辑服周红唯一铸造、D2以上Boss独立0.4%、跨季跨周/多渠道并发及完整物品履历",
+      "note": "候选7正式开关、独立Boss40/10000、共享逻辑域/周额度、同事务新铸/托管、Actor恢复和满包选择通过。领域联合614、服务端联合257含数据库9项（均非一次全跑），原生/互操作238、11语言三分辨率231最终实帧5973检查通过。真实断线死亡/遗物结算保留原新铸ID；PVP期间保持战斗权限、胜利回到原选择。初次版本断言、非法Destroyed夹具、说明裁切/俄文长按钮等原件保留；完整人群换季/公网/全项目UI仍归F01/F02/E02，未部署。",
+      "evidence": [
+        "C11-RED-MINT.md",
+        "evidence/C11-red/result.json",
+        "evidence/C11-red/domain-case-union.json",
+        "evidence/C11-red/server-case-union.json",
+        "evidence/C11-red/final-frame-manifest.json",
+        "evidence/C11-red/raw-frame-manifest.json"
+      ]
+    },
+    {
+      "id": "C12",
+      "status": "complete",
+      "requirement": "双币固定价市场、共享8栏/48h/卖方10%税、价格帽、托管竞争、旧季退回和筛选",
+      "note": "候选8双币固定价、共享8栏/48h/税费、原物原子换币、原季/满仓待领及筛选已验收。r76领域629单次通过；服务端针对联合304含真实PG、买入/取消竞争与实际ProtobufHTTP/认证WS，非单次304全跑；原生/实网字节解码联合270，11语言三分辨率297最终实帧21468检查通过。源错、SQL夹具失败与人工拒绝实帧分别保留；E01批量整理/丢弃、F02/F03和其余未完成门槛不放通。",
+      "evidence": [
+        "C12-MARKET.md",
+        "evidence/C12-market/result.json",
+        "evidence/C12-market/server-case-union.json",
+        "evidence/C12-market/domain-case-union.json",
+        "evidence/C12-market/final-frame-manifest.json",
+        "evidence/C12-market/raw-frame-manifest.json"
+      ]
+    },
+    {
+      "id": "C13",
+      "status": "complete",
+      "requirement": "商店原价原日限、04点并发、跨季不重复额度、资源与金币账分离",
+      "note": "候选9正式两表编译，28表1753行；原26表消息体一致。当前季金币/碎片与永久魂/副本分账，04点实际排队并发、跨季/配置与旧商店已用额度不重置，目录和持久回执贯穿原上下文。领域49、服务端针对联合203、Godot机制20/实际HTTP帧15通过；11语言三分辨率297最终实帧39234检查。原刷新上限误写、UTC参数、等待链观察器、类型推断、文字裁切、渲染期限/夹具滚动原件保留，未放宽业务或资源规则。未部署生产，不补测100人。",
+      "evidence": [
+        "C13-BACKEND.md",
+        "evidence/C13-shop/backend/result.json",
+        "evidence/C13-shop/backend/server-case-union.json",
+        "evidence/C13-shop/backend/ui/final-frame-manifest.json",
+        "evidence/C13-shop/backend/local-shop-clock-r1/results/bot-real-custody.trx",
+        "evidence/C13-shop/backend/storage-r84/public/audit.json"
+      ]
+    },
+    {
+      "id": "C14",
+      "status": "complete",
+      "requirement": "42天两次三日活动、每期12绑定章共享预算、原季晚领、去重与红配额",
+      "note": "候选10有限活动、真实完成来源与12枚共享预算、原季晚领、持久防重和分页通过；领域47、服务端联合114、Godot交互33/实际字节17、11语言三分辨率297最终实帧22296检查。历史构建/夹具/日期错序/音频退出诊断及720原始帧保留。未部署生产。",
+      "evidence": [
+        "C14-ACTIVITIES.md",
+        "evidence/C14-activities/result.json",
+        "evidence/C14-activities/server-case-union.json",
+        "evidence/C14-activities/ui/final-frame-manifest.json",
+        "evidence/C14-activities/manifest.json"
+      ]
+    },
+    {
+      "id": "C15",
+      "status": "complete",
+      "requirement": "逐级经验、契约、前20级主奖励、最多2倍追赶、账号/赛季奖励唯一性",
+      "note": "经验/契约核心：领域92、服务端去重联合130、Godot机制59/真实HTTP字节14、11语言三分辨率330最终实帧19953检查通过。原813帧与全部失败保留。实际前20级主奖励仍无逐级清单和权益/领取实现，候选已询问用户，不能用阶段标记替代；C15仍进行中，整体19/35。 用户于2026-11-05明确采用前20级候选奖励，并授权继续细化21至30级外观与称号。该选择缺口已解除，运行表、领取事务、外观展示及新增投放模型仍须实施和验收，C15不据此计通过。 21至30级已形成3头像框、2卡背、2收藏印记、3称号的实施设计；尚未导入运行表或完成领取展示，不据此计验收通过。 已备齐7份ImageGen原图候选、10项外观称号的11语言名称描述，语言包审计通过且旧值未改。资源准入拒绝本机.NET启动；奖励策略/原编译器扩展仍待编译测试，正式候选13未变。原季权益、领取事务、外观选择展示及三宽实帧尚未完成，不把资源准备或静态审计当成C15通过。 资源恢复至约7.52GiB后，奖励领域策略/原编译器扩展针对检查服务端121与经验领域8通过，含新增37奖励原包/副本/选择/冻结结果拒绝及原配置回归。首次CA1861构建失败和原资源拒绝保留；正式候选13未变，权益/领取/外观选择尚未实施，不计C15通过。 候选14已正式工作簿/原C#导出链安装奖励30行及外观10行；原13归档、原35消息体与30公开表不变，旧36工作表/值/样式/公式/原生表/布局和验证保留。当前服务端124、领域43、原生189通过，覆盖C#真实编码至Godot原生解析；初次准入拒绝保留。尚无实际PG权益领取与外观选择/渲染，不据此计C15通过。 V050待领权益创建子链路通过：最终实际PG21/21（新权益8、原季程10、迁移1、对账报告2），包含原季/原版本、六路防重、回滚、30/42/60日存储和冻结四包12位置。高等级为声明种子聚合，非完整路线。首批20/21旧13目录未注入的夹具失败、原20计数漏30日的说明及全部传输/暂存记录保留；只修夹具共享显式原目录，未放宽生产规则。尚未领取铸造、选择外观或完成新界面，不计C15整体通过。 V051领取与永久外观/选择后端子链路通过：本机编码11及隔离实际46全部通过（领取PG13、权益8、原季程10、迁移1、对账报告2、新旧编码11、真实鉴权HTTP1）。原季晚领、真实12副本、故障回滚/重放、重复外观无补币与选择版本已验证，8份HTTP原件供Godot继续消费。高等级为声明种子聚合；Godot消费/实际应用/多语言三宽UI与新增经济模型仍未完成，C15不整体收口。 原生消费模型29项通过：8份真实鉴权C#HTTP原字节解析，原季/领取意图/副本数/所有权/槽位校验与篡改拒绝已验证；初次本机准入拒绝保留。无原生公网HTTP或渲染验收；控制器、实际头像框/卡背/称号应用及11语言三宽界面仍待接入，C15不据此收口。 当前客户端子链路已接入：Godot4.7.2 Linux实际导入与5个明确UI目标编译通过，原HTTP包网络夹具下控制器16/16通过；原季确认、账号/地址/代次、领取后重读及持久外观选择已覆盖。11语言各1075键、26新键和7图片登记静态审计通过，原588资源及旧文案保持；季程独立预算14项通过。原夹具/动态路径/缓存SHA拒绝、资源准入和传输失败全部保留。无原生公网请求或渲染帧；10新状态×11语言×三宽330最终帧及直接效果审查仍待，本机资源保护未放宽，C15/E02不据此计通过。 本批实际首轮画面已推进到六语言三宽12状态216帧、18301自动检查，另有20试验帧，共236原图保留。修复账户栏末行、职业缩写、卡组夹具重绘及动态Label类型；完整ISO收藏日期的RTL隔离新修正与原生第17断言仍待运行，资源再次低于门槛，未启动该原生导入。最终需固定修正源码完成11语言396帧及直接效果审查，首轮不是当前最终通过。 当前源码已实际完成Linux Godot控制器17项与5个UI目标编译，旧143源/10附加输入验SHA不变、容器已清理；Windows当前无界面编译通过。阿拉伯ISO时间修正后36最终帧/3229检查及直接查看通过，最终矩阵36/396，保留已过36帧；中英渲染和本机.NET编译均因准入未满足而未启动相应负载。原上传模板错误、准入拒绝及全部首轮图片不覆盖。 本机r3已实际编译Contracts/Domain/Server/Exporter四组件；测试程序集10条CS8752为单参params的new()推断数组，已改显式附件类型，仍待成功复验。r4启动后触发持续6GiB保护，r5复用相同字节依赖的完整测试编译在准入前被拒绝，均无用例通过；原日志/源码和预构建误名更正保留。10项PG仍0执行，不能用已有DLL或旧测试程序集替代。 当前完整C15已验收：正式14配置、原经验/契约/追赶证据、当前25本机编码契约/56隔离运行时/17原生控制器/14独立预算和11语言三宽12状态396最终帧34374检查及16代表图通过。原失败保留，资源调整经用户明确授权，历史AR36按6GiB其余360按2GiB；云端保护未变。没有原生公网HTTP、实战路线、100人或生产发布冒充；其他A/D/E/F不据此整体通过。",
+      "evidence": [
+        "C15-JOURNEY.md",
+        "C15-REWARDS-CANDIDATE.md",
+        "evidence/C15-journey/core/result.json",
+        "evidence/C15-journey/core/server-case-union.json",
+        "evidence/C15-journey/core/ui/final-frame-manifest.json",
+        "evidence/C15-journey/core/manifest.json",
+        "C15-REWARDS-ACCEPTANCE-20261105.md",
+        "C15-COSMETICS-DESIGN.md",
+        "C15-REWARDS-IMPLEMENTATION.md",
+        "C15-ASSET-PROVENANCE.json",
+        "evidence/C15-rewards-config-r1/result.json",
+        "evidence/C15-rewards-config-r1/reward-policy-verification-r3.json",
+        "evidence/C15-rewards-config-r14/result.json",
+        "C15-ENTITLEMENTS.md",
+        "evidence/C15-reward-entitlements-r1/result.json",
+        "C15-CLAIMS-BACKEND.md",
+        "evidence/C15-claim-backend-r1/result.json",
+        "evidence/C15-native-claim-model-r1/result.json",
+        "C15-CLIENT-CONTROL.md",
+        "C15-REWARD-BUDGET.md",
+        "evidence/C15-client-control-r1/result.json",
+        "C15-UI-REVIEW-PROGRESS.md",
+        "evidence/C15-ui-progress-r1/result.json",
+        "evidence/C15-native17-admin-sql-r1/result.json",
+        "evidence/C15-final-ar-r1/result.json",
+        "A03-MAIL-BUILD-PROGRESS.md",
+        "evidence/A03-mail-build-progress-r1/result.json",
+        "C15-FINAL-ACCEPTANCE.md",
+        "evidence/C15-final-r1/result.json",
+        "evidence/C15-final-r1/UI-final-frame-manifest.json",
+        "RESOURCE-POLICY-20261105.md"
+      ]
+    },
+    {
+      "id": "C16",
+      "status": "complete",
+      "requirement": "主题与怪组配置、Boss策略、至少三类有效构筑，先同图六档后扩主题",
+      "note": "候选12主题/原包恢复/实时投影接入。领域108、服务端去重联合145、原生75/生成字节读取7通过；11语言三分辨率330唯一实帧27464检查及人工代表图通过。成熟混色先导60/60获胜，但单种子及部分主题超过15%差异、D5时长超目标，C16仍进行中。此前初始卡组25胜/22死/13超时及全部编译/夹具失败保留。累计121/300次独立遭遇，余179；B05仍291/300不动。无存活测试句柄，未部署或补测100人。 当前实际目录为Fire，完成同图六档×三职业direct-engine18/18胜，1385施法/1847只读预览及全部净HP/盾变化独立对账；累计139/300余161。旧精英盾字段漏列普通循环盾、职业效果套混杂已定位，11战斗表与原r5一致，未改数值。D5 Boss143.4/200.8/228.9秒，仍不通过时长/效率；另两类流派仅静态合法，尚未实战。蓝装非法效果及Wood默认误认均在0场预检/准入阶段拒绝，原件保留；B05已300/300禁止新增。整体24/35，继续其余构筑/主题，不补测100或重启生产。 本轮火扩展30、木对照18、同卡组进攻护甲12及余三主题直伤18，共78/78胜，8406施法及192资源变化独立对账；累计217/300余83。火木三流派实测、五主题直伤已覆盖，但单种子精英跨主题比1.614至1.708、Boss1.153至1.226仍未过约15%；其他三主题另两流派和两种子中位数待补。工厂基础值仍固定代码，调参前先落实C01版本化组/成员覆盖；已冻结35成员58意图，0新遭遇。四精英数值仅草案，未改工作簿/运行值，整体24/35。 校准前置已落本地候选15，四个原组/成员覆盖值按原包绑定且旧14保留，C01源链已验收；本轮未跑计时，原217条对照仍属于原14/控制输入，不能当新15平衡结果。剩83场待候选15实际验证，C16状态不变。 当前最终验收：候选15新增81/81胜，联合54个原依赖等价样本，覆盖五主题三职业三流派精英/Boss；10115施法及355资源变化独立对账。精英双种子跨主题中位比1.072至1.099按原15%通过；Boss1.161至1.218原15%未达标，按计时前登记并获用户原则授权的25%上限放宽验收，报告重点披露。D03职业效率/人群口径未放宽。C16累计298/300余2，B05封账不重跑；2GiB保留加1GiB启动、云端不变，生产未部署。整体26/35，原失败/原始数据/版本哈希保留。",
+      "evidence": [
+        "C16-THEMES.md",
+        "evidence/C16-themes/core/result.json",
+        "evidence/C16-themes/core/server-case-union.json",
+        "evidence/C16-themes/core/ui/final-frame-manifest.json",
+        "evidence/C16-themes/core/manifest.json",
+        "evidence/C16-themes/comparison/result.json",
+        "evidence/C16-themes/comparison/manifest.json",
+        "C16-BUDGET.json",
+        "C16-CALIBRATION-PROGRESS.md",
+        "evidence/C16-calibration-r1/result.json",
+        "evidence/C16-calibration-r1/c16-calibration-inspection-r2.derived.json",
+        "C16-EXPANSION-PROGRESS.md",
+        "C01-MONSTER-TUNING-PLAN.md",
+        "evidence/C16-expansion-r1/result.json",
+        "evidence/C16-expansion-r1/c16-expansion-inspection-r1.derived.json",
+        "C01-MONSTER-TUNING-IMPLEMENTED.md",
+        "C16-FINAL-ACCEPTANCE.md",
+        "evidence/C16-final-r1/result.json",
+        "evidence/C16-final-r1/manifest.json",
+        "evidence/C16-final-r1/source-byte-manifest.json",
+        "evidence/C16-final-r1/c16-candidate15-final-inspection-r2.derived.json",
+        "evidence/C16-final-r1/c16-candidate15-acceptance-policy.before-timing.json"
+      ]
+    },
+    {
+      "id": "D01",
+      "status": "complete",
+      "requirement": "三职业/六成长/六难度/元素/怪组/怪物卡与健康边界真实领域战斗矩阵",
+      "note": "正式候选15在冻结边界矩阵实际297场：289胜/8死亡/0超时。三职业×六成长×六难度108、21怪组×六难度126、效果×职业×生命45及六匣灵变体×三职业18；后18使用原21余量且计时前登记。15640施法/428实际击杀/529资源变化独立对账，HP盾/抽牌/500ms/只读预览/怪物卡0级精确物种通过。原0/5/10/15累积卡为明确先前状态夹具，不冒称之前完整路线；死亡逐例保留供D03，不把本项等同职业效率或人群通过。累计297/300余3，原CA1859编译0场失败保留，未放宽断言。2GiB/1GiB启动；B05/C16/100人/C15UI不重跑，生产未改。整体27/35。",
+      "evidence": [
+        "D01-COMBAT-BOUNDARIES.md",
+        "D01-BUDGET.json",
+        "evidence/D01-boundaries-r1/result.json",
+        "evidence/D01-boundaries-r1/manifest.json",
+        "evidence/D01-boundaries-r1/source-byte-manifest.json",
+        "evidence/D01-boundaries-r1/d01-inspection-growth-groups-effects-boxelements-r2.derived.json",
+        "evidence/D01-boundaries-r1/d01-coverage-inspection-r1.derived.json",
+        "evidence/D01-boundaries-r1/d01-affix-overflow-inspection-r1.derived.json"
+      ]
+    },
+    {
+      "id": "D02",
+      "status": "complete",
+      "requirement": "先后手PVP、控制/返牌、断线恢复、合法路线、完整撤离与死亡重建",
+      "note": "正式候选15 PVP断线恢复子范围联合72场景完成，实际73尝试：9职业有序组合×D0/D5×恢复/到期×断线先/后手；144施法、30正眩晕/7阻断/45即时抽牌。JSON恢复、原PVE、动作回放/序列、15秒死亡及原5件装备遗物身份独立核对。原先导004因到期同tick恢复后合法100ms续时的夹具预期失败，按GDD/Advance顺序改严格一tick对照；原213领域源不变。001复用、004仅复验1、未开始70通过，不称一次全绿；原失败/TRX/源码保留。累计73/300余227。合法自然路线/完整撤离、实际存储死亡重建及其余控制/返牌边界证据仍待，不计D02整体通过；整体仍27/35。本机2GiB+1GiB启动，旧矩阵与云端/生产不改。 自然路线子项另新增18/18真实撤离：三职业六难度、原图原出生原Boss、4/5格短合法路径共81格108杀3649施法，36JSON恢复及3秒撤离截止、126资源变化独立核对。不是R1或人群均值。另以源文件/方法和Cards/CardLevels原始Protobuf消息等价复用旧21控制/返牌合同，非重跑。该路线阶段累计91/300；当前死亡重建后续计账以D02-BUDGET为准，整项仍待最终审计。 最终逐六要求验收通过，整体28/35：当前72PVP场景/18真实自然路线撤离/3职业实际PG死亡重建6匹配/3精确门禁，100/300余200。700/800后手与400/500连放边界通过；三职业5旧装保持掉落、5真实备用本体重铸+3实扣66、再次准备匹配出牌，派生属性前后相同。旧21合同不重跑。原PG600秒批次中断仍失败且整批TRX/XML缺失，祭司FINISHED/原件/清理证据复用；仅未完成法师、盾按预登记各900秒单例通过各TRX1/1，未放宽功能或效率。原自有遗留schema严格核对后清理，所有schema/句柄终态；云端只临时自有PG写入，不改生产/全局配置。D03/D04/E/F七项继续，未整体验收或发布。 新卡牌+500bp候选追加12个功能边界全部通过，D02累计112/300余188；44成功施法、16实际MAG10打印/结果即时抽0，700/800和400/500ms门禁、冻结额度JSON恢复/重放、6互退原PVE还原与6到期单tick对照分别核对。开场受控手牌一次保留全部实例/RNG，不宣称随机PVP胜率、完整对战平衡或进程重启；正式16不改，B05/D03无新增。",
+      "evidence": [
+        "D02-DUEL-RECOVERY-PROGRESS.md",
+        "D02-BUDGET.json",
+        "evidence/D02-duels-r1/result.json",
+        "evidence/D02-duels-r1/manifest.json",
+        "evidence/D02-duels-r1/source-byte-manifest.json",
+        "evidence/D02-duels-r1/d02-duels-inspection-r2.derived.json",
+        "evidence/D02-duels-r1/d02-expiry-tick-contract.before-retest-r1.json",
+        "D02-ROUTE-RECOVERY-PROGRESS.md",
+        "evidence/D02-routes-r1/result.json",
+        "evidence/D02-routes-r1/manifest.json",
+        "evidence/D02-routes-r1/d02-routes-inspection-r1.derived.json",
+        "evidence/D02-routes-r1/d02-control-reuse-r1/result.derived.json",
+        "D02-FINAL-ACCEPTANCE.md",
+        "evidence/D02-final-r1/result.json",
+        "evidence/D02-final-r1/manifest.json",
+        "evidence/D02-final-r1/source-byte-manifest.json",
+        "evidence/D02-final-r1/missing-batch-evidence.derived.json",
+        "evidence/D02-final-r1/d02-final-requirement-audit-r1.derived.json",
+        "evidence/D02-final-r1/d02-rebuild-inspection-Priest-Mage-Guardian-r1.derived.json",
+        "evidence/D02-final-r1/d02-gate-inspection-r1.derived.json",
+        "D02-CARD-CANDIDATE-PVP.md",
+        "evidence/D02-card-candidate-r1/result.json",
+        "evidence/D02-card-candidate-r1/d02-card-candidate-inspection-r1.derived.json"
+      ]
+    },
+    {
+      "id": "D03",
+      "status": "in_progress",
+      "requirement": "分人群P50/P90及清格目标、职业效率差异、D5无需红装及可持续三账",
+      "note": "现有D02单种子同路线职业比1.329至1.486均未达原15%，不当人群/R1/长期经济证据。新开发24+12共36场：35胜1死亡，4401施法/153资源变化独立核对；真实克隆本命/速度API、公开状态估值、3次只读预览、实际Resolver/时钟，未改游戏规则。counter-tempo水3火2五破击+3的Boss法/祭/盾中位76.1/97.65/117.6秒，进入75-120但职业比1.545仍失败。universal祭司130.5秒死亡且Boss余51HP，删失保留；派生r1误混失败耗时后r2修正，不重跑/改原件。候选仅开发种子，未留出验收。D03仍不通过，需职业效率/收益、对应成长清格、模拟人群首套P50/P90与可持续三账；不继承C16主题时长放宽。累计36/300余264；CA1861编译0场失败与全部旧证据保留。本机2GiB+1GiB启动，旧矩阵/容量/UI不重跑，生产/云端不改，整体仍28/35。 后续新增9次D2入门策略/职业原R1尝试：4撤离5死、1634施法88杀23资源变化独立对账，累计45/300余255。novice白卡2/五蓝1三职业全死且带出0；return/skilled按定义分别2撤1死，实际金币/碎片/印记/本体与历史装备损失分开记录，不以碎片差额当完整净利。仅访问修饰符复用原控制器，无规则/工作簿/云端修改。明确不是跨场银行轨迹，首套P50/P90空值、长期三账及职业15%仍未完成；需真实资本/本体重建与D0/D1低风险回退，不能死亡后补免费套装。 已把原9终态接成银行轨迹，新增9+18实际接续为18撤9死，累计72/300余228；不重跑原先导、不重置本金或补装。真实带出/在途/旧件换下/遗物丢失ID保持，模型按真实Payment/Wish/ArmorCost付费并留检查点，零场次66片/缺本体控制通过；首步实际付16片、后两步28片，2次印记打造/19次真实换装，未重复扣旧历史投入。九条到第4次基本/可用/严格套均未形成，P50/P90右删失，新手三职4死仍0资本，不能判可持续。发现默认/借用白20缺C15-C18等基础支持，需验证初始可用配套/低风险策略后再继续，不改生命或本命。原CA1507编译0场失败/全部银行源件保留，游戏/工作簿/云端不改，D03仍不验收，整体28/35。 入门校准新增42场，原15支持12全死；0.7为3撤3死，0.5开发/独立留出/正式16各6撤，原15配对留出3撤3死全部保留。正式工作簿仅D0血盾改0.5，候选16旧15完整归档；服务器联合23、领域联合24、原生17通过，两个原失败保留且非单批全绿。累计114/300余186，普通时长/职业15%/首套P50-P90/长期三账仍未通过，原银行不重置、分支收益不并入，生产未启用。 候选16从原A04银行实际接续104次93撤11死，累计218/300余82。15992施法/741资源变化/472片实际大厅支出/53印记打造/63换装逐项对账；未合并开发收益，未补装备。回归可用套5/7/5次；熟练品质套10/10/5而仅盾可用，novice至18仍未成品质套。原50格模型假设下5条容量删失，不冒充线上仓库故障；P10/P50/P90按3职业模拟个体报告，不泛化总体。职业15%、清格目标、严格目标套和长期三账仍未通过；先改选装/整理策略再用余82场，D03继续未验收。 2026-11-06原银行选装/整理接续：7项本机预检、隔离PG1事实覆盖9独立银行，5条共85件明确丢弃零返还；实际新增9场8撤1死，989施法/41资源事件/41遭遇独立闭合、301碎片真实支出对账，累计227/300余73。原满仓、原PG两次夹具失败和缺铸造元数据不回写。熟练法师严格套、祭司可用套在干预后观察到，新手仍未成套；职业15%/长尾/持续性未通过。r3输入缓存清理SSH超时未核实，F02跨房间ID域另待查，不称整体通过。 后续F02身份子链路已修正同种子跨房间ID冲突并完成旧D03-r3缓存逐文件验SHA清理；旧失败与未核实结果不回写，227/300及数值未通过不变。 新增flow-counter/flow-loop三职业同等12场全部获胜，但职业比1.8063/1.7245及Boss窗口均未通过；1106施法/21资源变化/12场闭合独立核对，累计239/300余61，原9银行未改且不合并分支收入。用户选择保留15%目标，另授权受影响B05专项最多30场；原B05 300及全部失败保留，新专项0/30，正式返牌机制尚未修改，D03不收口。 按用户保留15%的选择加入发布默认关闭的持续返牌候选：仅被动消耗按自然时间累计的额度、印刷抽牌不变，倍率/额度保存并校验。0.10候选6胜比1.172859失败，0.05候选6胜比1.148734仅开发样本达到15%；Boss75-120仍失败且无独立留出。最终12项Domain/整房间恢复检查通过，1291施法/20资源/12闭合独立复算。累计251/300余49，旧9银行及正式16不改；B05专项0/30。编译括号错误和武器0/5夹具失败全部保留，D03不收口。 新增33场：旧0.05独立留出9胜比1.24877失败；双元素6胜比1.32360失败；输出卡位6胜比1.25205失败，均保留。显式内存候选仅MAG10即时抽1改0（原编译器独立版本/其他卡定义相同），3法师开发胜+旧6未变对照比1.064；再9全新独立留出全部胜，中位66.5/71.3/73.3、比1.10226且每种子<=1.15，仅D5Boss耗时差异指标通过。原75-120及预登记下界放宽10%至67.5的窗口仍失败，不追认为通过。3538施法/68资源变化/33闭合独立对账，累计284/300余16。正式16、9银行、B05专项0/30不改，候选无生产激活，D03其余收益/长尾/持续性未通过。 B05专项增长诊断（不新增D03场次）D1未激活配装比1.2174、D2比1.161仍失败；D1正确三紫破击激活样本比1.0926，D5常规二破三生样本比1.1016，均为单种子，不泛化/不覆盖旧极攻节奏失败。D03仍284/300余16。 2026-11-06当前工作簿/两端发布包已正式编入本地17，等价原候选MAG10与500bp。新增协议/UI等边界检查不计实战；D03仍284/300余16，职业1.15严格保留，旧75与67.5节奏失败不追溯放宽，9原银行SHA未变。不是D03整体通过。 2026-11-07来源/里程碑核查：228原检查点按D0五槽绿蓝库存可组口径，新手具名三轨迹首次观察6/7/13次，样本P50=7/P90=13；不是实际首次穿戴/人群日历，InitialFixture另列。旧一橙四紫/双效果+3/严格目标的原删失及所有效率/节奏失败不改。当前17完整日历/季程/商店/活动账不能由旧15/16银行补造；0新战斗，D03284余16/B05330不变。 正式17原资本九轨迹各接续1场：9撤0死，1034施法/65资源/38遭遇独立闭合，47碎片/3印记打造逐物支付对账，原损失回收不改；4856当前源与固定Release依赖一致。累计293/300余7，15%不变。熟练盾本阶段大厅在已完成18次后首次严格目标套，不回填旧18次；新手至20仍品质套删失，不混同基础绿蓝。橙章部分实际净支出保留，不称长期全正。检查器首轮漏计大厅打造ID的过窄断言留证，仅精确craft ID+扣款复核，无重跑。仍32/35/D03未过，F01预算待答且252未启动，无生产修改。 2026-11-07正式17成熟双构筑新种子1061共6场全胜，805施法/18资源/6闭合独立复算，源4868项及二进制不变。水3火2五破击flow-loop法祭盾72.8/70.7/75.8，比1.07214；原75窗失败、本轮预登记63.75下界有限通过。火3金2二破三生flow-offense105.4/119.6/126.2，比1.19734，15%及120上界失败，不删失败或事后改成预设负对照。与旧B05水3火2普通装不同，仅作定位方向。累计299/300余1，不自动补不完整对照。F01当前14日日历已通过运行评审，但新手基础套/品质尾部、同档收益15%与长期稳态继续缺口。提出正确水3火2二破三生三职业×三新种子9场，需用户新增额度，未改上限/未启动；B05330/F01255保持，仍33/35，无生产操作。 正确水3火2二破三生counter-balanced测试辅助已实现，9个拟定输入零场次预检与明确授权门禁两Fact通过；与当前ForSeason500bp规则相同，不加载地图或计时。额外执行必须核实实际D03预算的used/maximum/明确回复/授权引用；真实待批准脚本负检在目录/预留前拒绝，预算字节保持299/300，B05/F01无追加。首轮CA1861两个期望常量数组编译失败保留，改静态只读后完整Server测试项目Release零警告错误/4868源SHA保持；没有新实战或总体通过。可执行方案准备完成，剩追加9场须用户答复，15%及原失败不变。 F01首周自有支持牌组场景按其独立预算新增42，D03仍299；新号51初始卡真实已有，并非缺支持卡。基础D0绿蓝五部位观察守4/法10/祭3，法师第5日仍超目标；原默认20轨迹/所有删失不改，新场不计D03免费重试。当前D03配装输入/门禁在共同新测试构建中再次通过，准备runner-r2绑定当前源及F01297；额外9场授权仍未收到。",
+      "evidence": [
+        "D03-EFFICIENCY-PROGRESS.md",
+        "D03-BUDGET.json",
+        "evidence/D03-efficiency-r1/result.json",
+        "evidence/D03-efficiency-r1/manifest.json",
+        "evidence/D03-efficiency-r1/source-byte-manifest.json",
+        "evidence/D03-efficiency-r1/d03-existing-evidence-gap-audit-r1.derived.json",
+        "evidence/D03-efficiency-r1/d03-efficiency-inspection-r1.derived.json",
+        "evidence/D03-efficiency-r1/d03-counter-inspection-r2.derived.json",
+        "D03-COHORT-STREAM-PROGRESS.md",
+        "evidence/D03-cohort-r1/result.json",
+        "evidence/D03-cohort-r1/manifest.json",
+        "evidence/D03-cohort-r1/source-byte-manifest.json",
+        "evidence/D03-cohort-r1/d03-cohort-inspection-r1.derived.json",
+        "D03-PERSISTENT-CAPITAL-PROGRESS.md",
+        "evidence/D03-trajectory-r1/result.json",
+        "evidence/D03-trajectory-r1/manifest.json",
+        "evidence/D03-trajectory-r1/source-byte-manifest.json",
+        "evidence/D03-trajectory-r1/d03-trajectory-inspection-r1.derived.json",
+        "evidence/D03-trajectory-r1/d03-salvage-inspection-r1.derived.json",
+        "D03-ENTRY-CALIBRATION.md",
+        "evidence/D03-entry-calibration-r1/result.json",
+        "D03-ENTRY16-TRAJECTORIES.md",
+        "evidence/D03-entry16-trajectory-r1/result.json",
+        "evidence/D03-entry16-trajectory-r1/d03-entry16-longitudinal-summary-r1.derived.json",
+        "D03-MAINTENANCE-PROGRESS.md",
+        "evidence/D03-maintenance-r1/result.json",
+        "evidence/D03-maintenance-r1/d03-maintenance-next-nine-audit-r1.derived.json",
+        "D03-FLOW-PROGRESS.md",
+        "evidence/D03-flow-r1/result.json",
+        "evidence/D03-flow-r1/d03-flow-inspection-r1.derived.json",
+        "D03-SUSTAIN-CANDIDATE.md",
+        "evidence/D03-sustain-candidate-r1/result.json",
+        "evidence/D03-sustain-candidate-r1/runners-and-audits/d03-sustain-combined-inspection-r1.derived.json",
+        "D03-CARD10-HOLDOUT-PROGRESS.md",
+        "evidence/D03-card10-holdout-r1/result.json",
+        "evidence/D03-card10-holdout-r1/plans-audits-runners/d03-card10-holdout-inspection-r1.derived.json",
+        "C01-CONFIG17-MAGE-RETURN.md",
+        "evidence/C01-config17-r1/result.json",
+        "D03-F01-SOURCE-REVIEW.md",
+        "evidence/D03-F01-source-r1/result.json",
+        "D03-FORMAL17-CONTINUATION.md",
+        "evidence/D03-formal17-continuation-r1/result.json",
+        "D03-FORMAL17-MATURE-COMPARISON.md",
+        "evidence/D03-formal17-mature-r1/result.json",
+        "evidence/D03-formal17-mature-r1/d03-formal17-mature-audit-r1.derived.json",
+        "D03-MATCHED-ARMOR-PREFLIGHT.md",
+        "evidence/D03-matched-preflight-r1/result.json"
+      ]
+    },
+    {
+      "id": "D04",
+      "status": "complete",
+      "requirement": "低基数遥测、系统新增/转移/托管/销毁/归档分账及小时净来源",
+      "note": "2026-11-06账户币投影子链路通过：15单元、真实PG/管理HTTP按4原通过+1定向复验联合5。市场净转移一次/仅税回收，1金税1净0合法无卖方账；刷新预留/退回不误计投放或回收，Applied消费与账户移动分开。V053可空原观测时间首次转换写入、重放及旧缺值不回填；资金/账本/市场/刷新行查询前后指纹不变。BigInteger精确字符串、只读一致快照、7日/5秒/每源10000组及现有管理HTTPS/密钥/禁止缓存保持，meter仅有限outcome不含业务ID。原分析器/DateTimeOffset夹具失败、断开stdin等待worker和SFTP整文件校验/脱离SSH执行证据保留，6schema2容器3tmpfs清理。尚缺11事件、实物、真实局时P10/P50/P90、战斗细项与人群市场诊断，不计D04整体通过，30/35。 实际局时子链路通过：Domain8/Server8与隔离PG/实际管理HTTP/真实READY重启3项通过。新UTC开局及每人首次死亡/撤离房间时钟可恢复，旧缺失不补；窗口裁剪、重叠区间并集、零负收益及精确P10/P50/P90、缺局时资金单列已核对。控制时钟夹具不是活跃人工时长或完整战斗验收，净账户变化含市场转移，不冒称系统新增。原资源准入、分析器及零时长失败保留，3schema/容器/env/输入上传tmpfs清理。新增战斗场次0，B05仍330/330，D03仍284/300；余事件、实物、战斗细项和人群市场诊断，D04未整体通过，仍30/35。 打造具名事件子链路通过：V054可空观测同原动作事务保存，craft_completed/recipe_learned/pity_triggered按原action身份稳定导出，重放不加事件；保底保存当次2→0事实不读当前心愿，重铸Mutation/学习保留本体/已知模板空事件。原季版本维度锁定，大厅无对局维度明确未知、不拿开放D5当实战。编译零告警及实际PG/管理HTTP4通过，观测故障整体回滚、原键重试/并发幂等、旧NULL/坏对象/只读指纹通过；4schema/容器/env/tmpfs清理。其余8事件及战斗/实物/人群市场仍待，整体30/35。 难度/销毁/逐件装备归档的只读事件投影子链路通过：编译r1只读属性夹具失败0执行保留，r2零告警；实际PG/HTTP4通过。原结算身份D0/Mage/Human仅成功撤离一次，死亡/重放不增；丢弃与+4材料仅销毁实物，大厅D0占位不当参战难度；原季分页归档不重复销毁已回收物。未知历史/构筑成长单列，查询前后指纹不变，4schema/容器/env/tmpfs清理。仍缺五类战斗/掉落原事件、完整维度/实物流/其他归档和战斗细项/人群市场诊断，D04不整体通过，30/35。 房间五类战斗/掉落原始事件子链路通过：新UTC房启用4096累计序列/每条128物品，检查点合并不丢前缀，旧缺失不补造，超限显式缺口。潜在候选/实际领取/遗物转移/退出待结算与实际账户提交分开，零回复及原有效血上限保留；PVP死亡包括原冻结PVE中断。最终Domain20+Server队列1、实际PG/HTTP/READY进程重启按3原通过+1定向增强联合4通过；原空前缀0→0结果保留，增强声明观测夹具后非空1前缀跨真实OS恢复，其它游戏字段不变，夹具不冒称自然事件。5Program身份/5schema/2容器及临时资源清理；原19+1输入及全部历史失败保留。无新完整遭遇，九银行/预算不变。仍缺统一build/growth、战斗细项、全实物/其他归档和人群市场诊断，不整体通过，仍30/35。 原构筑/成长统一维度子链路通过：语义档案保留实际卡/装备/借用及独特元素，开战引用与事件状态分开，实际生效套及EffectiveBaseCardMaxL0..5不冒称P0/P5/年龄；512档案/1024引用有界，旧缺不读当前数据补造。三报表统一九类11字段及缺口计数，原终态收据/难度保留原profile、重放不回填。Domain当前33为32原通过+1唯一元素增强，Server5；PG/HTTP/真实OS当前3原通过+1夹具修正定向联合4，5Program/5schema/2容器及输入env/tmpfs清理。原24/8、31/1及重建journal丢索引的恢复夹具失败留证；独立第三方DLL只读自有缓存最多64MiB，若建立按SHA保留用于后续，不用于本批输入替换。仍缺战斗细项、销毁原收据连接/全实物/其它归档及人群市场诊断，不整体验收，30/35。 逐动作战斗观测子链路通过：自然/充能/瞬抽/开局/连抽有效进手、空库/满手清零、控制并集/敌人计时与整步停机、施法重放/零伤意图、盾治疗请求/实际/溢出均在原执行点计数；合法80/70有效98通过。独立有界1024行按原玩家/战斗保存，PVP返回不覆盖PVE，旧缺HistoryMissing/Partial，计数精确字符串/分数且累计不冒称窗口增量。Domain45/Server8及实际PG/HTTP/真实OS按3原通过+1定向联合4通过，原3次编译夹具失败0执行及SaveIfDue十revision门槛夹具失败留证；按100ms十步复验，不改生产频率。5schema/2容器及输入env/tmpfs清理。复用122只读第三方DLL前后验SHA，任务程序集全新。仍缺全实物/销毁原收据连接/其它归档及人群市场诊断，30/35。 实物/归档来源子链路通过：V055可空前后owner仅原事务写入不回填，原创建唯一ID计Mint，不拿可变owner/source_kind反推；转移/托管/重铸/归档不重计新造销毁，首次销毁已知集合对账且未知终态/重复声明保留。原Committed hold按item/player/完整域接原收据profile，错误item不借档案；wallet/recipe/wish/实际配装归档只记域标，不把晚到账余额当归档金额。26单元/6实际PG及HTTP通过，原CA1869编译0执行留证，6schema及临时资源清理，Domain未改不重复旧矩阵。仍待人群/市场/活动/红诊断及综合遥测审计，30/35。 人群/选择/市场/活动/红诊断子链路通过：36Domain、12唯一Server及5实际PG/HTTP复验；原5项SQL42601失败和首轮红schema未实名取证缺口保留。新实际偏向/基础血量旧缺不回填，账号年龄非熟练度；成熟48小时分母/不可变成交模板、原hold首次带出与遗物回收、分币零余额/原商店总价/实际活动分支峰值/红quota-mint-owner履历均只读有界。原件、截断、未知和右删失显式，非因果或长期玩家实测。两批临时资源清理，复验五schema实名核对。预算/银行/配置/UI/生产不变，D04仍待当前版本综合遥测核查，30/35。 当前版本综合遥测验收通过：11要求逐条映射九组原证据，929归档SHA及33关键当前源码路径复核；六新增生产路径由最新36Domain/12唯一Server/5PG_HTTP受影响复验覆盖。原阶段false、全部失败/历史缺失/首轮红schema身份缺口保留；有界当前实现不冒称历史完整、人群熟练度、长期经济或生产负载。无新场次/PG/UI，正式17及九银行不变。整体31/35，剩D03/E02/F01/F03。",
+      "evidence": [
+        "D04-CURRENCY-PROJECTION.md",
+        "evidence/D04-currency-r1/result.json",
+        "D04-PLAYTIME-PROGRESS.md",
+        "evidence/D04-playtime-r1/result.json",
+        "D04-CRAFTING-EVENTS-PROGRESS.md",
+        "evidence/D04-crafting-events-r1/result.json",
+        "D04-LIFECYCLE-EVENTS-PROGRESS.md",
+        "evidence/D04-lifecycle-events-r1/result.json",
+        "D04-ROOM-EVENTS-PROGRESS.md",
+        "evidence/D04-room-events-r1/result.json",
+        "D04-BUILD-DIMENSIONS-PROGRESS.md",
+        "evidence/D04-build-dimensions-r1/result.json",
+        "D04-COMBAT-MEASUREMENTS-PROGRESS.md",
+        "evidence/D04-combat-measure-r1/result.json",
+        "D04-PHYSICAL-FLOW-PROGRESS.md",
+        "evidence/D04-physical-flow-r1/result.json",
+        "D04-DIAGNOSTICS-PROGRESS.md",
+        "evidence/D04-diagnostics-r1/result.json",
+        "D04-FINAL-ACCEPTANCE.md",
+        "evidence/D04-final-r1/result.json"
+      ]
+    },
+    {
+      "id": "E01",
+      "status": "complete",
+      "requirement": "品质帽、有效等级/超帽、理论/生效/溢出、借用、配方与归档UI",
+      "note": "仍须覆盖设计第637段的仓库材料整理/替换/批量丢弃及三选一价值提示，与更广的归档界面。C12市场材料筛选和原季待领已通过，不替代这些仓库功能。 刷新原价显示子链路已落实：候选13只将正式LootRules.refresh_gold范围由server改both、原数值不变，候选12原三件套归档。旧包兼容读取校验后的原价、缺原价禁用；本机6/原生45检查通过，11语言三宽三状态99最终帧5145检查及代表图通过。354原帧和空卡表夹具、日文贴边、法葡18项失败、错误5:1假设全部保留，最终按原4:1图和固定32号字/完整至多2行修复。无新PG/HTTP网络/容量/完整路线或生产重启。此子项不收口其余原目录预览、来源、C15/C16或D/E/F，整体仍20/35。 准备页原目录子链路已验证：实际PG最终1项覆盖自有/借用两组准备前后Bootstrap，原生255项通过；11语言三宽八状态264最终帧39693逐帧检查和代表图通过，377原帧保留。默认元素/背包/安全格/模板/文字按原包，缺包保留取消并禁准备匹配，身份/地址/哈希并发保护完整。D帽只作用卡牌专武，合法防具5不投影；首轮错误预期1及草稿纠正已留证，不改服务端数值。typed-array、葡语42项裁字、默认灰菜单与传输/资源失败均保留。其余来源、完整UI与D/F未完成，A03/A04/E01/E02不据此计整体通过。 已实现仓库批量丢弃与整理入口：永久回执/逐物移动、不返资源、保存配装/原季/版本/预留保护。类型/边界7、真实PG联合15、Godot模型22通过，原15项权限夹具失败、14过1旧域夹具失败及5项针对复验、直连原批中断均保留。11语言13新键一致；实际HTTP测试源码已准备未编译，实帧矩阵70完成后遇180秒窗口，正按原源码拆分剩余128帧，尚未整体验收。D03仍218/300余82，不拿模型余额或局部UI放通。 仓库整理/批量丢弃子功能已收口：真实HTTP1、C#→Godot实际字节互通12、11语言三宽六状态最终198帧25899检查及各语言代表图通过；长列表越界、语言影响按钮皮肤、180秒70帧超时与同源码剩余128、最终预声明600秒实跑525.03秒全部留证。仅放宽观察窗，2/1/3GiB与断言不变。其余价值提示/归档综合交互仍待，E01不计整体通过。 历季收藏子功能已完成：新增鉴权只读Protobuf列表/四分类分页，原15与当前16/合法未知旧域隔离，五币/原位置/配方/心愿/原配装引用和自身详情保持；读取不改资产。类型6、PG修正后4及新增引用归属针对1、真实HTTP1、Godot模型/原包哈希/竞态21及实际HTTP原件解码16通过。11语言44新键，三宽九状态297最终帧25779检查和代表图通过，231原帧+66文字定向复验。旧夹具2失败、Native入口/类型/语义断言、90秒无退出、局部关键字解析及原文字问题全部保留。E01仍待材料替换与三选一价值提示综合核查，不计整体通过；D03仍218/300余82。 当前E01逐项综合验收通过：质量/有效等级/超帽、理论/生效、自有/借用、配方、原季归档及设计637段材料整理/替换/批量丢弃/价值提示均有对应已验子链路。相关原3/4与当前16表体、六档帽和LootRules数值核对通过，48份先决结果按SHA索引仅作范围复用。新公开价值模型原生19、真实Main回调假网关8、11语言三宽九状态最终297帧18720检查及各语言代表图通过；初轮297虽布局通过但重点信息未优先，原件保留。无新战斗，D03仍218/300余82。历史缺原件/夹具/90秒诊断/阶段false标记及所有放宽不回写。E02全项目、D03/D04与F继续，整体29/35。",
+      "evidence": [
+        "evidence/C01-refresh-price-ui/result.json",
+        "evidence/A04-client-preparation-config-r1/result.json",
+        "PREPARATION-ARMOR-LEVEL-ERRATUM.md",
+        "E01-INVENTORY-DISCARD-BACKEND.md",
+        "evidence/E01-inventory-discard-repository-r1/result.json",
+        "E01-INVENTORY-MANAGEMENT-ACCEPTANCE.md",
+        "evidence/E01-inventory-discard-http-r1/result.json",
+        "evidence/E01-inventory-native-wire-r1/result.json",
+        "evidence/E01-inventory-management-ui-r1/result.json",
+        "E01-SEASON-ARCHIVE-ACCEPTANCE.md",
+        "E01-SEASON-ARCHIVE-PROGRESS.md",
+        "evidence/E01-season-archive-r1/result.json",
+        "E01-FINAL-ACCEPTANCE.md",
+        "E01-REQUIREMENT-AUDIT.md",
+        "evidence/E01-final-r1/result.json"
+      ]
+    },
+    {
+      "id": "E02",
+      "status": "complete",
+      "requirement": "受影响全部语言与分辨率真实渲染、文本清晰、无遮挡、协议与分页完整",
+      "note": "刷新原价显示子链路已落实：候选13只将正式LootRules.refresh_gold范围由server改both、原数值不变，候选12原三件套归档。旧包兼容读取校验后的原价、缺原价禁用；本机6/原生45检查通过，11语言三宽三状态99最终帧5145检查及代表图通过。354原帧和空卡表夹具、日文贴边、法葡18项失败、错误5:1假设全部保留，最终按原4:1图和固定32号字/完整至多2行修复。无新PG/HTTP网络/容量/完整路线或生产重启。此子项不收口其余原目录预览、来源、C15/C16或D/E/F，整体仍20/35。 准备页原目录子链路已验证：实际PG最终1项覆盖自有/借用两组准备前后Bootstrap，原生255项通过；11语言三宽八状态264最终帧39693逐帧检查和代表图通过，377原帧保留。默认元素/背包/安全格/模板/文字按原包，缺包保留取消并禁准备匹配，身份/地址/哈希并发保护完整。D帽只作用卡牌专武，合法防具5不投影；首轮错误预期1及草稿纠正已留证，不改服务端数值。typed-array、葡语42项裁字、默认灰菜单与传输/资源失败均保留。其余来源、完整UI与D/F未完成，A03/A04/E01/E02不据此计整体通过。 当前客户端子链路已接入：Godot4.7.2 Linux实际导入与5个明确UI目标编译通过，原HTTP包网络夹具下控制器16/16通过；原季确认、账号/地址/代次、领取后重读及持久外观选择已覆盖。11语言各1075键、26新键和7图片登记静态审计通过，原588资源及旧文案保持；季程独立预算14项通过。原夹具/动态路径/缓存SHA拒绝、资源准入和传输失败全部保留。无原生公网请求或渲染帧；10新状态×11语言×三宽330最终帧及直接效果审查仍待，本机资源保护未放宽，C15/E02不据此计通过。 本批实际首轮画面已推进到六语言三宽12状态216帧、18301自动检查，另有20试验帧，共236原图保留。修复账户栏末行、职业缩写、卡组夹具重绘及动态Label类型；完整ISO收藏日期的RTL隔离新修正与原生第17断言仍待运行，资源再次低于门槛，未启动该原生导入。最终需固定修正源码完成11语言396帧及直接效果审查，首轮不是当前最终通过。 当前源码已实际完成Linux Godot控制器17项与5个UI目标编译，旧143源/10附加输入验SHA不变、容器已清理；Windows当前无界面编译通过。阿拉伯ISO时间修正后36最终帧/3229检查及直接查看通过，最终矩阵36/396，保留已过36帧；中英渲染和本机.NET编译均因准入未满足而未启动相应负载。原上传模板错误、准入拒绝及全部首轮图片不覆盖。 C15新界面11语言三宽12状态396最终帧34374自动检查及16代表图通过；只验证本批新增状态，不替代其他模块广泛UI。用户已授权本机保护改2GiB，原证据不改。 2026-11-06返牌新额度/旧规则及MAG10新旧卡说明的7受影响状态，11语言三宽最终231帧26313检查及16代表图直接查看通过；147原通过帧按产品字节相同复用加84定向新帧，不称一次全新矩阵。273原图与首轮Godot/英文/阿拉伯验收脚本失败均保留。E02其余综合审计未收口，整体29/35。 2026-11-06只读依赖核查：当前与第17版最终UI的116产品文件逐字节一致，之后无客户端改动。旧C12/C15/E01归档/价值提示宽范围pin有34/23/19/18产品文件变化、无缺失，需具体函数/资源/文案/相关表复用核对，不能仅凭宽pin变化判UI失败或重跑全量。未新渲染，E02不据此提前通过。 当前版本综合验收通过：既有受影响模块11语三宽矩阵按原范围复用，四基线141个基线/函数变更条目分类，旧文案零删除/改值、既有协议字段/端点保持，4字体import仅换行差异；当前116产品输入同第17版。17组5269PNG条目逐SHA仅完整性不计新通过。共享页头/普通确认关闭链/仓库入口新增99帧9555检查、14代表图覆盖11语直接查看通过；当前49具名原生+确认框1组通过。预声明300秒实跑139.86秒，私有桌面/2+1GiB保护。仅夹具新增，原失败/阶段false/分析修正保留；不补100或新实战，D03仍284余16及严格1.15。整体32/35，剩D03/F01/F03。",
+      "evidence": [
+        "evidence/C01-refresh-price-ui/result.json",
+        "evidence/A04-client-preparation-config-r1/result.json",
+        "PREPARATION-ARMOR-LEVEL-ERRATUM.md",
+        "C15-CLIENT-CONTROL.md",
+        "C15-REWARD-BUDGET.md",
+        "evidence/C15-client-control-r1/result.json",
+        "C15-UI-REVIEW-PROGRESS.md",
+        "evidence/C15-ui-progress-r1/result.json",
+        "evidence/C15-native17-admin-sql-r1/result.json",
+        "evidence/C15-final-ar-r1/result.json",
+        "evidence/C15-final-r1/result.json",
+        "C01-CONFIG17-MAGE-RETURN.md",
+        "evidence/C01-config17-r1/result.json",
+        "E02-SOURCE-DEPENDENCY-AUDIT.md",
+        "evidence/E02-source-audit-r1/e02-ui-source-dependencies-r1.derived.json",
+        "E02-FINAL-ACCEPTANCE.md",
+        "evidence/E02-final-r1/result.json"
+      ]
+    },
+    {
+      "id": "F01",
+      "status": "complete",
+      "requirement": "第1/7/14日分人群赛季场景与最高开放难度放行证据",
+      "note": "当前17正式工作簿/原ZIP只读来源核查完成，80季内绑定碎片/24勇士魂/8职业魂/4包仅已达级领取才入账；活动12-14及33-35日共享12章互斥、药剂6章/期1与04点日切明确，原70%/18分是假设。旧银行缺当前完整日历/实际领取来源，不补造。提议三模拟策略×三职业×14日×每日2次=252，因与D03长期验证重叠已请求明确F01独立最多300或仅D03余16的记账；未答复不启动。0新场次，不据来源核查通过F01或开放高难。 正式17初始账号/日历预检717项通过：自有PG实际迁移/身份/Provision/赛季发布与加入；正常账号三职业真实默认20卡与武器0级、永久/季内/药剂/本体全零、仅D0。避开会发调试邮件的test_/test2_名。原252排程身份/配对种子/09和18点、上海零点vs商店04点、第1/7/14日参考和活动窗、Dead非XP/药剂6章核验；252只是安排，实际开战0。夹具44字符本地名拒绝及准备器过宽路径替换原失败保留，修夹具后0警告错误，4856原输入不变。自有schema/PG清理，未生产改动。仍需成熟历史夹具/确切策略与252场预算答复，F01不计通过。 F01专用输入两项预检通过：九账号精确20卡，新手真实初始永久0/成熟历史夹具5，54个未启动D0-D5实际快照验证真实等级投影，无地图/时钟/战斗，不证明解锁。明确旧D03固定11月20时钟/新手永久2/默认借用及旧仓库配额假设不能冒充新F01。登记r1/r2路线、风险、领取购买/升级和各里程碑政策；20碎片120金等取正式表，未执行政策。CA1869编译失败源/日志保留，静态Options修复后新目录2通过。只新增测试文件、旧4856路径不变，产品未改；仍缺实际控制器、准备/付费/解锁/准入及预算答复，F01战斗0/不计通过。 准备控制器已接实际PreparationRepository：九账号第1/7/14日09/18点54绑定/重放/取消通过，个人仍D0，免费20格/0安全/0药剂；独立控制最终Advanced28/1、Top36/3、药剂1与D0合法防具+5保持，跨季/错级/错容量/错ID/过期拒绝。联合2唯一项通过并非一次全绿，54主项不重跑；编译可空错误及控制Seasonal域/未装配/Int64读Int32三失败原件保留，按正式规则与实际SaveLoadout修夹具。仅准备无地图/时钟/持有消费，PG/schema清理，产品未改。仍缺开局/支付/结算/来源/解锁控制器和预算答复，实战0/32项通过不变。 显式Actor时钟最终3项通过：真实周期Ticker由可控TimeProvider抑制自动回调，仅空房经原命令各走100ms；身份/上下文/原StartedAtUtc、时间上限、外部改时/外部帧、故障禁止自动重试及未开图玩家拒绝验证。原两项r1和补原时刻后的三项r2不相加，实战0。源码确认正常匹配补Bot/真实Bot推进，政策r3登记保留正常分配及PVP，不用旧单人Run/删Bot绕过；实际开局、策略、结算等仍待，预算答复未到，32/35不变。 预算复核按用户原始“单项最多几百”归位F01独立300，不依据新回复或等待同意；旧预算询问记录保留，D03/B05不重置。真实开局入口/耐久启动账接入，3账本预检通过；新增诊断001实际正常匹配1人+3游戏Bot、原随机seed280131675、显式时钟、被动主账号死亡及实际结算通过，全房108秒均终态。F01已用1余299，九条主轨迹未运行/未合入诊断收入；正常seed不伪称提案配对seed，r4登记。账链5行唯一start1独立验证，schema/PG/timers清理，生产未动。仍缺主动PVE/PVP与14日经济/解锁编排，F01不计通过/整体32。 主动机械PVE/PVP控制器两实际正常房诊断通过：新手0级57PVE/3奖励/3移动后Dead零带出，保持死亡；回归成熟历史牌组D0有效0级，101PVE+12实际PVP、正常移动相遇后Extracted，实际结算/CommitHolds到账283金70片。无改图/seed/强制duel/停Bot；反应间隔、170动作非重放/预览/地图静态保持独立复核。F01累计3/300余297；未启动旧003保留retired，诊断收入不进九账号。仅测试选择器新增可选实际预览时刻，旧默认不变；产品未改，schema/PG/timer清理。仍缺14日实际来源/消费/成长/领取/解锁编排与结果，不计F01通过，整体32。 F01当前17具名日历执行/逐账/最高难度评审通过：9账号14日252原case全部完成无跳过删失，191撤61死、23129出牌216PVP，27检查点；1374真实流水与季内金币/片/双章及永久四魂相等，252已完成匹配/结算、无pending holds/active准备，9活动户27领取共享章闭合。实际D0-D5为163/38/26/6/4/15，初始最高建议D2且未激活生产；D4/5日历无法师，职业1.15/成长长尾仍D03。总账255/300余45，3诊断不混收入。预开局适配失败只读核查后保留实际已付状态同case继续不重跑；1771原件归档逐成员SHA。skilled紫装偏好停滞/新手慢/右删失保留不追认数值；整体33/35剩D03/F03。 2026-11-07核实新号实际51初始副本（默认牌组20并非全部卡池），原三首场账户快照与1771原文件SHA一致。F01原300预算内新增三新手重组自有初始支持20卡的7日42场，正常1人3Bot/实际PVE/PVP/账户服务；27撤15死、5056施法含91PvP，42金币碎片与独立DB四季币/四永久魂流水闭合，0待处理持有/准备。原9钱包/252结算/1374流水数不变，255旧journal前缀原字节保持。D0合法Green/Blue五槽首次守4/法10/祭3，具名样本P50=4/P90=10，法师第5日超原第1-3日目标仍保留；不泛化人群/因果或判全部数值通过。累计297/300余3，原252日历结论不重写；D03299/B05330不变、仍33/35，无产品/生产变化。首轮CA1822提取私有helper需static导致零场次编译失败保留，修后Release零警告错误和3个输入/门禁Fact通过；新增实际日历1Fact42场完成，PG已停、独立schema私有保留。",
+      "evidence": [
+        "D03-F01-SOURCE-REVIEW.md",
+        "evidence/D03-F01-source-r1/result.json",
+        "F01-INITIAL-STATE-PREFLIGHT.md",
+        "evidence/F01-initial-preflight-r1/result.json",
+        "F01-OWNED-INPUTS-AND-POLICY.md",
+        "evidence/F01-owned-inputs-r1/result.json",
+        "F01-PREPARED-CONTROLLER-PREFLIGHT.md",
+        "evidence/F01-prepared-controller-r1/result.json",
+        "F01-ACTOR-CLOCK-PREFLIGHT.md",
+        "evidence/F01-actor-clock-r1/result.json",
+        "evidence/F01-runtime-policy-r3/policy.original.json",
+        "F01-BUDGET.json",
+        "F01-NORMAL-ADMISSION-DIAGNOSTIC.md",
+        "evidence/F01-admission-smoke-r1/result.json",
+        "F01-ACTIVE-PVE-PVP-DIAGNOSTICS.md",
+        "evidence/F01-mechanical-diagnostics-r1/result.json",
+        "F01-CALENDAR-FINAL-ACCEPTANCE.md",
+        "evidence/F01-calendar-final-r1/result.json",
+        "F01-SUPPORT-WEEK-REVIEW.md",
+        "evidence/F01-support-week-r1/result.json"
+      ]
+    },
+    {
+      "id": "F02",
+      "status": "complete",
+      "requirement": "实际PostgreSQL事务、并发/重复/重启/跨季边界与新旧版本恢复自检",
+      "note": "D03 maintenance PG r2 found6IDs/16NaturalDrop rows reused across independent original banks. OriginalIDs unchanged; each bank now isolated for disposal checks. F02 must separately audit same-server cross-room seed/item-ID uniqueness; no live bug or global invariant acceptance claimed from snapshot imports. 2026-11-06实际链路已复现旧/新规则同种子跨房间GUID冲突2项失败。现将新装备GUID绑定RoomId并保留原随机消耗/数值/待领取旧ID，8项本机、服务端0警告构建及隔离PG2新事实全过（同schema两账号并发/Repository重放、旧重复原子拒绝）。独立Python复算Linux两GUID一致。schema/容器/env/输入均清理，旧D03-r3缓存收尾也已核实。该身份子链路通过，不宣称完整进程重启或F02整体通过，余项仍待综合故障审计。 2026-11-06当前17/原16实际进程恢复4项通过：8个完整Program进程强杀/重启，3归档模式隔离及4账号真实PB准备/READY/开局/活动额度重连，0机器人/施法/结算。首轮3项因缺准备来源在保存前失败，补真实PreparationRepository后复验；合法归档元数据单独核对，不弱化余额/来源。7schema/2容器/env/tmpfs均清理，原失败/SDK可选库诊断/worker new_matches=0口径更正保留。仅此子链路通过，新季托管/提交/通知/ACK临界实际进程综合审计继续，不收口F02或整体29/35。 2026-11-06当前实现综合验收完成：六要求逐条映射，原121PG按r115/r116重推联合通过、268原件清单一致，22直接路径20原字节相同/2后续变化有范围证据；原验收后32生产路径全部映射C01/B05/D02/E01/F02。新旧16/17进程4与资产临界4按真实批次联合8场景、成功路径20Program进程；未提交混合资产回滚、通知自动提交完成及独立回滚后实际重发、ACK已提交丢响应跨PID重试均验证。仅终止一个自有唯一AppName/锁核实的PG后端。原编译/2锁夹具超时/SSH超时/源换行审计失败保留，当前所有声明schema/container/env/tmpfs清理。不称单批全绿，不替代D03/D04/E02/F01/F03或生产发布，后续源码/配置变动需范围复验。整体30/35。 D04追加的V053观测列和只读接口已完成受影响范围复验：实际预留/应用/退款金额、状态和原观测时间重放不变；旧缺时间不补造；全部资金源行查询指纹不变，实际服务启动V053及管理边界验证。未重跑旧正常结算或修改业务金额。见D04-currency-r1。 D04局时观测追加可空快照字段与结算详情；旧缺时钟不回填、死亡/撤离逻辑时刻及JSON恢复、查询只读资金指纹、实际准备READY的UTC开局时间跨进程恢复经Domain8/Server8/实际PG及HTTP3项定向验证。0玩家施法、0完整遭遇，不重跑原正常结算矩阵。见D04-playtime-r1。 D04打造观测V054同事务追加，经原键并发/新Repository重放、故障整体回滚及原键重试的实际PG和HTTP4项定向验证，原资产/金额/ID语义保持，见D04-crafting-events-r1。 D04新累计观测可空字段随原检查点持久，合并/旧缺/JSON恢复与序号、实际当前17 READY强杀重启前缀经Domain20/Server1/PG及HTTP4定向验证；原资产提交边界不改，不重复旧正常结算，见D04-room-events-r1。 D04有界profile/战斗引用索引及终态观测经33Domain/5Server与实际PG/HTTP/非空真实OS4项定向核查；原档案/绑定前缀跨重启保持，零资产原收据重放不回填，资金指纹不变，未重跑旧正常结算矩阵。见D04-build-dimensions-r1。 D04独立combat聚合随原检查点持久，PVE/PVP切换/旧缺/JSON与实际进程恢复单调性经45Domain/8Server/实际PG及HTTP4定向核查；原资金/物品指纹不变，未重跑旧正常结算。见D04-combat-measure-r1。 V055所有权观测沿原事务写入，真实craft/reforge/market/discard重放、准备取消/入场及原hold提交与查询资金/物品指纹经26单元/6PG及HTTP受影响范围核查；旧NULL不回填，原业务金额/状态/幂等不改。见D04-physical-flow-r1。 D04只追加可空原偏向/基础血量观测及只读诊断，36Domain/12Server及5实际PG/HTTP复验核对原金额/提交和查询指纹不变；原SQL失败留证，见D04-diagnostics-r1。",
+      "evidence": [
+        "F02-LOOT-IDENTITY-PROGRESS.md",
+        "evidence/F02-loot-id-r1/result.json",
+        "evidence/F02-loot-id-r1/f02-loot-id-independent-audit-r1.derived.json",
+        "F02-SEASON17-PROCESS-RECOVERY.md",
+        "evidence/F02-season-credit-r2/result.json",
+        "F02-FINAL-ACCEPTANCE.md",
+        "evidence/F02-final-r1/result.json",
+        "evidence/F02-final-r1/requirements/f02-requirement-final-audit-r2.derived.json"
+      ]
+    },
+    {
+      "id": "F03",
+      "status": "in_progress",
+      "requirement": "发布分支集成、固定提交远端推送、数据库备份、服务器重启与公网核验",
+      "note": "2026-11-07只读分支/云端预检及真实私有备份隔离迁移子链路通过：运行78625138而非检出15198，生产仍迁移30/27项；27旧checksum匹配。Google16冲突草案r2原生成器通过，双方660/305字段及独有语言改写保留，未实际合并/编译运行。第二精确4.68MB私有dump已恢复，克隆30→55/52项、38旧表原字段全哈希保持、75当前表及迁移重放不变；原件私有ACL留存不入库。888产品源等价保留程序集非最终保护包，容器/tmpfs清理、无云SDK、生产容器/镜像/启动时间/模式不变。后续固定受保护产物/分支功能/实际发布/新备份回滚/公网新版本仍待D03/F01等门槛，F03不计整项通过。 保护导出前完整Release构建发现Numerics CapEffectiveExperiment.cs:68 CS0411（Calculate新增可选参数使Select方法组失配），仅显式单参lambda保留旧默认配置/版本；修后工具Release0警告0错误，0容量/实战。原完整构建失败/私有日志SHA保留，须固定新源码再全Solution重建和保护后验证。 固定075d0c4e完整Release/publish/Obfuscar2.2.50导出通过；3项目DLL保护SHA不同，21128公开/常量默认值/JSON/命名反射表面完全相同。精确候选目录的保护DLL执行3元数据Domain+1完整Program管理HTTP通过，0跳过/0实战，自有schema/容器/env/tmpfs清理。首轮准备器bin/package路径失败0执行留证，r2只修准备前缀并验SHA。18文件候选仍tested=false/未验证标记，未冒称全套或平台运行；私有映射/原DLL/日志不入库。仍32/35，F01预算待答。 Google专项隔离集成通过：common e67b453c与Google fdd47a1f，16冲突解法固定72ae652a，夹具清理后bc24f56e；Release零警告错误、标准协议76/114/71、6协议身份+2实际本地PG/HTTP/WSS通过。Google模拟提供方，真实SDK未测。165帧/11628检查、11语三宽和14直看代表图通过，530私有桌面检查/0切换、资源全清理。原生940项最终零退出错误；前三轮ui_cancel音频残留和PG启动观察器超时原件保留，仅测试夹具停止并等待音频线程，不改产品或断言。4932构建源一致、392 UI源仅测试夹具差异。仍32/35/F03未完，未推正式分支或部署重启，预算保持。 Steam专项隔离集成通过：4a05eff9+49acae01无文本冲突a7d11fcb，修入口中英文回退、11语新增两键且旧值全保留，最终本地14b3a172。Release零警告错误、11票据昵称+4实际本地PG/HTTP、原生13+103通过；66帧2523检查、11直看代表图和224私有桌面检查/0切换通过。保留UI类型/审计器失败及PG观察管道超时，未降断言；仅测试夹具/两文案变更，无实战/生产/正式分支更新。真实SDK未测，PG及桌面清理。仍32/35。 2026-11-07最新集合75d7ef91已分别接入Google/Steam隔离候选406fb2eb/018cd7ab，零新增冲突；产品路径相对原验证bc24f56e/14b3a172完全无变化，原平台功能/UI证据按范围保留。两完整Release方案0警告0错误，4947/4935输入前后SHA保持，两协议原生成检查通过。各840自有Godot importer元数据先无损归档逐SHA再精确恢复，检出干净；无新UI/实战。两个候选以非强制原子推送保存到codex/season-balance-google-candidate-20261107及steam同名候选，远端SHA核实；正式目标refs/生产不变。D03299/300余1及追加9场申请仍待答，F01255/B05330保持，整体33/35，F03最终发布仍未通过。",
+      "evidence": [
+        "F03-PREFLIGHT-AND-MIGRATION-REHEARSAL.md",
+        "evidence/F03-preflight-r1/result.json",
+        "evidence/F03-protected-compile-r1/result.json",
+        "F03-PROTECTED-CANDIDATE-SCOPED-VERIFICATION.md",
+        "evidence/F03-protected-scope-r1/result.json",
+        "F03-GOOGLE-INTEGRATION-SCOPED-VERIFICATION.md",
+        "evidence/F03-google-scope-r1/result.json",
+        "F03-STEAM-INTEGRATION-SCOPED-VERIFICATION.md",
+        "evidence/F03-steam-scope-r1/result.json",
+        "F03-CURRENT-PLATFORM-INTEGRATION.md",
+        "evidence/F03-current-platform-r1/result.json",
+        "evidence/F03-current-platform-r1/f03-current-candidate-push-r1/result.json"
+      ]
+    }
+  ]
+}

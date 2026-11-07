@@ -1,0 +1,43 @@
+{
+  "container_id": "c20ef697e0798fe2c95f986da3991e78e3d8ddf62bfc0328d4cc8ddc1277df09",
+  "name": "fc-season-archive-runtime-r96",
+  "label": "season-balance-20261102-a03-runtime-r96",
+  "database_container": "803968e390014540be88f60b9ac43203946d0145bf886fc61d9d9d4d04bc3b1a",
+  "image_id": "sha256:b34b01ff381aa920264e3920d7a7a49e6c1056091999dfc6268107d07029b9f4",
+  "payload_sha256": "b65828b8f6efec7a761cd87f7391778f5c89e2787c3fe1da35dd5427ee9a02a2",
+  "precompiled_on_local": true,
+  "cloud_SDK_started": false,
+  "production_database_used": false,
+  "new_game_matches": 0,
+  "memory_mib": 1200,
+  "cpus": 1,
+  "command": [
+    "/workspace/bin/FantasyCard.Server.Tests.dll",
+    "-noLogo",
+    "-noColor",
+    "-noAutoReporters",
+    "-failSkips",
+    "-parallel",
+    "none",
+    "-reporter",
+    "verbose",
+    "-trx",
+    "/results/season-archive-runtime.trx",
+    "-xml",
+    "/results/xunit.original.xml",
+    "-method",
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.*",
+    "-method",
+    "FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.StillOpenArchivedSeasonPreparesQueuesAndLaunchesUsingItsOwnCatalog",
+    "-method",
+    "FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.AlreadyAdmittedArchivedLaunchDrainsAfterTheSeasonEndsWithoutASecondAssetSpend",
+    "-method",
+    "FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.MatchmakingChecksOriginalSeasonDefinitionRatherThanAcceptingTheLobbyLabel"
+  ],
+  "admission_after_staging": {
+    "available_ram": 2549018624,
+    "free_disk": 3290923008,
+    "disk_fraction": 0.051997493086183316
+  },
+  "started_at": 1793832294.341317
+}

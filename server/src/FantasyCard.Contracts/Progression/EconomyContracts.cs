@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace FantasyCard.Contracts.Progression;
 
 public sealed record ShopProductResponse(
@@ -13,21 +15,41 @@ public sealed record ShopResponse(
     string ResetKey,
     IReadOnlyList<ShopProductResponse> Products,
     int RefreshesUsed = 0,
-    int RefreshLimit = 0);
+    int RefreshLimit = 0,
+    ShopPolicyResponse? Policy = null,
+    string? RotationKey = null);
+
+public sealed record ShopPolicyResponse(string State,string? SeasonId,string? ConfigVersion,string? CatalogVersion,
+    DateTimeOffset? SeasonEndsAt,DateTimeOffset ResetsAt,bool CanPurchase,WalletResponse Wallet,bool GrantsPermanentCopies);
+public sealed record ShopGrantResponse(string Kind,long Amount,string? CardId=null,bool NewlyUnlocked=false,int CopiesAfter=0,long Version=0);
 
 public sealed record ShopInventoryContextResponse(
     ShopResponse Shop,
     InventoryResponse Inventory);
 
-public sealed record PurchaseShopRequest(string ProductId, int Quantity = 1);
+public sealed record PurchaseShopRequest(string ProductId,int Quantity=1,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? SeasonId=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? ResetKey=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? RotationKey=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] long? ExpectedPriceGold=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? CatalogVersion=null);
 
 public sealed record ShopPurchaseResponse(
     string ProductId,
     int Quantity,
     long GoldAfter,
-    string Granted);
+    string Granted,
+    IReadOnlyList<ShopGrantResponse>? Grants=null,
+    WalletResponse? Wallet=null,string? SeasonId=null,string? ConfigVersion=null,string? CatalogVersion=null,string? ResetKey=null);
 
-public sealed record CreateMarketListingRequest(Guid EquipmentId, long PriceGold);
+public sealed record CreateMarketListingRequest(Guid EquipmentId,long PriceGold,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? Currency=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] long? Price=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? SeasonId=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] long? ExpectedEquipmentVersion=null);
+
+public sealed record RelistMarketListingRequest(string Currency,long Price,long ExpectedVersion,string? SeasonId=null);
+public sealed record ClaimMarketReturnRequest(long ExpectedEquipmentVersion,string? SeasonId=null);
 
 public sealed record MarketListingResponse(
     Guid ListingId,
@@ -38,11 +60,29 @@ public sealed record MarketListingResponse(
     long Version,
     DateTimeOffset CreatedAt,
     DateTimeOffset ExpiresAt,
-    EquipmentResponse? Equipment = null);
+    EquipmentResponse? Equipment = null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? Currency=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] long? Price=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? SeasonId=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? ConfigVersion=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] DateTimeOffset? SeasonEndsAt=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] long? Fee=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] long? SellerNet=null);
+
+public sealed record MarketCurrencyResponse(string Currency,long OrangePriceCap,long RedPriceCap);
+public sealed record MarketPolicyResponse(string State,string? SeasonId,string? ConfigVersion,DateTimeOffset? SeasonEndsAt,
+    int SharedSlots,int ListingHours,int TaxBasisPoints,long MinimumFee,bool CanTrade,WalletResponse Wallet,
+    IReadOnlyList<MarketCurrencyResponse> Currencies);
+public sealed record MarketReturnResponse(Guid ReturnId,Guid ListingId,EquipmentResponse Equipment,DateTimeOffset HeldAt,bool CanClaim=true);
+public sealed record MarketReturnsResponse(IReadOnlyList<MarketReturnResponse> Items,int? NextOffset=null);
 
 public sealed record MarketInventoryContextResponse(
     IReadOnlyList<MarketListingResponse> Listings,
-    InventoryResponse Inventory);
+    InventoryResponse Inventory,
+    MarketPolicyResponse? Policy=null,
+    IReadOnlyList<MarketListingResponse>? OwnListings=null,
+    IReadOnlyList<MarketReturnResponse>? Returns=null,
+    int? ReturnsNextOffset=null);
 
 public sealed record EconomyContextResponse(
     ShopResponse Shop,
@@ -51,4 +91,6 @@ public sealed record EconomyContextResponse(
 
 public sealed record MarketPurchaseResponse(
     MarketListingResponse Listing,
-    long BuyerGoldAfter);
+    long BuyerGoldAfter,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] WalletResponse? Wallet=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? SeasonId=null);

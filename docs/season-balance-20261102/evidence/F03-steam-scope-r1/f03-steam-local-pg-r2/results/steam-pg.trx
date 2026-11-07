@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="4e47bb89-37a4-4001-bbde-d541117434c4" name="shengjiahao@YK-SHENGJIAHAO 2026-11-07 03:58:10" runUser="DOBEST\shengjiahao" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-07T03:58:10.5480618+08:00" queuing="2026-11-07T03:58:10.5480623+08:00" start="2026-11-07T03:58:05.9959963+08:00" finish="2026-11-07T03:58:14.4339665+08:00" />
+  <TestSettings name="default" id="c924a3d7-d541-46f9-9430-23b626ba62ba">
+    <Deployment runDeploymentRoot="shengjiahao_YK-SHENGJIAHAO_2026-11-07_03_58_10" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="98c934dc-3ab5-47f8-a039-0a0137adbfac" testId="8374c0f8-880d-d031-214c-ce20d77cd3f7" testName="FantasyCard.Server.Tests.Persistence.PostgresSteamDisplayNameTests.Concurrent_same_persona_accounts_receive_unique_names_and_one_identity_stays_one_account" computerName="YK-SHENGJIAHAO" duration="00:00:01.2494346" startTime="2026-11-07T03:58:11.9208812+08:00" endTime="2026-11-07T03:58:13.1705797+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="98c934dc-3ab5-47f8-a039-0a0137adbfac" />
+    <UnitTestResult executionId="771b1fc9-47e9-493a-988d-8fea188bd3e6" testId="f7db7aa7-e496-f732-5fa0-6d68758692b3" testName="FantasyCard.Server.Tests.Persistence.PostgresSteamPersonaHttpTests.Binary_steam_login_assigns_a_server_suffix_and_preserves_it_on_relogin" computerName="YK-SHENGJIAHAO" duration="00:00:02.3865190" startTime="2026-11-07T03:58:08.1015518+08:00" endTime="2026-11-07T03:58:10.5035742+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="771b1fc9-47e9-493a-988d-8fea188bd3e6" />
+    <UnitTestResult executionId="63c5da9e-3324-41fd-ae81-21302a6f1ee9" testId="3ae5e764-4dfc-495b-8fa4-085d117590a1" testName="FantasyCard.Server.Tests.Persistence.PostgresSteamDisplayNameTests.Random_collision_is_checked_across_normalized_names_and_relogin_keeps_the_profile" computerName="YK-SHENGJIAHAO" duration="00:00:01.1788010" startTime="2026-11-07T03:58:13.1727437+08:00" endTime="2026-11-07T03:58:14.3516225+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="63c5da9e-3324-41fd-ae81-21302a6f1ee9" />
+    <UnitTestResult executionId="064771a3-7863-45e8-aa71-028bf8c901b3" testId="dda24516-a88d-c2b4-d68b-1721c5a8c74b" testName="FantasyCard.Server.Tests.Persistence.PostgresSteamDisplayNameTests.Ten_random_collisions_use_timestamp_and_a_timestamp_collision_is_retried" computerName="YK-SHENGJIAHAO" duration="00:00:01.3907631" startTime="2026-11-07T03:58:10.5287407+08:00" endTime="2026-11-07T03:58:11.9197547+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="064771a3-7863-45e8-aa71-028bf8c901b3" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSteamDisplayNameTests.Random_collision_is_checked_across_normalized_names_and_relogin_keeps_the_profile" storage="g:\pr13evidence\season-balance-20261102-r1\f03-steam-integration-r1\build\bin\fantasycard.server.tests\release\fantasycard.server.tests.dll" id="3ae5e764-4dfc-495b-8fa4-085d117590a1">
+      <Execution id="63c5da9e-3324-41fd-ae81-21302a6f1ee9" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\f03-steam-integration-r1\build\bin\FantasyCard.Server.Tests\release\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSteamDisplayNameTests" name="Random_collision_is_checked_across_normalized_names_and_relogin_keeps_the_profile" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSteamPersonaHttpTests.Binary_steam_login_assigns_a_server_suffix_and_preserves_it_on_relogin" storage="g:\pr13evidence\season-balance-20261102-r1\f03-steam-integration-r1\build\bin\fantasycard.server.tests\release\fantasycard.server.tests.dll" id="f7db7aa7-e496-f732-5fa0-6d68758692b3">
+      <Execution id="771b1fc9-47e9-493a-988d-8fea188bd3e6" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\f03-steam-integration-r1\build\bin\FantasyCard.Server.Tests\release\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSteamPersonaHttpTests" name="Binary_steam_login_assigns_a_server_suffix_and_preserves_it_on_relogin" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSteamDisplayNameTests.Concurrent_same_persona_accounts_receive_unique_names_and_one_identity_stays_one_account" storage="g:\pr13evidence\season-balance-20261102-r1\f03-steam-integration-r1\build\bin\fantasycard.server.tests\release\fantasycard.server.tests.dll" id="8374c0f8-880d-d031-214c-ce20d77cd3f7">
+      <Execution id="98c934dc-3ab5-47f8-a039-0a0137adbfac" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\f03-steam-integration-r1\build\bin\FantasyCard.Server.Tests\release\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSteamDisplayNameTests" name="Concurrent_same_persona_accounts_receive_unique_names_and_one_identity_stays_one_account" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSteamDisplayNameTests.Ten_random_collisions_use_timestamp_and_a_timestamp_collision_is_retried" storage="g:\pr13evidence\season-balance-20261102-r1\f03-steam-integration-r1\build\bin\fantasycard.server.tests\release\fantasycard.server.tests.dll" id="dda24516-a88d-c2b4-d68b-1721c5a8c74b">
+      <Execution id="064771a3-7863-45e8-aa71-028bf8c901b3" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\f03-steam-integration-r1\build\bin\FantasyCard.Server.Tests\release\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSteamDisplayNameTests" name="Ten_random_collisions_use_timestamp_and_a_timestamp_collision_is_retried" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="8374c0f8-880d-d031-214c-ce20d77cd3f7" executionId="98c934dc-3ab5-47f8-a039-0a0137adbfac" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f7db7aa7-e496-f732-5fa0-6d68758692b3" executionId="771b1fc9-47e9-493a-988d-8fea188bd3e6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3ae5e764-4dfc-495b-8fa4-085d117590a1" executionId="63c5da9e-3324-41fd-ae81-21302a6f1ee9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="dda24516-a88d-c2b4-d68b-1721c5a8c74b" executionId="064771a3-7863-45e8-aa71-028bf8c901b3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)&#xD;
+[xUnit.net 00:00:00.38]   Discovering: FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:00:01.18]   Discovered:  FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:00:01.59]   Starting:    FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:00:07.83]   Finished:    FantasyCard.Server.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

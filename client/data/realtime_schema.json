@@ -1,5 +1,5 @@
 {
-  "sha256": "2032e8018d43107e7124b34fff168b6414691fedd882a17ced0f2f89c44de79c",
+  "sha256": "edb5b3a7e0f93f6cb18658be34a939a8796e086ee8e4d7c5135d88c646fece4b",
   "messages": {
     "ClientEnvelope": {
       "1": {
@@ -495,6 +495,24 @@
         "type": "bool",
         "repeated": false,
         "optional": false
+      },
+      "8": {
+        "name": "unique_affix",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "9": {
+        "name": "unique_element",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "10": {
+        "name": "stats_version",
+        "type": "string",
+        "repeated": false,
+        "optional": true
       }
     },
     "RoomInventoryItem": {
@@ -917,6 +935,44 @@
         "type": "RoomNumericalState",
         "repeated": false,
         "optional": false
+      },
+      "22": {
+        "name": "combat_action",
+        "type": "RoomCombatActionState",
+        "repeated": false,
+        "optional": false
+      },
+      "23": {
+        "name": "borrowed_template_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "24": {
+        "name": "red_evaluation_pending",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "25": {
+        "name": "pending_red_item",
+        "type": "RoomInventoryItem",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomCombatActionState": {
+      "1": {
+        "name": "next_sequence",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
       }
     },
     "RoomSnapshotEvent": {
@@ -1015,6 +1071,44 @@
         "type": "int32",
         "repeated": false,
         "optional": false
+      },
+      "17": {
+        "name": "season",
+        "type": "RoomSeasonContext",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomSeasonContext": {
+      "1": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "difficulty_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "ruleset_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "stats_version",
+        "type": "string",
+        "repeated": false,
+        "optional": false
       }
     },
     "RoomStartedEvent": {
@@ -1094,6 +1188,12 @@
         "name": "card_instance_ids",
         "type": "string",
         "repeated": true,
+        "optional": false
+      },
+      "4": {
+        "name": "combat_action_id",
+        "type": "string",
+        "repeated": false,
         "optional": false
       }
     },
@@ -1251,6 +1351,18 @@
       "26": {
         "name": "conflict_cancellation",
         "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "27": {
+        "name": "combat_action_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "28": {
+        "name": "action_replayed",
+        "type": "bool",
         "repeated": false,
         "optional": false
       }
@@ -1675,6 +1787,54 @@
         "type": "string",
         "repeated": false,
         "optional": false
+      },
+      "11": {
+        "name": "unique_affix",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "12": {
+        "name": "unique_element",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "13": {
+        "name": "stats_version",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "14": {
+        "name": "origin_season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "15": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "16": {
+        "name": "asset_scope",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "17": {
+        "name": "source_kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "18": {
+        "name": "recipe_extracted",
+        "type": "bool",
+        "repeated": false,
+        "optional": true
       }
     },
     "MarketListing": {
@@ -1731,6 +1891,48 @@
         "type": "MarketEquipment",
         "repeated": false,
         "optional": false
+      },
+      "10": {
+        "name": "currency",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "11": {
+        "name": "price",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
+      },
+      "12": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "13": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "14": {
+        "name": "season_ends_at_unix_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
+      },
+      "15": {
+        "name": "fee",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
+      },
+      "16": {
+        "name": "seller_net",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
       }
     },
     "InventoryChangedEvent": {
@@ -1757,6 +1959,12 @@
         "type": "int64",
         "repeated": false,
         "optional": true
+      },
+      "5": {
+        "name": "seller_wallet_changed",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
       }
     },
     "RoomMoveCommand": {
@@ -2000,6 +2208,18 @@
         "type": "int32",
         "repeated": false,
         "optional": false
+      },
+      "4": {
+        "name": "fenxian_return_credit",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "5": {
+        "name": "fenxian_return_rate_basis_points",
+        "type": "int32",
+        "repeated": false,
+        "optional": true
       }
     }
   }

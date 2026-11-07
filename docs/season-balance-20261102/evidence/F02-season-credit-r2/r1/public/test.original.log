@@ -1,0 +1,53 @@
+  Discovering: FantasyCard.Server.Tests
+  Discovered:  FantasyCard.Server.Tests
+  Starting:    FantasyCard.Server.Tests
+    FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(archiveState: "valid") [STARTING]
+    FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(archiveState: "valid") [FAIL]
+      System.InvalidOperationException : Saved loot preference differs from the original preparation.
+      Stack Trace:
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs(173,0): at FantasyCard.Server.Rooms.RoomSnapshotRepository.RequirePreparedSources(BattleRoomSnapshot snapshot, String json)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs(157,0): at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs(159,0): at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs(159,0): at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs(24,0): at FantasyCard.Server.Rooms.RoomSnapshotRepository.SaveIfDueAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleSeasonCreditTests.cs(50,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(String archiveState)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleSeasonCreditTests.cs(101,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(String archiveState)
+        --- End of stack trace from previous location ---
+      Output:
+        {"caseId":"SEASON17-schema","recordedAt":"2026-11-06T06:56:34.9667481+00:00","evidence":{"schema":"fc_runtime_test_c723274c228345ef88299078ae883881","archiveState":"valid"}}
+    FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(archiveState: "valid") [FINISHED] Time: 2.424782s
+    FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(archiveState: "missing") [STARTING]
+    FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(archiveState: "missing") [FAIL]
+      System.InvalidOperationException : Saved loot preference differs from the original preparation.
+      Stack Trace:
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs(173,0): at FantasyCard.Server.Rooms.RoomSnapshotRepository.RequirePreparedSources(BattleRoomSnapshot snapshot, String json)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs(157,0): at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs(159,0): at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs(159,0): at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs(24,0): at FantasyCard.Server.Rooms.RoomSnapshotRepository.SaveIfDueAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleSeasonCreditTests.cs(50,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(String archiveState)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleSeasonCreditTests.cs(101,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(String archiveState)
+        --- End of stack trace from previous location ---
+      Output:
+        {"caseId":"SEASON17-schema","recordedAt":"2026-11-06T06:56:37.2315198+00:00","evidence":{"schema":"fc_runtime_test_488d57160da04204a9dfa69e35e344ed","archiveState":"missing"}}
+    FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(archiveState: "missing") [FINISHED] Time: 1.9594772s
+    FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(archiveState: "corrupt") [STARTING]
+    FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(archiveState: "corrupt") [FAIL]
+      System.InvalidOperationException : Saved loot preference differs from the original preparation.
+      Stack Trace:
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs(173,0): at FantasyCard.Server.Rooms.RoomSnapshotRepository.RequirePreparedSources(BattleRoomSnapshot snapshot, String json)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs(157,0): at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs(159,0): at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs(159,0): at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs(24,0): at FantasyCard.Server.Rooms.RoomSnapshotRepository.SaveIfDueAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleSeasonCreditTests.cs(50,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(String archiveState)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleSeasonCreditTests.cs(101,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(String archiveState)
+        --- End of stack trace from previous location ---
+      Output:
+        {"caseId":"SEASON17-schema","recordedAt":"2026-11-06T06:56:39.1899364+00:00","evidence":{"schema":"fc_runtime_test_f48834400cca4420b61062b0f161826a","archiveState":"corrupt"}}
+    FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(archiveState: "corrupt") [FINISHED] Time: 2.1174945s
+  Finished:    FantasyCard.Server.Tests (ID = '6ee669e14c23cde1f2477b274c3439cfdbe74d65b2c3c78a4e3decb2498b8f0e')
+=== TEST EXECUTION SUMMARY ===
+   FantasyCard.Server.Tests  Total: 3, Errors: 0, Failed: 3, Skipped: 0, Not Run: 0, Time: 6.693s
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory

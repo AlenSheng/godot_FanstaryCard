@@ -1,0 +1,170 @@
+{
+  "status": "C05_scope_complete_whole_goal_pending",
+  "C05_complete": true,
+  "whole_goal_complete": false,
+  "configuration_version": "season-v1-config-3",
+  "stats_version": "season-equipment-v1",
+  "configuration_binary_sha256": "8ece4158eac78e3e554cc6d2a5f0d7f873b27eb026d764791089a5e0e309fa08",
+  "domain_r53_passed": 549,
+  "runtime_r54_passed": 4,
+  "domain_current_check_union": 550,
+  "server_r51_passed": 194,
+  "server_r51_failed": 2,
+  "corrected_server_r53_passed": 2,
+  "server_r54_equipment_and_persistence_passed": 7,
+  "server_current_check_union": 196,
+  "union_is_not_a_single_full_run": true,
+  "tests_skipped": 0,
+  "runtime_files_pinned": 185,
+  "source_changes_between_evidence": {
+    "51_to_53": [
+      "server/src/FantasyCard.Domain/Rooms/RewardChoice.cs",
+      "server/tests/FantasyCard.Domain.Tests/Combat/SeasonEquipmentRuntimeTests.cs",
+      "server/tests/FantasyCard.Server.Tests/Persistence/PostgresCombatActionTests.cs"
+    ],
+    "53_to_54": [
+      "server/src/FantasyCard.Domain/Rooms/BattleRoomInventory.cs",
+      "server/tests/FantasyCard.Domain.Tests/Combat/SeasonEquipmentRuntimeTests.cs"
+    ]
+  },
+  "native_model_protocol_art_checks": 117,
+  "native_legacy_checks": 250,
+  "ui": {
+    "unique_frames": 264,
+    "checks_passed": 41092,
+    "languages": [
+      "zh-CN",
+      "en",
+      "es",
+      "fr",
+      "pt",
+      "id",
+      "hi",
+      "ar",
+      "ru",
+      "ja",
+      "ko"
+    ],
+    "widths": [
+      960,
+      1280,
+      1920
+    ],
+    "runs": {
+      "equipment-ui-a-r2": {
+        "frames": 132,
+        "checks": 17332,
+        "private_desktop": true,
+        "deadline_seconds": 180,
+        "seconds": 124.97
+      },
+      "equipment-ui-numbers-r1": {
+        "frames": 33,
+        "checks": 2502,
+        "private_desktop": true,
+        "deadline_seconds": 180,
+        "seconds": 35.89
+      },
+      "equipment-ui-inventory-r3": {
+        "frames": 33,
+        "checks": 7086,
+        "private_desktop": true,
+        "deadline_seconds": 180,
+        "seconds": 104.14
+      },
+      "equipment-ui-inventory-details-r2": {
+        "frames": 33,
+        "checks": 7182,
+        "private_desktop": true,
+        "deadline_seconds": 180,
+        "seconds": 103.56
+      },
+      "equipment-ui-relic-r1": {
+        "frames": 33,
+        "checks": 6990,
+        "private_desktop": true,
+        "deadline_seconds": 180,
+        "seconds": 104.34
+      }
+    },
+    "whole_project_UI_complete": false,
+    "contact_sheets_reviewed": 8,
+    "representative_full_frames_reviewed": true,
+    "source_change_scope": "Only review selector and inventory_view._equipment changed after earlier accepted batches; relic branch unchanged; final inventory batches match current source."
+  },
+  "public_archive_sha256": {
+    "50": "c3efb0c7569eb33fdd08e21401a8015604ece0a9310c1495b83966dd1d1dde8d",
+    "51": "7643f5f1f334ffdce6fddba8be0f27b86561748de205d2f2232b93bb95cdf9a6",
+    "53": "21b9b609e274d4b0a49be1405d4d3579289055777003d2764b1a36b137043f3f",
+    "54": "32b705b1b2f46453d887d92a39d6fc0866b116f0cb5312d674318e7430278388"
+  },
+  "failures_retained": [
+    {
+      "run": "r50",
+      "domain_passed": 548,
+      "server_passed": 190,
+      "server_failed": 2,
+      "reason": "combat-action fixture SQL used obsolete stats reference after definition was updated"
+    },
+    {
+      "run": "r51",
+      "server_passed": 194,
+      "server_failed": 2,
+      "reason": "combat-action fixture constructed prototype catalog while restart restored the frozen published catalog"
+    },
+    {
+      "run": "equipment-native-r1",
+      "reason": "external SceneTree runner used direct Game identifier before autoload context; no product checks executed"
+    },
+    {
+      "run": "equipment-ui-a-r1",
+      "frames": 132,
+      "failed_checks": 30,
+      "reason": "warehouse equipment button names truncated; red art absent"
+    },
+    {
+      "run": "equipment-ui-b-r1",
+      "frames": 73,
+      "reason": "OwnedRendererDeadline 180s; incomplete, not a pass"
+    },
+    {
+      "run": "equipment-ui-inventory-r1",
+      "frames": 56,
+      "reason": "OwnedRendererDeadline 180s; incomplete, not a pass"
+    },
+    {
+      "run": "equipment-ui-inventory-r2",
+      "frames": 33,
+      "failed_checks": 15,
+      "reason": "worn armor button text truncated in es/pt/ru"
+    },
+    {
+      "run": "equipment-ui-inventory-details-r1",
+      "frames": 33,
+      "failed_checks": 15,
+      "reason": "same worn armor text truncation"
+    },
+    {
+      "run": "r53 initial transport",
+      "reason": "incorrect expected SHA rejected before SDK start; corrected against retained original"
+    },
+    {
+      "run": "r50/r53/r54 resource admission",
+      "reason": "fixed disk guard refused SDK start; ended owned archives SHA-verified locally before retiring cloud copies"
+    }
+  ],
+  "scope_limits": [
+    "Red persistence tests explicitly seed previously owned red controls; C11 fresh mint and weekly quota remain pending",
+    "C06 enhancement costs/material selection remain pending; this batch preserves metadata only",
+    "Diagnostic attribute/Resolver tests do not prove full-route DPS or PVP balance",
+    "264 frames cover eight affected equipment states, not full E02",
+    "Historical 100-player failures retained; no capacity retry",
+    "B05 remains 291/300, nine routes left",
+    "Production season not activated; production not deployed or restarted by this batch"
+  ],
+  "production_deployed": false,
+  "production_restarted": false,
+  "full_gameplay_or_capacity_matches_added": 0,
+  "B05_routes_used": 291,
+  "B05_routes_remaining": 9
+}

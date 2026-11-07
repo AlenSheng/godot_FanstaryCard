@@ -1,0 +1,1108 @@
+{
+  "item": "B05",
+  "resource_contract_violations": 0,
+  "independently_checked_casts": 2214,
+  "actual_new_attempts": 9,
+  "total_budget_used": 300,
+  "budget_remaining": 0,
+  "unique_combinations": 9,
+  "complete_terminal_routes": 8,
+  "extracted": 3,
+  "dead": 5,
+  "partial_after_actual_Boss_kill": 1,
+  "all_original_42_full_scan_timeouts_retained": true,
+  "original_failed_TRXs_retained": true,
+  "red_miss_branch_only": [
+    {
+      "hero": "Mage",
+      "build": "draw-engine",
+      "roll": 8423,
+      "hit": false,
+      "scope": "Actual frozen policy Miss branch only; no database/quota claim"
+    },
+    {
+      "hero": "Guardian",
+      "build": "draw-engine",
+      "roll": 8423,
+      "hit": false,
+      "scope": "Actual frozen policy Miss branch only; no database/quota claim"
+    },
+    {
+      "hero": "Guardian",
+      "build": "core",
+      "roll": 8423,
+      "hit": false,
+      "scope": "Actual frozen policy Miss branch only; no database/quota claim"
+    }
+  ],
+  "old_full_hand_fixtures_reused": 3,
+  "old_full_hand_reuse_audit": {
+    "server/src/FantasyCard.Domain/Combat/CombatDeck.cs": {
+      "old_source_base": "1bf65aefdc908459960f8bfc67d7740332b3a31b",
+      "old_input_sha256": "7d72864d40d5c0457ecd82670ac793daa1501b00089c25c75c086d4e115a09de",
+      "historical_blob_verified": true,
+      "reuse_scope": "Full-hand overflow and immediate draw unchanged; only successful-draw callback was added, not called on a full hand.",
+      "current_sha256": "47de33963a1840b86aab4a445840647ae6c840f22eacb480168ea5e7da55bcf7",
+      "source_diff": "--- \n\n+++ \n\n@@ -133,4 +133,7 @@\n\n \n     public void AddCharge(double amount, Random random)\n+        => AddCharge(amount,random,null);\n+\n+    public void AddCharge(double amount,Random random,Action? afterNaturalDraw)\n     {\n         if (amount <= 0)\n@@ -149,5 +152,7 @@\n\n \n             DrawCharge -= 1;\n+            var before=_hand.Count;\n             DrawOne(random);\n+            if(_hand.Count>before)afterNaturalDraw?.Invoke();\n         }\n     }"
+    },
+    "server/src/FantasyCard.Domain/Combat/PlayerCombatState.cs": {
+      "old_source_base": "1bf65aefdc908459960f8bfc67d7740332b3a31b",
+      "old_input_sha256": "dbfa4675ef9082e3d3bc6554187f048d73b6e108a9b9c33e5117f2124f8ccbae",
+      "historical_blob_verified": true,
+      "reuse_scope": "Season Fenxian implementation text unchanged; no-red fixture has zero opening/chain draw extras.",
+      "current_sha256": "fdad1430d52df41db711ede10a269160e40bd3e50ff65572969bf082cdc31c3b",
+      "source_diff": "--- \n\n+++ \n\n@@ -6,4 +6,5 @@\n\n {\n     private readonly CombatRandom _random;\n+    private Guid? _lastOpeningBattleId;\n     private readonly Dictionary<string, TargetStunWindowSnapshot> _targetStunWindows =\n         new(StringComparer.Ordinal);\n@@ -68,7 +69,10 @@\n\n     public TimeSpan DrawBlockSpeedRemaining { get; private set; }\n     public bool IsDead => Hp <= 0;\n+    private double MinimumDrawInterval => Equipment.MinimumDrawInterval??(Equipment.HasRapidDraw?1.5:1.8);\n+    private double MaximumDrawInterval => Equipment.MaximumDrawInterval??6;\n+    public double NaturalDrawIntervalSeconds => Math.Clamp(4*(1+Equipment.DrawIntervalModifier),MinimumDrawInterval,MaximumDrawInterval);\n     public double DrawIntervalSeconds => Math.Clamp(\n         4 * (1 + Equipment.DrawIntervalModifier) * (1 + DrawSpeedModifier),\n-        Equipment.HasRapidDraw ? 1.5 : 1.8, 6.0) / (DrawBlockSpeedRemaining > TimeSpan.Zero ? 2 : 1);\n+        MinimumDrawInterval, MaximumDrawInterval) / (DrawBlockSpeedRemaining > TimeSpan.Zero ? 2 : 1);\n \n     public CombatPassiveInfo GetPassiveInfo()\n@@ -341,7 +345,9 @@\n\n     }\n \n-    public void PrepareForDuel(Random random)\n-    {\n+    public void PrepareForDuel(Random random,Guid? battleId=null)\n+    {\n+        if(Equipment.StatsVersion is not null && battleId is not null && _lastOpeningBattleId==battleId)return;\n         Deck.ResetForDuel(random);\n+        BeginBattle(battleId??Guid.NewGuid());\n         FenxianCombo = 0;\n         LastFenxianCore = null;\n@@ -355,4 +361,20 @@\n\n     }\n \n+    /// <summary>One opening grant per new battle; restoring an existing combat snapshot grants nothing.</summary>\n+    public bool BeginBattle(Guid battleId)\n+    {\n+        if(battleId==Guid.Empty)throw new DomainValidationException(\"An opening draw requires a battle identity.\");\n+        if(Equipment.StatsVersion is null || _lastOpeningBattleId==battleId)return false;\n+        _lastOpeningBattleId=battleId;\n+        Deck.DrawImmediate(Equipment.OpeningDrawCount,_random);\n+        return true;\n+    }\n+\n+    private void OnNaturalDraw()\n+    {\n+        if(Equipment.ChainDrawBasisPoints>0 && Deck.Hand.Count<CombatDeck.HandLimit && _random.Next(10000)<Equipment.ChainDrawBasisPoints)\n+            Deck.DrawImmediate(1,_random);\n+    }\n+\n     public void Advance(TimeSpan delta, bool drawEnabled)\n     {\n@@ -372,7 +394,8 @@\n\n                 var speed = start < DrawSpeedRemaining ? DrawSpeedModifier : 0;\n                 var interval = Math.Clamp(4 * (1 + Equipment.DrawIntervalModifier) * (1 + speed),\n-                    Equipment.HasRapidDraw ? 1.5 : 1.8, 6.0);\n+                    MinimumDrawInterval, MaximumDrawInterval);\n                 var rate = start < DrawBlockSpeedRemaining ? 2 : 1;\n-                Deck.AddCharge((boundaries[index] - start).TotalSeconds / interval * rate, _random);\n+                Deck.AddCharge((boundaries[index] - start).TotalSeconds / interval * rate, _random,\n+                    Equipment.ChainDrawBasisPoints>0?OnNaturalDraw:null);\n             }\n         }\n@@ -421,5 +444,5 @@\n\n             GuardianShieldRemainderTenths,\n             FenxianDrawPolicy,\n-            GuardianShieldPolicy);\n+            GuardianShieldPolicy,_lastOpeningBattleId);\n \n     // Only authoritative save/room snapshots may call Restore. Client commands must not supply policies.\n@@ -439,4 +462,5 @@\n\n             ? GuardianShieldBonusPolicy.CurrentSteps : snapshot.GuardianPolicy;\n         if (!Enum.IsDefined(fenxianPolicy) || !Enum.IsDefined(guardianPolicy) ||\n+            snapshot.LastOpeningBattleId==Guid.Empty ||\n             snapshot.GuardianShieldRemainderTenths is < 0 or > 9 ||\n             snapshot.GuardianShieldRemainderTenths != 0 &&\n@@ -451,4 +475,5 @@\n\n         _random.Restore(snapshot.RandomState);\n         Deck.Restore(snapshot.Deck);\n+        _lastOpeningBattleId=snapshot.LastOpeningBattleId;\n         FenxianCombo = snapshot.FenxianCombo;\n         LastFenxianCore = snapshot.LastFenxianCore;"
+    }
+  },
+  "cases": [
+    {
+      "batch": "r1",
+      "hero": "Priest",
+      "build": "water",
+      "seed": 73179,
+      "casts": 165,
+      "kills": 10,
+      "damage": 1787,
+      "last_seconds": 313.7,
+      "spent": 168,
+      "effect": 21,
+      "natural": 144,
+      "printed": 21,
+      "passive": 0,
+      "last_hand": 0,
+      "terminal": {
+        "Hero": "Priest",
+        "Build": "water",
+        "Seed": 73179,
+        "Difficulty": 2,
+        "Outcome": "Dead",
+        "Seconds": 314.6,
+        "Actions": 165,
+        "Kills": 10,
+        "Damage": 1787,
+        "PrintedDraw": 21,
+        "PassiveDraw": 0,
+        "PassiveCharge": 0,
+        "NaturalDraw": 144,
+        "ActualEffectDraw": 21,
+        "CardsSpent": 168,
+        "FinalHand": 0,
+        "EmptyTicks": 2895,
+        "FullTicks": 0,
+        "VisitedCells": 7,
+        "Hp": 0
+      },
+      "windows": {
+        "0": {
+          "casts": 17,
+          "damage": 244,
+          "effect_draw": 3,
+          "cards_spent": 19
+        },
+        "1": {
+          "casts": 16,
+          "damage": 191,
+          "effect_draw": 3,
+          "cards_spent": 17
+        },
+        "2": {
+          "casts": 16,
+          "damage": 198,
+          "effect_draw": 2,
+          "cards_spent": 16
+        },
+        "3": {
+          "casts": 14,
+          "damage": 126,
+          "effect_draw": 1,
+          "cards_spent": 14
+        },
+        "4": {
+          "casts": 16,
+          "damage": 138,
+          "effect_draw": 2,
+          "cards_spent": 16
+        },
+        "5": {
+          "casts": 15,
+          "damage": 121,
+          "effect_draw": 1,
+          "cards_spent": 15
+        },
+        "6": {
+          "casts": 16,
+          "damage": 131,
+          "effect_draw": 3,
+          "cards_spent": 16
+        },
+        "7": {
+          "casts": 14,
+          "damage": 160,
+          "effect_draw": 0,
+          "cards_spent": 14
+        },
+        "8": {
+          "casts": 17,
+          "damage": 207,
+          "effect_draw": 3,
+          "cards_spent": 17
+        },
+        "9": {
+          "casts": 17,
+          "damage": 177,
+          "effect_draw": 3,
+          "cards_spent": 17
+        },
+        "10": {
+          "casts": 7,
+          "damage": 94,
+          "effect_draw": 0,
+          "cards_spent": 7
+        }
+      },
+      "last_position": {
+        "Row": 2,
+        "Column": 4
+      },
+      "last_target": "fire-herald",
+      "last_target_defeated": false
+    },
+    {
+      "batch": "r1",
+      "hero": "Priest",
+      "build": "draw-engine",
+      "seed": 73179,
+      "casts": 427,
+      "kills": 12,
+      "damage": 2842,
+      "last_seconds": 398.3,
+      "spent": 530,
+      "effect": 318,
+      "natural": 209,
+      "printed": 202,
+      "passive": 0,
+      "last_hand": 0,
+      "terminal": null,
+      "windows": {
+        "0": {
+          "casts": 47,
+          "damage": 435,
+          "effect_draw": 74,
+          "cards_spent": 91
+        },
+        "1": {
+          "casts": 40,
+          "damage": 248,
+          "effect_draw": 37,
+          "cards_spent": 54
+        },
+        "2": {
+          "casts": 33,
+          "damage": 193,
+          "effect_draw": 28,
+          "cards_spent": 41
+        },
+        "3": {
+          "casts": 35,
+          "damage": 204,
+          "effect_draw": 25,
+          "cards_spent": 43
+        },
+        "4": {
+          "casts": 32,
+          "damage": 180,
+          "effect_draw": 17,
+          "cards_spent": 34
+        },
+        "5": {
+          "casts": 33,
+          "damage": 180,
+          "effect_draw": 22,
+          "cards_spent": 37
+        },
+        "6": {
+          "casts": 30,
+          "damage": 187,
+          "effect_draw": 20,
+          "cards_spent": 32
+        },
+        "7": {
+          "casts": 25,
+          "damage": 163,
+          "effect_draw": 12,
+          "cards_spent": 28
+        },
+        "8": {
+          "casts": 32,
+          "damage": 190,
+          "effect_draw": 18,
+          "cards_spent": 37
+        },
+        "9": {
+          "casts": 28,
+          "damage": 165,
+          "effect_draw": 15,
+          "cards_spent": 31
+        },
+        "10": {
+          "casts": 27,
+          "damage": 169,
+          "effect_draw": 15,
+          "cards_spent": 30
+        },
+        "11": {
+          "casts": 28,
+          "damage": 196,
+          "effect_draw": 16,
+          "cards_spent": 31
+        },
+        "12": {
+          "casts": 26,
+          "damage": 228,
+          "effect_draw": 14,
+          "cards_spent": 30
+        },
+        "13": {
+          "casts": 11,
+          "damage": 104,
+          "effect_draw": 5,
+          "cards_spent": 11
+        }
+      },
+      "last_position": {
+        "Row": 2,
+        "Column": 3
+      },
+      "last_target": "annihilation-core",
+      "last_target_defeated": true
+    },
+    {
+      "batch": "r2",
+      "hero": "Priest",
+      "build": "core",
+      "seed": 73179,
+      "casts": 165,
+      "kills": 10,
+      "damage": 1787,
+      "last_seconds": 313.7,
+      "spent": 168,
+      "effect": 21,
+      "natural": 144,
+      "printed": 21,
+      "passive": 0,
+      "last_hand": 0,
+      "terminal": {
+        "Hero": "Priest",
+        "Build": "core",
+        "Seed": 73179,
+        "Difficulty": 2,
+        "Outcome": "Dead",
+        "Seconds": 314.6,
+        "Actions": 165,
+        "Kills": 10,
+        "Damage": 1787,
+        "PrintedDraw": 21,
+        "PassiveDraw": 0,
+        "PassiveCharge": 0,
+        "NaturalDraw": 144,
+        "ActualEffectDraw": 21,
+        "CardsSpent": 168,
+        "FinalHand": 0,
+        "EmptyTicks": 2895,
+        "FullTicks": 0,
+        "VisitedCells": 7,
+        "Hp": 0
+      },
+      "windows": {
+        "0": {
+          "casts": 17,
+          "damage": 244,
+          "effect_draw": 3,
+          "cards_spent": 19
+        },
+        "1": {
+          "casts": 16,
+          "damage": 191,
+          "effect_draw": 3,
+          "cards_spent": 17
+        },
+        "2": {
+          "casts": 16,
+          "damage": 198,
+          "effect_draw": 2,
+          "cards_spent": 16
+        },
+        "3": {
+          "casts": 14,
+          "damage": 126,
+          "effect_draw": 1,
+          "cards_spent": 14
+        },
+        "4": {
+          "casts": 16,
+          "damage": 138,
+          "effect_draw": 2,
+          "cards_spent": 16
+        },
+        "5": {
+          "casts": 15,
+          "damage": 121,
+          "effect_draw": 1,
+          "cards_spent": 15
+        },
+        "6": {
+          "casts": 16,
+          "damage": 131,
+          "effect_draw": 3,
+          "cards_spent": 16
+        },
+        "7": {
+          "casts": 14,
+          "damage": 160,
+          "effect_draw": 0,
+          "cards_spent": 14
+        },
+        "8": {
+          "casts": 17,
+          "damage": 207,
+          "effect_draw": 3,
+          "cards_spent": 17
+        },
+        "9": {
+          "casts": 17,
+          "damage": 177,
+          "effect_draw": 3,
+          "cards_spent": 17
+        },
+        "10": {
+          "casts": 7,
+          "damage": 94,
+          "effect_draw": 0,
+          "cards_spent": 7
+        }
+      },
+      "last_position": {
+        "Row": 2,
+        "Column": 4
+      },
+      "last_target": "fire-herald",
+      "last_target_defeated": false
+    },
+    {
+      "batch": "r2",
+      "hero": "Mage",
+      "build": "water",
+      "seed": 73179,
+      "casts": 132,
+      "kills": 11,
+      "damage": 2259,
+      "last_seconds": 186.4,
+      "spent": 147,
+      "effect": 37,
+      "natural": 107,
+      "printed": 16,
+      "passive": 11,
+      "last_hand": 0,
+      "terminal": {
+        "Hero": "Mage",
+        "Build": "water",
+        "Seed": 73179,
+        "Difficulty": 2,
+        "Outcome": "Dead",
+        "Seconds": 186.6,
+        "Actions": 132,
+        "Kills": 11,
+        "Damage": 2259,
+        "PrintedDraw": 16,
+        "PassiveDraw": 11,
+        "PassiveCharge": 31.719999999999942,
+        "NaturalDraw": 107,
+        "ActualEffectDraw": 37,
+        "CardsSpent": 147,
+        "FinalHand": 0,
+        "EmptyTicks": 1604,
+        "FullTicks": 0,
+        "VisitedCells": 8,
+        "Hp": 0
+      },
+      "windows": {
+        "0": {
+          "casts": 29,
+          "damage": 718,
+          "effect_draw": 24,
+          "cards_spent": 42
+        },
+        "1": {
+          "casts": 22,
+          "damage": 277,
+          "effect_draw": 4,
+          "cards_spent": 22
+        },
+        "2": {
+          "casts": 19,
+          "damage": 258,
+          "effect_draw": 3,
+          "cards_spent": 19
+        },
+        "3": {
+          "casts": 20,
+          "damage": 331,
+          "effect_draw": 3,
+          "cards_spent": 21
+        },
+        "4": {
+          "casts": 19,
+          "damage": 316,
+          "effect_draw": 2,
+          "cards_spent": 20
+        },
+        "5": {
+          "casts": 19,
+          "damage": 292,
+          "effect_draw": 1,
+          "cards_spent": 19
+        },
+        "6": {
+          "casts": 4,
+          "damage": 67,
+          "effect_draw": 0,
+          "cards_spent": 4
+        }
+      },
+      "last_position": {
+        "Row": 2,
+        "Column": 3
+      },
+      "last_target": "annihilation-core",
+      "last_target_defeated": false
+    },
+    {
+      "batch": "r2",
+      "hero": "Mage",
+      "build": "draw-engine",
+      "seed": 73179,
+      "casts": 260,
+      "kills": 12,
+      "damage": 2770,
+      "last_seconds": 195.4,
+      "spent": 382,
+      "effect": 265,
+      "natural": 114,
+      "printed": 147,
+      "passive": 0,
+      "last_hand": 0,
+      "terminal": {
+        "Hero": "Mage",
+        "Build": "draw-engine",
+        "Seed": 73179,
+        "Difficulty": 2,
+        "Outcome": "Extracted",
+        "Seconds": 198.5,
+        "Actions": 260,
+        "Kills": 12,
+        "Damage": 2770,
+        "PrintedDraw": 147,
+        "PassiveDraw": 0,
+        "PassiveCharge": 40.459999999999894,
+        "NaturalDraw": 114,
+        "ActualEffectDraw": 265,
+        "CardsSpent": 382,
+        "FinalHand": 0,
+        "EmptyTicks": 982,
+        "FullTicks": 11,
+        "VisitedCells": 8,
+        "Hp": 62
+      },
+      "windows": {
+        "0": {
+          "casts": 52,
+          "damage": 795,
+          "effect_draw": 104,
+          "cards_spent": 123
+        },
+        "1": {
+          "casts": 38,
+          "damage": 345,
+          "effect_draw": 29,
+          "cards_spent": 47
+        },
+        "2": {
+          "casts": 39,
+          "damage": 355,
+          "effect_draw": 32,
+          "cards_spent": 51
+        },
+        "3": {
+          "casts": 36,
+          "damage": 382,
+          "effect_draw": 34,
+          "cards_spent": 51
+        },
+        "4": {
+          "casts": 35,
+          "damage": 300,
+          "effect_draw": 24,
+          "cards_spent": 40
+        },
+        "5": {
+          "casts": 43,
+          "damage": 387,
+          "effect_draw": 34,
+          "cards_spent": 50
+        },
+        "6": {
+          "casts": 17,
+          "damage": 206,
+          "effect_draw": 8,
+          "cards_spent": 20
+        }
+      },
+      "last_position": {
+        "Row": 2,
+        "Column": 3
+      },
+      "last_target": "annihilation-core",
+      "last_target_defeated": true
+    },
+    {
+      "batch": "r2",
+      "hero": "Mage",
+      "build": "core",
+      "seed": 73179,
+      "casts": 99,
+      "kills": 10,
+      "damage": 1685,
+      "last_seconds": 159.9,
+      "spent": 101,
+      "effect": 1,
+      "natural": 97,
+      "printed": 0,
+      "passive": 1,
+      "last_hand": 0,
+      "terminal": {
+        "Hero": "Mage",
+        "Build": "core",
+        "Seed": 73179,
+        "Difficulty": 2,
+        "Outcome": "Dead",
+        "Seconds": 161.4,
+        "Actions": 99,
+        "Kills": 10,
+        "Damage": 1685,
+        "PrintedDraw": 0,
+        "PassiveDraw": 1,
+        "PassiveCharge": 22.01999999999999,
+        "NaturalDraw": 97,
+        "ActualEffectDraw": 1,
+        "CardsSpent": 101,
+        "FinalHand": 0,
+        "EmptyTicks": 1509,
+        "FullTicks": 0,
+        "VisitedCells": 7,
+        "Hp": 0
+      },
+      "windows": {
+        "0": {
+          "casts": 20,
+          "damage": 435,
+          "effect_draw": 1,
+          "cards_spent": 22
+        },
+        "1": {
+          "casts": 18,
+          "damage": 313,
+          "effect_draw": 0,
+          "cards_spent": 18
+        },
+        "2": {
+          "casts": 19,
+          "damage": 302,
+          "effect_draw": 0,
+          "cards_spent": 19
+        },
+        "3": {
+          "casts": 17,
+          "damage": 265,
+          "effect_draw": 0,
+          "cards_spent": 17
+        },
+        "4": {
+          "casts": 18,
+          "damage": 250,
+          "effect_draw": 0,
+          "cards_spent": 18
+        },
+        "5": {
+          "casts": 7,
+          "damage": 120,
+          "effect_draw": 0,
+          "cards_spent": 7
+        }
+      },
+      "last_position": {
+        "Row": 2,
+        "Column": 4
+      },
+      "last_target": "fire-herald",
+      "last_target_defeated": false
+    },
+    {
+      "batch": "r2",
+      "hero": "Guardian",
+      "build": "water",
+      "seed": 73179,
+      "casts": 243,
+      "kills": 11,
+      "damage": 2608,
+      "last_seconds": 455.9,
+      "spent": 245,
+      "effect": 30,
+      "natural": 212,
+      "printed": 29,
+      "passive": 0,
+      "last_hand": 0,
+      "terminal": {
+        "Hero": "Guardian",
+        "Build": "water",
+        "Seed": 73179,
+        "Difficulty": 2,
+        "Outcome": "Dead",
+        "Seconds": 456.2,
+        "Actions": 243,
+        "Kills": 11,
+        "Damage": 2608,
+        "PrintedDraw": 29,
+        "PassiveDraw": 0,
+        "PassiveCharge": 0,
+        "NaturalDraw": 212,
+        "ActualEffectDraw": 30,
+        "CardsSpent": 245,
+        "FinalHand": 0,
+        "EmptyTicks": 4199,
+        "FullTicks": 0,
+        "VisitedCells": 8,
+        "Hp": 0
+      },
+      "windows": {
+        "0": {
+          "casts": 17,
+          "damage": 241,
+          "effect_draw": 3,
+          "cards_spent": 19
+        },
+        "1": {
+          "casts": 18,
+          "damage": 192,
+          "effect_draw": 3,
+          "cards_spent": 18
+        },
+        "2": {
+          "casts": 15,
+          "damage": 173,
+          "effect_draw": 2,
+          "cards_spent": 15
+        },
+        "3": {
+          "casts": 17,
+          "damage": 158,
+          "effect_draw": 2,
+          "cards_spent": 17
+        },
+        "4": {
+          "casts": 15,
+          "damage": 119,
+          "effect_draw": 1,
+          "cards_spent": 15
+        },
+        "5": {
+          "casts": 16,
+          "damage": 124,
+          "effect_draw": 2,
+          "cards_spent": 16
+        },
+        "6": {
+          "casts": 14,
+          "damage": 127,
+          "effect_draw": 1,
+          "cards_spent": 14
+        },
+        "7": {
+          "casts": 17,
+          "damage": 195,
+          "effect_draw": 3,
+          "cards_spent": 17
+        },
+        "8": {
+          "casts": 18,
+          "damage": 213,
+          "effect_draw": 3,
+          "cards_spent": 18
+        },
+        "9": {
+          "casts": 13,
+          "damage": 154,
+          "effect_draw": 0,
+          "cards_spent": 13
+        },
+        "10": {
+          "casts": 16,
+          "damage": 164,
+          "effect_draw": 1,
+          "cards_spent": 16
+        },
+        "11": {
+          "casts": 17,
+          "damage": 192,
+          "effect_draw": 3,
+          "cards_spent": 17
+        },
+        "12": {
+          "casts": 14,
+          "damage": 128,
+          "effect_draw": 1,
+          "cards_spent": 14
+        },
+        "13": {
+          "casts": 16,
+          "damage": 200,
+          "effect_draw": 1,
+          "cards_spent": 16
+        },
+        "14": {
+          "casts": 14,
+          "damage": 177,
+          "effect_draw": 1,
+          "cards_spent": 14
+        },
+        "15": {
+          "casts": 6,
+          "damage": 51,
+          "effect_draw": 3,
+          "cards_spent": 6
+        }
+      },
+      "last_position": {
+        "Row": 2,
+        "Column": 3
+      },
+      "last_target": "annihilation-core",
+      "last_target_defeated": false
+    },
+    {
+      "batch": "r2",
+      "hero": "Guardian",
+      "build": "draw-engine",
+      "seed": 73179,
+      "casts": 439,
+      "kills": 12,
+      "damage": 2862,
+      "last_seconds": 406.4,
+      "spent": 531,
+      "effect": 315,
+      "natural": 213,
+      "printed": 202,
+      "passive": 0,
+      "last_hand": 0,
+      "terminal": {
+        "Hero": "Guardian",
+        "Build": "draw-engine",
+        "Seed": 73179,
+        "Difficulty": 2,
+        "Outcome": "Extracted",
+        "Seconds": 409.5,
+        "Actions": 439,
+        "Kills": 12,
+        "Damage": 2862,
+        "PrintedDraw": 202,
+        "PassiveDraw": 0,
+        "PassiveCharge": 0,
+        "NaturalDraw": 213,
+        "ActualEffectDraw": 315,
+        "CardsSpent": 531,
+        "FinalHand": 0,
+        "EmptyTicks": 2619,
+        "FullTicks": 4,
+        "VisitedCells": 8,
+        "Hp": 100
+      },
+      "windows": {
+        "0": {
+          "casts": 53,
+          "damage": 422,
+          "effect_draw": 74,
+          "cards_spent": 91
+        },
+        "1": {
+          "casts": 41,
+          "damage": 251,
+          "effect_draw": 32,
+          "cards_spent": 50
+        },
+        "2": {
+          "casts": 32,
+          "damage": 188,
+          "effect_draw": 27,
+          "cards_spent": 41
+        },
+        "3": {
+          "casts": 38,
+          "damage": 186,
+          "effect_draw": 28,
+          "cards_spent": 42
+        },
+        "4": {
+          "casts": 34,
+          "damage": 213,
+          "effect_draw": 19,
+          "cards_spent": 38
+        },
+        "5": {
+          "casts": 31,
+          "damage": 218,
+          "effect_draw": 24,
+          "cards_spent": 39
+        },
+        "6": {
+          "casts": 27,
+          "damage": 165,
+          "effect_draw": 12,
+          "cards_spent": 29
+        },
+        "7": {
+          "casts": 30,
+          "damage": 200,
+          "effect_draw": 19,
+          "cards_spent": 35
+        },
+        "8": {
+          "casts": 26,
+          "damage": 154,
+          "effect_draw": 13,
+          "cards_spent": 28
+        },
+        "9": {
+          "casts": 29,
+          "damage": 156,
+          "effect_draw": 15,
+          "cards_spent": 31
+        },
+        "10": {
+          "casts": 27,
+          "damage": 159,
+          "effect_draw": 13,
+          "cards_spent": 28
+        },
+        "11": {
+          "casts": 31,
+          "damage": 197,
+          "effect_draw": 20,
+          "cards_spent": 36
+        },
+        "12": {
+          "casts": 27,
+          "damage": 221,
+          "effect_draw": 12,
+          "cards_spent": 27
+        },
+        "13": {
+          "casts": 13,
+          "damage": 132,
+          "effect_draw": 7,
+          "cards_spent": 16
+        }
+      },
+      "last_position": {
+        "Row": 2,
+        "Column": 3
+      },
+      "last_target": "annihilation-core",
+      "last_target_defeated": true
+    },
+    {
+      "batch": "r2",
+      "hero": "Guardian",
+      "build": "core",
+      "seed": 73179,
+      "casts": 284,
+      "kills": 12,
+      "damage": 2908,
+      "last_seconds": 633.7,
+      "spent": 286,
+      "effect": 0,
+      "natural": 283,
+      "printed": 0,
+      "passive": 0,
+      "last_hand": 0,
+      "terminal": {
+        "Hero": "Guardian",
+        "Build": "core",
+        "Seed": 73179,
+        "Difficulty": 2,
+        "Outcome": "Extracted",
+        "Seconds": 636.8,
+        "Actions": 284,
+        "Kills": 12,
+        "Damage": 2908,
+        "PrintedDraw": 0,
+        "PassiveDraw": 0,
+        "PassiveCharge": 0,
+        "NaturalDraw": 283,
+        "ActualEffectDraw": 0,
+        "CardsSpent": 286,
+        "FinalHand": 0,
+        "EmptyTicks": 6085,
+        "FullTicks": 0,
+        "VisitedCells": 8,
+        "Hp": 94
+      },
+      "windows": {
+        "0": {
+          "casts": 14,
+          "damage": 188,
+          "effect_draw": 0,
+          "cards_spent": 16
+        },
+        "1": {
+          "casts": 13,
+          "damage": 134,
+          "effect_draw": 0,
+          "cards_spent": 13
+        },
+        "2": {
+          "casts": 13,
+          "damage": 113,
+          "effect_draw": 0,
+          "cards_spent": 13
+        },
+        "3": {
+          "casts": 13,
+          "damage": 152,
+          "effect_draw": 0,
+          "cards_spent": 13
+        },
+        "4": {
+          "casts": 14,
+          "damage": 131,
+          "effect_draw": 0,
+          "cards_spent": 14
+        },
+        "5": {
+          "casts": 13,
+          "damage": 181,
+          "effect_draw": 0,
+          "cards_spent": 13
+        },
+        "6": {
+          "casts": 13,
+          "damage": 143,
+          "effect_draw": 0,
+          "cards_spent": 13
+        },
+        "7": {
+          "casts": 14,
+          "damage": 139,
+          "effect_draw": 0,
+          "cards_spent": 14
+        },
+        "8": {
+          "casts": 13,
+          "damage": 125,
+          "effect_draw": 0,
+          "cards_spent": 13
+        },
+        "9": {
+          "casts": 14,
+          "damage": 131,
+          "effect_draw": 0,
+          "cards_spent": 14
+        },
+        "10": {
+          "casts": 13,
+          "damage": 115,
+          "effect_draw": 0,
+          "cards_spent": 13
+        },
+        "11": {
+          "casts": 14,
+          "damage": 117,
+          "effect_draw": 0,
+          "cards_spent": 14
+        },
+        "12": {
+          "casts": 13,
+          "damage": 122,
+          "effect_draw": 0,
+          "cards_spent": 13
+        },
+        "13": {
+          "casts": 14,
+          "damage": 124,
+          "effect_draw": 0,
+          "cards_spent": 14
+        },
+        "14": {
+          "casts": 13,
+          "damage": 118,
+          "effect_draw": 0,
+          "cards_spent": 13
+        },
+        "15": {
+          "casts": 14,
+          "damage": 142,
+          "effect_draw": 0,
+          "cards_spent": 14
+        },
+        "16": {
+          "casts": 13,
+          "damage": 136,
+          "effect_draw": 0,
+          "cards_spent": 13
+        },
+        "17": {
+          "casts": 13,
+          "damage": 122,
+          "effect_draw": 0,
+          "cards_spent": 13
+        },
+        "18": {
+          "casts": 14,
+          "damage": 156,
+          "effect_draw": 0,
+          "cards_spent": 14
+        },
+        "19": {
+          "casts": 13,
+          "damage": 156,
+          "effect_draw": 0,
+          "cards_spent": 13
+        },
+        "20": {
+          "casts": 14,
+          "damage": 156,
+          "effect_draw": 0,
+          "cards_spent": 14
+        },
+        "21": {
+          "casts": 2,
+          "damage": 7,
+          "effect_draw": 0,
+          "cards_spent": 2
+        }
+      },
+      "last_position": {
+        "Row": 2,
+        "Column": 3
+      },
+      "last_target": "annihilation-core",
+      "last_target_defeated": true
+    }
+  ],
+  "D01_complete": false,
+  "D02_complete": false,
+  "D03_complete": false,
+  "C16_complete": false,
+  "new_C16_comparison_encounters": 0,
+  "population_win_rate_or_median_claimed": false,
+  "production_modified": false,
+  "cloud_modified": false
+}

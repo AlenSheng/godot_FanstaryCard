@@ -1,0 +1,32 @@
+{
+  "groups": {
+    "a": [
+      "PostgresAssetDomainCompositeTests",
+      "PostgresSeasonAssetDomainTests",
+      "PostgresSeasonArchiveTests",
+      "PostgresSeasonReadModelTests",
+      "PostgresSeasonLoadoutTests"
+    ],
+    "b": [
+      "PostgresSeasonPreparationTests",
+      "PostgresSeasonMatchmakingTests",
+      "PostgresHistoricalEquipmentTests",
+      "PostgresPreparationConfigVersionTests"
+    ],
+    "c": [
+      "PostgresSeasonRoomTests",
+      "PostgresConfigVersionRoomTests",
+      "PostgresSeasonSettlementTests"
+    ]
+  },
+  "expected_counts": {
+    "a": 32,
+    "b": 36,
+    "c": 46
+  },
+  "total": 114,
+  "one_group_process_at_a_time": true,
+  "stop_on_first_nonzero_group": true,
+  "resource_guard_recording_fixed_not_thresholds": true,
+  "fixture_change": "Read the actual cosmetic selection version after reward grants; no production or assertion relaxation."
+}

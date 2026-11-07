@@ -215,6 +215,7 @@ public static class HttpDtoMapper
             type = nullable;
         }
         if (value is IMessage nested) return ToDto(nested, type);
+        if (value is ByteString bytes && type == typeof(byte[])) return bytes.ToByteArray();
         if (type == typeof(Guid)) return Guid.Parse((string)value);
         if (type == typeof(DateTimeOffset)) return DateTimeOffset.Parse((string)value, CultureInfo.InvariantCulture);
         if (type.IsEnum) return Enum.Parse(type, (string)value, false);
@@ -248,6 +249,12 @@ public static class HttpDtoMapper
             FieldType.Int64 => Convert.ToInt64(value, CultureInfo.InvariantCulture),
             FieldType.Int32 => Convert.ToInt32(value, CultureInfo.InvariantCulture),
             FieldType.Bool => Convert.ToBoolean(value, CultureInfo.InvariantCulture),
+            FieldType.Bytes => value switch
+            {
+                ByteString bytes => bytes,
+                byte[] bytes => ByteString.CopyFrom(bytes),
+                _ => throw new InvalidDataException($"Invalid HTTP bytes field {field.FullName}.")
+            },
             _ => throw new InvalidDataException($"Unsupported HTTP field {field.FullName}.")
         };
     }

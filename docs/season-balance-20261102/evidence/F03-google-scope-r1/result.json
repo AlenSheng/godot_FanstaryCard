@@ -1,0 +1,158 @@
+{
+  "at_utc": "2026-11-06T19:45:39.948613+00:00",
+  "item": "F03",
+  "item_complete": false,
+  "whole_progress": "32/35",
+  "scoped_google_integration_verification": "passed",
+  "source": {
+    "at_utc": "2026-11-06T19:18:30.424985+00:00",
+    "common_goal_parent": "e67b453ceaf092aed77c8ca0d279590077813ea7",
+    "google_parent": "fdd47a1f2de6348bd55525d06b9aaebdfd07bb25",
+    "resolved_tree": "74827c8d78df4e101bbfebab5f69bbd80adb53a4",
+    "detached_validation_commit": "72ae652aa8af55e8022d630b39f8a8abe2b8aaa4",
+    "worktree": "G:\\PR13Evidence\\season-balance-20261102-r1\\work\\f03-google-integration-r1",
+    "conflicts_resolved_from_exact_input_hashes": 16,
+    "actual_target_branch_updated": false,
+    "production_changed": false,
+    "no_runtime_started": true
+  },
+  "fixture_cleanup": {
+    "original_merge_candidate": "72ae652aa8af55e8022d630b39f8a8abe2b8aaa4",
+    "validation_commit_with_fixture_cleanup": "bc24f56e02fc2870a7e543a3d8f0d6e10f2f85f1",
+    "only_changed_file": "client/tests/branch_sync_compatibility.gd",
+    "final_fixture_sha256": "dc250c1a8be660bebf5c251421331cbb1e3fc0ed6618f24964b100d9be996f01",
+    "production_code_changed": false,
+    "assertions_changed": false,
+    "r1_r2_r3_exit_resource_failures_preserved": true,
+    "r4_checks": 940,
+    "r4_errors": 0,
+    "real_target_branches_updated": false
+  },
+  "pin_verification": {
+    "f03-google-integration-r1/source-pin.original.json": {
+      "entries": 4932,
+      "unchanged": 4932,
+      "differences": []
+    },
+    "f03-google-ui-r1/source-pin.original.json": {
+      "entries": 392,
+      "unchanged": 391,
+      "differences": [
+        "client\\tests\\branch_sync_compatibility.gd"
+      ]
+    }
+  },
+  "server_build": "Release solution 0 warnings, 0 errors",
+  "canonical_protocol": "76 realtime messages, 114 HTTP messages, 71 routes",
+  "server_tests": [
+    {
+      "file": "f03-google-integration-r1/contracts-results/google-contracts.trx",
+      "counters": {
+        "total": "6",
+        "executed": "6",
+        "passed": "6",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "file": "f03-google-local-pg-r1/continued-results/google-pg.trx",
+      "counters": {
+        "total": "2",
+        "executed": "2",
+        "passed": "2",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    }
+  ],
+  "ui": {
+    "frames": 165,
+    "checks": 11628,
+    "languages": [
+      "zh-CN",
+      "en",
+      "es",
+      "fr",
+      "pt",
+      "id",
+      "hi",
+      "ar",
+      "ru",
+      "ja",
+      "ko"
+    ],
+    "widths": [
+      960.0,
+      1280.0,
+      1920.0
+    ],
+    "direct_original_representatives": 14,
+    "private_desktop_checks": 530,
+    "desktop_switch_calls": 0,
+    "seconds": 138.86,
+    "source_unchanged_during_capture": true
+  },
+  "native": {
+    "checks": 940,
+    "failed": 0,
+    "errors": 0,
+    "real_external_Google_provider_used": false
+  },
+  "cleanup": {
+    "native_children_terminal": true,
+    "private_desktop_closed": true,
+    "own_local_pg_stopped": true
+  },
+  "historical_failures": [
+    {
+      "scope": "local PG startup observer",
+      "failure": "60-second inherited-child-pipe TimeoutExpired; server was already ready",
+      "resolution": "verified and followed the same owned PID/cluster; no duplicate restart",
+      "private_raw_logs_retained": true
+    },
+    {
+      "scope": "native r1/r2/r3",
+      "failure": "940 assertions passed but ui_cancel.wav playback resource remained at engine exit",
+      "resolution": "test fixture stops sound and allows 0.25 seconds for audio-thread release; assertions and product sources unchanged"
+    }
+  ],
+  "actual_target_branches_updated": false,
+  "production_changed": false,
+  "new_gameplay_cases": 0,
+  "budgets": {
+    "B05": "330/330 closed",
+    "D03": "284/300; strict 1.15",
+    "F01_proposed_252_started": false
+  },
+  "remaining": [
+    "D03 and F01 acceptance",
+    "Steam and final combined platform source verification",
+    "final protected release package scope",
+    "fresh pre-cutover backup and rollback boundary",
+    "actual branch promotion, production deployment/restart and external identity/health verification"
+  ],
+  "privacy": "No PostgreSQL private data/logs/connection secrets, backup contents, unprotected binaries or obfuscation maps included."
+}

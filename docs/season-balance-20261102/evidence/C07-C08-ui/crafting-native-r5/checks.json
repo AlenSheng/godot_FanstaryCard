@@ -1,0 +1,44 @@
+{
+  "checks": 26,
+  "ok": true,
+  "suites": {
+    "test_season_crafting_controller.gd": {
+      "checks": {
+        "A B A rejects earlier identical-body response": true,
+        "actual command uses canonical authenticated route and captured body": true,
+        "confirmed craft captures intent and wallet version": true,
+        "different body response rejected": true,
+        "full typed wallet receipt keeps historical materials separate": true,
+        "latest quote accepted": true,
+        "navigation rejects late quote": true,
+        "old account quote rejected": true,
+        "overview refresh invalidates quote": true,
+        "recipe change clears and rejects quote": true,
+        "rejection clears busy without touching balance": true,
+        "success refreshes inventory and all loadouts": true
+      },
+      "ok": true,
+      "scope": "Production controller with deferred offline transport; no live HTTP or rendered screen claim."
+    },
+    "test_season_crafting_model.gd": {
+      "checks": {
+        "bot and activity pure material blocked": true,
+        "extracted sample blocked": true,
+        "higher type offsets lower one-to-one": true,
+        "legacy opaque balance cannot pay": true,
+        "legal unaffixed purple remains learnable": true,
+        "lower cannot pay orange": true,
+        "market sample statuses distinguish once-only learning": true,
+        "recast may remain a real rebuild body": true,
+        "recast never teaches": true,
+        "receipt cannot alter other seasons or permanent materials": true,
+        "stale typed receipt cannot regress either projection": true,
+        "typed wallet receipt updates both current projections": true,
+        "wish groups do not share progress": true,
+        "wrong season body blocked": true
+      },
+      "ok": true,
+      "scope": "Crafting UI data-model controls only; no rendered screen or live API claim."
+    }
+  }
+}

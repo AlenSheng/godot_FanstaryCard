@@ -1,0 +1,245 @@
+{
+  "Id": "bd9839f68c18316b4fcdca7f6408c7ed110a18a18c7208edefe729a3995d7a39",
+  "Created": "2026-11-05T09:21:55.046202335Z",
+  "Path": "python3",
+  "Args": [
+    "/input/runner.py"
+  ],
+  "State": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-11-05T09:21:55.125988802Z",
+    "FinishedAt": "2026-11-05T09:22:01.317304692Z"
+  },
+  "Image": "sha256:180f524270f6ac28d2fe0ff29707fb392387d7b766f731e41fda1e45e8230520",
+  "ResolvConfPath": "/var/lib/docker/containers/bd9839f68c18316b4fcdca7f6408c7ed110a18a18c7208edefe729a3995d7a39/resolv.conf",
+  "HostnamePath": "/var/lib/docker/containers/bd9839f68c18316b4fcdca7f6408c7ed110a18a18c7208edefe729a3995d7a39/hostname",
+  "HostsPath": "/var/lib/docker/containers/bd9839f68c18316b4fcdca7f6408c7ed110a18a18c7208edefe729a3995d7a39/hosts",
+  "LogPath": "/var/lib/docker/containers/bd9839f68c18316b4fcdca7f6408c7ed110a18a18c7208edefe729a3995d7a39/bd9839f68c18316b4fcdca7f6408c7ed110a18a18c7208edefe729a3995d7a39-json.log",
+  "Name": "/season-balance-20261102-journey-controller-r3",
+  "RestartCount": 0,
+  "Driver": "overlayfs",
+  "Platform": "linux",
+  "MountLabel": "",
+  "ProcessLabel": "",
+  "AppArmorProfile": "docker-default",
+  "ExecIDs": null,
+  "HostConfig": {
+    "Binds": [
+      "/home/ubuntu/season-balance-20261102-journey-controller-r3/input:/input:ro",
+      "/home/ubuntu/season-balance-20261102-journey-controller-r3/output:/output"
+    ],
+    "ContainerIDFile": "",
+    "LogConfig": {
+      "Type": "json-file",
+      "Config": {
+        "max-file": "1",
+        "max-size": "1m"
+      }
+    },
+    "NetworkMode": "none",
+    "PortBindings": {},
+    "RestartPolicy": {
+      "Name": "no",
+      "MaximumRetryCount": 0
+    },
+    "AutoRemove": false,
+    "VolumeDriver": "",
+    "VolumesFrom": null,
+    "ConsoleSize": [
+      0,
+      0
+    ],
+    "CapAdd": null,
+    "CapDrop": null,
+    "CgroupnsMode": "private",
+    "Dns": null,
+    "DnsOptions": [],
+    "DnsSearch": [],
+    "ExtraHosts": null,
+    "GroupAdd": null,
+    "IpcMode": "private",
+    "Cgroup": "",
+    "Links": null,
+    "OomScoreAdj": 0,
+    "PidMode": "",
+    "Privileged": false,
+    "PublishAllPorts": false,
+    "ReadonlyRootfs": true,
+    "SecurityOpt": null,
+    "Tmpfs": {
+      "/tmp": "rw,nosuid,nodev,size=134217728"
+    },
+    "UTSMode": "",
+    "UsernsMode": "",
+    "ShmSize": 16777216,
+    "Runtime": "runc",
+    "Isolation": "",
+    "CpuShares": 0,
+    "Memory": 1258291200,
+    "NanoCpus": 1000000000,
+    "CgroupParent": "",
+    "BlkioWeight": 0,
+    "BlkioWeightDevice": [],
+    "BlkioDeviceReadBps": [],
+    "BlkioDeviceWriteBps": [],
+    "BlkioDeviceReadIOps": [],
+    "BlkioDeviceWriteIOps": [],
+    "CpuPeriod": 0,
+    "CpuQuota": 0,
+    "CpuRealtimePeriod": 0,
+    "CpuRealtimeRuntime": 0,
+    "CpusetCpus": "",
+    "CpusetMems": "",
+    "Devices": [],
+    "DeviceCgroupRules": null,
+    "DeviceRequests": null,
+    "MemoryReservation": 0,
+    "MemorySwap": 1258291200,
+    "MemorySwappiness": null,
+    "OomKillDisable": null,
+    "PidsLimit": 256,
+    "Ulimits": [],
+    "CpuCount": 0,
+    "CpuPercent": 0,
+    "IOMaximumIOps": 0,
+    "IOMaximumBandwidth": 0,
+    "MaskedPaths": [
+      "/proc/acpi",
+      "/proc/asound",
+      "/proc/interrupts",
+      "/proc/kcore",
+      "/proc/keys",
+      "/proc/latency_stats",
+      "/proc/sched_debug",
+      "/proc/scsi",
+      "/proc/timer_list",
+      "/proc/timer_stats",
+      "/sys/devices/virtual/powercap",
+      "/sys/firmware"
+    ],
+    "ReadonlyPaths": [
+      "/proc/bus",
+      "/proc/fs",
+      "/proc/irq",
+      "/proc/sys",
+      "/proc/sysrq-trigger"
+    ]
+  },
+  "Storage": {
+    "RootFS": {
+      "Snapshot": {
+        "Name": "overlayfs"
+      }
+    }
+  },
+  "Mounts": [
+    {
+      "Type": "bind",
+      "Source": "/home/ubuntu/season-balance-20261102-journey-controller-r3/input",
+      "Destination": "/input",
+      "Mode": "ro",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/home/ubuntu/season-balance-20261102-journey-controller-r3/output",
+      "Destination": "/output",
+      "Mode": "",
+      "RW": true,
+      "Propagation": "rprivate"
+    }
+  ],
+  "Config": {
+    "Hostname": "bd9839f68c18",
+    "Domainname": "",
+    "User": "1000:1000",
+    "AttachStdin": false,
+    "AttachStdout": true,
+    "AttachStderr": true,
+    "Tty": false,
+    "OpenStdin": false,
+    "StdinOnce": false,
+    "Env": [
+      "HOME=/tmp/home",
+      "XDG_DATA_HOME=/tmp/data",
+      "XDG_CONFIG_HOME=/tmp/config",
+      "XDG_CACHE_HOME=/tmp/cache",
+      "FANTASYCARD_SERVER_URL=http://127.0.0.1:9",
+      "PATH=/opt/pr13-venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "APP_UID=1654",
+      "ASPNETCORE_HTTP_PORTS=8080",
+      "DOTNET_RUNNING_IN_CONTAINER=true",
+      "DOTNET_VERSION=10.0.11",
+      "ASPNET_VERSION=10.0.11",
+      "DOTNET_GENERATE_ASPNET_CERTIFICATE=false",
+      "DOTNET_NOLOGO=1",
+      "DOTNET_SDK_VERSION=10.0.400",
+      "DOTNET_USE_POLLING_FILE_WATCHER=true",
+      "NUGET_XMLDOC_MODE=skip",
+      "POWERSHELL_DISTRIBUTION_CHANNEL=PSDocker-DotnetSDK-Ubuntu-24.04",
+      "DEBIAN_FRONTEND=noninteractive",
+      "DOTNET_CLI_TELEMETRY_OPTOUT=1",
+      "DOTNET_CLI_HOME=/cache/dotnet-home",
+      "NUGET_PACKAGES=/cache/nuget",
+      "LIBGL_ALWAYS_SOFTWARE=1",
+      "GALLIUM_DRIVER=llvmpipe",
+      "LP_NUM_THREADS=1"
+    ],
+    "Cmd": [
+      "/input/runner.py"
+    ],
+    "Image": "sha256:180f524270f6ac28d2fe0ff29707fb392387d7b766f731e41fda1e45e8230520",
+    "Volumes": null,
+    "WorkingDir": "/work",
+    "Entrypoint": [
+      "python3"
+    ],
+    "Labels": {
+      "codex.task": "pr13-cloud-render-20261010",
+      "com.fantasycard.task": "season-balance-20261102-journey-controller-r3",
+      "org.opencontainers.image.version": "24.04"
+    }
+  },
+  "NetworkSettings": {
+    "SandboxID": "",
+    "SandboxKey": "",
+    "Ports": {},
+    "Networks": {
+      "none": {
+        "IPAMConfig": null,
+        "Links": null,
+        "Aliases": null,
+        "DriverOpts": null,
+        "GwPriority": 0,
+        "NetworkID": "b5b79aea3891a47e9ec2dd746123091725f2ba87e5c4aaa31df19a569ab9599f",
+        "EndpointID": "",
+        "Gateway": "",
+        "IPAddress": "",
+        "MacAddress": "",
+        "IPPrefixLen": 0,
+        "IPv6Gateway": "",
+        "GlobalIPv6Address": "",
+        "GlobalIPv6PrefixLen": 0,
+        "DNSNames": null
+      }
+    }
+  },
+  "ImageManifestDescriptor": {
+    "mediaType": "application/vnd.oci.image.manifest.v1+json",
+    "digest": "sha256:180f524270f6ac28d2fe0ff29707fb392387d7b766f731e41fda1e45e8230520",
+    "size": 3640,
+    "platform": {
+      "architecture": "amd64",
+      "os": "linux"
+    }
+  }
+}

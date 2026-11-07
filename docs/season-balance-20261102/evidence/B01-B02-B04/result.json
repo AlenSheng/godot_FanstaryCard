@@ -1,0 +1,63 @@
+{
+  "status": "legacy_vectors_and_season_mage_pve_floor_verified_cadence_and_loop_acceptance_pending",
+  "domain_tests": 186,
+  "server_tests": 135,
+  "godot_codec_checks": 20,
+  "failed": 0,
+  "skipped": 0,
+  "domain_classes": {
+    "FantasyCard.Domain.Tests.Seasons.SeasonDefinitionTests": 18,
+    "FantasyCard.Domain.Tests.Combat.CombatAuthoritativeRulesTests": 33,
+    "FantasyCard.Domain.Tests.Combat.FenxianImmediateDrawPolicyTests": 8,
+    "FantasyCard.Domain.Tests.Combat.SeasonPveMinimumTests": 13,
+    "FantasyCard.Domain.Tests.Seasons.SeasonScheduleTests": 5,
+    "FantasyCard.Domain.Tests.Rooms.BattleRoomSnapshotTests": 15,
+    "FantasyCard.Domain.Tests.Seasons.SeasonAssetDomainTests": 26,
+    "FantasyCard.Domain.Tests.Rooms.NumericalPolicySnapshotTests": 11,
+    "FantasyCard.Domain.Tests.Combat.CurrentNumericalBaselineTests": 26,
+    "FantasyCard.Domain.Tests.Combat.SeasonFenxianTests": 11,
+    "FantasyCard.Domain.Tests.Combat.MonsterCombatDamageTests": 10,
+    "FantasyCard.Domain.Tests.Rooms.RoomRandomStreamTests": 2,
+    "FantasyCard.Domain.Tests.Rooms.BattleRoomSeasonContextTests": 8
+  },
+  "scope": [
+    "Existing v0.70 CombatResolver golden vectors and original rhythm/candidate policies unchanged",
+    "New-season R<2 clears Fenxian combo and core, gives no passive immediate draw, retains E1 for one core",
+    "R>=2 retains old combo/charge tiers; immediate draw capped by old tier and actual consumed cards minus one",
+    "Real legal 20-card decks, explicit draw card, mixed spent-vs-core counts, pure preview and unchanged card count",
+    "Season policies copied into room/player/frozen duel snapshots and downgrade rejected on restoration",
+    "PVE completed positive intents floor once after resistance and Guardian reduction, before shield and HP",
+    "Effective base positivity includes empower/charge; utility, zero base, cancelled windup, miss, immunity input and dead target excluded",
+    "Seasonal PVP and legacy PVE retain zero-damage outcomes; legal Mage70/Priest80/Guardian100 preserved",
+    "First-party room creation selects mandatory season policy; original defaults keep optional experiments disabled",
+    "Godot binary codec accepts the new passive policy string"
+  ],
+  "history": [
+    {
+      "run": "r19",
+      "domain_passed": 185,
+      "server_passed": 135,
+      "failed": 0
+    },
+    {
+      "run": "r20",
+      "domain_passed": 186,
+      "server_passed": 135,
+      "failed": 0,
+      "change": "Added effective pre-mitigation base output and an empowered zero-printed-base positive-hit boundary."
+    }
+  ],
+  "public_archive_sha256": {
+    "r19": "7ccc79f8276669f09502700ba2a2044592e4fbf8153acd5462090e4edfff7a06",
+    "r20": "5c90bbeaba6538e14977050f61aa92def23a809b7143e772e1184cf9ce00262b"
+  },
+  "production_database_used": false,
+  "production_deployed": false,
+  "capacity_retest_performed": false,
+  "remaining": [
+    "B03 successful-play 500ms gate and durable combatActionId replay",
+    "B05 full timed resource loops and actual monster-card accumulation",
+    "Configuration workbook, difficulty/economy/loot/archive and cross-config recovery",
+    "Full multilingual/resolution UI and final release integration/deployment"
+  ]
+}

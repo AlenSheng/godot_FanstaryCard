@@ -1,0 +1,20 @@
+  正在确定要还原的项目…
+  已还原 C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\FantasyCard.Domain.csproj (用时 132 毫秒)。
+  已还原 C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\FantasyCard.Domain.Tests.csproj (用时 1.2 秒)。
+  FantasyCard.Domain -> G:\PR13Evidence\season-balance-20261102-r1\local-domain-r1\build\bin\FantasyCard.Domain\debug\FantasyCard.Domain.dll
+  FantasyCard.Domain.Tests -> G:\PR13Evidence\season-balance-20261102-r1\local-domain-r1\build\bin\FantasyCard.Domain.Tests\debug\FantasyCard.Domain.Tests.dll
+G:\PR13Evidence\season-balance-20261102-r1\local-domain-r1\build\bin\FantasyCard.Domain.Tests\debug\FantasyCard.Domain.Tests.dll (.NETCoreApp,Version=v10.0)的测试运行
+总共 1 个测试文件与指定模式相匹配。
+  失败 FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogVersionMatchesPublishedClientPackage [5 ms]
+  错误消息:
+   System.IO.DirectoryNotFoundException : Could not locate the published server config version file.
+  堆栈跟踪:
+     at FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.FindPublishedConfigRoots() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Configuration\GameConfigCatalogTests.cs:line 101
+   at FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.AssertPublishedConfigMatchesCatalog(String embeddedVersion) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Configuration\GameConfigCatalogTests.cs:line 65
+   at FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogVersionMatchesPublishedClientPackage() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Configuration\GameConfigCatalogTests.cs:line 60
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+结果文件: G:\PR13Evidence\season-balance-20261102-r1\local-domain-r1\results\base-drops-domain.trx
+
+失败!  - 失败:     1，通过:   568，已跳过:     0，总计:   569，持续时间: 2 s - FantasyCard.Domain.Tests.dll (net10.0)
+[xUnit.net 00:00:02.45]     FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogVersionMatchesPublishedClientPackage [FAIL]

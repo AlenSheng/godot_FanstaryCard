@@ -1,0 +1,22 @@
+{
+  "error_type": "FixtureResourceGuard",
+  "error": "Owned Godot fixture reached memory guard",
+  "output": "  Determining projects to restore...\n  Restored C:\\Users\\SHENGJIAHAO\\.codex\\worktrees\\sync-release-targets\\godot_FanstaryCard\\server\\src\\FantasyCard.Domain\\FantasyCard.Domain.csproj (in 146 ms).\n  Restored C:\\Users\\SHENGJIAHAO\\.codex\\worktrees\\sync-release-targets\\godot_FanstaryCard\\server\\tools\\FantasyCard.ConfigExporter\\FantasyCard.ConfigExporter.csproj (in 143 ms).\n  Restored C:\\Users\\SHENGJIAHAO\\.codex\\worktrees\\sync-release-targets\\godot_FanstaryCard\\server\\src\\FantasyCard.Contracts\\FantasyCard.Contracts.csproj (in 385 ms).\n  Restored C:\\Users\\SHENGJIAHAO\\.codex\\worktrees\\sync-release-targets\\godot_FanstaryCard\\server\\src\\FantasyCard.Server\\FantasyCard.Server.csproj (in 400 ms).\n  Restored C:\\Users\\SHENGJIAHAO\\.codex\\worktrees\\sync-release-targets\\godot_FanstaryCard\\server\\tests\\FantasyCard.Server.Tests\\FantasyCard.Server.Tests.csproj (in 522 ms).\n  FantasyCard.Contracts -> G:\\PR13Evidence\\season-balance-20261102-r1\\mail-permanent-local-r4\\build\\bin\\FantasyCard.Contracts\\debug\\FantasyCard.Contracts.dll\n",
+  "command": [
+    "dotnet",
+    "test",
+    "C:\\Users\\SHENGJIAHAO\\.codex\\worktrees\\sync-release-targets\\godot_FanstaryCard\\server\\tests\\FantasyCard.Server.Tests\\FantasyCard.Server.Tests.csproj",
+    "--artifacts-path",
+    "G:\\PR13Evidence\\season-balance-20261102-r1\\mail-permanent-local-r4\\build",
+    "--filter",
+    "FullyQualifiedName~MailClaimContractTests|FullyQualifiedName~MailTemplateEncodingTests|FullyQualifiedName~SystemMailCatalogTests|FullyQualifiedName~JourneyRewardEncodingTests|FullyQualifiedName~SeasonShopEncodingTests",
+    "--logger",
+    "trx;LogFileName=mail-local.trx",
+    "--results-directory",
+    "G:\\PR13Evidence\\season-balance-20261102-r1\\mail-permanent-local-r4\\results",
+    "--verbosity",
+    "minimal",
+    "-m:1",
+    "-p:UseSharedCompilation=false"
+  ]
+}

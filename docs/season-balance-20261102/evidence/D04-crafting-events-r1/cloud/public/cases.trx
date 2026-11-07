@@ -1,0 +1,48 @@
+<TestRun id="bc71d8ab-f8d7-499a-918f-30a43900aa94" name="unknown@803968e39001 2026-11-06T11:46:47.2054277+00:00" runUser="unknown" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-06T11:46:47.2054277+00:00" queuing="2026-11-06T11:46:47.2054277+00:00" start="2026-11-06T11:46:47.2054277+00:00" finish="2026-11-06T11:46:57.1625035+00:00" />
+  <TestSettings name="default" id="6c4d5628-128d-4c3b-a1a4-ab366a4594ad" />
+  <Results>
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresCraftingEventTelemetryTests.DurablePityFactsSurviveReplayAndLaterWishChangesWhileHistoricalMissingFactsStayUnknown" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="3dd80a26-1ade-425c-b71b-ff57936067e1" executionId="3dd80a26-1ade-425c-b71b-ff57936067e1" computerName="803968e39001" duration="00:00:02.3893016" startTime="2026-11-06T11:46:47.2890291+00:00" endTime="2026-11-06T11:46:49.6907028+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresCraftingEventTelemetryTests.ObservationInsertFailureRollsBackPaymentItemWishAndActionAndOriginalKeyCanRetryOnce" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="c8778519-9a7c-465d-a649-ad471d9d7d65" executionId="c8778519-9a7c-465d-a649-ad471d9d7d65" computerName="803968e39001" duration="00:00:01.9038265" startTime="2026-11-06T11:46:49.7052569+00:00" endTime="2026-11-06T11:46:51.6096199+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresCraftingEventTelemetryTests.KnownRecipeDoesNotEmitAnotherLearningAndReforgeObservesOneRetainedBodyInsteadOfMintOrDestruction" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="1cbf1679-b995-4d90-bad0-a28c75e3746f" executionId="1cbf1679-b995-4d90-bad0-a28c75e3746f" computerName="803968e39001" duration="00:00:02.3887624" startTime="2026-11-06T11:46:51.6100215+00:00" endTime="2026-11-06T11:46:53.9988776+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_admin_economy_report_keeps_existing_HTTPS_key_and_no_store_boundary" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="e72013be-c566-4d16-8bac-0e4fbb123be3" executionId="e72013be-c566-4d16-8bac-0e4fbb123be3" computerName="803968e39001" duration="00:00:03.1470394" startTime="2026-11-06T11:46:54.0103535+00:00" endTime="2026-11-06T11:46:57.1581259+00:00">
+      <Output>
+        <TextMessages>
+          <Message>{"caseId":"process-start","recordedAt":"2026-11-06T11:46:54.9933415+00:00","evidence":{"label":"d04-admin-report","Id":22,"executable":"dotnet","dll":"/workspace/bin/FantasyCard.Server.dll","port":40215,"SearchPath":"fc_runtime_test_688cf7a371a343eca18aeab5c51500b3","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+{"caseId":"process-stop","recordedAt":"2026-11-06T11:46:56.4859402+00:00","evidence":{"label":"d04-admin-report","ProcessId":22,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/results/process-logs/d04-admin-report-22.log"}}</Message>
+        </TextMessages>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresCraftingEventTelemetryTests.DurablePityFactsSurviveReplayAndLaterWishChangesWhileHistoricalMissingFactsStayUnknown" id="3dd80a26-1ade-425c-b71b-ff57936067e1" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="3dd80a26-1ade-425c-b71b-ff57936067e1" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresCraftingEventTelemetryTests" name="DurablePityFactsSurviveReplayAndLaterWishChangesWhileHistoricalMissingFactsStayUnknown" adapterTypeName="executor://bc71d8ab-f8d7-499a-918f-30a43900aa94/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresCraftingEventTelemetryTests.ObservationInsertFailureRollsBackPaymentItemWishAndActionAndOriginalKeyCanRetryOnce" id="c8778519-9a7c-465d-a649-ad471d9d7d65" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="c8778519-9a7c-465d-a649-ad471d9d7d65" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresCraftingEventTelemetryTests" name="ObservationInsertFailureRollsBackPaymentItemWishAndActionAndOriginalKeyCanRetryOnce" adapterTypeName="executor://bc71d8ab-f8d7-499a-918f-30a43900aa94/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresCraftingEventTelemetryTests.KnownRecipeDoesNotEmitAnotherLearningAndReforgeObservesOneRetainedBodyInsteadOfMintOrDestruction" id="1cbf1679-b995-4d90-bad0-a28c75e3746f" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="1cbf1679-b995-4d90-bad0-a28c75e3746f" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresCraftingEventTelemetryTests" name="KnownRecipeDoesNotEmitAnotherLearningAndReforgeObservesOneRetainedBodyInsteadOfMintOrDestruction" adapterTypeName="executor://bc71d8ab-f8d7-499a-918f-30a43900aa94/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_admin_economy_report_keeps_existing_HTTPS_key_and_no_store_boundary" id="e72013be-c566-4d16-8bac-0e4fbb123be3" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="e72013be-c566-4d16-8bac-0e4fbb123be3" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests" name="Full_host_admin_economy_report_keeps_existing_HTTPS_key_and_no_store_boundary" adapterTypeName="executor://bc71d8ab-f8d7-499a-918f-30a43900aa94/3.1.0" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="3dd80a26-1ade-425c-b71b-ff57936067e1" executionId="3dd80a26-1ade-425c-b71b-ff57936067e1" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="c8778519-9a7c-465d-a649-ad471d9d7d65" executionId="c8778519-9a7c-465d-a649-ad471d9d7d65" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="1cbf1679-b995-4d90-bad0-a28c75e3746f" executionId="1cbf1679-b995-4d90-bad0-a28c75e3746f" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="e72013be-c566-4d16-8bac-0e4fbb123be3" executionId="e72013be-c566-4d16-8bac-0e4fbb123be3" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Complete">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+</TestRun>

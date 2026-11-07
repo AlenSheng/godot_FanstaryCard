@@ -1,0 +1,17 @@
+{
+  "container_id": "6be9dc7d8279ccb4b2a32dadd6d5ccb676ae7b4dfc71d1e6ba92b5329fc25791",
+  "name": "fc-season-a03-storage-20261102-r71",
+  "database_container": "803968e390014540be88f60b9ac43203946d0145bf886fc61d9d9d4d04bc3b1a",
+  "source_base": "dede928b6536f773e6dc3ed563034f1d4237e106",
+  "archive_sha256": "5a13f739af2b77bb4289ae7b6d4da4338c1c37d9c1754c8fd26df63f391ba793",
+  "image_id": "sha256:4beef5b8919dcaa2dc924233bd069257e883cc7a061e09088a97d152d6a48510",
+  "cpu": 1,
+  "memory_mib": 1200,
+  "server_command": "dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter \"FullyQualifiedName~PostgresSeason|FullyQualifiedName~PostgresEnhancementQuoteTests|FullyQualifiedName~FantasyCard.Server.Tests.Config|FullyQualifiedName~SeasonWallet|FullyQualifiedName~PostgresDifficultyUnlockTests|FullyQualifiedName~Settlement|FullyQualifiedName~PostgresConfigVersionRoomTests|FullyQualifiedName~PostgresLifecycleRecoveryTests|FullyQualifiedName~PostgresCombatActionTests|FullyQualifiedName~TerminalCommandContextTests|FullyQualifiedName~LootPreferenceEncodingTests|FullyQualifiedName~Four_humans_enqueue_ready_and_launch_one_persisted_room|FullyQualifiedName~SeasonCrafting_binary_session_uses_all_five_routes_and_preserves_asset_identity\" --logger \"trx;LogFileName=loot-preference-server.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "server_evidence_source": null,
+  "domain_command": "dotnet test tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj --filter \"FullyQualifiedName!~SeasonResourceLoopTests&FullyQualifiedName!~MonsterPoolBaselineContractTests\" --logger \"trx;LogFileName=loot-preference-domain.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "domain_evidence_source": null,
+  "production_database_used": false,
+  "available_ram_before": 2528952320,
+  "free_disk_before": 3510333440
+}

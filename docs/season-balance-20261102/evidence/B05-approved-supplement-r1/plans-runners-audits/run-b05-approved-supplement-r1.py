@@ -1,0 +1,23 @@
+from pathlib import Path
+import json,hashlib,os,time,importlib.util
+base=Path(__file__).parent;repo=Path.cwd();build=base/'b05-approved-supplement-preflight-r1';assert json.loads((build/'result.json').read_bytes())['exit']==0
+pin=json.loads((build/'source-pin.json').read_bytes());assert all(hashlib.sha256((repo/n).read_bytes()).hexdigest()==h for n,h in pin.items())
+roster=base/'b05-approved-supplement-roster-r1.original.json';plan=json.loads(roster.read_bytes());cases=plan['cases'];budget_path=repo/'docs/season-balance-20261102/B05-BUDGET.json';prior=budget_path.read_bytes();budget=json.loads(prior)
+assert budget['used']==300 and budget['supplemental_used']==0 and budget['maximum']==330 and budget.get('current_handle') is None
+assert len(cases)==24 and len(cases)<=30-budget['supplemental_used'];assert json.loads((repo/'docs/season-balance-20261102/D03-BUDGET.json').read_bytes())['used']==284
+out=base/'b05-approved-supplement-r1';assert not out.exists();out.mkdir();(out/'plan.original.json').write_bytes(roster.read_bytes());(out/'prior-budget.original.json').write_bytes(prior)
+binary=build/'build/bin/FantasyCard.Server.Tests/debug';binaries={p.relative_to(binary).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in binary.rglob('*') if p.is_file()};(out/'binary-manifest.original.json').write_text(json.dumps(binaries,indent=2)+chr(10))
+cmd=['dotnet',str(binary/'FantasyCard.Server.Tests.dll'),'-noLogo','-noColor','-noAutoReporters','-failSkips','-parallel','none','-reporter','verbose','-method','FantasyCard.Server.Tests.Config.SeasonMageApprovedSupplementTests.ApprovedLiveFixturesReconcileCardsCreditReplayAndCheckpointRecovery','-trx',str(out/'cases.trx'),'-xml',str(out/'cases.xml')]
+started=dict(parent_pid=os.getpid(),started_at=time.time(),command=cmd,planned=len(cases),prior_used=budget['used'],prior_supplemental=0,local_reserve_GiB=2,startup_GiB=1)
+(out/'started.original.json').write_text(json.dumps(started,indent=2)+chr(10));budget.update(current_handle=started,supplemental_reserved_current=len(cases));budget_path.write_text(json.dumps(budget,ensure_ascii=False,indent=2)+chr(10),encoding='utf-8')
+spec=importlib.util.spec_from_file_location('guard',repo/'client/tests/fixture_runtime.py');g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g);r=None;error=None
+try:
+ r=g.guarded_run(cmd,env=dict(os.environ,FANTASYCARD_RUN_B05_SUPPLEMENT='1',FANTASYCARD_B05_SUPPLEMENT_PLAN=str(roster),FANTASYCARD_B05_SUPPLEMENT_OUTPUT=str(out/'observations'),FANTASYCARD_D03_CARD_VARIANT_OUTPUT=str(out/'variant'),FANTASYCARD_RUN_B05_MATRIX='',FANTASYCARD_RUN_B05_FINAL_NINE='',FANTASYCARD_RUN_D03_EFFICIENCY='',FANTASYCARD_TEST_POSTGRES=''),timeout=900,wait_seconds=180)
+except Exception as e:
+ error=dict(type=type(e).__name__,error=str(e),output=str(getattr(e,'output','')));(out/'interrupted.original.json').write_text(json.dumps(error,indent=2)+chr(10))
+if r is not None:(out/'test.original.log').write_text(r.stdout+r.stderr,encoding='utf-8')
+p=out/'observations/attempts.original.jsonl';attempts=[json.loads(x) for x in p.read_text().splitlines()] if p.exists() else [];p=out/'observations/cases.original.jsonl';terminal=[json.loads(x) for x in p.read_text().splitlines()] if p.exists() else []
+expected=[dict(Id=c['id'],Hero=c['hero'],Difficulty=c['difficulty'],HpPercent=c['hp_percent'],Kind=c['kind'],Seed=c['seed']) for c in cases];identity=attempts==expected[:len(attempts)];assert len(attempts)<=len(cases)
+proof=dict(exit=r.returncode if r else None,error=error,actual_started=len(attempts),terminal_cases=len(terminal),planned=len(cases),combined_B05_used=300+len(attempts),supplemental_used=len(attempts),supplemental_remaining=30-len(attempts),original300_preserved=True,roster_identity_match=identity,source_unchanged=all(hashlib.sha256((repo/n).read_bytes()).hexdigest()==h for n,h in pin.items()),binary_unchanged=all(hashlib.sha256((binary/n).read_bytes()).hexdigest()==h for n,h in binaries.items()),new_D03_cases=0,D03_used=284,old_matrix_rerun=False,production_modified=False,cloud_modified=False)
+(out/'result.json').write_text(json.dumps(proof,indent=2)+chr(10));budget.update(used=proof['combined_B05_used'],remaining=proof['supplemental_remaining'],supplemental_used=len(attempts),supplemental_remaining=proof['supplemental_remaining'],current_handle=None,supplemental_reserved_current=0,supplemental_last_result=str(out/'result.json'));budget_path.write_text(json.dumps(budget,ensure_ascii=False,indent=2)+chr(10),encoding='utf-8')
+print((r.stdout+r.stderr)[-4500:] if r else error);print(json.dumps(proof));assert r and r.returncode==0 and len(attempts)==len(terminal)==len(cases) and identity and proof['source_unchanged'] and proof['binary_unchanged']

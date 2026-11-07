@@ -1,0 +1,74 @@
+{
+  "new_D03_encounters": 12,
+  "D03_used": 251,
+  "D03_remaining": 49,
+  "reports": [
+    {
+      "candidate": "sustain",
+      "rate": 0.1,
+      "outcomes": {
+        "Win": 6
+      },
+      "medians": {
+        "Mage": 61.900000000000006,
+        "Priest": 72.6,
+        "Guardian": 70.95
+      },
+      "class_ratio": 1.1728594507269787,
+      "class15_pass": false,
+      "Boss75_120_pass": false,
+      "casts": 645,
+      "resource_events": 10,
+      "independent_closures": 6,
+      "printed_card_draw_preserved": true,
+      "passive_budget_bounds": [
+        {
+          "id": "D03-SUSTAIN-001",
+          "passive": 2.7648114901256737,
+          "elapsed_time_upper_bound": 2.769299820466787
+        },
+        {
+          "id": "D03-SUSTAIN-002",
+          "passive": 2.7827648114901264,
+          "elapsed_time_upper_bound": 2.7872531418312394
+        }
+      ]
+    },
+    {
+      "candidate": "sustain-half",
+      "rate": 0.05,
+      "outcomes": {
+        "Win": 6
+      },
+      "medians": {
+        "Mage": 63.2,
+        "Priest": 72.6,
+        "Guardian": 70.95
+      },
+      "class_ratio": 1.1487341772151898,
+      "class15_pass": true,
+      "Boss75_120_pass": false,
+      "casts": 646,
+      "resource_events": 10,
+      "independent_closures": 6,
+      "printed_card_draw_preserved": true,
+      "passive_budget_bounds": [
+        {
+          "id": "D03-SUSTAIN-HALF-001",
+          "passive": 1.440754039497307,
+          "elapsed_time_upper_bound": 1.4429982046678638
+        },
+        {
+          "id": "D03-SUSTAIN-HALF-002",
+          "passive": 1.391382405745063,
+          "elapsed_time_upper_bound": 1.3936265709156197
+        }
+      ]
+    }
+  ],
+  "old_9banks_byte_unchanged": true,
+  "formal_activation": false,
+  "heldout_validation": false,
+  "D03_accepted": false,
+  "B05_supplemental_used": 0
+}

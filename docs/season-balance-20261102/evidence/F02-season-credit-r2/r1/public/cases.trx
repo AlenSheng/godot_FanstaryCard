@@ -1,0 +1,86 @@
+<TestRun id="dce170ea-2588-45b5-be3f-f4a6ba02e1f7" name="unknown@803968e39001 2026-11-06T06:56:34.6208019+00:00" runUser="unknown" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-06T06:56:34.6208019+00:00" queuing="2026-11-06T06:56:34.6208019+00:00" start="2026-11-06T06:56:34.6208019+00:00" finish="2026-11-06T06:56:41.3128048+00:00" />
+  <TestSettings name="default" id="6c4d5628-128d-4c3b-a1a4-ab366a4594ad" />
+  <Results>
+    <UnitTestResult testName="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(archiveState: \&quot;valid\&quot;)" outcome="Failed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="e3b8599e-a0b6-4048-ab66-705b72fa5652" executionId="e3b8599e-a0b6-4048-ab66-705b72fa5652" computerName="803968e39001" duration="00:00:02.4247820" startTime="2026-11-06T06:56:34.7360607+00:00" endTime="2026-11-06T06:56:37.2002993+00:00">
+      <Output>
+        <TextMessages>
+          <Message>{"caseId":"SEASON17-schema","recordedAt":"2026-11-06T06:56:34.9667481+00:00","evidence":{"schema":"fc_runtime_test_c723274c228345ef88299078ae883881","archiveState":"valid"}}</Message>
+        </TextMessages>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Saved loot preference differs from the original preparation.</Message>
+          <StackTrace>   at FantasyCard.Server.Rooms.RoomSnapshotRepository.RequirePreparedSources(BattleRoomSnapshot snapshot, String json) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 173
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 157
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 159
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 159
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.SaveIfDueAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 24
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(String archiveState) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleSeasonCreditTests.cs:line 50
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(String archiveState) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleSeasonCreditTests.cs:line 101
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(archiveState: \&quot;missing\&quot;)" outcome="Failed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="08e20806-9fc5-4f08-9709-8a9e7563e4ea" executionId="08e20806-9fc5-4f08-9709-8a9e7563e4ea" computerName="803968e39001" duration="00:00:01.9594772" startTime="2026-11-06T06:56:37.2060486+00:00" endTime="2026-11-06T06:56:39.1694614+00:00">
+      <Output>
+        <TextMessages>
+          <Message>{"caseId":"SEASON17-schema","recordedAt":"2026-11-06T06:56:37.2315198+00:00","evidence":{"schema":"fc_runtime_test_488d57160da04204a9dfa69e35e344ed","archiveState":"missing"}}</Message>
+        </TextMessages>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Saved loot preference differs from the original preparation.</Message>
+          <StackTrace>   at FantasyCard.Server.Rooms.RoomSnapshotRepository.RequirePreparedSources(BattleRoomSnapshot snapshot, String json) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 173
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 157
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 159
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 159
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.SaveIfDueAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 24
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(String archiveState) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleSeasonCreditTests.cs:line 50
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(String archiveState) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleSeasonCreditTests.cs:line 101
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(archiveState: \&quot;corrupt\&quot;)" outcome="Failed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="1b48f442-4b35-4e77-9a8b-15dc707fdec1" executionId="1b48f442-4b35-4e77-9a8b-15dc707fdec1" computerName="803968e39001" duration="00:00:02.1174945" startTime="2026-11-06T06:56:39.1701293+00:00" endTime="2026-11-06T06:56:41.2939787+00:00">
+      <Output>
+        <TextMessages>
+          <Message>{"caseId":"SEASON17-schema","recordedAt":"2026-11-06T06:56:39.1899364+00:00","evidence":{"schema":"fc_runtime_test_f48834400cca4420b61062b0f161826a","archiveState":"corrupt"}}</Message>
+        </TextMessages>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Saved loot preference differs from the original preparation.</Message>
+          <StackTrace>   at FantasyCard.Server.Rooms.RoomSnapshotRepository.RequirePreparedSources(BattleRoomSnapshot snapshot, String json) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 173
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 157
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 159
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 159
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.SaveIfDueAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 24
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(String archiveState) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleSeasonCreditTests.cs:line 50
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(String archiveState) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleSeasonCreditTests.cs:line 101
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(archiveState: \&quot;valid\&quot;)" id="e3b8599e-a0b6-4048-ab66-705b72fa5652" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="e3b8599e-a0b6-4048-ab66-705b72fa5652" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests" name="Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation" adapterTypeName="executor://dce170ea-2588-45b5-be3f-f4a6ba02e1f7/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(archiveState: \&quot;missing\&quot;)" id="08e20806-9fc5-4f08-9709-8a9e7563e4ea" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="08e20806-9fc5-4f08-9709-8a9e7563e4ea" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests" name="Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation" adapterTypeName="executor://dce170ea-2588-45b5-be3f-f4a6ba02e1f7/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(archiveState: \&quot;corrupt\&quot;)" id="1b48f442-4b35-4e77-9a8b-15dc707fdec1" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="1b48f442-4b35-4e77-9a8b-15dc707fdec1" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests" name="Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation" adapterTypeName="executor://dce170ea-2588-45b5-be3f-f4a6ba02e1f7/3.1.0" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="e3b8599e-a0b6-4048-ab66-705b72fa5652" executionId="e3b8599e-a0b6-4048-ab66-705b72fa5652" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="08e20806-9fc5-4f08-9709-8a9e7563e4ea" executionId="08e20806-9fc5-4f08-9709-8a9e7563e4ea" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="1b48f442-4b35-4e77-9a8b-15dc707fdec1" executionId="1b48f442-4b35-4e77-9a8b-15dc707fdec1" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="3" executed="3" passed="0" failed="3" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+</TestRun>

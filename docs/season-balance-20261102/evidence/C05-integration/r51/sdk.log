@@ -1,0 +1,44 @@
+An issue was encountered verifying workloads. For more information, run "dotnet workload update".
+  Determining projects to restore...
+  Restored /workspace/server/tools/FantasyCard.ConfigExporter/FantasyCard.ConfigExporter.csproj (in 107 ms).
+  Restored /workspace/server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj (in 525 ms).
+  Restored /workspace/server/src/FantasyCard.Server/FantasyCard.Server.csproj (in 7 ms).
+  Restored /workspace/server/src/FantasyCard.Domain/FantasyCard.Domain.csproj (in 1 ms).
+  Restored /workspace/server/src/FantasyCard.Contracts/FantasyCard.Contracts.csproj (in 5 ms).
+  FantasyCard.Contracts -> /workspace/server/src/FantasyCard.Contracts/bin/Debug/net10.0/FantasyCard.Contracts.dll
+  FantasyCard.Domain -> /workspace/server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Server -> /workspace/server/src/FantasyCard.Server/bin/Debug/net10.0/FantasyCard.Server.dll
+  FantasyCard.ConfigExporter -> /workspace/server/tools/FantasyCard.ConfigExporter/bin/Debug/net10.0/FantasyCard.ConfigExporter.dll
+  FantasyCard.Server.Tests -> /workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll
+Test run for /workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:02:18.05]     FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.OwnedTerminalFallbackReplaysThePersistedActionWithoutRegisteringOrMutatingARoom [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.OwnedTerminalFallbackReplaysThePersistedActionWithoutRegisteringOrMutatingARoom [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : Supplied equipment attributes differ from the frozen item stats version.
+  Stack Trace:
+     at FantasyCard.Domain.Rooms.BattleRoom.AddPlayer(BattleRoomPlayerSetup setup) in /workspace/server/src/FantasyCard.Domain/Rooms/BattleRoom.cs:line 429
+   at FantasyCard.Domain.Rooms.BattleRoom.Restore(BattleRoomSnapshot snapshot, CombatCardCatalog catalog, Int32 seed) in /workspace/server/src/FantasyCard.Domain/Rooms/BattleRoom.cs:line 595
+   at FantasyCard.Server.Realtime.RealtimeCommandRouter.ResolveTerminalCommandAsync(PlayerProfile player, ClientCommand command, String traceId, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.TerminalContext.cs:line 67
+   at FantasyCard.Server.Realtime.RealtimeCommandRouter.RouteCoreAsync(PlayerProfile player, ClientCommand command, String traceId, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs:line 219
+   at FantasyCard.Server.Realtime.RealtimeCommandRouter.RouteContextualCoreAsync(PlayerProfile player, ClientCommand command, String traceId, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.TerminalContext.cs:line 19
+   at FantasyCard.Server.Realtime.RealtimeCommandRouter.RealtimeRequestStore.ExecuteAsync(Guid playerId, String requestId, String fingerprint, Func`1 execute) in /workspace/server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs:line 1021
+   at FantasyCard.Server.Realtime.RealtimeCommandRouter.RouteAsync(PlayerProfile player, ClientCommand command, String traceId, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs:line 85
+   at FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.OwnedTerminalFallbackReplaysThePersistedActionWithoutRegisteringOrMutatingARoom() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresCombatActionTests.cs:line 82
+   at FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.OwnedTerminalFallbackReplaysThePersistedActionWithoutRegisteringOrMutatingARoom() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresCombatActionTests.cs:line 88
+   at FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.OwnedTerminalFallbackReplaysThePersistedActionWithoutRegisteringOrMutatingARoom() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresCombatActionTests.cs:line 88
+--- End of stack trace from previous location ---
+[xUnit.net 00:02:19.21]     FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.AckPersistsActionAndRouterAndRoomRecreationCannotRepeatItOrResetCooldown [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.AckPersistsActionAndRouterAndRoomRecreationCannotRepeatItOrResetCooldown [1 s]
+  Error Message:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  Stack Trace:
+     at FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.AckPersistsActionAndRouterAndRoomRecreationCannotRepeatItOrResetCooldown() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresCombatActionTests.cs:line 53
+   at FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.AckPersistsActionAndRouterAndRoomRecreationCannotRepeatItOrResetCooldown() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresCombatActionTests.cs:line 60
+   at FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.AckPersistsActionAndRouterAndRoomRecreationCannotRepeatItOrResetCooldown() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresCombatActionTests.cs:line 60
+--- End of stack trace from previous location ---
+Results File: /workspace/results/season-equipment-server-final.trx
+
+Failed!  - Failed:     2, Passed:   194, Skipped:     0, Total:   196, Duration: 2 m 37 s - FantasyCard.Server.Tests.dll (net10.0)

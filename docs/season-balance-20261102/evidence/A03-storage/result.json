@@ -1,0 +1,33 @@
+{
+  "status": "storage_and_weapon_repository_verified_api_inventory_integration_pending",
+  "current_postgres_tests": 13,
+  "current_domain_tests": 44,
+  "failed": 0,
+  "skipped": 0,
+  "current_input_archive_sha256": "a4973ea9ce5143f59799fcc2b63ab170a45ede9b917b6924d7b751aa29f4f6eb",
+  "domain_evidence": "r2/domain.trx; all Domain input hashes unchanged in r3",
+  "history": [
+    {
+      "run": "r1",
+      "passed": 8,
+      "failed": 1,
+      "classification": "invalid_fixture",
+      "cause": "The fixture set copy_count=8, violating V021 unique-card ownership. The migration had not yet been invoked in that case. Original failure retained."
+    },
+    {
+      "run": "r2",
+      "passed": 9,
+      "failed": 0,
+      "domain_passed": 44
+    },
+    {
+      "run": "r3",
+      "passed": 13,
+      "failed": 0,
+      "new_coverage": "Permanent weapon debit/upgrade atomicity, chosen historical versus seasonal wallets, failure rollback/retry and expired outer idempotency reuse."
+    }
+  ],
+  "production_database_used": false,
+  "production_deployed": false,
+  "api_transport_and_inventory_filters_complete": false
+}

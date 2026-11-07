@@ -13,6 +13,9 @@ const CellIndex = preload("res://ui/cell_index.gd")
 const BattleTargets = preload("res://state/battle_targets.gd")
 const TemporaryBagItem = preload("res://ui/temporary_bag_item.gd")
 const ItemVisual = preload("res://ui/item_visual.gd")
+const ThemeModel=preload("res://ui/season_theme_model.gd")
+const CatalogIndex = preload("res://data/catalog_index.gd")
+const RewardValue = preload("res://ui/reward_value_model.gd")
 const MOVE_ACTION_ICON: Texture2D = preload("res://assets/generated/ui/exploration_move_compass.png")
 const PANEL := "UI/CardCodex/card_codex_dialog_panel_normal.png"
 const SLOT := Art.COMMON_CELL_KEY
@@ -28,6 +31,8 @@ static func build(ui: Control, host: Control) -> void:
 		_battle(ui, host, state)
 	elif phase in ["Extracted", "Dead"]:
 		_settlement_pending(ui, phase)
+	elif bool(state.get("player",{}).get("red_evaluation_pending",false)) or state.get("player",{}).get("pending_red_item") is Dictionary:
+		preload("res://ui/red_reward_view.gd").build(ui,host,state.get("player",{}))
 	elif state.has("reward_choice"):
 		_rewards(ui, host, state.reward_choice)
 	elif host.get_meta("inventory_open", false) and phase == "ActionBar":
@@ -36,6 +41,10 @@ static func build(ui: Control, host: Control) -> void:
 		_map(ui, host, state)
 	else:
 		_actions(ui, host, state)
+	var theme: Dictionary=ThemeModel.room_theme(state,Game.room_catalog_index())
+	if not theme.is_empty() and phase in ["ActionBar","Pve","Pvp","Choice"]:
+		var theme_button: Button=ui.button(ThemeModel.title(theme),Rect2(560,35,390,62),preload("res://ui/season_theme_dialog.gd").show_dialog.bind(host,theme))
+		theme_button.name="SeasonThemeInfoButton"
 	var pool: Dictionary = state.get("player", {}).get("monster_pool", {})
 	if not pool.is_empty() and phase in ["ActionBar", "Choice"]:
 		ui.button(MonsterPool.text("title") + " (%d)" % pool.get("pending", []).size(), Rect2(1210, 35, 340, 62), func(): MonsterPool.open(host))
@@ -140,12 +149,13 @@ static func _passive(ui: Control, hero_class: String, rect: Rect2, bottom_limit:
 	if not names.has(hero_class): return Rect2()
 	var descriptions := {"Mage": P.localized("passive_mage"), "Priest": P.localized("passive_priest"), "Guardian": P.localized("passive_guardian")}
 	var status: Dictionary = Game.room.get("player", {}).get("battle_status", {})
-	if not status.is_empty(): descriptions[hero_class] = BattleDetails.passive_text(status)
+	var numerical: Dictionary = Game.room.get("player", {}).get("numerical_state", {})
+	if not status.is_empty(): descriptions[hero_class] = BattleDetails.passive_text(status, numerical)
 	var description_text: String = P.system_display_text(descriptions[hero_class].replace(" · ", "\n"))
 	var frame: Control = ui.panel(rect)
 	frame.name = "PlayerPassive_" + hero_class
 	frame.mouse_filter = Control.MOUSE_FILTER_PASS
-	frame.tooltip_text = P.localized("exploration_passive_tooltip") % [names[hero_class], BattleDetails.description(status) if not status.is_empty() else description_text]
+	frame.tooltip_text = P.localized("exploration_passive_tooltip") % [names[hero_class], BattleDetails.description(status, numerical) if not status.is_empty() else description_text]
 	var style: StyleBox = frame.get_theme_stylebox("panel")
 	var padding := Vector4(style.get_content_margin(SIDE_LEFT), style.get_content_margin(SIDE_TOP), style.get_content_margin(SIDE_RIGHT), style.get_content_margin(SIDE_BOTTOM))
 	var content_width := maxf(1.0, rect.size.x - padding.x - padding.z)
@@ -200,7 +210,7 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 	var pvp: bool = state.has("duel")
 	ui.set_meta("battle_passive_bottom", 0.0)
 	_title(ui, P.localized("encounter") if pvp else P.localized("chaos_battle"), true)
-	ui.button(P.localized("battle_stats_set"), Rect2(1452, 49, 375, 61), func(): host._show_battle_details(player.get("battle_status", {}))).name = "BattleStats"
+	ui.button(P.localized("battle_stats_set"), Rect2(1452, 49, 375, 61), func(): host._show_battle_details(player.get("battle_status", {}), player.get("numerical_state", {}))).name = "BattleStats"
 	if pvp:
 		_duel(ui, host, state)
 	else:
@@ -224,6 +234,7 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 			var boss_phase: int = maxi(1, int(monster.get("boss_phase", 1)))
 			var texture: Texture2D = Art.monster(monster.get("monster_id", ""), boss_phase)
 			var enemy: Control = _picture(ui, texture, Rect2(x - 45 * slot_scale, 301, 430 * slot_scale, 164 if can_select_target else 245))
+			if monster.get("monster_id")=="annihilation-core": enemy.modulate=ThemeModel.boss_tint(ThemeModel.room_theme(state,Game.room_catalog_index()))
 			enemy.name = "Monster_" + str(monster.get("monster_id", ""))
 			host._combat_panels[monster.get("monster_id", "")] = enemy
 			if texture == null:
@@ -232,11 +243,11 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 			if not alive: enemy.modulate.a = 0.35
 			var element: String = monster.get("intent_element", "None")
 			if alive:
-				var intent: String = {"Charge": P.localized("charge_intent"), "Empower": P.localized("empower"), "Shield": P.localized("word_shield")}.get(monster.get("intent_kind", ""), P.word(element))
+				var intent: String = {"Charge": P.localized("charge_intent"), "Empower": P.localized("empower"), "Shield": P.localized("word_shield"),"Regenerate":P.localized("season_theme_regenerate")}.get(monster.get("intent_kind", ""), P.word(element))
 				var number: String = str(monster.get("intent_value", 0)) if int(monster.get("intent_value", 0)) > 0 else ""
 				if element != "None":
 					ui.picture(Art.element(element), Rect2(x + 25 * slot_scale, 121, 62 * slot_scale, 62))
-				ui.text("%s %s" % [intent, number], Rect2(x + 95 * slot_scale, 126, 250 * slot_scale, 58), 37, P.ELEMENT.get(element, P.PAPER))
+				ui.text(P.system_display_text("%s %s" % [intent, number]), Rect2(x + 95 * slot_scale, 126, 250 * slot_scale, 58), 37, P.ELEMENT.get(element, P.PAPER)).name="MonsterIntent_"+str(index)
 			else:
 				_center(ui.text(P.localized("defeated"), Rect2(x + 24 * slot_scale, 126, 315 * slot_scale, 58), 32, P.MUTED))
 			_health(ui, monster, Rect2(x + 24 * slot_scale, 190, 315 * slot_scale, 114), true)
@@ -592,8 +603,13 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 	ui.button(P.localized("view_map"), Rect2(80, 985, 244, 56), func(): host.set_meta("exploration_map_open", true); host._schedule_render())
 
 static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:
-	ui.panel(Rect2(218, 141, 1484, 818))
-	_title(ui, P.localized("loot_three_choices"))
+	ui.panel(Rect2(218, 176, 1484, 783))
+	var plate: TextureRect = ui.picture(Art.texture("UI/Encounter/encounter_title_plate_normal.png"), Rect2(50, 0, 640, 160))
+	plate.name = "RewardChoicePlate"
+	# The source plate is 384x96. Keep its carved ends outside the readable
+	# central region, using at most two lines instead of shrinking translations.
+	var heading: Label = _center(ui.text(P.localized("loot_three_choices"), Rect2(190, 22, 360, 112), 32, P.PAPER, null, false))
+	heading.name = "RewardChoiceTitle"
 	var options: Array = reward.get("options", [])
 	for index in range(3):
 		var rect := Rect2(285 + index * 458, 226, 424, 588)
@@ -613,20 +629,43 @@ static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:
 			visual.position = rect.position + Vector2(129, 103)
 			visual.size = Vector2(165, 165)
 		var description: String = P.localized("exploration_reward_quantity") % option.get("quantity", 0)
-		if kind == 1: description = Details.description(item)
+		if kind == 1: description = Details.description(item, Game.room_catalog_index())
 		elif kind == 3:
 			var combat: Dictionary = Game.room.get("player", {}).get("combat", {})
 			var maximum: int = int(combat.get("maximum_hp", 0))
 			var amount: int = mini(maxi(0, int(combat.get("effective_maximum_hp", maximum)) - int(combat.get("hp", 0))), int(maximum * int(option.get("heal_percent", 0)) / 100.0))
 			description = P.localized("exploration_reward_heal") % [option.get("heal_percent", 0), amount]
-		ui.text(description, Rect2(rect.position + Vector2(44, 281), Vector2(336, 148)), 23, P.TEAL)
+		var information := DragScroll.new()
+		information.name = "RewardValueScroll_" + str(index)
+		information.position = rect.position + Vector2(44, 281)
+		information.size = Vector2(336, 148)
+		information.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+		information.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+		ui.add_child(information)
+		var lines := VBoxContainer.new()
+		lines.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		lines.add_theme_constant_override("separation", 12)
+		information.add_child(lines)
+		var value := RewardValue.evaluate(option, Game.room.get("player", {}), Game.room_catalog_index())
+		var hints := _reward_value_lines(value)
+		for hint in hints:
+			var label: Label = host._label(lines, hint, 24, P.GOLD, false)
+			label.name = "RewardValueHint"
+		host._label(lines, description, 23, P.TEAL, false).name = "RewardChoiceDescription"
 		ui.button(P.localized("added_to_bag") if kind != 3 else P.localized("exploration_heal_now"), Rect2(rect.position + Vector2(44, 439), Vector2(336, 50)), func(): host._claim(option), not Game.allowed("reward.choice.claim"))
 		if kind == 1:
 			ui.button(P.localized("exploration_compare_equip_direct"), Rect2(rect.position + Vector2(44, 499), Vector2(336, 49)), func(): host._show_equipment_details(item, func(): host._claim(option, true), P.localized("exploration_equip_recycle")), not Game.allowed("reward.choice.claim"))
 	var count: int = clampi(int(reward.get("refresh_count", 0)), 0, 3)
 	ui.text(P.localized("exploration_refresh_count") % count, Rect2(311, 840, 370, 66), 31, P.GOLD)
-	ui.button(P.localized("exploration_refresh_cost") % [60, 180, 450][mini(count, 2)] if count < 3 else P.localized("refresh_exhausted"), Rect2(746, 830, 425, 91), func(): Game.command("reward.choice.refresh"), count >= 3 or not Game.allowed("reward.choice.refresh"))
+	var price: int = CatalogIndex.reward_refresh_gold(count + 1, Game.room_catalog_index())
+	var refresh_label: String = P.localized("refresh_exhausted") if count >= 3 else P.localized("exploration_refresh_cost") % price if price > 0 else P.localized("quote_unavailable_short")
+	var refresh_button: Button = ui.button(refresh_label, Rect2(746, 830, 425, 91), func(): Game.command("reward.choice.refresh"), count >= 3 or price <= 0 or not Game.allowed("reward.choice.refresh"))
+	refresh_button.name = "RewardRefresh"
+	if price <= 0 and count < 3: refresh_button.tooltip_text = P.localized("config_archive_unavailable")
 	ui.text(P.localized("exploration_current_layer") % [P.localized("exploration_outer"), P.localized("exploration_middle"), P.localized("exploration_inner")][clampi(int(reward.get("layer", 0)), 0, 2)], Rect2(1275, 845, 334, 64), 29, P.MUTED)
+
+static func _reward_value_lines(value: Dictionary) -> Array[String]:
+	return RewardValue.display_lines(value)
 
 static func build_recovery(ui: Control) -> void:
 	ui.picture(Art.texture(PANEL), Rect2(480, 150, 960, 766))

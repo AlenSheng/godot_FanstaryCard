@@ -8,6 +8,24 @@ namespace FantasyCard.Server.Tests.ProtobufHttp;
 
 public sealed class SettlementEncodingTests
 {
+    [Fact]
+    public void OriginalSeasonUsesAppendOnlyReceiptTagSevenAndReachesBootstrap()
+    {
+        var season = new FantasyCard.Contracts.Seasons.SeasonContextResponse("original", "D2", "season-v1", "cfg", "stats");
+        var receipt = new SettlementResponse(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), "Extracted",
+            JsonSerializer.SerializeToElement(new { revision = 42 }), DateTimeOffset.UnixEpoch, season);
+        var route = HttpProtocolRegistry.Find("GET", $"/api/v1/settlements/{receipt.SettlementId}")!;
+        var wire = Wire.SettlementResponse.Parser.ParseFrom(HttpDtoMapper.EncodeResponse(route, receipt));
+        Assert.Equal("original", wire.Season.SeasonId);
+        Assert.Equal("D2", wire.Season.DifficultyId);
+        Assert.Equal(7, Wire.SettlementResponse.Descriptor.FindFieldByName("season").FieldNumber);
+        var bootstrap = Wire.BootstrapResponse.Parser.ParseFrom(HttpDtoMapper.EncodeResponse(
+            HttpProtocolRegistry.Find("GET", "/api/v1/bootstrap")!, new { UnfinishedSettlement = receipt }));
+        Assert.Equal(wire.Season, bootstrap.UnfinishedSettlement.Season);
+        var legacy = Wire.SettlementResponse.Parser.ParseFrom(HttpDtoMapper.EncodeResponse(route, receipt with { Season = null }));
+        Assert.Null(legacy.Season);
+    }
+
     [Theory]
     [InlineData("Head", "White", "Fire")]
     [InlineData("Chest", "Green", "Wood")]

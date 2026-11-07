@@ -1,0 +1,88 @@
+<TestRun id="5925cb5e-9ed7-4e31-8081-e793e66c98eb" name="unknown@803968e39001 2026-11-04T22:53:06.4135658+00:00" runUser="unknown" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-04T22:53:06.4135658+00:00" queuing="2026-11-04T22:53:06.4135658+00:00" start="2026-11-04T22:53:06.4135658+00:00" finish="2026-11-04T22:53:25.6057205+00:00" />
+  <TestSettings name="default" id="6c4d5628-128d-4c3b-a1a4-ab366a4594ad" />
+  <Results>
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.StillOpenArchivedSeasonPreparesQueuesAndLaunchesUsingItsOwnCatalog(borrowed: False)" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="4474cc30-eb70-489b-8b08-a8e90637f04d" executionId="4474cc30-eb70-489b-8b08-a8e90637f04d" computerName="803968e39001" duration="00:00:03.2603965" startTime="2026-11-04T22:53:06.5070175+00:00" endTime="2026-11-04T22:53:09.7788661+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.StillOpenArchivedSeasonPreparesQueuesAndLaunchesUsingItsOwnCatalog(borrowed: True)" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="c9ff7f67-4baf-48bb-8107-6abd6e9751aa" executionId="c9ff7f67-4baf-48bb-8107-6abd6e9751aa" computerName="803968e39001" duration="00:00:02.3884481" startTime="2026-11-04T22:53:09.7836500+00:00" endTime="2026-11-04T22:53:12.1725089+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.AlreadyAdmittedArchivedLaunchDrainsAfterTheSeasonEndsWithoutASecondAssetSpend" outcome="Failed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="e0692aa7-366e-41c6-b88e-2d2613e9d3d8" executionId="e0692aa7-366e-41c6-b88e-2d2613e9d3d8" computerName="803968e39001" duration="00:00:01.8133966" startTime="2026-11-04T22:53:12.1819520+00:00" endTime="2026-11-04T22:53:14.0054566+00:00">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentOutOfRangeException : Use a configured exploration inventory tier. (Parameter 'capacity')</Message>
+          <StackTrace>   at FantasyCard.Domain.Rooms.ExplorationInventory..ctor(Int32 capacity, Int32 safeSlots, IReadOnlyList`1 safeSlotIndexes, GameConfigCatalog configuration) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\ExplorationInventory.cs:line 47
+   at FantasyCard.Domain.Rooms.RoomPlayerState..ctor(Guid playerId, HeroClass heroClass, PlayerCombatState combat, PveBattleState pve, Int32 inventoryCapacity, Int32 safeSlots, IReadOnlyList`1 wornArmor, Boolean isBot, IReadOnlyList`1 safeSlotIndexes, String displayName, GameConfigCatalog configuration, String borrowedTemplateId, String lootPreferenceElement) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs:line 53
+   at FantasyCard.Domain.Rooms.BattleRoom.AddPlayerCore(BattleRoomPlayerSetup setup, Boolean restoring) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs:line 461
+   at FantasyCard.Domain.Rooms.BattleRoom.AddPlayer(BattleRoomPlayerSetup setup) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs:line 414
+   at FantasyCard.Server.Matchmaking.RoomReadyCoordinator.CreateRoom(MatchAssignment assignment) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Matchmaking\RoomReadyCoordinator.cs:line 187
+   at FantasyCard.Server.Matchmaking.RoomReadyCoordinator.LaunchAsync(ReadyMatchLaunch launch, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Matchmaking\RoomReadyCoordinator.cs:line 117
+   at FantasyCard.Server.Matchmaking.RoomReadyCoordinator.ProcessNextAsync(DateTimeOffset now, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Matchmaking\RoomReadyCoordinator.cs:line 105
+   at FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.AlreadyAdmittedArchivedLaunchDrainsAfterTheSeasonEndsWithoutASecondAssetSpend() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresPreparationConfigVersionTests.cs:line 163
+   at FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.AlreadyAdmittedArchivedLaunchDrainsAfterTheSeasonEndsWithoutASecondAssetSpend() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresPreparationConfigVersionTests.cs:line 167
+   at FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.AlreadyAdmittedArchivedLaunchDrainsAfterTheSeasonEndsWithoutASecondAssetSpend() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresPreparationConfigVersionTests.cs:line 167
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.MatchmakingChecksOriginalSeasonDefinitionRatherThanAcceptingTheLobbyLabel(field: \&quot;config\&quot;)" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="1bb0b36c-d17c-43c0-9a9a-327aa2c5efb5" executionId="1bb0b36c-d17c-43c0-9a9a-327aa2c5efb5" computerName="803968e39001" duration="00:00:01.8622955" startTime="2026-11-04T22:53:14.0089896+00:00" endTime="2026-11-04T22:53:15.8713857+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.MatchmakingChecksOriginalSeasonDefinitionRatherThanAcceptingTheLobbyLabel(field: \&quot;stats\&quot;)" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="84c2bbc0-583a-48f6-bb2b-097765152420" executionId="84c2bbc0-583a-48f6-bb2b-097765152420" computerName="803968e39001" duration="00:00:01.8944811" startTime="2026-11-04T22:53:15.8714737+00:00" endTime="2026-11-04T22:53:17.7660922+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.UnavailableOrWrongOriginalSourceCannotCreateMembershipOrLockEquipment(failure: \&quot;missing\&quot;)" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="c571da2d-3065-49e4-8fe2-daefc2e36110" executionId="c571da2d-3065-49e4-8fe2-daefc2e36110" computerName="803968e39001" duration="00:00:02.0319951" startTime="2026-11-04T22:53:17.7688330+00:00" endTime="2026-11-04T22:53:19.8010154+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.UnavailableOrWrongOriginalSourceCannotCreateMembershipOrLockEquipment(failure: \&quot;corrupt\&quot;)" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="acfa693f-853a-4768-8d31-e1d7ce55d485" executionId="acfa693f-853a-4768-8d31-e1d7ce55d485" computerName="803968e39001" duration="00:00:01.8619149" startTime="2026-11-04T22:53:19.8015872+00:00" endTime="2026-11-04T22:53:21.6637171+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.UnavailableOrWrongOriginalSourceCannotCreateMembershipOrLockEquipment(failure: \&quot;hash\&quot;)" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="7338cd25-a570-4bb3-a6f8-66e6950c28ab" executionId="7338cd25-a570-4bb3-a6f8-66e6950c28ab" computerName="803968e39001" duration="00:00:02.1354125" startTime="2026-11-04T22:53:21.6638069+00:00" endTime="2026-11-04T22:53:23.7993445+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.EntryQualityComesFromTheActualOriginalControlRatherThanTheLobby" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="b65fe6f7-6f1d-4022-980c-84ab3b116e85" executionId="b65fe6f7-6f1d-4022-980c-84ab3b116e85" computerName="803968e39001" duration="00:00:01.7920417" startTime="2026-11-04T22:53:23.8010662+00:00" endTime="2026-11-04T22:53:25.5932166+00:00" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.StillOpenArchivedSeasonPreparesQueuesAndLaunchesUsingItsOwnCatalog(borrowed: False)" id="4474cc30-eb70-489b-8b08-a8e90637f04d" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="4474cc30-eb70-489b-8b08-a8e90637f04d" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests" name="StillOpenArchivedSeasonPreparesQueuesAndLaunchesUsingItsOwnCatalog" adapterTypeName="executor://5925cb5e-9ed7-4e31-8081-e793e66c98eb/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.StillOpenArchivedSeasonPreparesQueuesAndLaunchesUsingItsOwnCatalog(borrowed: True)" id="c9ff7f67-4baf-48bb-8107-6abd6e9751aa" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="c9ff7f67-4baf-48bb-8107-6abd6e9751aa" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests" name="StillOpenArchivedSeasonPreparesQueuesAndLaunchesUsingItsOwnCatalog" adapterTypeName="executor://5925cb5e-9ed7-4e31-8081-e793e66c98eb/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.AlreadyAdmittedArchivedLaunchDrainsAfterTheSeasonEndsWithoutASecondAssetSpend" id="e0692aa7-366e-41c6-b88e-2d2613e9d3d8" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="e0692aa7-366e-41c6-b88e-2d2613e9d3d8" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests" name="AlreadyAdmittedArchivedLaunchDrainsAfterTheSeasonEndsWithoutASecondAssetSpend" adapterTypeName="executor://5925cb5e-9ed7-4e31-8081-e793e66c98eb/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.MatchmakingChecksOriginalSeasonDefinitionRatherThanAcceptingTheLobbyLabel(field: \&quot;config\&quot;)" id="1bb0b36c-d17c-43c0-9a9a-327aa2c5efb5" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="1bb0b36c-d17c-43c0-9a9a-327aa2c5efb5" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests" name="MatchmakingChecksOriginalSeasonDefinitionRatherThanAcceptingTheLobbyLabel" adapterTypeName="executor://5925cb5e-9ed7-4e31-8081-e793e66c98eb/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.MatchmakingChecksOriginalSeasonDefinitionRatherThanAcceptingTheLobbyLabel(field: \&quot;stats\&quot;)" id="84c2bbc0-583a-48f6-bb2b-097765152420" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="84c2bbc0-583a-48f6-bb2b-097765152420" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests" name="MatchmakingChecksOriginalSeasonDefinitionRatherThanAcceptingTheLobbyLabel" adapterTypeName="executor://5925cb5e-9ed7-4e31-8081-e793e66c98eb/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.UnavailableOrWrongOriginalSourceCannotCreateMembershipOrLockEquipment(failure: \&quot;missing\&quot;)" id="c571da2d-3065-49e4-8fe2-daefc2e36110" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="c571da2d-3065-49e4-8fe2-daefc2e36110" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests" name="UnavailableOrWrongOriginalSourceCannotCreateMembershipOrLockEquipment" adapterTypeName="executor://5925cb5e-9ed7-4e31-8081-e793e66c98eb/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.UnavailableOrWrongOriginalSourceCannotCreateMembershipOrLockEquipment(failure: \&quot;corrupt\&quot;)" id="acfa693f-853a-4768-8d31-e1d7ce55d485" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="acfa693f-853a-4768-8d31-e1d7ce55d485" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests" name="UnavailableOrWrongOriginalSourceCannotCreateMembershipOrLockEquipment" adapterTypeName="executor://5925cb5e-9ed7-4e31-8081-e793e66c98eb/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.UnavailableOrWrongOriginalSourceCannotCreateMembershipOrLockEquipment(failure: \&quot;hash\&quot;)" id="7338cd25-a570-4bb3-a6f8-66e6950c28ab" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="7338cd25-a570-4bb3-a6f8-66e6950c28ab" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests" name="UnavailableOrWrongOriginalSourceCannotCreateMembershipOrLockEquipment" adapterTypeName="executor://5925cb5e-9ed7-4e31-8081-e793e66c98eb/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.EntryQualityComesFromTheActualOriginalControlRatherThanTheLobby" id="b65fe6f7-6f1d-4022-980c-84ab3b116e85" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="b65fe6f7-6f1d-4022-980c-84ab3b116e85" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests" name="EntryQualityComesFromTheActualOriginalControlRatherThanTheLobby" adapterTypeName="executor://5925cb5e-9ed7-4e31-8081-e793e66c98eb/3.1.0" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="4474cc30-eb70-489b-8b08-a8e90637f04d" executionId="4474cc30-eb70-489b-8b08-a8e90637f04d" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="c9ff7f67-4baf-48bb-8107-6abd6e9751aa" executionId="c9ff7f67-4baf-48bb-8107-6abd6e9751aa" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="e0692aa7-366e-41c6-b88e-2d2613e9d3d8" executionId="e0692aa7-366e-41c6-b88e-2d2613e9d3d8" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="1bb0b36c-d17c-43c0-9a9a-327aa2c5efb5" executionId="1bb0b36c-d17c-43c0-9a9a-327aa2c5efb5" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="84c2bbc0-583a-48f6-bb2b-097765152420" executionId="84c2bbc0-583a-48f6-bb2b-097765152420" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="c571da2d-3065-49e4-8fe2-daefc2e36110" executionId="c571da2d-3065-49e4-8fe2-daefc2e36110" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="acfa693f-853a-4768-8d31-e1d7ce55d485" executionId="acfa693f-853a-4768-8d31-e1d7ce55d485" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="7338cd25-a570-4bb3-a6f8-66e6950c28ab" executionId="7338cd25-a570-4bb3-a6f8-66e6950c28ab" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="b65fe6f7-6f1d-4022-980c-84ab3b116e85" executionId="b65fe6f7-6f1d-4022-980c-84ab3b116e85" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="9" executed="9" passed="8" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+</TestRun>

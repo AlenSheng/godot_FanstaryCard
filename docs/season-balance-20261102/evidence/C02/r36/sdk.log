@@ -1,0 +1,51 @@
+An issue was encountered verifying workloads. For more information, run "dotnet workload update".
+  Determining projects to restore...
+  Restored /workspace/server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj (in 544 ms).
+  Restored /workspace/server/src/FantasyCard.Domain/FantasyCard.Domain.csproj (in 2 ms).
+  FantasyCard.Domain -> /workspace/server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Domain.Tests -> /workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll
+Test run for /workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:03.95]     FantasyCard.Domain.Tests.Combat.SeasonPveMinimumTests.ActualIntentClockFloorsAfterResistanceAndGuardianReduction(hero: Priest, hp: 80, intentValue: 2) [FAIL]
+[xUnit.net 00:00:03.96]     FantasyCard.Domain.Tests.Combat.SeasonPveMinimumTests.ActualIntentClockFloorsAfterResistanceAndGuardianReduction(hero: Guardian, hp: 100, intentValue: 3) [FAIL]
+[xUnit.net 00:00:03.96]     FantasyCard.Domain.Tests.Combat.SeasonPveMinimumTests.ActualIntentClockFloorsAfterResistanceAndGuardianReduction(hero: Mage, hp: 70, intentValue: 2) [FAIL]
+[xUnit.net 00:00:03.97]     FantasyCard.Domain.Tests.Combat.SeasonPveMinimumTests.CancelledWindupAndStunnedMonsterDoNotReceiveTheFloor [FAIL]
+  Failed FantasyCard.Domain.Tests.Combat.SeasonPveMinimumTests.ActualIntentClockFloorsAfterResistanceAndGuardianReduction(hero: Priest, hp: 80, intentValue: 2) [12 ms]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 80
+Actual:   79
+  Stack Trace:
+     at FantasyCard.Domain.Tests.Combat.SeasonPveMinimumTests.ActualIntentClockFloorsAfterResistanceAndGuardianReduction(HeroClass hero, Int32 hp, Int32 intentValue) in /workspace/server/tests/FantasyCard.Domain.Tests/Combat/SeasonPveMinimumTests.cs:line 19
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+  Failed FantasyCard.Domain.Tests.Combat.SeasonPveMinimumTests.ActualIntentClockFloorsAfterResistanceAndGuardianReduction(hero: Guardian, hp: 100, intentValue: 3) [1 ms]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 100
+Actual:   99
+  Stack Trace:
+     at FantasyCard.Domain.Tests.Combat.SeasonPveMinimumTests.ActualIntentClockFloorsAfterResistanceAndGuardianReduction(HeroClass hero, Int32 hp, Int32 intentValue) in /workspace/server/tests/FantasyCard.Domain.Tests/Combat/SeasonPveMinimumTests.cs:line 19
+   at InvokeStub_SeasonPveMinimumTests.ActualIntentClockFloorsAfterResistanceAndGuardianReduction(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Failed FantasyCard.Domain.Tests.Combat.SeasonPveMinimumTests.ActualIntentClockFloorsAfterResistanceAndGuardianReduction(hero: Mage, hp: 70, intentValue: 2) [< 1 ms]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 70
+Actual:   69
+  Stack Trace:
+     at FantasyCard.Domain.Tests.Combat.SeasonPveMinimumTests.ActualIntentClockFloorsAfterResistanceAndGuardianReduction(HeroClass hero, Int32 hp, Int32 intentValue) in /workspace/server/tests/FantasyCard.Domain.Tests/Combat/SeasonPveMinimumTests.cs:line 19
+   at InvokeStub_SeasonPveMinimumTests.ActualIntentClockFloorsAfterResistanceAndGuardianReduction(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Failed FantasyCard.Domain.Tests.Combat.SeasonPveMinimumTests.CancelledWindupAndStunnedMonsterDoNotReceiveTheFloor [1 ms]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 100
+Actual:   99
+  Stack Trace:
+     at FantasyCard.Domain.Tests.Combat.SeasonPveMinimumTests.CancelledWindupAndStunnedMonsterDoNotReceiveTheFloor() in /workspace/server/tests/FantasyCard.Domain.Tests/Combat/SeasonPveMinimumTests.cs:line 60
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+Results File: /workspace/results/season-difficulty-domain.trx
+
+Failed!  - Failed:     4, Passed:   493, Skipped:     0, Total:   497, Duration: 9 s - FantasyCard.Domain.Tests.dll (net10.0)

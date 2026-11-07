@@ -1,0 +1,23 @@
+{
+  "prior_used": 97,
+  "new_matches": 3,
+  "total_after": 100,
+  "maximum": 300,
+  "classes": [
+    "Mage",
+    "Priest",
+    "Guardian"
+  ],
+  "scope": "Precise lastblocked/firstallowed published PVP clock ticks. General72cases alreadyverified first rejection and laterallowed but not700/800boundary explicitly; add3targeted rooms, no broad replays.",
+  "checks": [
+    "late700ms rejected with exactreason;800ms actualaccepted",
+    "cooldown400ms rejected with100ms remainder;500ms actualaccepted",
+    "all rejectedcommands preservefullsnapshot",
+    "mutualleave restores originalcombat"
+  ],
+  "config": "season-v1-config-15",
+  "functional_threshold_relaxation": false,
+  "local_reserve_GiB": 2,
+  "startup_GiB": 1,
+  "registered_before_clock_probes": true
+}

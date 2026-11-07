@@ -1,0 +1,13 @@
+{
+  "original_failure": "D02-PVP-004 expected frozen player after disconnect expiry but actual legal PVE continued100ms in same tick; all original logs/TRX/source retained,2attempts consumed, only001completed.",
+  "GDD_basis": "GDD0.2 inherits BASE2.2: restore frozen PVE then unfinished monsters continue. SERVER_SPEC10Hz. No freezing after PVP termination.",
+  "source_basis": "BattleRoom.Advance first expires disconnects and calls EndDuelWithDeath, then regular per-player Combat.Advance and active PVE monster ticks.",
+  "new_strict_oracle": "Rehydrate original beforeDuel snapshot in a control fork and advance exactly one100ms tick; compare survivor Combat and PVE exactly. Reconnect mutual-leave still compares original snapshot exactly.",
+  "rule_changed": false,
+  "threshold_relaxed": false,
+  "prior_success_not_rerun": true,
+  "targeted_failed_case_retest": 1,
+  "unstarted_remaining": 70,
+  "total_after_plan": 73,
+  "registered_before_retest": true
+}

@@ -1,0 +1,180 @@
+{
+  "kind": "static source and existing evidence audit; runtime acceptance requires r115 terminal proof",
+  "families": [
+    {
+      "id": "permanent-cards-decks-cosmetics",
+      "requirement": "Unlocks, actual copies/reserves, levels, copy policy, decks, cosmetics and selected slots survive the actual archive.",
+      "source_sha256": {
+        "server/src/FantasyCard.Domain/Seasons/SeasonAssetDomain.cs": "1c63fb5f79e7fe8dadc7a0d3c428be59632a909db63454eaaf786f5366d328dc",
+        "server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs": "6ef03000dcc5e77217eab424379efafc3800a1d57a9620f23a1712d883f48128",
+        "server/src/FantasyCard.Server/Progression/PlayerProvisioningService.cs": "14b60f78cd0d96ef480b9f08aa4ee2c252cabe3044d768bc1439b2b160c4cb46",
+        "server/src/FantasyCard.Server/Progression/PermanentCardCopies.cs": "58b87bbcea39cea92e7085e4d1a224448e18ad26fdb99409014ce8c05a244210",
+        "server/src/FantasyCard.Server/Progression/SeasonJourneyRewardAssets.cs": "b9d416c8b3f6b3c21f8f4f30ae9c118c527fbbbf96d229c18f03a9e96b84ce0f"
+      },
+      "prior_evidence": [
+        "docs/season-balance-20261102/evidence/C13-shop/result.json",
+        "docs/season-balance-20261102/evidence/C15-final-r1/result.json",
+        "docs/season-balance-20261102/evidence/A03-mail-resource-ledger-r1/result.json",
+        "docs/season-balance-20261102/evidence/A03-admin-equipment-r1/result.json"
+      ],
+      "evidence_limit": "The two new composite cases use explicitly seeded earned experience followed by 30 actual claims; this is not a combat route."
+    },
+    {
+      "id": "permanent-souls-diamonds-legacy-balances",
+      "requirement": "Exact soul currencies and diamonds remain permanent; legacy Gold/fragments never become a current season balance.",
+      "source_sha256": {
+        "server/src/FantasyCard.Server/Seasons/SeasonRepository.cs": "2380a510bbe86e2c23b62c452b24bc73088d38c9caa48ad94437cc7107c3a5c3",
+        "server/src/FantasyCard.Server/Settlement/SettlementRepository.cs": "67d9204ca5707b7e14a6cc21b0ad0473f94eeec7c9ae5f1711d87f9643a952b2",
+        "server/src/FantasyCard.Server/Mail/MailRepository.cs": "5696d7fe2b5eb791d1c72d9fc5cf0f59c65de7668e326aa4dfe1fbf87df0e1d3",
+        "server/src/FantasyCard.Server/Admin/AdminRepository.cs": "0bf08f450aaeb598e85fa6d493ef6de279298c62e0002216b178a74fa7462733"
+      },
+      "prior_evidence": [
+        "docs/season-balance-20261102/evidence/A03-storage/result.json",
+        "docs/season-balance-20261102/evidence/A03-mail-resource-ledger-r1/result.json",
+        "docs/season-balance-20261102/evidence/A03-admin-revoke-r1/result.json",
+        "docs/season-balance-20261102/evidence/C12-market/result.json"
+      ],
+      "evidence_limit": "Unversioned legacy mail/admin rows retain unknown metadata; no current-season inference or historical rewrite."
+    },
+    {
+      "id": "permanent-weapon-selected-wallet",
+      "requirement": "Signature weapon +5 and total 248 fragments remain; selected current/archived wallet debit is atomic and replay-safe.",
+      "source_sha256": {
+        "server/src/FantasyCard.Server/Progression/ProgressionRepository.cs": "4f3fa313954284c075dc03895db0ee2de654b8d6f2ec5ea06abb4657328a5143",
+        "server/src/FantasyCard.Server/Seasons/SeasonRepository.cs": "2380a510bbe86e2c23b62c452b24bc73088d38c9caa48ad94437cc7107c3a5c3"
+      },
+      "prior_evidence": [
+        "docs/season-balance-20261102/evidence/A03-storage/result.json"
+      ],
+      "evidence_limit": "Current composite proves old 80 fragments can pay 8 for a permanent Mage weapon while neither old nor legacy fragments pay new armor."
+    },
+    {
+      "id": "seasonal-wallet-recipe-mark-pity-progress",
+      "requirement": "Season currency, recipe, mark, pity, challenge and journey/activity state remain keyed to their original season.",
+      "source_sha256": {
+        "server/src/FantasyCard.Server/Seasons/SeasonRepository.cs": "2380a510bbe86e2c23b62c452b24bc73088d38c9caa48ad94437cc7107c3a5c3",
+        "server/src/FantasyCard.Server/Progression/SeasonCraftingRepository.cs": "633e2b33c596df7f0290372787e9480280e5d029070f10a37b4e9289c16a4408",
+        "server/src/FantasyCard.Server/Progression/SeasonRecipeRepository.cs": "61e8e3bd60ae320da7ab2eebbdfc9e91cf6791939acf596210d8d52adfdcb458",
+        "server/src/FantasyCard.Server/Progression/SeasonJourneyRepository.cs": "aa36574688e70fce8069aff76a589393098dbab490eb804150cf8ef525775910",
+        "server/src/FantasyCard.Server/Progression/SeasonActivityTransactions.cs": "32a2a8ee906873ade6e61333e7a99a7c98a27fbeffe280792106ee4ea1096051"
+      },
+      "prior_evidence": [
+        "docs/season-balance-20261102/evidence/C07-C08-backend/result.json",
+        "docs/season-balance-20261102/evidence/C07-C08-ui/result.json",
+        "docs/season-balance-20261102/evidence/C14-activities/result.json",
+        "docs/season-balance-20261102/evidence/A04-activity-context-r1/result.json"
+      ],
+      "evidence_limit": "Existing feature evidence is reused at its recorded configuration; it is not described as a fresh single combined run."
+    },
+    {
+      "id": "equipment-origin-stats-legacy-null",
+      "requirement": "Actual armor identity, origin/domain, quality, generated difficulty and stats persist; legal absent historical secondary traits stay absent.",
+      "source_sha256": {
+        "server/src/FantasyCard.Server/Settlement/SettlementRepository.cs": "67d9204ca5707b7e14a6cc21b0ad0473f94eeec7c9ae5f1711d87f9643a952b2",
+        "server/src/FantasyCard.Server/Matchmaking/PreparationRepository.cs": "bda69b02d038b4ba157209fdeeefbe0c089da1b97b35baa18b076466f2fc0a68",
+        "server/src/FantasyCard.Server/Matchmaking/RoomReadyCoordinator.cs": "c18325757d2901ad3adf0f33711fb42aa6506023369f76cc469f99614275359a",
+        "server/src/FantasyCard.Server/Admin/AdminRepository.cs": "0bf08f450aaeb598e85fa6d493ef6de279298c62e0002216b178a74fa7462733",
+        "server/src/FantasyCard.Server/Mail/MailRepository.cs": "5696d7fe2b5eb791d1c72d9fc5cf0f59c65de7668e326aa4dfe1fbf87df0e1d3"
+      },
+      "prior_evidence": [
+        "docs/season-balance-20261102/evidence/A03-A04-historical-equipment-r1/result.json",
+        "docs/season-balance-20261102/evidence/A03-admin-revoke-r1/result.json",
+        "docs/season-balance-20261102/evidence/A03-admin-equipment-r1/result.json"
+      ],
+      "evidence_limit": "Account-level movement D0 is not a rewrite of generated difficulty. Card/weapon difficulty caps do not reduce armor +5."
+    },
+    {
+      "id": "market-relic-hold-original-item",
+      "requirement": "Listings, transfer, death/extraction, held returns and late settlement move original IDs and original money domains.",
+      "source_sha256": {
+        "server/src/FantasyCard.Server/Progression/MarketTransactions.cs": "5cc5bb5b5c9919bb4f11bc51cae1d973e5ec56742fa3024568c4149728829057",
+        "server/src/FantasyCard.Server/Progression/MarketReturns.cs": "6ded52229b539daa6b3ab10887b34a01d9c51cc174cbe938605831fcdd4af02e",
+        "server/src/FantasyCard.Server/Settlement/SettlementRepository.cs": "67d9204ca5707b7e14a6cc21b0ad0473f94eeec7c9ae5f1711d87f9643a952b2"
+      },
+      "prior_evidence": [
+        "docs/season-balance-20261102/evidence/C12-market/result.json",
+        "docs/season-balance-20261102/evidence/A04-market-movements-r1/result.json",
+        "docs/season-balance-20261102/evidence/A04-settlement/result.json",
+        "docs/season-balance-20261102/evidence/C11-red/result.json"
+      ],
+      "evidence_limit": "Market transfer is not a new red mint and cannot refund/recreate the weekly quota."
+    },
+    {
+      "id": "consumable-and-paid-backpack",
+      "requirement": "Account consumable counts survive archive; original preparations reserve/debit potions and original settlement returns unused potions or spends paid bags once.",
+      "source_sha256": {
+        "server/src/FantasyCard.Server/Matchmaking/PreparationRepository.cs": "bda69b02d038b4ba157209fdeeefbe0c089da1b97b35baa18b076466f2fc0a68",
+        "server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs": "ca16e3bf391ff2d57e8f5b1717b7e3902baf032b8a4d95137edb4c755b4f1fb2",
+        "server/src/FantasyCard.Server/Settlement/SettlementRepository.cs": "67d9204ca5707b7e14a6cc21b0ad0473f94eeec7c9ae5f1711d87f9643a952b2"
+      },
+      "prior_evidence": [
+        "docs/season-balance-20261102/evidence/A04-matchmaking/result.json",
+        "docs/season-balance-20261102/evidence/A04-settlement/result.json",
+        "docs/season-balance-20261102/evidence/C13-shop/result.json"
+      ],
+      "evidence_limit": "Consumable provenance is through unique parent receipts/preparation/match/hold; it does not claim a new per-item GUID scheme."
+    },
+    {
+      "id": "borrowed-and-bot-source",
+      "requirement": "Borrowed cards/weapons and bot combat projections do not mint permanent copies, recipes or materials; real bot-held original items keep identity.",
+      "source_sha256": {
+        "server/src/FantasyCard.Server/Matchmaking/RoomReadyCoordinator.cs": "c18325757d2901ad3adf0f33711fb42aa6506023369f76cc469f99614275359a",
+        "server/src/FantasyCard.Server/Settlement/SettlementBotRewards.cs": "eabbaa752707f13ea892d25baaa8a7f736f7c1384c1e04909a2ed4c27c85f4f9",
+        "server/src/FantasyCard.Server/Progression/SeasonRecipeRepository.cs": "61e8e3bd60ae320da7ab2eebbdfc9e91cf6791939acf596210d8d52adfdcb458"
+      },
+      "prior_evidence": [
+        "docs/season-balance-20261102/evidence/C10-bots/result.json",
+        "docs/season-balance-20261102/evidence/C07-C08-backend/result.json"
+      ],
+      "evidence_limit": "Original source restrictions and red mint limits remain; no capacity test is implied."
+    },
+    {
+      "id": "archive-resume-late-original-credit",
+      "requirement": "Bounded original-season pages commit item moves and cursor together, preserve permanent accounts, wait for unsafe holds and never credit the next season.",
+      "source_sha256": {
+        "server/src/FantasyCard.Server/Seasons/SeasonArchiveRepository.cs": "6ef03000dcc5e77217eab424379efafc3800a1d57a9620f23a1712d883f48128",
+        "server/src/FantasyCard.Server/Seasons/SeasonArchiveWorker.cs": "d24debf7f0b7020daf180da8ce3e57de81932f9f19176c1fe699a66e824946fb",
+        "server/src/FantasyCard.Server/Settlement/SettlementSeasonContext.cs": "6066c7f4fc7433993a39ab2df44ab08dad4893cafbb485ef59567b66646c4362"
+      },
+      "prior_evidence": [
+        "docs/season-balance-20261102/evidence/A05-archive/result.json",
+        "docs/season-balance-20261102/evidence/A03-loadouts/result.json",
+        "docs/season-balance-20261102/evidence/A03-api-readmodels/result.json"
+      ],
+      "evidence_limit": "Repository recreation/page fault and HostedService coverage do not replace the separate whole-process crash matrix F02."
+    }
+  ],
+  "fixed_context": [
+    "season_id",
+    "difficulty_id",
+    "ruleset_id",
+    "config_version",
+    "stats_version",
+    "original_bundle_content_hash"
+  ],
+  "context_source_sha256": {
+    "server/src/FantasyCard.Server/Matchmaking/PreparationRepository.cs": "bda69b02d038b4ba157209fdeeefbe0c089da1b97b35baa18b076466f2fc0a68",
+    "server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs": "ca16e3bf391ff2d57e8f5b1717b7e3902baf032b8a4d95137edb4c755b4f1fb2",
+    "server/src/FantasyCard.Server/Matchmaking/RoomReadyCoordinator.cs": "c18325757d2901ad3adf0f33711fb42aa6506023369f76cc469f99614275359a",
+    "server/src/FantasyCard.Server/Rooms/RoomSnapshotRepository.cs": "7f3ef462c3efc274ea8f1a5f603ee8f9d3b23b908f1847c02887f1792bc1b0a8",
+    "server/src/FantasyCard.Server/Rooms/RoomRecoveryWorker.cs": "0c23c3a40b59bcee695780d59ce359c791ab22f49f7efc4ecc87419bab644380",
+    "server/src/FantasyCard.Server/Settlement/SettlementSeasonContext.cs": "6066c7f4fc7433993a39ab2df44ab08dad4893cafbb485ef59567b66646c4362",
+    "server/src/FantasyCard.Server/Progression/MarketTransactions.cs": "5cc5bb5b5c9919bb4f11bc51cae1d973e5ec56742fa3024568c4149728829057"
+  },
+  "context_prior_evidence": [
+    "docs/season-balance-20261102/evidence/A04-preparation-config-r1/result.json",
+    "docs/season-balance-20261102/evidence/A04-client-preparation-config-r1/result.json",
+    "docs/season-balance-20261102/evidence/A04-reward-refresh-funding-r1/result.json",
+    "docs/season-balance-20261102/evidence/A04-market-movements-r1/result.json",
+    "docs/season-balance-20261102/evidence/A04-activity-context-r1/result.json"
+  ],
+  "local_reserve_GiB": 2,
+  "startup_budget_GiB": 1,
+  "cloud_reserve_MiB": 500,
+  "cloud_disk_floor_GiB": 3,
+  "cloud_disk_fraction": 0.05,
+  "production_deployed": false,
+  "capacity100_retest": false,
+  "new_full_routes": 0,
+  "new_encounters": 0
+}

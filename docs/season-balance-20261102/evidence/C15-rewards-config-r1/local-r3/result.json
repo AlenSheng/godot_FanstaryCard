@@ -1,0 +1,52 @@
+{
+  "runs": [
+    {
+      "name": "server",
+      "exit": 0,
+      "command": [
+        "dotnet",
+        "test",
+        "C:\\Users\\SHENGJIAHAO\\.codex\\worktrees\\sync-release-targets\\godot_FanstaryCard\\server\\tests\\FantasyCard.Server.Tests\\FantasyCard.Server.Tests.csproj",
+        "--artifacts-path",
+        "G:\\PR13Evidence\\season-balance-20261102-r1\\journey-reward-config-r3\\build",
+        "--filter",
+        "FullyQualifiedName~SeasonJourneyRewardConfigTests|FullyQualifiedName~SeasonConfigCompilerTests|FullyQualifiedName~ConfigBundlePublisherTests|FullyQualifiedName~SeasonJourneyEncodingTests|FullyQualifiedName~SeasonShopEncodingTests",
+        "--logger",
+        "trx;LogFileName=server.trx",
+        "--results-directory",
+        "G:\\PR13Evidence\\season-balance-20261102-r1\\journey-reward-config-r3\\results",
+        "--verbosity",
+        "minimal",
+        "-m:1",
+        "-p:UseSharedCompilation=false"
+      ]
+    },
+    {
+      "name": "domain",
+      "exit": 0,
+      "command": [
+        "dotnet",
+        "test",
+        "C:\\Users\\SHENGJIAHAO\\.codex\\worktrees\\sync-release-targets\\godot_FanstaryCard\\server\\tests\\FantasyCard.Domain.Tests\\FantasyCard.Domain.Tests.csproj",
+        "--artifacts-path",
+        "G:\\PR13Evidence\\season-balance-20261102-r1\\journey-reward-config-r3\\build",
+        "--filter",
+        "FullyQualifiedName~SeasonJourneyRulesTests",
+        "--logger",
+        "trx;LogFileName=domain.trx",
+        "--results-directory",
+        "G:\\PR13Evidence\\season-balance-20261102-r1\\journey-reward-config-r3\\results",
+        "--verbosity",
+        "minimal",
+        "-m:1",
+        "-p:UseSharedCompilation=false"
+      ]
+    }
+  ],
+  "source_unchanged": true,
+  "formal_config_unchanged": true,
+  "formal_runtime_rewards_installed": false,
+  "database_used": false,
+  "new_full_routes": 0,
+  "new_encounters": 0
+}

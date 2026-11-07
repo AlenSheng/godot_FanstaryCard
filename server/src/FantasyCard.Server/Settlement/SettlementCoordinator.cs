@@ -40,17 +40,37 @@ public sealed class SettlementCoordinator(
                 else
                 {
                     var assets = result == "Extracted"
-                        ? ExtractedAssets(player)
+                        ? ExtractedAssets(snapshot,player)
                         : DeadAssets(snapshot, player);
                     var items = SettlementItems(player, result);
+                    var observation=snapshot.Observations?.Events.LastOrDefault(e=>e.PlayerId==player.PlayerId&&
+                        (e.EventName=="loot_extracted"||e.EventName=="battle_finished"&&e.Result is "Dead" or "Disconnected" or "Abandoned"));
+                    var profileId=observation?.EventName=="battle_finished"?observation.BattleBuildProfileId:observation?.BuildProfileId;
+                    var telemetryProfile=profileId is null?null:snapshot.Observations?.Profiles?.SingleOrDefault(p=>p.ProfileId==profileId);
+                    var telemetryProfileBasis=telemetryProfile is null?"MissingOriginal":observation?.EventName=="battle_finished"?"BattleStart":"TerminalEvent";
+                    var cleared = (snapshot.Map?.Cells ?? []).Where(cell => (player.ClearedCells ?? []).Contains(cell.Position)).ToArray();
                     using var details = JsonDocument.Parse(JsonSerializer.Serialize(new
                     {
                         snapshot.RoomId,
                         snapshot.Revision,
+                        snapshot.ConfigVersion,
+                        snapshot.Season,
                         player.Phase,
                         player.Position,
+                        player.BotVictoryReward,
+                        player.ExtractionCompletedAt,
+                        player.JourneyCompletions,
+                        snapshot.StartedAtUtc,
+                        player.TerminalRoomElapsed,
+                        telemetryProfile,
+                        telemetryProfileBasis,
                         heroClass = player.HeroClass.ToString(),
                         assetCount = assets.Length,
+                        difficultyProgress = new
+                        {
+                            eliteCleared = cleared.Any(cell => cell.MonsterGroupId.StartsWith('E')),
+                            bossCleared = cleared.Any(cell => cell.IsBoss || cell.MonsterGroupId == "BOSS")
+                        },
                         items
                     }, Json));
                     await repository.SettleAsync(
@@ -59,7 +79,7 @@ public sealed class SettlementCoordinator(
                         result,
                         details.RootElement,
                         assets,
-                        CancellationToken.None);
+                        CancellationToken.None, snapshot.Season, snapshot.ConfigVersion);
                 }
 
                 _completed[key] = _timeProvider.GetUtcNow();
@@ -108,13 +128,20 @@ public sealed class SettlementCoordinator(
     private static SettlementDisplayItem DisplayItem(ExplorationItem item, bool equipped) =>
         new(new(item.ItemId, item.Kind.ToString(), item.Quantity, item.IsSafe, item.Equipment), equipped);
 
-    private static SettlementAsset[] ExtractedAssets(RoomPlayerSnapshot player)
+    private SettlementAsset[] ExtractedAssets(BattleRoomSnapshot snapshot,RoomPlayerSnapshot player)
     {
         var assets = (player.Inventory?.Items ?? [])
             .Select(item => ToAsset(item, "Inventory"))
             .Concat((player.WornArmor ?? []).Select(item => ToAsset(item, "Equipped")))
             .Concat((player.RecycledEquipment ?? []).Select(item => ToAsset(item, "Recycled")))
             .ToList();
+        if (snapshot.Season is { } season && repository.ConfigurationFor(snapshot.ConfigVersion).SeasonCrafting is { } crafting)
+        {
+            var cleared = (snapshot.Map?.Cells ?? []).Where(cell => (player.ClearedCells ?? []).Contains(cell.Position));
+            var pending = crafting.Pending(season.Difficulty,player.IsBot,cleared);
+            if (pending.Blueprints > 0) assets.Add(new("BlueprintMarks","blueprint",false,pending.Blueprints));
+            if (pending.OrangeBlueprints > 0) assets.Add(new("OrangeBlueprintMarks","orange-blueprint",false,pending.OrangeBlueprints));
+        }
         return [.. assets];
     }
 
@@ -138,8 +165,11 @@ public sealed class SettlementCoordinator(
         return [.. assets.DistinctBy(asset => (asset.AssetKind, asset.AssetId))];
     }
 
-    private static SettlementAsset ToAsset(ExplorationItem item, string equipmentDestination) =>
-        new(item.Kind.ToString(), item.ItemId, item.IsSafe, item.Quantity,
+    private static SettlementAsset ToAsset(ExplorationItem item, string equipmentDestination)
+    {
+        if(item.IsCombatProjection)throw new InvalidOperationException("Combat projections cannot be settled as assets.");
+        return new(item.Kind.ToString(), item.ItemId, item.IsSafe, item.Quantity,
             item.IsGenerated == false ? null : item.Equipment,
             item.Kind == ExplorationItemKind.Equipment ? equipmentDestination : null);
+    }
 }
