@@ -1,0 +1,116 @@
+{
+  "ok": true,
+  "checks": [
+    {
+      "name": "readiness",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "text/plain",
+      "body_bytes": 7,
+      "body_sha256": "7f1e323b6272c6209a590fe8684bc64142a226cc9f73783bc027befede0ea0ee"
+    },
+    {
+      "name": "liveness",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "text/plain",
+      "body_bytes": 7,
+      "body_sha256": "7f1e323b6272c6209a590fe8684bc64142a226cc9f73783bc027befede0ea0ee"
+    },
+    {
+      "name": "unauthenticated typed bootstrap",
+      "status": 401,
+      "expected": 401,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "body_bytes": 122,
+      "body_sha256": "86fa6d344924514c2ff15982f6f040f6a388d832018de792100ef483771d9135"
+    },
+    {
+      "name": "old media type rejected",
+      "status": 415,
+      "expected": 415,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "body_bytes": 84,
+      "body_sha256": "610dfa5b1f12def6c616c689a73f23afe6bc9685c5a077b4420a339d2ff05b44"
+    },
+    {
+      "name": "production local auth closed with required false flag",
+      "status": 404,
+      "expected": 404,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "body_bytes": 71,
+      "body_sha256": "69e529e9242b66a6af3e8d8d6e372520b219235aa042cfe1cc4eecbe52863210"
+    },
+    {
+      "name": "admin requires secure transport",
+      "status": 403,
+      "expected": 403,
+      "passed": true,
+      "content_type": "application/problem+json",
+      "body_bytes": 144,
+      "body_sha256": "6b0beaea532dcd8dde16c797cdd30b2057e5890b9b4c5c855ceed0d507b52c48"
+    },
+    {
+      "name": "secure admin requires key",
+      "status": 401,
+      "expected": 401,
+      "passed": true,
+      "content_type": "application/problem+json",
+      "body_bytes": 159,
+      "body_sha256": "3818faa578820fb5ec1349fc63f866edfb47348b584cf9100a733954ac3b6530"
+    },
+    {
+      "name": "isolated authenticated read-only admin",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/json; charset=utf-8",
+      "body_bytes": 179,
+      "body_sha256": "6c4d1114ef98c896bb93de681e6ee13cd2fe7bbd4d91f9a0fc630b63a163399b"
+    },
+    {
+      "name": "public client info",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/json; charset=utf-8",
+      "body_bytes": 132,
+      "body_sha256": "08ddffcb6d1719b0e5233b609c06057e0f77a295ab0cee3cb2b05b96ffa76d5f"
+    },
+    {
+      "name": "private package path denied /release-encryption.key",
+      "status": 404,
+      "expected": 404,
+      "passed": true,
+      "content_type": null,
+      "body_bytes": 0,
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "private package path denied /appsettings.Development.json",
+      "status": 404,
+      "expected": 404,
+      "passed": true,
+      "content_type": null,
+      "body_bytes": 0,
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "private package path denied /mapping.xml",
+      "status": 404,
+      "expected": 404,
+      "passed": true,
+      "content_type": null,
+      "body_bytes": 0,
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "new_gameplay_starts": 0,
+  "no_login_account_created": true,
+  "no_purchase_queue_ready_or_settlement": true
+}
