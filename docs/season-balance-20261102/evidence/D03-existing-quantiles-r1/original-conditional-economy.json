@@ -1,0 +1,950 @@
+{
+  "scope": "Independent conditional arithmetic. No real combat, route generation, actual player behavior, telemetry, or measured extraction rates.",
+  "modelVersion": "season-balance-proposal-20261102-v2",
+  "modelSha256": "f33fac928ba1a6a7fb3cfef8e969b9230deab0b9384a9733b27c213216f155b7",
+  "checks": [
+    {
+      "name": "new full set +3 cost",
+      "passed": true,
+      "value": 60
+    },
+    {
+      "name": "new full set +5 cost",
+      "passed": true,
+      "value": 780
+    },
+    {
+      "name": "old full set +3 cost",
+      "passed": true,
+      "value": 1344
+    },
+    {
+      "name": "permanent weapon independent cost",
+      "passed": true,
+      "weaponCost": 248,
+      "seasonalWhiteCost": 28
+    },
+    {
+      "name": "learned recipe reforge plus enhancement",
+      "passed": true,
+      "value": 66
+    },
+    {
+      "name": "D0 independently rounded fragment expectation",
+      "passed": true,
+      "actual": 24.0,
+      "prior": 24
+    },
+    {
+      "name": "D1 independently rounded fragment expectation",
+      "passed": true,
+      "actual": 29.21666666666667,
+      "prior": 29.216666666666665
+    },
+    {
+      "name": "D2 independently rounded fragment expectation",
+      "passed": true,
+      "actual": 40.0,
+      "prior": 40
+    },
+    {
+      "name": "D3 independently rounded fragment expectation",
+      "passed": true,
+      "actual": 58.13333333333333,
+      "prior": 58.133333333333326
+    },
+    {
+      "name": "D4 independently rounded fragment expectation",
+      "passed": true,
+      "actual": 73.95,
+      "prior": 73.95
+    },
+    {
+      "name": "D5 independently rounded fragment expectation",
+      "passed": true,
+      "actual": 96.0,
+      "prior": 96
+    },
+    {
+      "name": "30 earned levels XP",
+      "passed": true,
+      "actual": 12525
+    },
+    {
+      "name": "R1 success XP",
+      "passed": true,
+      "actual": 215
+    },
+    {
+      "name": "D2 distribution mean",
+      "passed": true
+    }
+  ],
+  "sourceFragComparisons": [
+    {
+      "difficulty": "D0",
+      "oneOrangeFourPurpleLegalForDifficulty": false,
+      "loadoutCaveat": "D0/D1 cannot carry this loadout; their cost60/780 ratios are hypothetical stress diagnostics only, not an available farming path",
+      "fragmentsPerSuccessfulR1": 24.0,
+      "netPerAttemptAt70pct_plus3": -1.2000000000000064,
+      "breakEven_plus3": 0.7142857142857143,
+      "breakEven_plus5": 0.9701492537313433,
+      "maximumSustainableRebuildCostAt70pct": 55.999999999999986,
+      "excludes": "body acquisition, crafting marks, gear materials, potions, gold, marketplace, extra fragment choice, safety slots"
+    },
+    {
+      "difficulty": "D1",
+      "oneOrangeFourPurpleLegalForDifficulty": false,
+      "loadoutCaveat": "D0/D1 cannot carry this loadout; their cost60/780 ratios are hypothetical stress diagnostics only, not an available farming path",
+      "fragmentsPerSuccessfulR1": 29.21666666666667,
+      "netPerAttemptAt70pct_plus3": 2.4516666666666644,
+      "breakEven_plus3": 0.672520082196899,
+      "breakEven_plus5": 0.9638951249150413,
+      "maximumSustainableRebuildCostAt70pct": 68.17222222222222,
+      "excludes": "body acquisition, crafting marks, gear materials, potions, gold, marketplace, extra fragment choice, safety slots"
+    },
+    {
+      "difficulty": "D2",
+      "oneOrangeFourPurpleLegalForDifficulty": true,
+      "loadoutCaveat": "legal quality cap; real combat viability unverified",
+      "fragmentsPerSuccessfulR1": 40.0,
+      "netPerAttemptAt70pct_plus3": 9.999999999999996,
+      "breakEven_plus3": 0.6,
+      "breakEven_plus5": 0.9512195121951219,
+      "maximumSustainableRebuildCostAt70pct": 93.33333333333331,
+      "excludes": "body acquisition, crafting marks, gear materials, potions, gold, marketplace, extra fragment choice, safety slots"
+    },
+    {
+      "difficulty": "D3",
+      "oneOrangeFourPurpleLegalForDifficulty": true,
+      "loadoutCaveat": "legal quality cap; real combat viability unverified",
+      "fragmentsPerSuccessfulR1": 58.13333333333333,
+      "netPerAttemptAt70pct_plus3": 22.693333333333324,
+      "breakEven_plus3": 0.5079006772009029,
+      "breakEven_plus5": 0.9306395163856188,
+      "maximumSustainableRebuildCostAt70pct": 135.64444444444442,
+      "excludes": "body acquisition, crafting marks, gear materials, potions, gold, marketplace, extra fragment choice, safety slots"
+    },
+    {
+      "difficulty": "D4",
+      "oneOrangeFourPurpleLegalForDifficulty": true,
+      "loadoutCaveat": "legal quality cap; real combat viability unverified",
+      "fragmentsPerSuccessfulR1": 73.95,
+      "netPerAttemptAt70pct_plus3": 33.765,
+      "breakEven_plus3": 0.4479283314669653,
+      "breakEven_plus5": 0.9134024240295099,
+      "maximumSustainableRebuildCostAt70pct": 172.54999999999998,
+      "excludes": "body acquisition, crafting marks, gear materials, potions, gold, marketplace, extra fragment choice, safety slots"
+    },
+    {
+      "difficulty": "D5",
+      "oneOrangeFourPurpleLegalForDifficulty": true,
+      "loadoutCaveat": "legal quality cap; real combat viability unverified",
+      "fragmentsPerSuccessfulR1": 96.0,
+      "netPerAttemptAt70pct_plus3": 49.19999999999999,
+      "breakEven_plus3": 0.38461538461538464,
+      "breakEven_plus5": 0.8904109589041096,
+      "maximumSustainableRebuildCostAt70pct": 223.99999999999994,
+      "excludes": "body acquisition, crafting marks, gear materials, potions, gold, marketplace, extra fragment choice, safety slots"
+    }
+  ],
+  "naturalOrange": [
+    {
+      "difficulty": "D2",
+      "target": "anyOrange",
+      "fitConditionalOnOrange": 1.0,
+      "probabilityPerSuccessfulR1": 0.2938781249999999,
+      "expectedCountPerAttempt": 0.22049999999999997,
+      "probabilityPerAttempt": 0.2057146874999999,
+      "expectedAttempts": 4.861101616772018,
+      "p50Attempts": 4,
+      "p90Attempts": 10
+    },
+    {
+      "difficulty": "D2",
+      "target": "themeElementAndEffectAnySlot",
+      "fitConditionalOnOrange": 0.13333333333333333,
+      "probabilityPerSuccessfulR1": 0.04162060000000001,
+      "expectedCountPerAttempt": 0.029399999999999996,
+      "probabilityPerAttempt": 0.029134420000000005,
+      "expectedAttempts": 34.32366252700414,
+      "p50Attempts": 24,
+      "p90Attempts": 78
+    },
+    {
+      "difficulty": "D2",
+      "target": "themeElementEffectAndSlot",
+      "fitConditionalOnOrange": 0.02666666666666667,
+      "probabilityPerSuccessfulR1": 0.008384804799999923,
+      "expectedCountPerAttempt": 0.005880000000000001,
+      "probabilityPerAttempt": 0.0058693633599999455,
+      "expectedAttempts": 170.37622969725447,
+      "p50Attempts": 118,
+      "p90Attempts": 392
+    },
+    {
+      "difficulty": "D2",
+      "target": "offThemeElementEffectAndSlot",
+      "fitConditionalOnOrange": 0.01,
+      "probabilityPerSuccessfulR1": 0.0031478627531249526,
+      "expectedCountPerAttempt": 0.002205,
+      "probabilityPerAttempt": 0.0022035039271874664,
+      "expectedAttempts": 453.82265384767953,
+      "p50Attempts": 315,
+      "p90Attempts": 1044
+    },
+    {
+      "difficulty": "D3",
+      "target": "anyOrange",
+      "fitConditionalOnOrange": 1.0,
+      "probabilityPerSuccessfulR1": 0.488671875,
+      "expectedCountPerAttempt": 0.39375,
+      "probabilityPerAttempt": 0.3420703125,
+      "expectedAttempts": 2.923375585246089,
+      "p50Attempts": 2,
+      "p90Attempts": 6
+    },
+    {
+      "difficulty": "D3",
+      "target": "themeElementAndEffectAnySlot",
+      "fitConditionalOnOrange": 0.13333333333333333,
+      "probabilityPerSuccessfulR1": 0.07365500000000003,
+      "expectedCountPerAttempt": 0.052500000000000005,
+      "probabilityPerAttempt": 0.051558500000000014,
+      "expectedAttempts": 19.395444010202,
+      "p50Attempts": 14,
+      "p90Attempts": 44
+    },
+    {
+      "difficulty": "D3",
+      "target": "themeElementEffectAndSlot",
+      "fitConditionalOnOrange": 0.02666666666666667,
+      "probabilityPerSuccessfulR1": 0.014946039999999994,
+      "expectedCountPerAttempt": 0.0105,
+      "probabilityPerAttempt": 0.010462227999999995,
+      "expectedAttempts": 95.58193532008674,
+      "p50Attempts": 66,
+      "p90Attempts": 219
+    },
+    {
+      "difficulty": "D3",
+      "target": "offThemeElementEffectAndSlot",
+      "fitConditionalOnOrange": 0.01,
+      "probabilityPerSuccessfulR1": 0.005617408359374965,
+      "expectedCountPerAttempt": 0.0039375,
+      "probabilityPerAttempt": 0.003932185851562475,
+      "expectedAttempts": 254.31147909823352,
+      "p50Attempts": 176,
+      "p90Attempts": 585
+    },
+    {
+      "difficulty": "D4",
+      "target": "anyOrange",
+      "fitConditionalOnOrange": 1.0,
+      "probabilityPerSuccessfulR1": 0.65037890625,
+      "expectedCountPerAttempt": 0.5774999999999999,
+      "probabilityPerAttempt": 0.455265234375,
+      "expectedAttempts": 2.1965217734510873,
+      "p50Attempts": 2,
+      "p90Attempts": 4
+    },
+    {
+      "difficulty": "D4",
+      "target": "themeElementAndEffectAnySlot",
+      "fitConditionalOnOrange": 0.13333333333333333,
+      "probabilityPerSuccessfulR1": 0.10674775000000003,
+      "expectedCountPerAttempt": 0.077,
+      "probabilityPerAttempt": 0.07472342500000001,
+      "expectedAttempts": 13.382684211811757,
+      "p50Attempts": 9,
+      "p90Attempts": 30
+    },
+    {
+      "difficulty": "D4",
+      "target": "themeElementEffectAndSlot",
+      "fitConditionalOnOrange": 0.02666666666666667,
+      "probabilityPerSuccessfulR1": 0.021869182000000098,
+      "expectedCountPerAttempt": 0.0154,
+      "probabilityPerAttempt": 0.015308427400000067,
+      "expectedAttempts": 65.32349625932156,
+      "p50Attempts": 45,
+      "p90Attempts": 150
+    },
+    {
+      "difficulty": "D4",
+      "target": "offThemeElementEffectAndSlot",
+      "fitConditionalOnOrange": 0.01,
+      "probabilityPerSuccessfulR1": 0.008231587722656197,
+      "expectedCountPerAttempt": 0.005775,
+      "probabilityPerAttempt": 0.005762111405859338,
+      "expectedAttempts": 173.54749493095997,
+      "p50Attempts": 120,
+      "p90Attempts": 399
+    },
+    {
+      "difficulty": "D5",
+      "target": "anyOrange",
+      "fitConditionalOnOrange": 1.0,
+      "probabilityPerSuccessfulR1": 0.7781250000000001,
+      "expectedCountPerAttempt": 0.7612500000000001,
+      "probabilityPerAttempt": 0.5446875,
+      "expectedAttempts": 1.8359150889271372,
+      "p50Attempts": 1,
+      "p90Attempts": 3
+    },
+    {
+      "difficulty": "D5",
+      "target": "themeElementAndEffectAnySlot",
+      "fitConditionalOnOrange": 0.13333333333333333,
+      "probabilityPerSuccessfulR1": 0.13911000000000007,
+      "expectedCountPerAttempt": 0.1015,
+      "probabilityPerAttempt": 0.09737700000000005,
+      "expectedAttempts": 10.269365455908474,
+      "p50Attempts": 7,
+      "p90Attempts": 23
+    },
+    {
+      "difficulty": "D5",
+      "target": "themeElementEffectAndSlot",
+      "fitConditionalOnOrange": 0.02666666666666667,
+      "probabilityPerSuccessfulR1": 0.028762480000000035,
+      "expectedCountPerAttempt": 0.020300000000000002,
+      "probabilityPerAttempt": 0.020133736000000024,
+      "expectedAttempts": 49.66788081456908,
+      "p50Attempts": 35,
+      "p90Attempts": 114
+    },
+    {
+      "difficulty": "D5",
+      "target": "offThemeElementEffectAndSlot",
+      "fitConditionalOnOrange": 0.01,
+      "probabilityPerSuccessfulR1": 0.010841556562500076,
+      "expectedCountPerAttempt": 0.0076125,
+      "probabilityPerAttempt": 0.007589089593750053,
+      "expectedAttempts": 131.7681110028723,
+      "p50Attempts": 91,
+      "p90Attempts": 303
+    }
+  ],
+  "crafting": {
+    "anyOrangeFixedSlotAndElement": {
+      "tokenCostEach": 14,
+      "marksPerSuccess": 3,
+      "weightsByCraftNumber": [
+        1.0
+      ],
+      "successThresholds": [
+        5
+      ],
+      "hardBoundSuccessfulExtractions": 5,
+      "hardBoundAttempts": null,
+      "expectedAttempts": 7.142857142857143,
+      "p50Attempts": 7,
+      "p90Attempts": 9
+    },
+    "targetOrangeWithThreeCraftEffectGuarantee": {
+      "tokenCostEach": 14,
+      "marksPerSuccess": 3,
+      "weightsByCraftNumber": [
+        0.3333333333333333,
+        0.22222222222222224,
+        0.44444444444444453
+      ],
+      "successThresholds": [
+        5,
+        10,
+        14
+      ],
+      "hardBoundSuccessfulExtractions": 14,
+      "hardBoundAttempts": null,
+      "expectedAttempts": 14.444444444444446,
+      "p50Attempts": 15,
+      "p90Attempts": 22
+    },
+    "targetPurpleWithThreeCraftEffectGuarantee": {
+      "tokenCostEach": 4,
+      "marksPerSuccess": 3,
+      "weightsByCraftNumber": [
+        0.3333333333333333,
+        0.22222222222222224,
+        0.44444444444444453
+      ],
+      "successThresholds": [
+        2,
+        3,
+        4
+      ],
+      "hardBoundSuccessfulExtractions": 4,
+      "hardBoundAttempts": null,
+      "expectedAttempts": 4.4444444444444455,
+      "p50Attempts": 4,
+      "p90Attempts": 7
+    }
+  },
+  "naturalPlusCrafting": [
+    {
+      "difficulty": "D2",
+      "target": "anyOrange",
+      "p50Attempts": 4,
+      "p90Attempts": 8
+    },
+    {
+      "difficulty": "D2",
+      "target": "themeElementEffectAndSlot",
+      "p50Attempts": 14,
+      "p90Attempts": 22
+    },
+    {
+      "difficulty": "D3",
+      "target": "anyOrange",
+      "p50Attempts": 2,
+      "p90Attempts": 6
+    },
+    {
+      "difficulty": "D3",
+      "target": "themeElementEffectAndSlot",
+      "p50Attempts": 14,
+      "p90Attempts": 22
+    },
+    {
+      "difficulty": "D4",
+      "target": "anyOrange",
+      "p50Attempts": 2,
+      "p90Attempts": 4
+    },
+    {
+      "difficulty": "D4",
+      "target": "themeElementEffectAndSlot",
+      "p50Attempts": 13,
+      "p90Attempts": 21
+    },
+    {
+      "difficulty": "D5",
+      "target": "anyOrange",
+      "p50Attempts": 1,
+      "p90Attempts": 3
+    },
+    {
+      "difficulty": "D5",
+      "target": "themeElementEffectAndSlot",
+      "p50Attempts": 12,
+      "p90Attempts": 21
+    }
+  ],
+  "xp": {
+    "successXp": 215,
+    "failedXpAssumption": 24,
+    "expectedXpPerAttempt": 157.7,
+    "total": 12525,
+    "sensitivity": [
+      {
+        "dailyMinutes": 30,
+        "weeklyContractCompletion": 0.5,
+        "timePolicy": "averagedBudgetAcrossDays",
+        "attemptsPerDay": 1.6666666666666667,
+        "expectedXpPerDayIncludingAmortizedWeekly": 327.1190476190476,
+        "expectedDaysWithSmoothedWeekly": 38.288812868476604,
+        "expectedThresholdDayWeeklyPaidAtEnd": 41,
+        "fractionOf12525ByDay42Smoothed": 1.0969261477045906,
+        "weeklyPaidAtEndAssumption": "all completed weekly contracts credited on day7,14,...; 50% floors cumulative completed contract count; no claim of stochastic completion probability"
+      },
+      {
+        "dailyMinutes": 30,
+        "weeklyContractCompletion": 0.5,
+        "timePolicy": "strictWholeAttemptsEachDay",
+        "attemptsPerDay": 1,
+        "expectedXpPerDayIncludingAmortizedWeekly": 221.98571428571427,
+        "expectedDaysWithSmoothedWeekly": 56.42254971362379,
+        "expectedThresholdDayWeeklyPaidAtEnd": 57,
+        "fractionOf12525ByDay42Smoothed": 0.7443832335329341,
+        "weeklyPaidAtEndAssumption": "all completed weekly contracts credited on day7,14,...; 50% floors cumulative completed contract count; no claim of stochastic completion probability"
+      },
+      {
+        "dailyMinutes": 30,
+        "weeklyContractCompletion": 1.0,
+        "timePolicy": "averagedBudgetAcrossDays",
+        "attemptsPerDay": 1.6666666666666667,
+        "expectedXpPerDayIncludingAmortizedWeekly": 391.4047619047619,
+        "expectedDaysWithSmoothedWeekly": 32.000121661901574,
+        "expectedThresholdDayWeeklyPaidAtEnd": 35,
+        "fractionOf12525ByDay42Smoothed": 1.3124950099800399,
+        "weeklyPaidAtEndAssumption": "all completed weekly contracts credited on day7,14,...; 50% floors cumulative completed contract count; no claim of stochastic completion probability"
+      },
+      {
+        "dailyMinutes": 30,
+        "weeklyContractCompletion": 1.0,
+        "timePolicy": "strictWholeAttemptsEachDay",
+        "attemptsPerDay": 1,
+        "expectedXpPerDayIncludingAmortizedWeekly": 286.2714285714286,
+        "expectedDaysWithSmoothedWeekly": 43.75218324267678,
+        "expectedThresholdDayWeeklyPaidAtEnd": 46,
+        "fractionOf12525ByDay42Smoothed": 0.9599520958083834,
+        "weeklyPaidAtEndAssumption": "all completed weekly contracts credited on day7,14,...; 50% floors cumulative completed contract count; no claim of stochastic completion probability"
+      },
+      {
+        "dailyMinutes": 60,
+        "weeklyContractCompletion": 0.5,
+        "timePolicy": "averagedBudgetAcrossDays",
+        "attemptsPerDay": 3.3333333333333335,
+        "expectedXpPerDayIncludingAmortizedWeekly": 589.952380952381,
+        "expectedDaysWithSmoothedWeekly": 21.230527080474616,
+        "expectedThresholdDayWeeklyPaidAtEnd": 22,
+        "fractionOf12525ByDay42Smoothed": 1.9782834331337324,
+        "weeklyPaidAtEndAssumption": "all completed weekly contracts credited on day7,14,...; 50% floors cumulative completed contract count; no claim of stochastic completion probability"
+      },
+      {
+        "dailyMinutes": 60,
+        "weeklyContractCompletion": 0.5,
+        "timePolicy": "strictWholeAttemptsEachDay",
+        "attemptsPerDay": 3,
+        "expectedXpPerDayIncludingAmortizedWeekly": 537.3857142857142,
+        "expectedDaysWithSmoothedWeekly": 23.307281282398918,
+        "expectedThresholdDayWeeklyPaidAtEnd": 24,
+        "fractionOf12525ByDay42Smoothed": 1.8020119760479039,
+        "weeklyPaidAtEndAssumption": "all completed weekly contracts credited on day7,14,...; 50% floors cumulative completed contract count; no claim of stochastic completion probability"
+      },
+      {
+        "dailyMinutes": 60,
+        "weeklyContractCompletion": 1.0,
+        "timePolicy": "averagedBudgetAcrossDays",
+        "attemptsPerDay": 3.3333333333333335,
+        "expectedXpPerDayIncludingAmortizedWeekly": 654.2380952380952,
+        "expectedDaysWithSmoothedWeekly": 19.144406434238302,
+        "expectedThresholdDayWeeklyPaidAtEnd": 21,
+        "fractionOf12525ByDay42Smoothed": 2.1938522954091813,
+        "weeklyPaidAtEndAssumption": "all completed weekly contracts credited on day7,14,...; 50% floors cumulative completed contract count; no claim of stochastic completion probability"
+      },
+      {
+        "dailyMinutes": 60,
+        "weeklyContractCompletion": 1.0,
+        "timePolicy": "strictWholeAttemptsEachDay",
+        "attemptsPerDay": 3,
+        "expectedXpPerDayIncludingAmortizedWeekly": 601.6714285714286,
+        "expectedDaysWithSmoothedWeekly": 20.81700975852981,
+        "expectedThresholdDayWeeklyPaidAtEnd": 21,
+        "fractionOf12525ByDay42Smoothed": 2.0175808383233536,
+        "weeklyPaidAtEndAssumption": "all completed weekly contracts credited on day7,14,...; 50% floors cumulative completed contract count; no claim of stochastic completion probability"
+      },
+      {
+        "dailyMinutes": 120,
+        "weeklyContractCompletion": 0.5,
+        "timePolicy": "averagedBudgetAcrossDays",
+        "attemptsPerDay": 6.666666666666667,
+        "expectedXpPerDayIncludingAmortizedWeekly": 1115.6190476190475,
+        "expectedDaysWithSmoothedWeekly": 11.226950657333107,
+        "expectedThresholdDayWeeklyPaidAtEnd": 12,
+        "fractionOf12525ByDay42Smoothed": 3.7409980039920154,
+        "weeklyPaidAtEndAssumption": "all completed weekly contracts credited on day7,14,...; 50% floors cumulative completed contract count; no claim of stochastic completion probability"
+      },
+      {
+        "dailyMinutes": 120,
+        "weeklyContractCompletion": 0.5,
+        "timePolicy": "strictWholeAttemptsEachDay",
+        "attemptsPerDay": 6,
+        "expectedXpPerDayIncludingAmortizedWeekly": 1010.4857142857143,
+        "expectedDaysWithSmoothedWeekly": 12.395029264568667,
+        "expectedThresholdDayWeeklyPaidAtEnd": 13,
+        "fractionOf12525ByDay42Smoothed": 3.3884550898203596,
+        "weeklyPaidAtEndAssumption": "all completed weekly contracts credited on day7,14,...; 50% floors cumulative completed contract count; no claim of stochastic completion probability"
+      },
+      {
+        "dailyMinutes": 120,
+        "weeklyContractCompletion": 1.0,
+        "timePolicy": "averagedBudgetAcrossDays",
+        "attemptsPerDay": 6.666666666666667,
+        "expectedXpPerDayIncludingAmortizedWeekly": 1179.904761904762,
+        "expectedDaysWithSmoothedWeekly": 10.615263540237308,
+        "expectedThresholdDayWeeklyPaidAtEnd": 12,
+        "fractionOf12525ByDay42Smoothed": 3.956566866267465,
+        "weeklyPaidAtEndAssumption": "all completed weekly contracts credited on day7,14,...; 50% floors cumulative completed contract count; no claim of stochastic completion probability"
+      },
+      {
+        "dailyMinutes": 120,
+        "weeklyContractCompletion": 1.0,
+        "timePolicy": "strictWholeAttemptsEachDay",
+        "attemptsPerDay": 6,
+        "expectedXpPerDayIncludingAmortizedWeekly": 1074.7714285714285,
+        "expectedDaysWithSmoothedWeekly": 11.653640641199459,
+        "expectedThresholdDayWeeklyPaidAtEnd": 13,
+        "fractionOf12525ByDay42Smoothed": 3.6040239520958077,
+        "weeklyPaidAtEndAssumption": "all completed weekly contracts credited on day7,14,...; 50% floors cumulative completed contract count; no claim of stochastic completion probability"
+      }
+    ]
+  },
+  "deathSustainability": {
+    "oldPlus3Cost": 1344,
+    "oldPlus3BreakEven": 0.9710982658959537,
+    "newPlus3Cost": 60,
+    "newPlus3BreakEven": 0.6,
+    "learnedRecipeReforgeCost": 6,
+    "completeLearnedRecipeRebuildCost": 66,
+    "completeRebuildFragmentBreakEven": 0.6226415094339622,
+    "completeRebuildFragmentNetAt70pct": 8.199999999999996,
+    "newPlus5Cost": 780,
+    "newPlus5BreakEven": 0.9512195121951219,
+    "netAt70pct": 9.999999999999996,
+    "extraFragmentCostBudgetPerAttemptBeforeBreakEven": 9.999999999999996,
+    "successRates": [
+      {
+        "successRate": 0.4,
+        "netPlus3": -20.0
+      },
+      {
+        "successRate": 0.5,
+        "netPlus3": -10.0
+      },
+      {
+        "successRate": 0.6,
+        "netPlus3": 0.0
+      },
+      {
+        "successRate": 0.65,
+        "netPlus3": 5.0
+      },
+      {
+        "successRate": 0.7,
+        "netPlus3": 9.999999999999996
+      },
+      {
+        "successRate": 0.8,
+        "netPlus3": 20.000000000000004
+      },
+      {
+        "successRate": 0.9,
+        "netPlus3": 30.0
+      }
+    ]
+  },
+  "bodySustainability": {
+    "orangeNaturalPerSuccess": 0.315,
+    "purpleNaturalPerSuccess": 1.5225,
+    "orangeNaturalPerAttempt": 0.22049999999999997,
+    "purpleNaturalPerAttempt": 1.06575,
+    "orangeLossPerAttempt": 0.30000000000000004,
+    "purpleLossPerAttempt": 1.2000000000000002,
+    "ordinaryBodyMarkBudgetNeededPerSuccess": 2.35714285714286,
+    "ordinaryBodyMarkBudgetNeededPerAttempt": 1.650000000000002,
+    "markIncomePerSuccess": 3,
+    "expectedCraftsForDesiredEffectWithThirdGuarantee": 2.1111111111111107,
+    "targetOrangeNaturalPerSuccess": 0.008400000000000001,
+    "targetOrangeFromMarksPerSuccessAllMarksAllocated": 0.10150375939849626,
+    "targetOrangeBreakEvenExtractionRateOptimistic": 0.9009790187051374,
+    "note": "best-case long-run mark carry, all marks to orange for target calculation; no slot collisions, no purple mark use, no material sacrifices. Target-body sustainability therefore worse in actual constrained play."
+  },
+  "learnedRecipeRebuild": {
+    "status": "conditional steady-state arithmetic only, all five target templates already learned",
+    "fragmentRebuildCost": 66,
+    "fragmentNetPerAttempt70pct": 8.199999999999996,
+    "fragmentBreakEven": 0.6226415094339622,
+    "bodyMarkBreakEven": 0.6896551724137931,
+    "naturalOrangePerSuccessfulRun": 0.315,
+    "naturalPurplePerSuccessfulRun": 1.5225,
+    "bodyMarkNeedPerAttempt70pct": 1.650000000000002,
+    "markIncomePerAttempt70pct": 2.0999999999999996,
+    "netMarksAfterReplacement70pct": 0.44999999999999774,
+    "sensitivity": [
+      {
+        "extractionRate": 0.5,
+        "fragmentNetPerAttempt": -13.0,
+        "bodyMarkNeedPerAttempt": 9.75,
+        "markIncomePerAttempt": 1.5,
+        "netMarksAfterBodyReplacement": -8.25
+      },
+      {
+        "extractionRate": 0.6,
+        "fragmentNetPerAttempt": -2.400000000000002,
+        "bodyMarkNeedPerAttempt": 5.700000000000001,
+        "markIncomePerAttempt": 1.7999999999999998,
+        "netMarksAfterBodyReplacement": -3.9000000000000012
+      },
+      {
+        "extractionRate": 0.65,
+        "fragmentNetPerAttempt": 2.900000000000002,
+        "bodyMarkNeedPerAttempt": 3.6749999999999994,
+        "markIncomePerAttempt": 1.9500000000000002,
+        "netMarksAfterBodyReplacement": -1.7249999999999992
+      },
+      {
+        "extractionRate": 0.6896551724137931,
+        "fragmentNetPerAttempt": 7.103448275862075,
+        "bodyMarkNeedPerAttempt": 2.0689655172413772,
+        "markIncomePerAttempt": 2.0689655172413794,
+        "netMarksAfterBodyReplacement": 2.220446049250313e-15
+      },
+      {
+        "extractionRate": 0.7,
+        "fragmentNetPerAttempt": 8.199999999999996,
+        "bodyMarkNeedPerAttempt": 1.6500000000000017,
+        "markIncomePerAttempt": 2.0999999999999996,
+        "netMarksAfterBodyReplacement": 0.44999999999999796
+      },
+      {
+        "extractionRate": 0.75,
+        "fragmentNetPerAttempt": 13.5,
+        "bodyMarkNeedPerAttempt": 0.19249999999999978,
+        "markIncomePerAttempt": 2.25,
+        "netMarksAfterBodyReplacement": 2.0575
+      },
+      {
+        "extractionRate": 0.8,
+        "fragmentNetPerAttempt": 18.800000000000004,
+        "bodyMarkNeedPerAttempt": 0,
+        "markIncomePerAttempt": 2.4000000000000004,
+        "netMarksAfterBodyReplacement": 2.4000000000000004
+      }
+    ],
+    "startingFromNoBodiesCraftOnlyBound": {
+      "marksForOneOrangeFourPurple": 30,
+      "successfulExtractionsNeeded": 10,
+      "p50AttemptsToCollectThatManySuccesses": 14,
+      "p90AttemptsToCollectThatManySuccesses": 18,
+      "note": "Pessimistic craft-only path ignores natural bodies, assumes R1 remains playable at70% success without this target kit. Not a measured rebuild time or an attempt-count guarantee. Tokens are reserved entirely for this kit; no concurrent consumption."
+    },
+    "invariants": [
+      "Every reforge consumes or atomically replaces exactly one same-quality real body and gives exactly one +0 output; no enhancement refund.",
+      "Registration does not destroy or duplicate the body; immutable recipe key includes season+quality+slot+element+effect.",
+      "Full provenance survives sale, drop, pick-up and reforge; bots or borrowed originals cannot become registrable via a new owner or new item id.",
+      "Replacement-body crafting retains full14/4 mark cost and does not mint bonus bodies at effect pity.",
+      "Reforging always occurs in the hall, respects learned targets and quality restrictions, and has a versioned quote and atomic consumption.",
+      "This supports repeated reconstruction after first learning. It does not prove first-five-template acquisition time, actual post-death combat viability, or liquidity availability."
+    ],
+    "difficultySensitivity": [
+      {
+        "difficulty": "D2",
+        "orangePerSuccess": 0.315,
+        "purplePerSuccess": 1.5225,
+        "fragmentBreakEvenExtraction": 0.6226415094339622,
+        "bodyMarkBreakEvenExtraction": 0.6896551724137931,
+        "bindingMinimumExtractionForBoth": 0.6896551724137931,
+        "fragmentNetAt70pct": 8.199999999999996,
+        "marksAfterReplacementAt70pct": 0.44999999999999796,
+        "note": "same conditional R1 and choice rates; do not assume real extraction success or attempt duration is equal across difficulties"
+      },
+      {
+        "difficulty": "D3",
+        "orangePerSuccess": 0.5625,
+        "purplePerSuccess": 2.5125,
+        "fragmentBreakEvenExtraction": 0.5316863587540279,
+        "bodyMarkBreakEvenExtraction": 0.5891016200294551,
+        "bindingMinimumExtractionForBoth": 0.5891016200294551,
+        "fragmentNetAt70pct": 20.893333333333324,
+        "marksAfterReplacementAt70pct": 2.0999999999999996,
+        "note": "same conditional R1 and choice rates; do not assume real extraction success or attempt duration is equal across difficulties"
+      },
+      {
+        "difficulty": "D4",
+        "orangePerSuccess": 0.825,
+        "purplePerSuccess": 3.375,
+        "fragmentBreakEvenExtraction": 0.4715969989281887,
+        "bodyMarkBreakEvenExtraction": 0.516795865633075,
+        "bindingMinimumExtractionForBoth": 0.516795865633075,
+        "fragmentNetAt70pct": 31.964999999999996,
+        "marksAfterReplacementAt70pct": 2.0999999999999996,
+        "note": "same conditional R1 and choice rates; do not assume real extraction success or attempt duration is equal across difficulties"
+      },
+      {
+        "difficulty": "D5",
+        "orangePerSuccess": 1.0875000000000001,
+        "purplePerSuccess": 3.9375,
+        "fragmentBreakEvenExtraction": 0.4074074074074074,
+        "bodyMarkBreakEvenExtraction": 0.46893317702227433,
+        "bindingMinimumExtractionForBoth": 0.46893317702227433,
+        "fragmentNetAt70pct": 47.399999999999984,
+        "marksAfterReplacementAt70pct": 2.0999999999999996,
+        "note": "same conditional R1 and choice rates; do not assume real extraction success or attempt duration is equal across difficulties"
+      }
+    ]
+  },
+  "reserveRuinRisk": [
+    {
+      "rebuildCost": 60,
+      "startingLiquidFragmentReserve": 0,
+      "attemptHorizon": 30,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.6869888119912341
+    },
+    {
+      "rebuildCost": 60,
+      "startingLiquidFragmentReserve": 0,
+      "attemptHorizon": 60,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.6984151611426823
+    },
+    {
+      "rebuildCost": 60,
+      "startingLiquidFragmentReserve": 0,
+      "attemptHorizon": 140,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.7019390416402216
+    },
+    {
+      "rebuildCost": 60,
+      "startingLiquidFragmentReserve": 60,
+      "attemptHorizon": 30,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.42043016325511595
+    },
+    {
+      "rebuildCost": 60,
+      "startingLiquidFragmentReserve": 60,
+      "attemptHorizon": 60,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.4403055354964848
+    },
+    {
+      "rebuildCost": 60,
+      "startingLiquidFragmentReserve": 60,
+      "attemptHorizon": 140,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.4465368997221353
+    },
+    {
+      "rebuildCost": 60,
+      "startingLiquidFragmentReserve": 120,
+      "attemptHorizon": 30,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.24285842890950685
+    },
+    {
+      "rebuildCost": 60,
+      "startingLiquidFragmentReserve": 120,
+      "attemptHorizon": 60,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.26604441742134033
+    },
+    {
+      "rebuildCost": 60,
+      "startingLiquidFragmentReserve": 120,
+      "attemptHorizon": 140,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.273542145542432
+    },
+    {
+      "rebuildCost": 60,
+      "startingLiquidFragmentReserve": 180,
+      "attemptHorizon": 30,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.13569876337702252
+    },
+    {
+      "rebuildCost": 60,
+      "startingLiquidFragmentReserve": 180,
+      "attemptHorizon": 60,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.157273357532545
+    },
+    {
+      "rebuildCost": 60,
+      "startingLiquidFragmentReserve": 180,
+      "attemptHorizon": 140,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.16480388352250327
+    },
+    {
+      "rebuildCost": 60,
+      "startingLiquidFragmentReserve": 300,
+      "attemptHorizon": 30,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.038057013853163874
+    },
+    {
+      "rebuildCost": 60,
+      "startingLiquidFragmentReserve": 300,
+      "attemptHorizon": 60,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.05268001124953115
+    },
+    {
+      "rebuildCost": 60,
+      "startingLiquidFragmentReserve": 300,
+      "attemptHorizon": 140,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.058601876821615245
+    },
+    {
+      "rebuildCost": 66,
+      "startingLiquidFragmentReserve": 0,
+      "attemptHorizon": 30,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.7244420192140811
+    },
+    {
+      "rebuildCost": 66,
+      "startingLiquidFragmentReserve": 0,
+      "attemptHorizon": 60,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.7426422003239176
+    },
+    {
+      "rebuildCost": 66,
+      "startingLiquidFragmentReserve": 0,
+      "attemptHorizon": 140,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.7506171155807307
+    },
+    {
+      "rebuildCost": 66,
+      "startingLiquidFragmentReserve": 60,
+      "attemptHorizon": 30,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.5644518662603659
+    },
+    {
+      "rebuildCost": 66,
+      "startingLiquidFragmentReserve": 60,
+      "attemptHorizon": 60,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.5901549905657897
+    },
+    {
+      "rebuildCost": 66,
+      "startingLiquidFragmentReserve": 60,
+      "attemptHorizon": 140,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.6022725655836153
+    },
+    {
+      "rebuildCost": 66,
+      "startingLiquidFragmentReserve": 120,
+      "attemptHorizon": 30,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.3354776630935009
+    },
+    {
+      "rebuildCost": 66,
+      "startingLiquidFragmentReserve": 120,
+      "attemptHorizon": 60,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.37287247493508374
+    },
+    {
+      "rebuildCost": 66,
+      "startingLiquidFragmentReserve": 120,
+      "attemptHorizon": 140,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.39026843709046144
+    },
+    {
+      "rebuildCost": 66,
+      "startingLiquidFragmentReserve": 180,
+      "attemptHorizon": 30,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.20357769379428392
+    },
+    {
+      "rebuildCost": 66,
+      "startingLiquidFragmentReserve": 180,
+      "attemptHorizon": 60,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.241899483325934
+    },
+    {
+      "rebuildCost": 66,
+      "startingLiquidFragmentReserve": 180,
+      "attemptHorizon": 140,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.2613573242171072
+    },
+    {
+      "rebuildCost": 66,
+      "startingLiquidFragmentReserve": 300,
+      "attemptHorizon": 30,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.06955641235730989
+    },
+    {
+      "rebuildCost": 66,
+      "startingLiquidFragmentReserve": 300,
+      "attemptHorizon": 60,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.10054558658964177
+    },
+    {
+      "rebuildCost": 66,
+      "startingLiquidFragmentReserve": 300,
+      "attemptHorizon": 140,
+      "probabilityCannotImmediatelyRebuildPlus3AtLeastOnce": 0.1184375465212229
+    }
+  ],
+  "limitations": [
+    "Extraction and gear choice modeled independent of rolled reward value, combat state, and player behavior.",
+    "R1 is one legal conditional layout, not a random-map population average.",
+    "Failed XP24 represents an assumed four cleared outer cells, not an automatic death grant.",
+    "Three-craft guarantee must have state keyed by quality+slot+element+chosen effect and survive retries; it guarantees success count, never a finite number of failed attempts.",
+    "Fragment-positive expectation does not establish sustainable item bodies, affixes, account solvency, or real success rates.",
+    "Daily 30/18 is only a flexible cross-day time budget; strict 30-minute sessions fit one fixed18-minute attempt.",
+    "Reserve-risk model starts with already-equipped +3 gear and assumes fresh replacement bodies are free and immediately available. It is a liquidity warning, not player retention prediction.",
+    "Natural target element40% is the favored season element; an off-theme element has15% under equal distribution of the remaining60%."
+  ]
+}
