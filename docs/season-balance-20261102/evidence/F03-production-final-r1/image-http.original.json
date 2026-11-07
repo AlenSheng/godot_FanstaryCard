@@ -1,0 +1,134 @@
+{
+  "ok": true,
+  "checks": [
+    {
+      "name": "readiness",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "text/plain",
+      "body_bytes": 7,
+      "body_sha256": "7f1e323b6272c6209a590fe8684bc64142a226cc9f73783bc027befede0ea0ee"
+    },
+    {
+      "name": "liveness",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "text/plain",
+      "body_bytes": 7,
+      "body_sha256": "7f1e323b6272c6209a590fe8684bc64142a226cc9f73783bc027befede0ea0ee"
+    },
+    {
+      "name": "unauthenticated typed bootstrap",
+      "status": 401,
+      "expected": 401,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "body_bytes": 122,
+      "body_sha256": "e9d3ab0c4846c3ab93f0b183116c8571aac0f455140ab3dfcdbe5d3df6ccd6d6"
+    },
+    {
+      "name": "reforge quote authenticates before query missing",
+      "status": 401,
+      "expected": 401,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "body_bytes": 122,
+      "body_sha256": "73d4c1a851ce20a8e08b2cfdcc01f6f399ea8d02912e6563b72c92795e2e2e94"
+    },
+    {
+      "name": "reforge quote authenticates before query malformed",
+      "status": 401,
+      "expected": 401,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "body_bytes": 122,
+      "body_sha256": "4b631aff2dd62dd499aedd335975a40736fbed84523d585d261e8b04683882d8"
+    },
+    {
+      "name": "old media type rejected",
+      "status": 415,
+      "expected": 415,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "body_bytes": 84,
+      "body_sha256": "6674915b09e48aacdc9ccbfb0e22f644823b21196a80f64d9a57c22593783638"
+    },
+    {
+      "name": "production local auth closed with required false flag",
+      "status": 404,
+      "expected": 404,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "body_bytes": 71,
+      "body_sha256": "352c4c55bb3112a541df575651a2bd9de2fef3be82da4b96e2363bfe80bbd926"
+    },
+    {
+      "name": "admin requires secure transport",
+      "status": 403,
+      "expected": 403,
+      "passed": true,
+      "content_type": "application/problem+json",
+      "body_bytes": 144,
+      "body_sha256": "9b815a326070de3382c4e8a6bad9c41e8ae6cc9fb4b98ac10cddae4ab641b076"
+    },
+    {
+      "name": "secure admin requires key",
+      "status": 401,
+      "expected": 401,
+      "passed": true,
+      "content_type": "application/problem+json",
+      "body_bytes": 159,
+      "body_sha256": "4befc68fb81054aa2c175c598a5c5fde20ca4227eeeffdc4f8636faf63cce167"
+    },
+    {
+      "name": "isolated authenticated read-only admin",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/json; charset=utf-8",
+      "body_bytes": 179,
+      "body_sha256": "9d5cf6fc3c4604d351bfbf6c856024d41424e42de2d31d6111006f22bc8fee3f"
+    },
+    {
+      "name": "public client info",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/json; charset=utf-8",
+      "body_bytes": 132,
+      "body_sha256": "08ddffcb6d1719b0e5233b609c06057e0f77a295ab0cee3cb2b05b96ffa76d5f"
+    },
+    {
+      "name": "private package path denied /release-encryption.key",
+      "status": 404,
+      "expected": 404,
+      "passed": true,
+      "content_type": null,
+      "body_bytes": 0,
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "private package path denied /appsettings.Development.json",
+      "status": 404,
+      "expected": 404,
+      "passed": true,
+      "content_type": null,
+      "body_bytes": 0,
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "private package path denied /mapping.xml",
+      "status": 404,
+      "expected": 404,
+      "passed": true,
+      "content_type": null,
+      "body_bytes": 0,
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "new_gameplay_starts": 0,
+  "no_login_account_created": true,
+  "no_purchase_queue_ready_or_settlement": true
+}
