@@ -23,6 +23,8 @@ func _run() -> void:
 	checks["current language is visible to legacy components"] = I18n.locale == "zh" and I18n.t("设置") == "设置"
 	for locale_code in P.languages():
 		I18n.set_language(locale_code)
+		if not I18n._ui.has(I18n.locale):
+			checks[locale_code + " legacy-only text has English fallback"] = I18n.t("确认退出登录？") == "Log out now?"
 		for width in [960, 1280, 1920]:
 			get_tree().root.size = Vector2i(width, width * 9 / 16)
 			var panel := LegacySettings.new()
@@ -44,4 +46,7 @@ func _run() -> void:
 	var destination := OS.get_environment("FANTASYCARD_BRANCH_SYNC_RESULT")
 	FileAccess.open(destination, FileAccess.WRITE).store_string(JSON.stringify(result))
 	print(JSON.stringify(result))
+	Sound.stop_all()
+	Sound.stop_music()
+	await get_tree().create_timer(0.35).timeout
 	get_tree().quit(0 if result.ok else 1)

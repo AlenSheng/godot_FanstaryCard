@@ -24,7 +24,8 @@ static func t(value: String) -> String:
 	var translation_key := P.key_for_text(value)
 	if translation_key.is_empty(): translation_key = str(P.LEGACY_DATA.data.inline_aliases.get(value, ""))
 	if not translation_key.is_empty(): return P.localized(translation_key)
-	if _ui.get(locale, {}).has(value): return _ui[locale][value]
+	var legacy_locale := locale if _ui.has(locale) else "en"
+	if _ui.get(legacy_locale, {}).has(value): return _ui[legacy_locale][value]
 	var current := P.localized_text(value)
 	if current != value: return current
 	if locale == "en":
