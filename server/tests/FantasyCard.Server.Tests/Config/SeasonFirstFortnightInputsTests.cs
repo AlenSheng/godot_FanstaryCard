@@ -54,6 +54,18 @@ public sealed class SeasonFirstFortnightInputsTests
         .Select(hero => new Actor($"F01-support-novice-{hero}", hero, "novice",
             SeasonStarterSupportTests.Deck("support-guard"), Enumerable.Repeat(0, 20).ToArray(), 0, false)).ToArray();
 
+    [Fact(Skip = "F01 skilled policy correction contract only; no room or gameplay.", SkipUnless = nameof(Enabled))]
+    public void AdaptiveSkilledPolicyAcceptsUsefulLegalStarterGearWithoutChangingLegacyPolicy()
+    {
+        Assert.False(SeasonFirstFortnightMechanicalPlayer.WantsSkilledEquipment(1, true, false));
+        Assert.False(SeasonFirstFortnightMechanicalPlayer.WantsSkilledEquipment(2, true, false));
+        Assert.True(SeasonFirstFortnightMechanicalPlayer.WantsSkilledEquipment(3, false, false));
+        Assert.True(SeasonFirstFortnightMechanicalPlayer.WantsSkilledEquipment(1, true, true));
+        Assert.True(SeasonFirstFortnightMechanicalPlayer.WantsSkilledEquipment(2, true, true));
+        Assert.False(SeasonFirstFortnightMechanicalPlayer.WantsSkilledEquipment(1, false, true));
+        Assert.False(SeasonFirstFortnightMechanicalPlayer.WantsSkilledEquipment(0, true, true));
+    }
+
     [Fact(Skip = "F01 first-week support input preflight only; no actual starts.", SkipUnless = nameof(Enabled))]
     public void SupportedNovicesReorganizeOnlyAlreadyOwnedInitialCards()
     {

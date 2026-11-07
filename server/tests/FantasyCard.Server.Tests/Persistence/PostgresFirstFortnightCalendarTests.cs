@@ -28,6 +28,8 @@ public sealed class PostgresFirstFortnightCalendarTests
         && Environment.GetEnvironmentVariable("FANTASYCARD_RUN_F01_CALENDAR") == "1";
     public static bool SupportWeekEnabled => PostgresMigrationTests.HasTestDatabase
         && Environment.GetEnvironmentVariable("FANTASYCARD_RUN_F01_SUPPORT_WEEK") == "1";
+    public static bool SkillCorrectionEnabled => PostgresMigrationTests.HasTestDatabase
+        && Environment.GetEnvironmentVariable("FANTASYCARD_RUN_F01_SKILL_CORRECTION") == "1";
 
     public sealed class ActorState
     {
@@ -60,7 +62,11 @@ public sealed class PostgresFirstFortnightCalendarTests
     [Trait("Category", "PostgresIntegration")]
     public Task ThreeFreshNovicesReorganizeOwnedCardsDuringFirstWeek() => RunCalendarAsync(supportWeek: true);
 
-    private static async Task RunCalendarAsync(bool supportWeek)
+    [Fact(Skip = "Explicit three-case F01 original-account day15 policy continuation within300.", SkipUnless = nameof(SkillCorrectionEnabled))]
+    [Trait("Category", "PostgresIntegration")]
+    public Task OriginalSkilledAccountsContinueWithUsefulStarterEquipmentPolicy() => RunCalendarAsync(supportWeek: false, skillCorrection: true);
+
+    private static async Task RunCalendarAsync(bool supportWeek, bool skillCorrection = false)
     {
         var budgetPath = Required("FANTASYCARD_F01_BUDGET");
         using var budgetDocument = JsonDocument.Parse(File.ReadAllText(budgetPath));
@@ -73,20 +79,36 @@ public sealed class PostgresFirstFortnightCalendarTests
             value.GetProperty("id").GetString()!, value.GetProperty("actor").GetString()!, value.GetProperty("day").GetInt32(), value.GetProperty("shanghai_start_hour").GetInt32()))
             .OrderBy(value => value.Day).ThenBy(value => value.Hour).ThenBy(value => value.Actor, StringComparer.Ordinal).ToArray();
         Assert.Equal(252, originalSchedule.Length);
+        Scheduled[] Supplement(string key)
+        {
+            if (!budget.TryGetProperty(key, out var reference)) return [];
+            using var supplement = JsonDocument.Parse(File.ReadAllText(reference.GetProperty("source").GetString()!));
+            return supplement.RootElement.GetProperty("attempts").EnumerateArray().Select(value => new Scheduled(
+                value.GetProperty("id").GetString()!, value.GetProperty("actor").GetString()!, value.GetProperty("day").GetInt32(), value.GetProperty("shanghai_start_hour").GetInt32()))
+                .OrderBy(value => value.Day).ThenBy(value => value.Hour).ThenBy(value => value.Actor, StringComparer.Ordinal).ToArray();
+        }
+        var supportSchedule = Supplement("support_week_plan");
+        var correctionSchedule = Supplement("skill_correction_plan");
         var schedule = originalSchedule;
         if (supportWeek)
         {
             Assert.Equal(300, permit.Maximum);
-            using var supplement = JsonDocument.Parse(File.ReadAllText(budget.GetProperty("support_week_plan").GetProperty("source").GetString()!));
-            schedule = supplement.RootElement.GetProperty("attempts").EnumerateArray().Select(value => new Scheduled(
-                value.GetProperty("id").GetString()!, value.GetProperty("actor").GetString()!, value.GetProperty("day").GetInt32(), value.GetProperty("shanghai_start_hour").GetInt32()))
-                .OrderBy(value => value.Day).ThenBy(value => value.Hour).ThenBy(value => value.Actor, StringComparer.Ordinal).ToArray();
+            schedule = supportSchedule;
             Assert.Equal(42, schedule.Length);
             Assert.Equal(42, schedule.Select(value => value.Id).Distinct(StringComparer.Ordinal).Count());
             Assert.All(schedule, value => { Assert.InRange(value.Day, 1, 7); Assert.True(value.Hour is 9 or 18); });
             Assert.Empty(schedule.Select(value => value.Id).Intersect(originalSchedule.Select(value => value.Id), StringComparer.Ordinal));
         }
-        var allowed = originalSchedule.Select(value => value.Id).Concat(schedule.Select(value => value.Id))
+        if (skillCorrection)
+        {
+            Assert.False(supportWeek);
+            Assert.Equal(300, permit.Maximum);
+            schedule = correctionSchedule;
+            Assert.Equal(3, schedule.Length);
+            Assert.Equal(3, schedule.Select(value => value.Actor).Distinct(StringComparer.Ordinal).Count());
+            Assert.All(schedule, value => { Assert.Equal(15, value.Day); Assert.Equal(9, value.Hour); Assert.StartsWith("F01-skilled-", value.Actor); });
+        }
+        var allowed = originalSchedule.Concat(supportSchedule).Concat(correctionSchedule).Select(value => value.Id)
             .Concat(budget.GetProperty("smoke_case_ids").EnumerateArray().Select(value => value.GetString()!)).ToHashSet(StringComparer.Ordinal);
         var journal = new SeasonFirstFortnightAttemptJournal(budget.GetProperty("journal").GetString()!, permit.Maximum, allowed);
         var output = Required("FANTASYCARD_F01_CALENDAR_OUTPUT");
@@ -99,7 +121,8 @@ public sealed class PostgresFirstFortnightCalendarTests
             "season-equipment-v1", highestOpenDifficulty: 5);
         var definitions = (supportWeek ? SeasonFirstFortnightInputsTests.DeclareSupportedNovices() : SeasonFirstFortnightInputsTests.DeclareActors())
             .ToDictionary(value => value.Id, StringComparer.Ordinal);
-        var task = supportWeek ? "season-balance-20261102-f01-support-week" : "season-balance-20261102-f01-calendar";
+        var task = skillCorrection ? "season-balance-20261102-f01-skill-correction"
+            : supportWeek ? "season-balance-20261102-f01-support-week" : "season-balance-20261102-f01-calendar";
         if (supportWeek)
             foreach (var actor in definitions.Keys)
             {
@@ -110,6 +133,7 @@ public sealed class PostgresFirstFortnightCalendarTests
         var connectionString = Required("FANTASYCARD_TEST_POSTGRES");
         await using var admin = NpgsqlDataSource.Create(connectionString);
         Progress progress;
+        if (skillCorrection) Assert.True(File.Exists(control), "Skill correction must use its verified original-account continuation control, never provision substitutes.");
         if (File.Exists(control))
         {
             progress = JsonSerializer.Deserialize<Progress>(File.ReadAllText(control), Json)!;
@@ -202,7 +226,7 @@ public sealed class PostgresFirstFortnightCalendarTests
             var admitted = await admission.AdmitAsync(scheduled.Id, actor, state.Player, prepared.Preparation!.PreparationId, startsAt, ct);
             newStarts++;
             Write(directory, "admitted.original.json", new { admitted.MatchId, admitted.RoomId, admitted.ActualSeed, admitted.InitialState });
-            var policy = new SeasonFirstFortnightMechanicalPlayer(actor, state.Player, admitted.ActualSeed);
+            var policy = new SeasonFirstFortnightMechanicalPlayer(actor, state.Player, admitted.ActualSeed, acceptUsefulStarterGear: skillCorrection);
             var current = admitted.InitialState;
             var casts = 0; var pvpCasts = 0;
             using (var actions = new StreamWriter(Path.Combine(directory, "actions.original.jsonl")))

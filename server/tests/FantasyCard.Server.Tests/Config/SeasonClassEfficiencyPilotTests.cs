@@ -188,6 +188,8 @@ public sealed class SeasonClassEfficiencyPilotTests
         }
         return total;
     }
+    internal static ExplorationItem[] MatchedSustainArmor() => Armor("counter-balanced");
+
     internal static string[] Deck(HeroClass hero,string variant)
     {
         var classCards=new[]{hero==HeroClass.Mage?"MAG-09":hero==HeroClass.Priest?"PRI-09":"GUA-09",hero==HeroClass.Mage?"MAG-10":hero==HeroClass.Priest?"PRI-10":"GUA-10"};
