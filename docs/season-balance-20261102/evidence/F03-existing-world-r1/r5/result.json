@@ -1,0 +1,388 @@
+{
+  "ok": true,
+  "error": null,
+  "source_commit": "1fe8e4b219714688c0bed061a3162628c5dd1cbe",
+  "backup_sha256": "14f127e47726936785af0d78015959ea67c53d63746f0887d64f381e4e381139",
+  "facts": {
+    "before": {
+      "migration_max": 30,
+      "matches": 577,
+      "unacknowledged": 653
+    },
+    "after_startup": {
+      "migration_max": 55,
+      "migration_count": 52,
+      "matches": 577,
+      "unacknowledged": 653,
+      "seasons": 1
+    },
+    "after_ACK": {
+      "matches": 577,
+      "unacknowledged": 647,
+      "pending_holds": 0
+    }
+  },
+  "checks": [
+    {
+      "name": "cloned-data readiness",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "text/plain",
+      "bytes": 7,
+      "body_sha256": "7f1e323b6272c6209a590fe8684bc64142a226cc9f73783bc027befede0ea0ee"
+    },
+    {
+      "name": "legacy068-0bootstrap before",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 36292,
+      "body_sha256": "4ebc6974aa35766dc2e0c33dd07129a0c16a78ff1575c3d6321b1f103115e859"
+    },
+    {
+      "name": "legacy068-0original settlement",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 208,
+      "body_sha256": "f12d1b477206be24899186bfbe1a764ed24f64b461de1ee8fddaf56dddd4fb5d"
+    },
+    {
+      "name": "legacy068-0first ACK",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 73,
+      "body_sha256": "33197829c11104eb3ee1f01fedbc0fa74d203b7f8011567c586adb8561f27587"
+    },
+    {
+      "name": "legacy068-0same-key ACK replay",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 73,
+      "body_sha256": "33197829c11104eb3ee1f01fedbc0fa74d203b7f8011567c586adb8561f27587"
+    },
+    {
+      "name": "legacy068-0new-key ACK replay",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 73,
+      "body_sha256": "5da44a27c2e26cce25ac340a7b99bb284697e6e3f8e1d0c37dc355591b47fb97"
+    },
+    {
+      "name": "legacy068-0bootstrap after",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 36081,
+      "body_sha256": "7c8edea390910da7be88c2413418d2b0c2e3aac034cb604dcd35b64cc1d3059d"
+    },
+    {
+      "name": "legacy068-1bootstrap before",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 36292,
+      "body_sha256": "5afaa98f7814cb5aaad22f0e7a148d3e30173a843f435fdc8c0d7e20116f7a52"
+    },
+    {
+      "name": "legacy068-1original settlement",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 208,
+      "body_sha256": "e49d7af6892a904f780bd677e275b37f26484a56226e97e8a65b0e9c34566ca9"
+    },
+    {
+      "name": "legacy068-1first ACK",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 73,
+      "body_sha256": "83290c8f70a6e3411e444e1493381d33d312d0651605abd4891bdbfbc2133536"
+    },
+    {
+      "name": "legacy068-1same-key ACK replay",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 73,
+      "body_sha256": "83290c8f70a6e3411e444e1493381d33d312d0651605abd4891bdbfbc2133536"
+    },
+    {
+      "name": "legacy068-1new-key ACK replay",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 73,
+      "body_sha256": "31fbf6937884a5884cc4c6c92984dff822a3269207b65fcb773e84099bdf81bf"
+    },
+    {
+      "name": "legacy068-1bootstrap after",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 36081,
+      "body_sha256": "51da259e2dfe06f82dc99060009520e2a9dc2151e9d744f4c57b3e03697f8163"
+    },
+    {
+      "name": "legacy068-2bootstrap before",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 36294,
+      "body_sha256": "242907ddbc0e8aac8b5c4737ac10812ebd4cc78293cef4024c487920c78eec60"
+    },
+    {
+      "name": "legacy068-2original settlement",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 210,
+      "body_sha256": "f88e65f7d813c6df02559b49e7a89cca6f0cb43b5e4020c530497f09bfbd34d2"
+    },
+    {
+      "name": "legacy068-2first ACK",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 73,
+      "body_sha256": "3343fb83424a8c69e5fc308bad1bfb2a38116dc678b5c2d07509957c8b2d2983"
+    },
+    {
+      "name": "legacy068-2same-key ACK replay",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 73,
+      "body_sha256": "3343fb83424a8c69e5fc308bad1bfb2a38116dc678b5c2d07509957c8b2d2983"
+    },
+    {
+      "name": "legacy068-2new-key ACK replay",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 73,
+      "body_sha256": "c0ff092213f3a9fed49786ab6132ce5f836042a0123954e4e00969ba2ded3dfa"
+    },
+    {
+      "name": "legacy068-2bootstrap after",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 36081,
+      "body_sha256": "97bf1364d1dfc216e7834ef0b942f2e53b692fe8128fef15b9282f451885b173"
+    },
+    {
+      "name": "legacy070-3bootstrap before",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 36294,
+      "body_sha256": "30b8b47cb0900f2398a11974c1f6b69f79e4d42058f200adaf053b4a6c11046a"
+    },
+    {
+      "name": "legacy070-3original settlement",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 212,
+      "body_sha256": "f8015599a123aae7cd9144c10aebb32ca5c240576f85ad3a08268db3ad3e9c6b"
+    },
+    {
+      "name": "legacy070-3first ACK",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 73,
+      "body_sha256": "6212b60dde6bd95e40c9a409ee89076e801eee545b1720398b6b4da375914906"
+    },
+    {
+      "name": "legacy070-3same-key ACK replay",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 73,
+      "body_sha256": "6212b60dde6bd95e40c9a409ee89076e801eee545b1720398b6b4da375914906"
+    },
+    {
+      "name": "legacy070-3new-key ACK replay",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 73,
+      "body_sha256": "706210941b6c3693ca898e52b60ec786e8260655165d8fcb018979bd417f3049"
+    },
+    {
+      "name": "legacy070-3bootstrap after",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 36079,
+      "body_sha256": "9aae5cf8d67ec6c4c83e4cfc56296280813e2da0530c495af705d6383ee2fc98"
+    },
+    {
+      "name": "legacy070-4bootstrap before",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 36292,
+      "body_sha256": "c51f16337fae1d44176375995df4852cdb7b5087f661e1db96d6a04c25ab3bda"
+    },
+    {
+      "name": "legacy070-4original settlement",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 210,
+      "body_sha256": "aa3536c7f27b4b3dc34bcfd8d2c251a1b93576310d4c1d52c98093230cbf9fa7"
+    },
+    {
+      "name": "legacy070-4first ACK",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 73,
+      "body_sha256": "b42d786496af3a37ef04892c59698e3438f3450fb321a8489d5b42f3a139dda9"
+    },
+    {
+      "name": "legacy070-4same-key ACK replay",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 73,
+      "body_sha256": "b42d786496af3a37ef04892c59698e3438f3450fb321a8489d5b42f3a139dda9"
+    },
+    {
+      "name": "legacy070-4new-key ACK replay",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 73,
+      "body_sha256": "6c1b09a70d08a7f383a2db6b24880c959fe6acf84d7e5ed6c967783c1855a38f"
+    },
+    {
+      "name": "legacy070-4bootstrap after",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 36079,
+      "body_sha256": "847ee0709097d0dad6c684504d63273a8485184f56ebc2a39d52cea209da82a2"
+    },
+    {
+      "name": "legacy070-5bootstrap before",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 36294,
+      "body_sha256": "6af08971532ace00c7d6b2ca1cf1891f2238e411b552f7e40ddb7d9fadf4e35e"
+    },
+    {
+      "name": "legacy070-5original settlement",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 212,
+      "body_sha256": "d7744947acf182d198ca0a239a443a7fde2bf1ffaf52eb15c506c994e4f6ddcb"
+    },
+    {
+      "name": "legacy070-5first ACK",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 73,
+      "body_sha256": "3588afdc56a464b024bd254588edf75ef7057bf84f7344a2093a52cfe9d037e2"
+    },
+    {
+      "name": "legacy070-5same-key ACK replay",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 73,
+      "body_sha256": "3588afdc56a464b024bd254588edf75ef7057bf84f7344a2093a52cfe9d037e2"
+    },
+    {
+      "name": "legacy070-5new-key ACK replay",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 73,
+      "body_sha256": "502e74f74e08d6603105fb22f774f12e5a01580fb5ae3741d9077cc36e818d07"
+    },
+    {
+      "name": "legacy070-5bootstrap after",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 36079,
+      "body_sha256": "37091a37f1ef78cbc304f184bdce19d0c1e4a408a61b972ba562402d45803682"
+    }
+  ],
+  "selected_existing_real_player_receipts": 6,
+  "synthetic_tokens_only_in_private_clone": true,
+  "no_actual_user_tokens_read": true,
+  "asset_fingerprints_before": {
+    "wallets": "b4190eefc7e894cfd67820910bf176d7",
+    "materials": "df6e14381e59149b121ca511247a8238",
+    "equipment": "c40a8e2b6514fa3dd205b87b5f36b2c3",
+    "holds": "e39d63ba912b19b727c330a517341725",
+    "ledger_count": 294
+  },
+  "asset_fingerprints_after": {
+    "wallets": "b4190eefc7e894cfd67820910bf176d7",
+    "materials": "df6e14381e59149b121ca511247a8238",
+    "equipment": "c40a8e2b6514fa3dd205b87b5f36b2c3",
+    "holds": "e39d63ba912b19b727c330a517341725",
+    "ledger_count": 294
+  },
+  "ACK_same_key_byte_exact": true,
+  "ACK_new_key_identity_equal_at_Postgres_microsecond_precision": true,
+  "exact_protected_package": true,
+  "old_config_archive_not_invented": true,
+  "private_database_retained": true,
+  "own_job_closed": true,
+  "own_PG_stopped": true,
+  "resource_breach": false,
+  "minimum_available_bytes": 13217202176,
+  "new_gameplay_starts": 0,
+  "production_changed": false
+}
