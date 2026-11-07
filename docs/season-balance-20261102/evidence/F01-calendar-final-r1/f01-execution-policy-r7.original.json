@@ -1,0 +1,287 @@
+{
+  "schema": "f01-current17-runtime-policy-r7-existing-source-eligibility",
+  "status": "declared_for_controller_implementation_and_review; not executed or accepted",
+  "config": "season-v1-config-17",
+  "content_hash": "3e4efc7f04d2acc0d70f1ef3ba7f2ce9cc4b675543b443606880a10b6cc1e490",
+  "actor_file": "G:\\PR13Evidence\\season-balance-20261102-r1\\f01-owned-input-preflight-r2\\observations\\declared-actors.original.json",
+  "actor_sha256": "3ac9f120f129b1da30341e57c9049c8d91c786b2e5c9469d2b4656608a9b841c",
+  "schedule": {
+    "original_proposal": "G:\\PR13Evidence\\season-balance-20261102-r1\\f01-14day-proposal-r1.original.json",
+    "sha256": "ab38ed788eb0222c64a310bd25338da5def6f98c9d7ff6f31172cd0102071498",
+    "actors": 9,
+    "days": 14,
+    "per_actor_daily_start_limit": 2,
+    "maximum_starts": 252,
+    "shanghai_hours": [
+      9,
+      18
+    ],
+    "measurement_days": [
+      1,
+      7,
+      14
+    ],
+    "shared_class_seeds": false,
+    "maximum_simulated_seconds_per_attempt": 1200,
+    "daily_timed_budget_seconds": 2400,
+    "nonterminal": "Retain the exact held assets/snapshot and censor the actor; never reset or requeue as a fresh account.",
+    "actual_seed_source": "Normal MatchmakingRepository generated seed, captured with original match/room IDs."
+  },
+  "starting_assets": {
+    "source": "actual provisioning preflight plus explicitly declared historical permanent ownership",
+    "season_gold": 0,
+    "season_fragments": 0,
+    "equipment": [],
+    "blueprints": 0,
+    "orange_blueprints": 0,
+    "novice_permanent_levels": 0,
+    "returning_skilled_permanent_levels": 5,
+    "old_D03_capital_imported": false,
+    "no_free_replacement_or_development_income": true
+  },
+  "entry": {
+    "context": "Bind original F01 season/config/stats and actual scheduled UTC start to every room.",
+    "unlocks": "Read actual player unlock progress and global published maximum; an input projection at D5 is not an unlock.",
+    "levels": "Use SeasonContext.ProjectPermanentLevel for each actually owned card/weapon; no automatic novice2.",
+    "gear": "Only current owned IDs, exact season domain, production entry quality checks and actual preparation holds.",
+    "inventory": "Bind actual preparation backpack/safe-slot/potion inputs. Do not carry D03 model50 warehouse cap as production capacity.",
+    "borrowed": "Baseline uses owned cards; no borrowed template or free borrowed levels are silently substituted.",
+    "admission": "Use actual preparation/queue/ready admission and consumed holds. Existing isolated configuration may set BotFillDelaySeconds=0; do not alter production target count or remove generated bots."
+  },
+  "risk_selection": {
+    "order": "Highest personally/global unlocked difficulty satisfying the registered risk profile and production entry checks.",
+    "D0": "Fallback when no higher profile is satisfied.",
+    "D1": "At least three blue-or-better distinct legal slots.",
+    "D2": "Five blue-or-better distinct legal slots, at least three purple-or-better and an actual activated equipment effect.",
+    "D3_to_D5": "Five legal slots, one orange and four purple-or-better, all+3, at least one actually active effect. No red requirement.",
+    "consecutive_two_deaths": "Reduce the eligible risk tier by one until the next successful extraction, respecting remaining owned gear."
+  },
+  "route": {
+    "name": "natural-shortest",
+    "map": "Actual generated map; no forced enemy groups, geometry, clears or drop results.",
+    "path": "Shortest path from actual spawn to actual boss, using fixed row/column order for ties.",
+    "early_extract": "Novice D0 with fewer than three worn pieces takes the first actual evacuation on that path.",
+    "reaction_seconds": {
+      "novice": 1.0,
+      "returning": 0.7,
+      "skilled": 0.5
+    },
+    "interpretation": "Mechanically controlled primary actor in the normal admitted match; actual production bots act through real Domain.Advance. Includes actual PvP if paired; not human/native-capacity evidence."
+  },
+  "lobby": {
+    "ordering": [
+      "collect only actual committed receipts",
+      "claim only earned available journey rewards",
+      "exchange only earned shared activity tokens",
+      "learn owned eligible samples",
+      "rebuild using real same-quality bodies and current mark/wish costs",
+      "enhance selected gear using real fragment costs",
+      "perform affordable registered shop purchases",
+      "upgrade novice owned cards/weapon with actual earned soul/copy payments"
+    ],
+    "marks": "Use current SeasonCrafting.Payment/Wish and exact IDs. No body from a learned template without a physical input.",
+    "enhancement": "Use current actual armor costs; never project legal armor+3/+5 down to a card/weapon cap.",
+    "permanent_upgrade": "Novice targets actual personal unlock+1 capped5, deck-slot order, only CanUpgrade/CanEnhance quotes and real soul/copy/fragment payment. Historical mature5 unchanged.",
+    "market": "Self-sufficient baseline makes no market trades; do not invent counterparties or treat price/limit as revenue.",
+    "selection_bound": "From actual available current-season inventory, filter legal entry quality first, retain four candidates per slot ranked byWater/Fire, Piercing/Vitality, quality, real level andID, then apply the existing effect-aware full-combination selector. Preserve every unselected item; no50-slot warehouse limit.",
+    "inventory_maintenance": "Actual source/API evidence confirms crafting Inventory-only cap50 (equipped slots separate). When actual free inventory slots<10, protect equipped items, legal tier0..unlocked candidate outfits, two physical rebuild bodies per quality, and unlearned unique recipe samples; actual bulk discard only eligibleInventory IDs/versions toward35, no refund. If protected items prevent room, skip blocked crafting instead of inventing capacity.",
+    "operation_identity": "Stable44-character SHA256-derived key of original case+target identity+actualversion; readable logical/key mapping retained. Original receipts and successful payments survive manual before-start reconciliation.",
+    "actual_source_eligibility": "BotReward/Borrowed source items are not sent to armor enhancement; only NaturalDrop/MarkCraft/TemplateReforge eligible bodies are reserved or quoted for reforge. Preserve actual source and legitimate ownership; no conversion to NaturalDrop or gift/refund."
+  },
+  "shop": {
+    "actual_products": {
+      "card_pack": {
+        "product_id": "card_pack",
+        "kind": "Cards",
+        "amount": 3,
+        "price_gold": 250,
+        "daily_limit": 5,
+        "quota_group": "card_pack",
+        "hero_class": null
+      },
+      "warrior_soul": {
+        "product_id": "warrior_soul",
+        "kind": "WarriorSoul",
+        "amount": 20,
+        "price_gold": 180,
+        "daily_limit": 3,
+        "quota_group": "warrior_soul",
+        "hero_class": null
+      },
+      "equipment_fragments": {
+        "product_id": "equipment_fragments",
+        "kind": "EquipmentFragments",
+        "amount": 20,
+        "price_gold": 120,
+        "daily_limit": 3,
+        "quota_group": "equipment_fragments",
+        "hero_class": null
+      },
+      "priest_soul": {
+        "product_id": "priest_soul",
+        "kind": "ClassSoul",
+        "amount": 12,
+        "price_gold": 400,
+        "daily_limit": 1,
+        "quota_group": "class_soul",
+        "hero_class": "Priest"
+      },
+      "mage_soul": {
+        "product_id": "mage_soul",
+        "kind": "ClassSoul",
+        "amount": 12,
+        "price_gold": 400,
+        "daily_limit": 1,
+        "quota_group": "class_soul",
+        "hero_class": "Mage"
+      },
+      "guardian_soul": {
+        "product_id": "guardian_soul",
+        "kind": "ClassSoul",
+        "amount": 12,
+        "price_gold": 400,
+        "daily_limit": 1,
+        "quota_group": "class_soul",
+        "hero_class": "Guardian"
+      },
+      "health_potion": {
+        "product_id": "health_potion",
+        "kind": "HealthPotion",
+        "amount": 1,
+        "price_gold": 100,
+        "daily_limit": 4,
+        "quota_group": "health_potion",
+        "hero_class": null
+      },
+      "advanced_bag": {
+        "product_id": "advanced_bag",
+        "kind": "AdvancedBag",
+        "amount": 1,
+        "price_gold": 800,
+        "daily_limit": 0,
+        "quota_group": "advanced_bag",
+        "hero_class": null
+      },
+      "top_bag": {
+        "product_id": "top_bag",
+        "kind": "TopBag",
+        "amount": 1,
+        "price_gold": 2200,
+        "daily_limit": 0,
+        "quota_group": "top_bag",
+        "hero_class": null
+      }
+    },
+    "priority": [
+      "If insufficient rebuild fragments and gold>=120, at most one equipment_fragments product per actor/day.",
+      "If no potion is owned and gold>=220, at most one health_potion product per actor/day, keeping120 gold for rebuilding.",
+      "For novice only, warrior_soul then own-class soul if an actual next-level shortfall exists and payment leaves120 gold."
+    ],
+    "no_unpaid_or_limit_grants": true,
+    "baseline_card_pack_purchases": 0,
+    "baseline_bag_purchases": 0,
+    "reset": "Actual EconomySchedule.GetDailyResetKey at Shanghai04 and shared quota groups, not season midnight.",
+    "fragment_shortfall_threshold": 20,
+    "soul_product_rule": "Only an actual matching-currency next-card shortfall with enough owned copies; leave120 gold and maxone product/day."
+  },
+  "journey": {
+    "sources": "Only unique actual cleared-cell, extracted and earned weekly-contract sources with original occurrence times.",
+    "dead_event_xp": 0,
+    "reference_experience_is_not_granted": true,
+    "claim_policy": "Claim earned levels immediately; own-hero class-soul choice and normal configured pack draws, with duplicates retained.",
+    "no_automatic_full20_rewards": true
+  },
+  "activities": {
+    "window": "Actual configured12-14 and33-35 natural-day windows; no tokens outside the relevant event.",
+    "novice": "If six earned tokens are available, at most one event-potion; spend remaining affordable tokens on fragments.",
+    "returning_skilled": "Affordable fragment exchanges only.",
+    "shared_budget": "Use one event token balance/cap across all branches; unearned tokens and daily shop limits are not inventory."
+  },
+  "potions": "Use at most one actually prepared potion per attempt when Hp/MaximumHp<0.30; record actual consumption and recovery. No potion if none was paid/earned.",
+  "red": "Bind actual mint/quota admission or stop/censor on an unhandled red request; do not reuse D03 exhausted-quota assumption.",
+  "measurements": [
+    "day1/7/14 wallets, physical IDs and active holds",
+    "all permanent soul/copy/level changes separately from season currencies",
+    "basic usable green/blue five-slot availability separately from first target piece, quality set and strict target diagnostic",
+    "per-cohort nearest-rank P10/P50/P90 including right censoring; small named simulations, not population estimates",
+    "actual source-minus-recovery per simulated hour; no wall-clock or queue extrapolation",
+    "global/per-player unlocks and highest-open recommendation supported by actual successful/death/rebuild outcomes"
+  ],
+  "acceptance": {
+    "class_ratio_limit": 1.15,
+    "no_new_B05": true,
+    "D03_budget_not_reset": true,
+    "F01_budget_answer_pending": false,
+    "new_gameplay_starts": 0,
+    "unchanged_failures": "Preserve old pacing, class-ratio, capacity and censored records; never pool development with independent holdouts.",
+    "budget_basis": "Original explicit per-item few-hundred authorization, separate F01 task; no new reply or elapsed-time consent inferred."
+  },
+  "controller_missing_before_timed_runs": [
+    "F01-specific calendar/actual owned-input controller, not old fixed-Epoch D03 Run.",
+    "Actual preparation inventory/potion/hold binding and paid novice permanent progression.",
+    "Actual per-source journey/shop/activity claims and item/currency receipts, with no duplicated grants.",
+    "Actual personal unlock and red admission binding; immutable per-start budget journal and checkpoints.",
+    "Explicit F01 budget-accounting answer.",
+    "Normal matched assignment, including actual bot/PvP behavior; no solo-room shortcut under the normal matching verdict."
+  ],
+  "prior_original_policy": {
+    "path": "G:\\PR13Evidence\\season-balance-20261102-r1\\f01-execution-policy-r6.original.json",
+    "sha256": "40b3deb8f97e4229b107d1583e6fa36aa5ebb0f82ee8f62fd5c52699f62a2946"
+  },
+  "measurement_targets": {
+    "basic_availability": "Five distinct slots, each green-or-better, actually owned and not lost/held elsewhere. Report source and first observed checkpoint.",
+    "first_target_piece": {
+      "qualities": [
+        "Purple",
+        "Orange"
+      ],
+      "slot": "Head",
+      "element": "Water",
+      "effect": "Piercing",
+      "minimum_level": 0
+    },
+    "quality_set": "Five distinct purple-or-better slots with exactly one orange; distinct from first target piece.",
+    "ready_set": "Quality set with each piece+3 and at least one actually activated equipment effect.",
+    "strict_diagnostic": {
+      "slots": {
+        "Head": [
+          "Orange",
+          "Water",
+          "Piercing"
+        ],
+        "Chest": [
+          "Purple",
+          "Water",
+          "Piercing"
+        ],
+        "Hands": [
+          "Purple",
+          "Water",
+          "Vitality"
+        ],
+        "Legs": [
+          "Purple",
+          "Fire",
+          "Vitality"
+        ],
+        "Feet": [
+          "Purple",
+          "Fire",
+          "Vitality"
+        ]
+      },
+      "minimum_level": 3,
+      "secondary_not_required": true
+    },
+    "model_comparison": "Original15/22 pity model is conditional on deep R1 and3marks per successful run; do not apply it as a universal cap to natural-shortest paths or all players."
+  },
+  "normal_match": {
+    "expected_shape": "One controlled human with normal generated fill bots when matching sequentially; preserve actual assignment, map and RNG.",
+    "bots": "Do not delete, freeze or replace actual bots; execute the normal room tick and bot/red/admission rules.",
+    "pvp": "Primary policy must handle actual duels and effects; an unsupported phase is a recorded failure/censor, never silently skipped.",
+    "budget": "252 proposed controlled-human starts remain unapproved. NPC participants are game logic, not native/protocol load clients or extra reported human starts.",
+    "actual_start_journal": "Record/reserve the attempt once before actual ready/map launch; all failed or interrupted starts consume their original ID and budget.",
+    "seed_contract": "Use and record actual normal-match seed from the admitted DB assignment. Original paired-seed proposal values remain historical planning inputs, not claimed runtime seeds; do not override DB seeds or replace maps. Unequal F01 trajectories do not prove D03 same-kit class1.15."
+  },
+  "runtime_checkpoint_contract": "Keep the same dedicated owned PG schema and exact actors across batch boundaries. Fsync a control marker before lobby/admission; interrupted currentcase never automatically requeued. Full per-case before/actions/terminal/settlement/after artifacts persist. Initial 18-case boundary is a continuation of the252 plan, not a new dataset."
+}
