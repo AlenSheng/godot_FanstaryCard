@@ -6,6 +6,15 @@ func _run() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
 	_frame_log = FileAccess.open(output.path_join("frames.original.jsonl"), FileAccess.WRITE)
 	_initial_lobby = Game.lobby.duplicate(true)
+	var backdrop_layer := CanvasLayer.new()
+	backdrop_layer.name = "RetainedComponentBackdrop"
+	backdrop_layer.layer = 29
+	$UI.add_child(backdrop_layer)
+	var backdrop := ColorRect.new()
+	backdrop.color = Palette.INK
+	backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	backdrop_layer.add_child(backdrop)
 	var chinese_pack: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/locales/zh-CN.json"))
 	for locale in Palette.languages():
 		var target_pack: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/locales/%s.json" % locale))
@@ -35,7 +44,7 @@ func _run() -> void:
 			panel.queue_free()
 			await get_tree().process_frame
 	_frame_log.close()
-	var report := {"ok": screenshot_count == 33 and layout_errors.is_empty() and not review_checks.values().has(false), "frames": review_frames, "checks": review_checks, "layout_errors": layout_errors, "screenshots": screenshot_count, "actual_game_matches": 0, "scope": "Main retained settings, eleven locales and three resolutions"}
+	var report := {"ok": screenshot_count == 33 and layout_errors.is_empty() and not review_checks.values().has(false), "frames": review_frames, "checks": review_checks, "layout_errors": layout_errors, "screenshots": screenshot_count, "actual_game_matches": 0, "scope": "Isolated main retained settings, eleven locales and three resolutions"}
 	FileAccess.open(output.path_join("report.json"), FileAccess.WRITE).store_string(JSON.stringify(report, "  "))
 	Sound.stop_all()
 	Sound.stop_music()
