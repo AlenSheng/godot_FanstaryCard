@@ -26,7 +26,7 @@ public sealed class PostgresDifficultyUnlockTests
         await using var db = await PostgresTestSchema.CreateAsync(migrate:true);
         var season = Define("unlock",new DateOnly(2026,11,2));var clock = new Clock(season.StartsAtUtc.AddHours(1));
         var player = await PlayerAsync(db,clock);var seasons = new SeasonRepository(db.DataSource,clock);
-        await seasons.PublishAsync(season,new string('a',64),Ct);await seasons.EnsurePlayerAsync(player,season.ContextFor(0),Ct);
+        await seasons.PublishAsync(season,GameConfigCatalog.Current.ContentHash,Ct);await seasons.EnsurePlayerAsync(player,season.ContextFor(0),Ct);
         using var metrics = new ServerMetrics();var repository = new SettlementRepository(db.DataSource,clock,metrics);
         var first = await TerminalAsync(db,season,player,0,false,false,RoomPlayerPhase.Extracted);
         await new SettlementCoordinator(repository,clock).ObserveAsync(first.Match,first.Snapshot);
@@ -63,8 +63,8 @@ public sealed class PostgresDifficultyUnlockTests
         await using var db = await PostgresTestSchema.CreateAsync(migrate:true);
         var original = Define("original-unlock",new DateOnly(2026,9,1));var next = Define("next-unlock",new DateOnly(2026,10,13));
         var clock = new Clock(original.StartsAtUtc.AddHours(1));var player = await PlayerAsync(db,clock);
-        var seasons = new SeasonRepository(db.DataSource,clock);await seasons.PublishAsync(original,new string('a',64),Ct);
-        await seasons.PublishAsync(next,new string('b',64),Ct);await seasons.EnsurePlayerAsync(player,original.ContextFor(0),Ct);
+        var seasons = new SeasonRepository(db.DataSource,clock);await seasons.PublishAsync(original,GameConfigCatalog.Current.ContentHash,Ct);
+        await seasons.PublishAsync(next,GameConfigCatalog.Current.ContentHash,Ct);await seasons.EnsurePlayerAsync(player,original.ContextFor(0),Ct);
         var first = await TerminalAsync(db,original,player,0,false,false,RoomPlayerPhase.Extracted);
         var second = await TerminalAsync(db,original,player,0,false,false,RoomPlayerPhase.Extracted);
         clock.Now = next.StartsAtUtc.AddHours(1);await seasons.EnsurePlayerAsync(player,next.ContextFor(0),Ct);
@@ -84,7 +84,7 @@ public sealed class PostgresDifficultyUnlockTests
         await using var db = await PostgresTestSchema.CreateAsync(migrate:true);
         var season = Define("bad-proof",new DateOnly(2026,11,2));var clock = new Clock(season.StartsAtUtc.AddHours(1));
         var player = await PlayerAsync(db,clock);var seasons = new SeasonRepository(db.DataSource,clock);
-        await seasons.PublishAsync(season,new string('c',64),Ct);await seasons.EnsurePlayerAsync(player,season.ContextFor(0),Ct);
+        await seasons.PublishAsync(season,GameConfigCatalog.Current.ContentHash,Ct);await seasons.EnsurePlayerAsync(player,season.ContextFor(0),Ct);
         var fixture = await TerminalAsync(db,season,player,0,false,false,RoomPlayerPhase.Extracted);
         using var details = JsonDocument.Parse(JsonSerializer.Serialize(new {roomId=fixture.Snapshot.RoomId,difficultyProgress=new {eliteCleared="true",bossCleared=false}},Json));
         using var metrics = new ServerMetrics();var repository = new SettlementRepository(db.DataSource,clock,metrics);
