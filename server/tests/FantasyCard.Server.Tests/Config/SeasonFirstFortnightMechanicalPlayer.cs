@@ -7,7 +7,7 @@ using FantasyCard.Server.Rooms;
 namespace FantasyCard.Server.Tests.Config;
 
 /// <summary>Mechanical primary actions on the real actor; normal bots and all resolver rules remain active.</summary>
-internal sealed class SeasonFirstFortnightMechanicalPlayer(SeasonFirstFortnightInputsTests.Actor actor, Guid playerId, int actualSeed, bool seekDuelDiagnostic = false)
+internal sealed class SeasonFirstFortnightMechanicalPlayer(SeasonFirstFortnightInputsTests.Actor actor, Guid playerId, int actualSeed, bool seekDuelDiagnostic = false, bool acceptUsefulStarterGear = false)
 {
     private readonly Random _choiceRandom = new(actualSeed ^ 0x43484F49);
     private readonly TimeSpan _reaction = TimeSpan.FromSeconds(actor.Cohort == "novice" ? 1 : actor.Cohort == "returning" ? .7 : .5);
@@ -16,6 +16,9 @@ internal sealed class SeasonFirstFortnightMechanicalPlayer(SeasonFirstFortnightI
 
     internal sealed record ActionResult(string Kind, bool Mutated, TimeSpan Elapsed, object? Detail = null);
     internal IRoomCommand<ActionResult> Decide(DateTimeOffset now) => new Decision(this, now);
+
+    internal static bool WantsSkilledEquipment(int qualityRank, bool better, bool adaptToStarterGear) =>
+        qualityRank >= 3 || adaptToStarterGear && qualityRank >= 1 && better;
 
     private sealed class Decision(SeasonFirstFortnightMechanicalPlayer controller, DateTimeOffset now) : IRoomCommand<ActionResult>
     {
@@ -48,7 +51,7 @@ internal sealed class SeasonFirstFortnightMechanicalPlayer(SeasonFirstFortnightI
             var better = current is null || SeasonLootConfig.Rank(offered.Quality) > SeasonLootConfig.Rank(current.Quality)
                 || offered.Quality == current.Quality && offered.Level > current.Level;
             var wantGear = actor.Cohort == "novice" || actor.Cohort == "returning" && _choiceRandom.NextDouble() < .75
-                || actor.Cohort == "skilled" && SeasonLootConfig.Rank(offered.Quality) >= 3;
+                || actor.Cohort == "skilled" && WantsSkilledEquipment(SeasonLootConfig.Rank(offered.Quality), better, acceptUsefulStarterGear);
             var selected = player.Combat.Hp <= player.Combat.EffectiveMaximumHp * .60
                 ? choices.Options.Single(option => option.Kind == RewardChoiceKind.ImmediateHeal)
                 : wantGear ? gear : choices.Options.Single(option => option.Kind == RewardChoiceKind.EquipmentFragments);

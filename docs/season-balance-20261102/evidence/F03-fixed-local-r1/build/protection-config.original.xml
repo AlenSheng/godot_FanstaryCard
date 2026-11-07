@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Obfuscator>
+  <Var name="InPath" value="G:\PR13Evidence\private\season-balance-20261102-f03-protected-r3\publish" />
+  <Var name="OutPath" value="G:\PR13Evidence\private\season-balance-20261102-f03-protected-r3\obfuscated" />
+  <Var name="LogFile" value="G:\PR13Evidence\private\season-balance-20261102-f03-protected-r3\mapping.xml" />
+  <Var name="KeepPublicApi" value="true" />
+  <Var name="HidePrivateApi" value="true" />
+  <Var name="HideStrings" value="true" />
+  <Var name="RenameProperties" value="false" />
+  <Var name="KeepProperties" value="true" />
+  <Var name="RenameFields" value="false" />
+  <Var name="RenameEvents" value="false" />
+  <Var name="UseUnicodeNames" value="true" />
+  <Var name="OptimizeMethods" value="false" />
+  <Var name="SuppressIldasm" value="true" />
+  <Var name="RegenerateDebugInfo" value="false" />
+  <Var name="XmlMapping" value="true" />
+  <Module file="$(InPath)/FantasyCard.Contracts.dll">
+    <SkipMethod name=".ctor" />
+    <SkipType name="*AnonymousType*" skipMethods="true" />
+  </Module>
+  <Module file="$(InPath)/FantasyCard.Domain.dll">
+    <SkipMethod name=".ctor" />
+    <SkipType name="*AnonymousType*" skipMethods="true" />
+  </Module>
+  <Module file="$(InPath)/FantasyCard.Server.dll">
+    <SkipMethod name=".ctor" />
+    <SkipType name="*AnonymousType*" skipMethods="true" />
+    
+    <SkipType name="FantasyCard.Server.*Endpoints*" skipMethods="true" />
+    <SkipType name="Program*" skipMethods="true" />
+  </Module>
+<AssemblySearchPath path="C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.11" /><AssemblySearchPath path="C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\10.0.11" /><AssemblySearchPath path="G:\PR13Evidence\private\season-balance-20261102-f03-protected-r3\build\bin\FantasyCard.Domain.Tests\release" /><Module file="G:\PR13Evidence\private\season-balance-20261102-f03-protected-r3\build\bin\FantasyCard.Domain.Tests\release\FantasyCard.Domain.Tests.dll"><SkipType name="*" skipMethods="true" skipFields="true" skipProperties="true" skipEvents="true" skipStringHiding="true" /></Module><AssemblySearchPath path="G:\PR13Evidence\private\season-balance-20261102-f03-protected-r3\build\bin\FantasyCard.Server.Tests\release" /><Module file="G:\PR13Evidence\private\season-balance-20261102-f03-protected-r3\build\bin\FantasyCard.Server.Tests\release\FantasyCard.Server.Tests.dll"><SkipType name="*" skipMethods="true" skipFields="true" skipProperties="true" skipEvents="true" skipStringHiding="true" /></Module></Obfuscator>

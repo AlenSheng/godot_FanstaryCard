@@ -1,0 +1,20 @@
+VSTest version 18.7.0 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+  Failed FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_market_purchase_transfers_equipment_and_gold_exactly_once [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : Listing is no longer available in the current market.
+  Stack Trace:
+     at FantasyCard.Server.Progression.EconomyRepository.PurchaseMarketAsync(Guid buyerId, String requestId, Guid listingId, Int64 expectedVersion, CancellationToken cancellationToken, MarketPurchaseExpectation expectation)
+   at FantasyCard.Server.Progression.EconomyRepository.PurchaseMarketAsync(Guid buyerId, String requestId, Guid listingId, Int64 expectedVersion, CancellationToken cancellationToken, MarketPurchaseExpectation expectation)
+   at FantasyCard.Server.Progression.EconomyRepository.PurchaseMarketAsync(Guid buyerId, String requestId, Guid listingId, Int64 expectedVersion, CancellationToken cancellationToken, MarketPurchaseExpectation expectation)
+   at FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.<>c__DisplayClass4_0.<<Concurrent_market_purchase_transfers_equipment_and_gold_exactly_once>g__AttemptPurchaseAsync|2>d.MoveNext()
+--- End of stack trace from previous location ---
+   at FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_market_purchase_transfers_equipment_and_gold_exactly_once()
+   at FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_market_purchase_transfers_equipment_and_gold_exactly_once()
+--- End of stack trace from previous location ---
+Results File: G:\PR13Evidence\season-balance-20261102-r1\f03-protected-ordinary-r4\FantasyCard.Server.Tests-b08\shengjiahao_YK-SHENGJIAHAO_2026-11-07_12_24_19_net10.0.trx
+
+Failed!  - Failed:     1, Passed:    68, Skipped:     0, Total:    69, Duration: 2 m 39 s - FantasyCard.Server.Tests.dll (net10.0)
+[xUnit.net 00:02:10.40]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_market_purchase_transfers_equipment_and_gold_exactly_once [FAIL]

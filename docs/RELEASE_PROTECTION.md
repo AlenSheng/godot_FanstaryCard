@@ -75,6 +75,15 @@ payloads. Code signing is a separate publisher configuration.
 
 ## Server
 
+Current Production startup requires `Identity:EnableLocalAuth=false`; an enabled
+flag is rejected before the listener starts (`Program.cs`). The historical
+September endpoint result below is not the current invalid-configuration oracle.
+First-party binary HTTP uses `application/protobuf`; the older
+`application/x-protobuf` is rejected. Current bounded acceptance evidence and
+remaining release gates are recorded in
+`season-balance-20261102/F03-MINIMAL-APP-COLD-START.md`. These scoped results do not
+replace the full per-build protection certificate requirement below.
+
 ```powershell
 python tools/export_protected_server.py
 python tools/validate_protected_server.py tools/engine-local/protected/server-<id>/report.json --postgres-bin <postgresql-bin-directory>

@@ -15,6 +15,8 @@ public sealed class SeasonClassEfficiencyPilotTests
     private static readonly string[] Core=["GP15","GP16","GP17","GB19","GB20","GB23","GP20","GP21","GP22","ET-WATER-P","ET-WOOD-P","GO03","GP18","GP23"];
     private static readonly string[] Tail=["GP13","GP19","GP10","GP02"];
     private static readonly string[] Slots=["Head","Hands","Chest","Legs","Feet"];
+    private static readonly string[] MatchedArmorElements = ["Water", "Water", "Water", "Fire", "Fire"];
+    private static readonly string[] MatchedArmorEffects = ["Piercing", "Piercing", "Vitality", "Vitality", "Vitality"];
     private static readonly string[] CounterCore=["GP20","GP21","GP22","GP18","GO04"];
     private static readonly string[] UniversalSupport=["GP19","GP23"];
     private static readonly string[] FlowCore=["GP20","GP21","GP22","GP24","GO04","GP18","ET-WATER-P","ET-WATER-B","GB29"];
@@ -22,25 +24,63 @@ public sealed class SeasonClassEfficiencyPilotTests
     private static readonly DateTimeOffset Epoch=new(2026,11,20,0,0,0,TimeSpan.Zero);
     private sealed record Scenario(string Id,string Hero,string Deck,string Armor,int Seed,string Policy="published");
 
-    private static Scenario[] Plan()
+    private static Scenario[] Plan(bool forExecution = true)
     {
         using var document=JsonDocument.Parse(File.ReadAllText(Environment.GetEnvironmentVariable("FANTASYCARD_D03_PLAN")??throw new InvalidOperationException("Frozen D03 plan required.")));
         var prior=document.RootElement.GetProperty("prior_used").GetInt32();var rows=document.RootElement.GetProperty("cases").EnumerateArray().Select(x=>new Scenario(x.GetProperty("id").GetString()!,x.GetProperty("hero").GetString()!,x.GetProperty("deck").GetString()!,x.GetProperty("armor").GetString()!,x.GetProperty("seed").GetInt32(),x.TryGetProperty("policy",out var p)?p.GetString()!:"published")).ToArray();
-        Assert.InRange(prior,0,299);Assert.InRange(rows.Length,1,300-prior);Assert.Equal(rows.Length,rows.Select(x=>x.Id).Distinct(StringComparer.Ordinal).Count());
-        foreach(var row in rows){Assert.True(Enum.TryParse<HeroClass>(row.Hero,out var h)&&Enum.IsDefined(h));Assert.True(row.Deck is "reference" or "tempo" or "counter-tempo" or "universal-tempo" or "flow-counter" or "flow-loop" or "flow-paired" or "flow-offense");Assert.True(row.Armor is "balanced" or "offense" or "counter-offense");Assert.True(row.Policy is "published" or "rate-budget-v1" or "rate-budget-half-v1" or "rate-budget-half-card10-v1");}
+        var maximum = document.RootElement.TryGetProperty("maximum", out var declaredMaximum) ? declaredMaximum.GetInt32() : 300;
+        Assert.InRange(maximum, 300, 308);
+        Assert.InRange(prior,0,maximum-1);Assert.InRange(rows.Length,1,maximum-prior);Assert.Equal(rows.Length,rows.Select(x=>x.Id).Distinct(StringComparer.Ordinal).Count());
+        if (forExecution && maximum > 300)
+        {
+            using var budget = JsonDocument.Parse(File.ReadAllText(Environment.GetEnvironmentVariable("FANTASYCARD_D03_BUDGET_FILE")
+                ?? throw new InvalidOperationException("Extended D03 execution requires the actual approved budget file.")));
+            RequireExtendedBudget(prior, maximum, budget.RootElement);
+        }
+        foreach(var row in rows){Assert.True(Enum.TryParse<HeroClass>(row.Hero,out var h)&&Enum.IsDefined(h));Assert.True(row.Deck is "reference" or "tempo" or "counter-tempo" or "universal-tempo" or "flow-counter" or "flow-loop" or "flow-paired" or "flow-offense");Assert.True(row.Armor is "balanced" or "offense" or "counter-offense" or "counter-balanced");Assert.True(row.Policy is "published" or "rate-budget-v1" or "rate-budget-half-v1" or "rate-budget-half-card10-v1");}
         return rows;
+    }
+
+    private static void RequireExtendedBudget(int prior, int maximum, JsonElement budget)
+    {
+        if (!budget.TryGetProperty("item", out var item) || item.GetString() != "D03"
+            || !budget.TryGetProperty("used", out var used) || used.GetInt32() != prior
+            || !budget.TryGetProperty("maximum", out var cap) || cap.GetInt32() != maximum
+            || !budget.TryGetProperty("additional_user_reply_received", out var approved) || approved.ValueKind != JsonValueKind.True
+            || !budget.TryGetProperty("additional_authorization_reference", out var reference) || string.IsNullOrWhiteSpace(reference.GetString()))
+            throw new InvalidOperationException("Extended D03 execution has no matching explicit user budget authorization.");
+    }
+
+    [Fact(Skip = "D03 budget guard only; no encounter allocation or budget writes.", SkipUnless = nameof(Enabled))]
+    public void ExtendedBudgetRequiresExplicitMatchingApproval()
+    {
+        var pending = JsonSerializer.SerializeToElement(new { item = "D03", used = 299, maximum = 300 });
+        Assert.Throws<InvalidOperationException>(() => RequireExtendedBudget(299, 308, pending));
+        var missingReply = JsonSerializer.SerializeToElement(new { item = "D03", used = 299, maximum = 308 });
+        Assert.Throws<InvalidOperationException>(() => RequireExtendedBudget(299, 308, missingReply));
+        var fixtureApproval = JsonSerializer.SerializeToElement(new { item = "D03", used = 299, maximum = 308,
+            additional_user_reply_received = true, additional_authorization_reference = "unit-fixture-only-does-not-authorize-a-run" });
+        Assert.Throws<InvalidOperationException>(() => RequireExtendedBudget(298, 308, fixtureApproval));
+        RequireExtendedBudget(299, 308, fixtureApproval);
     }
 
     [Fact(Skip="Frozen D03 development candidates, no timed encounters.",SkipUnless=nameof(Enabled))]
     public void CandidateInputsAreLegalAndBothSpeedLayersAreValued()
     {
-        var config=GameConfigCatalog.Current;var rows=Plan();
+        var config=GameConfigCatalog.Current;var rows=Plan(forExecution: false);
         if(rows.Any(row=>row.Policy=="rate-budget-half-card10-v1"))_=SeasonMageCardCandidate.Current;
         foreach(var row in rows)
         {
             var hero=Enum.Parse<HeroClass>(row.Hero);var cards=Deck(hero,row.Deck);DeckRules.Validate(hero,cards,config.Cards.Where(x=>x.IsCodex).ToDictionary(x=>x.CardId,x=>new OwnedCard(x.CardId,x.HeroClass,(CardRarity)x.Rarity,1,false)));
             var armor=Armor(row.Armor);Assert.All(armor,x=>Assert.True(EquipmentRewardRules.IsValid(x.Equipment!)));Assert.All(armor,x=>Assert.Equal(3,x.Equipment!.Level));Assert.Equal(1,armor.Count(x=>x.Equipment!.Quality=="Orange"));
             SeasonLootRules.RequireEntry(new("d03-pilot",5,"season-v1",config.Version,"season-equipment-v1"),armor.Select(x=>x.Equipment!),config);
+            if (row.Armor == "counter-balanced")
+            {
+                Assert.Equal(MatchedArmorElements, armor.Select(x => x.Equipment!.Element));
+                Assert.Equal(MatchedArmorEffects, armor.Select(x => x.Equipment!.EffectAffix));
+                Assert.Equal(NumericalRules.ForSeason(config, 5), NumericalRules.SeasonV1 with
+                    { SeasonMageSustainBudget = true, SeasonMageReturnRateBasisPoints = 500 });
+            }
             if(row.Deck=="flow-paired")
             {
                 Assert.True(cards.Count(id=>config.Cards.Single(c=>c.CardId==id).Effect is {Element:CardElement.Fire,ElementalDamage:>0})>=2);
@@ -50,7 +90,7 @@ public sealed class SeasonClassEfficiencyPilotTests
         var state=new PlayerCombatState(HeroClass.Mage,Deck(HeroClass.Mage,"reference"),new Random(1));
         Assert.Equal(Deck(HeroClass.Mage,"flow-loop"),Deck(HeroClass.Mage,"flow-offense"));
         Assert.Equal(3,FutureDraws(state,0,0,0,12),8);Assert.Equal(4.5,FutureDraws(state,0,0,6,12),8);Assert.Equal(8,FutureDraws(state,-.5,12,4,12),8);
-        File.WriteAllText(Environment.GetEnvironmentVariable("FANTASYCARD_D03_PREFLIGHT_OUTPUT")??throw new InvalidOperationException("New proof path required."),JsonSerializer.Serialize(new {cases=rows.Length,config.Version,config.ContentHash,new_encounters=0,forecast_horizon_seconds=12,not_an_acceptance_result=true}));
+        File.WriteAllText(Environment.GetEnvironmentVariable("FANTASYCARD_D03_PREFLIGHT_OUTPUT")??throw new InvalidOperationException("New proof path required."),JsonSerializer.Serialize(new {cases=rows.Length,config.Version,config.ContentHash,new_encounters=0,forecast_horizon_seconds=12,not_an_acceptance_result=true,budget_admission_checked=false,execution_authorized_by_preflight=false}));
     }
 
     [Fact(Skip="D03 exploratory development roster only, not population or final acceptance.",SkipUnless=nameof(Enabled))]
@@ -148,6 +188,8 @@ public sealed class SeasonClassEfficiencyPilotTests
         }
         return total;
     }
+    internal static ExplorationItem[] MatchedSustainArmor() => Armor("counter-balanced");
+
     internal static string[] Deck(HeroClass hero,string variant)
     {
         var classCards=new[]{hero==HeroClass.Mage?"MAG-09":hero==HeroClass.Priest?"PRI-09":"GUA-09",hero==HeroClass.Mage?"MAG-10":hero==HeroClass.Priest?"PRI-10":"GUA-10"};
@@ -165,5 +207,5 @@ public sealed class SeasonClassEfficiencyPilotTests
         }
         return CounterCore.Concat(variant=="counter-tempo"?classCards:UniversalSupport).Concat(water).Concat(fire).Concat(Core).Concat(Tail).Distinct(StringComparer.Ordinal).Take(20).ToArray();
     }
-    private static ExplorationItem[] Armor(string variant)=>Slots.Select((slot,i)=>new ExplorationItem(Guid.NewGuid().ToString("D"),ExplorationItemKind.Equipment,Equipment:new(slot,i==0?"Orange":"Purple",variant=="counter-offense"?(i<3?"Water":"Fire"):(i<3?"Fire":"Metal"),variant is "offense" or "counter-offense"||i<2?"Piercing":"Vitality","DrawInterval",3,StatsVersion:"season-equipment-v1"),IsGenerated:false)).ToArray();
+    private static ExplorationItem[] Armor(string variant)=>Slots.Select((slot,i)=>new ExplorationItem(Guid.NewGuid().ToString("D"),ExplorationItemKind.Equipment,Equipment:new(slot,i==0?"Orange":"Purple",variant is "counter-offense" or "counter-balanced"?(i<3?"Water":"Fire"):(i<3?"Fire":"Metal"),variant is "offense" or "counter-offense"||i<2?"Piercing":"Vitality","DrawInterval",3,StatsVersion:"season-equipment-v1"),IsGenerated:false)).ToArray();
 }

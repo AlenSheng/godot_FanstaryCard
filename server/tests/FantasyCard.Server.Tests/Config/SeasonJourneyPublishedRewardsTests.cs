@@ -11,7 +11,7 @@ public sealed class SeasonJourneyPublishedRewardsTests
     public void FormalWorkbookAndEmbeddedBytesExposeAllThirtyRewardsAndTenLocalizedCosmetics()
     {
         var root=PublishedConfigTestInputs.FindRoot();var config=GameConfigCatalog.Current;
-        Assert.Equal("season-v1-config-16",config.Version);
+        Assert.Equal("season-v1-config-17",config.Version);
         var compiled=ConfigCompiler.Compile(config.Version,XlsxConfigReader.Read(Path.Combine(root,"config/FantasyCard_Config.xlsx")),out var hash);
         Assert.Equal(config.ContentHash,hash);Assert.Equal(config.ExportPublishedBytes(),compiled);
         var policy=Assert.IsType<SeasonJourneyRewardsConfig>(config.SeasonJourneyRewards);

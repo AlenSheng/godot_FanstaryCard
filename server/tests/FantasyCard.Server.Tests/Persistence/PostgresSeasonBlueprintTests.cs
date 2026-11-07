@@ -1,10 +1,14 @@
 using System.Text.Json;
+using FantasyCard.Contracts.Matchmaking;
+using FantasyCard.Contracts.Players;
 using FantasyCard.Domain.Combat;
 using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Players;
 using FantasyCard.Domain.Rooms;
 using FantasyCard.Domain.Seasons;
 using FantasyCard.Server.Common;
+using FantasyCard.Server.Matchmaking;
+using FantasyCard.Server.Rooms;
 using FantasyCard.Server.Settlement;
 
 namespace FantasyCard.Server.Tests.Persistence;
@@ -75,11 +79,17 @@ public sealed class PostgresSeasonBlueprintTests
         var p=await CraftingTestInputs.CreateAsync(db);
         var fixture=await TerminalAsync(db,p,2,RoomPlayerPhase.Extracted);
         var config=GameConfigCatalog.Current;var catalog=CombatCardCatalog.Create(config);
+        var deckVersion=await db.ScalarAsync<long>("SELECT version FROM player_decks WHERE player_id=$1 AND hero_class=2",p.Player);
+        var prepared=await new PreparationRepository(db.DataSource,p.Clock).CreateAsync(p.Player,"elite-reward-preparation",
+            new(HeroClassDto.Mage,deckVersion,[null,null,null,null,null],BackpackTierDto.Free,[],0,"D2",p.Season.SeasonId),Ct);
+        Assert.Equal(CreatePreparationStatus.Created,prepared.Status);var source=prepared.Preparation!.Snapshot;
+        await CraftingTestInputs.SqlAsync(db,"UPDATE preparations SET status='Matched' WHERE preparation_id=$1",prepared.Preparation.PreparationId);
+        await CraftingTestInputs.SqlAsync(db,"UPDATE match_players SET preparation_id=$1 WHERE match_id=$2 AND player_id=$3",prepared.Preparation.PreparationId,fixture.Match,p.Player);
         var map=ChaosMapGenerator.Generate(73,1).Capture();var start=map.SpawnPositions[0];
         map=map with {Cells=map.Cells.Select(cell=>cell.Position==start?cell with {Layer=ChaosMapLayer.Core,MonsterGroupId="E1",IsBoss=false}:cell).ToArray()};
         var room=new BattleRoom(fixture.Snapshot.RoomId,config.Version,catalog,73,season:p.Season.ContextFor(2));
-        var cards=Enumerable.Range(1,13).Select(i=>$"C{i:D2}").Concat(Enumerable.Range(1,7).Select(i=>$"MAG-{i:D2}")).ToArray();
-        var player=room.AddPlayer(new(p.Player,HeroClass.Mage,cards,null));room.InitializeMap(ChaosMapState.Restore(map));
+        var player=room.AddPlayer(new(p.Player,HeroClass.Mage,source.CardIds,null,CardLevels:source.CardLevels,
+            LootPreferenceElement:source.LootPreferenceElement));room.InitializeMap(ChaosMapState.Restore(map));
         var random=new CombatRandom(0);random.Restore(room.Capture().RandomStreams!.Loot);
         _=random.Next(6,11);var fragments=random.Next(4,8)*19000/10000;
         foreach(var monster in player.Pve!.Monsters.ToArray())
@@ -98,6 +108,7 @@ public sealed class PostgresSeasonBlueprintTests
         // asset/settlement interoperability, not a completed gameplay route.
         var snapshot=room.Capture();snapshot=snapshot with {Players=snapshot.Players.Select(value=>value with {Phase=RoomPlayerPhase.Extracted,Pve=null,RewardChoice=null}).ToArray()};
         using var metrics=new ServerMetrics();var repository=new SettlementRepository(db.DataSource,p.Clock,metrics);
+        await new RoomSnapshotRepository(db.DataSource,p.Clock,metrics).SaveIfDueAsync(snapshot,Ct);
         var coordinator=new SettlementCoordinator(repository,p.Clock);
         await coordinator.ObserveAsync(fixture.Match,snapshot);await coordinator.ObserveAsync(fixture.Match,snapshot);
         var id=await db.ScalarAsync<Guid>("SELECT settlement_id FROM match_settlements WHERE match_id=$1",fixture.Match);

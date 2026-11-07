@@ -55,7 +55,7 @@ public sealed class SeasonCohortRouteTests
         var config=configuration??GameConfigCatalog.Current;var catalog=CombatCardCatalog.Create(config);var hero=Enum.Parse<HeroClass>(scenario.Hero);var id=Guid.NewGuid();
         var context=new SeasonContext("d03-cohorts",scenario.Difficulty,"season-v1",config.Version,"season-equipment-v1");
         var room=new BattleRoom(Guid.NewGuid(),config.Version,catalog,scenario.Seed,season:context);
-        var startingCards=scenario.Loadout=="current"?Deck(hero,scenario.Cohort):SeasonStarterSupportTests.Deck(scenario.Loadout);var player=room.AddPlayer(new(id,hero,startingCards,null,WeaponLevel:Math.Min(scenario.Cohort=="novice"?2:5,scenario.Difficulty),WornArmor:ownedArmor??Armor(),CardLevels:Enumerable.Repeat(Math.Min(scenario.Cohort=="novice"?2:5,scenario.Difficulty),20).ToArray()));
+        var startingCards=scenario.Loadout is "flow-loop" or "flow-offense"?SeasonClassEfficiencyPilotTests.Deck(hero,scenario.Loadout):scenario.Loadout=="current"?Deck(hero,scenario.Cohort):SeasonStarterSupportTests.Deck(scenario.Loadout);var player=room.AddPlayer(new(id,hero,startingCards,null,WeaponLevel:Math.Min(scenario.Cohort=="novice"?2:5,scenario.Difficulty),WornArmor:ownedArmor??Armor(),CardLevels:Enumerable.Repeat(Math.Min(scenario.Cohort=="novice"?2:5,scenario.Difficulty),20).ToArray()));
         var originalArmor=player.WornArmor.ToArray();var choiceRandom=new Random(scenario.Seed^0x43484f49);var lastAction=TimeSpan.FromSeconds(-1);var reaction=TimeSpan.FromSeconds(scenario.Cohort=="novice"?1:scenario.Cohort=="returning"?.7:.5);
         var map=ChaosMapGenerator.Generate(scenario.Seed,1,config.SeasonThemes);var mapOriginal=JsonSerializer.Serialize(map.Capture());var path=Path(map,scenario.Route);room.InitializeMap(map);
         var originalIds=Instances(player).Select(x=>x.InstanceId).ToHashSet();var pathIndex=0;var casts=0;var kills=0;var clears=0;var potions=0;var springs=0;var redRolls=0;
@@ -136,7 +136,7 @@ public sealed class SeasonCohortRouteTests
             }
             if(player.Phase==RoomPlayerPhase.Pve&&player.Combat.StunRemaining<=TimeSpan.Zero&&room.GetCombatActionStatus(id).RemainingMs==0&&room.Elapsed-lastAction>=reaction&&player.Combat.Deck.Hand.Count>0)
             {
-                var target=monsters.Where(x=>!x.IsDead).OrderBy(x=>x.Hp+x.Shield).First();var chosen=SeasonClassEfficiencyPilotTests.Choose(room,player,target,catalog,startingCards,out var previews,out var candidates);
+                var target=monsters.Where(x=>!x.IsDead).OrderBy(x=>x.Hp+x.Shield).First();var chosen=SeasonClassEfficiencyPilotTests.Choose(room,player,target,catalog,startingCards,out var previews,out var candidates,valueSustainIntents:scenario.Loadout is "flow-loop" or "flow-offense");
                 if(chosen.Length>0)
                 {
                     var beforeIds=Instances(player).Select(x=>x.InstanceId).ToHashSet();var ids=chosen.Select(x=>x.InstanceId).ToArray();var hpBefore=player.Combat.Hp;var battle=player.Pve!.BattleId;
