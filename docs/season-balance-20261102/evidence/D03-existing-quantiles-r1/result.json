@@ -1,0 +1,636 @@
+{
+  "scope": "Read-only existing nine-bank audit; no new cases or acceptance relaxation",
+  "bank_source_sha256": "65ac441c74c2db2107cc654b9786931774fb5db3928974bc14f193dab48616e0",
+  "definitions": {
+    "FirstQualityAttempt": "D2-selected5slots, every quality rank>=Purple, exactly1Orange; not first green/blue piece",
+    "FirstReadyAttempt": "Quality-set condition plus allselected levels>=3 and at least1 positive effect category; not exact target build",
+    "FirstTargetAttempt": "Inventory holds every exact Water3/Fire2,2Piercing/3Vitality target slot with level>=3; not proof all5were worn in a route"
+  },
+  "historical_bank_versions_mixed": true,
+  "cohort_groups": [
+    {
+      "cohort": "novice",
+      "tracks": 3,
+      "historical_attempts": 60,
+      "deaths": 24,
+      "milestones": {
+        "FirstQualityAttempt": {
+          "observations": [
+            {
+              "hero": "Mage",
+              "observed_attempt": null,
+              "followed_through_attempt": 20,
+              "right_censored": true
+            },
+            {
+              "hero": "Priest",
+              "observed_attempt": null,
+              "followed_through_attempt": 20,
+              "right_censored": true
+            },
+            {
+              "hero": "Guardian",
+              "observed_attempt": null,
+              "followed_through_attempt": 20,
+              "right_censored": true
+            }
+          ],
+          "observed_events": 0,
+          "tracks": 3,
+          "P50": null,
+          "P90": null,
+          "method": "Empirical type7 across all3 named tracks only when all events observed; otherwise no complete-case percentile or censoring-independence assumption"
+        },
+        "FirstReadyAttempt": {
+          "observations": [
+            {
+              "hero": "Mage",
+              "observed_attempt": null,
+              "followed_through_attempt": 20,
+              "right_censored": true
+            },
+            {
+              "hero": "Priest",
+              "observed_attempt": null,
+              "followed_through_attempt": 20,
+              "right_censored": true
+            },
+            {
+              "hero": "Guardian",
+              "observed_attempt": null,
+              "followed_through_attempt": 20,
+              "right_censored": true
+            }
+          ],
+          "observed_events": 0,
+          "tracks": 3,
+          "P50": null,
+          "P90": null,
+          "method": "Empirical type7 across all3 named tracks only when all events observed; otherwise no complete-case percentile or censoring-independence assumption"
+        },
+        "FirstTargetAttempt": {
+          "observations": [
+            {
+              "hero": "Mage",
+              "observed_attempt": null,
+              "followed_through_attempt": 20,
+              "right_censored": true
+            },
+            {
+              "hero": "Priest",
+              "observed_attempt": null,
+              "followed_through_attempt": 20,
+              "right_censored": true
+            },
+            {
+              "hero": "Guardian",
+              "observed_attempt": null,
+              "followed_through_attempt": 20,
+              "right_censored": true
+            }
+          ],
+          "observed_events": 0,
+          "tracks": 3,
+          "P50": null,
+          "P90": null,
+          "method": "Empirical type7 across all3 named tracks only when all events observed; otherwise no complete-case percentile or censoring-independence assumption"
+        }
+      }
+    },
+    {
+      "cohort": "returning",
+      "tracks": 3,
+      "historical_attempts": 41,
+      "deaths": 1,
+      "milestones": {
+        "FirstQualityAttempt": {
+          "observations": [
+            {
+              "hero": "Mage",
+              "observed_attempt": 5,
+              "followed_through_attempt": 12,
+              "right_censored": false
+            },
+            {
+              "hero": "Priest",
+              "observed_attempt": 7,
+              "followed_through_attempt": 15,
+              "right_censored": false
+            },
+            {
+              "hero": "Guardian",
+              "observed_attempt": 5,
+              "followed_through_attempt": 14,
+              "right_censored": false
+            }
+          ],
+          "observed_events": 3,
+          "tracks": 3,
+          "P50": 5.0,
+          "P90": 6.6,
+          "method": "Empirical type7 across all3 named tracks only when all events observed; otherwise no complete-case percentile or censoring-independence assumption"
+        },
+        "FirstReadyAttempt": {
+          "observations": [
+            {
+              "hero": "Mage",
+              "observed_attempt": 5,
+              "followed_through_attempt": 12,
+              "right_censored": false
+            },
+            {
+              "hero": "Priest",
+              "observed_attempt": 7,
+              "followed_through_attempt": 15,
+              "right_censored": false
+            },
+            {
+              "hero": "Guardian",
+              "observed_attempt": 5,
+              "followed_through_attempt": 14,
+              "right_censored": false
+            }
+          ],
+          "observed_events": 3,
+          "tracks": 3,
+          "P50": 5.0,
+          "P90": 6.6,
+          "method": "Empirical type7 across all3 named tracks only when all events observed; otherwise no complete-case percentile or censoring-independence assumption"
+        },
+        "FirstTargetAttempt": {
+          "observations": [
+            {
+              "hero": "Mage",
+              "observed_attempt": null,
+              "followed_through_attempt": 12,
+              "right_censored": true
+            },
+            {
+              "hero": "Priest",
+              "observed_attempt": null,
+              "followed_through_attempt": 15,
+              "right_censored": true
+            },
+            {
+              "hero": "Guardian",
+              "observed_attempt": null,
+              "followed_through_attempt": 14,
+              "right_censored": true
+            }
+          ],
+          "observed_events": 0,
+          "tracks": 3,
+          "P50": null,
+          "P90": null,
+          "method": "Empirical type7 across all3 named tracks only when all events observed; otherwise no complete-case percentile or censoring-independence assumption"
+        }
+      }
+    },
+    {
+      "cohort": "skilled",
+      "tracks": 3,
+      "historical_attempts": 57,
+      "deaths": 1,
+      "milestones": {
+        "FirstQualityAttempt": {
+          "observations": [
+            {
+              "hero": "Mage",
+              "observed_attempt": 10,
+              "followed_through_attempt": 20,
+              "right_censored": false
+            },
+            {
+              "hero": "Priest",
+              "observed_attempt": 10,
+              "followed_through_attempt": 18,
+              "right_censored": false
+            },
+            {
+              "hero": "Guardian",
+              "observed_attempt": 5,
+              "followed_through_attempt": 19,
+              "right_censored": false
+            }
+          ],
+          "observed_events": 3,
+          "tracks": 3,
+          "P50": 10.0,
+          "P90": 10.0,
+          "method": "Empirical type7 across all3 named tracks only when all events observed; otherwise no complete-case percentile or censoring-independence assumption"
+        },
+        "FirstReadyAttempt": {
+          "observations": [
+            {
+              "hero": "Mage",
+              "observed_attempt": 18,
+              "followed_through_attempt": 20,
+              "right_censored": false
+            },
+            {
+              "hero": "Priest",
+              "observed_attempt": 16,
+              "followed_through_attempt": 18,
+              "right_censored": false
+            },
+            {
+              "hero": "Guardian",
+              "observed_attempt": 5,
+              "followed_through_attempt": 19,
+              "right_censored": false
+            }
+          ],
+          "observed_events": 3,
+          "tracks": 3,
+          "P50": 16.0,
+          "P90": 17.6,
+          "method": "Empirical type7 across all3 named tracks only when all events observed; otherwise no complete-case percentile or censoring-independence assumption"
+        },
+        "FirstTargetAttempt": {
+          "observations": [
+            {
+              "hero": "Mage",
+              "observed_attempt": 18,
+              "followed_through_attempt": 20,
+              "right_censored": false
+            },
+            {
+              "hero": "Priest",
+              "observed_attempt": null,
+              "followed_through_attempt": 18,
+              "right_censored": true
+            },
+            {
+              "hero": "Guardian",
+              "observed_attempt": 18,
+              "followed_through_attempt": 19,
+              "right_censored": false
+            }
+          ],
+          "observed_events": 2,
+          "tracks": 3,
+          "P50": null,
+          "P90": null,
+          "method": "Empirical type7 across all3 named tracks only when all events observed; otherwise no complete-case percentile or censoring-independence assumption"
+        }
+      }
+    }
+  ],
+  "banks": [
+    {
+      "Id": "D03-R1-001",
+      "Hero": "Mage",
+      "Cohort": "novice",
+      "Attempts": 20,
+      "Deaths": 8,
+      "GoldEarned": 1694,
+      "FragmentsEarned": 257,
+      "FragmentsSpent": 40,
+      "Fragments": 217,
+      "Blueprints": 3,
+      "OrangeBlueprints": 0,
+      "BlueprintsSpent": 0,
+      "OrangeBlueprintsSpent": 0,
+      "CombatSeconds": 5200.2,
+      "FirstQualityAttempt": null,
+      "FirstReadyAttempt": null,
+      "FirstTargetAttempt": null,
+      "OriginSha256": "45d4645db6f8ab8a841eb0858fee67b63b4be19e04565df4d7f2d01c5eda943a",
+      "source": "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-formal17-continuation-r1\\observations\\D03-R1-001\\bank-final.original.json",
+      "source_sha256": "966f0b4012bc6ecb8ae6e4e71026ebdf3675d915891072900d9ad7443dd58d8d",
+      "gross_gold_not_operating_net": 1694,
+      "physical_IDs": 59,
+      "active_bodies": 24,
+      "recycled_bodies": 0,
+      "lost_bodies": 35
+    },
+    {
+      "Id": "D03-R1-002",
+      "Hero": "Priest",
+      "Cohort": "novice",
+      "Attempts": 20,
+      "Deaths": 8,
+      "GoldEarned": 1664,
+      "FragmentsEarned": 251,
+      "FragmentsSpent": 39,
+      "Fragments": 212,
+      "Blueprints": 4,
+      "OrangeBlueprints": 0,
+      "BlueprintsSpent": 0,
+      "OrangeBlueprintsSpent": 0,
+      "CombatSeconds": 6890.799999999999,
+      "FirstQualityAttempt": null,
+      "FirstReadyAttempt": null,
+      "FirstTargetAttempt": null,
+      "OriginSha256": "45d4645db6f8ab8a841eb0858fee67b63b4be19e04565df4d7f2d01c5eda943a",
+      "source": "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-formal17-continuation-r1\\observations\\D03-R1-002\\bank-final.original.json",
+      "source_sha256": "7f3fbab5e29f5c5074c42333fb2b0272be8f123ee9b126888de168e19e482aa1",
+      "gross_gold_not_operating_net": 1664,
+      "physical_IDs": 64,
+      "active_bodies": 26,
+      "recycled_bodies": 0,
+      "lost_bodies": 38
+    },
+    {
+      "Id": "D03-R1-003",
+      "Hero": "Guardian",
+      "Cohort": "novice",
+      "Attempts": 20,
+      "Deaths": 8,
+      "GoldEarned": 1788,
+      "FragmentsEarned": 284,
+      "FragmentsSpent": 39,
+      "Fragments": 245,
+      "Blueprints": 1,
+      "OrangeBlueprints": 0,
+      "BlueprintsSpent": 24,
+      "OrangeBlueprintsSpent": 0,
+      "CombatSeconds": 9327.2,
+      "FirstQualityAttempt": null,
+      "FirstReadyAttempt": null,
+      "FirstTargetAttempt": null,
+      "OriginSha256": "45d4645db6f8ab8a841eb0858fee67b63b4be19e04565df4d7f2d01c5eda943a",
+      "source": "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-formal17-continuation-r1\\observations\\D03-R1-003\\bank-final.original.json",
+      "source_sha256": "5cc742c531f1ec109a28f449e481297dbd4d477050029c0e15233b5b95e1eaaf",
+      "gross_gold_not_operating_net": 1788,
+      "physical_IDs": 71,
+      "active_bodies": 29,
+      "recycled_bodies": 0,
+      "lost_bodies": 42
+    },
+    {
+      "Id": "D03-R1-004",
+      "Hero": "Mage",
+      "Cohort": "returning",
+      "Attempts": 12,
+      "Deaths": 0,
+      "GoldEarned": 2297,
+      "FragmentsEarned": 610,
+      "FragmentsSpent": 122,
+      "Fragments": 488,
+      "Blueprints": 0,
+      "OrangeBlueprints": 3,
+      "BlueprintsSpent": 3,
+      "OrangeBlueprintsSpent": 35,
+      "CombatSeconds": 2054.2999999999997,
+      "FirstQualityAttempt": 5,
+      "FirstReadyAttempt": 5,
+      "FirstTargetAttempt": null,
+      "OriginSha256": "45d4645db6f8ab8a841eb0858fee67b63b4be19e04565df4d7f2d01c5eda943a",
+      "source": "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-formal17-continuation-r1\\observations\\D03-R1-004\\bank-final.original.json",
+      "source_sha256": "3af1c1e15efbb6d9bcc78af524757fb05badb9a7d746aa2757ee17e034174441",
+      "gross_gold_not_operating_net": 2297,
+      "physical_IDs": 59,
+      "active_bodies": 42,
+      "recycled_bodies": 17,
+      "lost_bodies": 0
+    },
+    {
+      "Id": "D03-R1-005",
+      "Hero": "Priest",
+      "Cohort": "returning",
+      "Attempts": 15,
+      "Deaths": 1,
+      "GoldEarned": 2625,
+      "FragmentsEarned": 775,
+      "FragmentsSpent": 117,
+      "Fragments": 658,
+      "Blueprints": 0,
+      "OrangeBlueprints": 9,
+      "BlueprintsSpent": 10,
+      "OrangeBlueprintsSpent": 28,
+      "CombatSeconds": 3283.9999999999995,
+      "FirstQualityAttempt": 7,
+      "FirstReadyAttempt": 7,
+      "FirstTargetAttempt": null,
+      "OriginSha256": "45d4645db6f8ab8a841eb0858fee67b63b4be19e04565df4d7f2d01c5eda943a",
+      "source": "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-formal17-continuation-r1\\observations\\D03-R1-005\\bank-final.original.json",
+      "source_sha256": "7add4ceefce07e1fdbc195a5415f45fc7926af88e11f24ad648397ab7ba815b7",
+      "gross_gold_not_operating_net": 2625,
+      "physical_IDs": 73,
+      "active_bodies": 44,
+      "recycled_bodies": 18,
+      "lost_bodies": 11
+    },
+    {
+      "Id": "D03-R1-006",
+      "Hero": "Guardian",
+      "Cohort": "returning",
+      "Attempts": 14,
+      "Deaths": 0,
+      "GoldEarned": 2432,
+      "FragmentsEarned": 651,
+      "FragmentsSpent": 102,
+      "Fragments": 549,
+      "Blueprints": 0,
+      "OrangeBlueprints": 5,
+      "BlueprintsSpent": 3,
+      "OrangeBlueprintsSpent": 39,
+      "CombatSeconds": 2864.6,
+      "FirstQualityAttempt": 5,
+      "FirstReadyAttempt": 5,
+      "FirstTargetAttempt": null,
+      "OriginSha256": "45d4645db6f8ab8a841eb0858fee67b63b4be19e04565df4d7f2d01c5eda943a",
+      "source": "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-formal17-continuation-r1\\observations\\D03-R1-006\\bank-final.original.json",
+      "source_sha256": "54e4dba78b04e6c878697ee39aa62b51a9cc2e8194d480ef3068da1f5a2b364a",
+      "gross_gold_not_operating_net": 2432,
+      "physical_IDs": 59,
+      "active_bodies": 41,
+      "recycled_bodies": 18,
+      "lost_bodies": 0
+    },
+    {
+      "Id": "D03-R1-007",
+      "Hero": "Mage",
+      "Cohort": "skilled",
+      "Attempts": 20,
+      "Deaths": 1,
+      "GoldEarned": 3379,
+      "FragmentsEarned": 1198,
+      "FragmentsSpent": 131,
+      "Fragments": 1067,
+      "Blueprints": 0,
+      "OrangeBlueprints": 13,
+      "BlueprintsSpent": 11,
+      "OrangeBlueprintsSpent": 35,
+      "CombatSeconds": 3015.7000000000003,
+      "FirstQualityAttempt": 10,
+      "FirstReadyAttempt": 18,
+      "FirstTargetAttempt": 18,
+      "OriginSha256": "45d4645db6f8ab8a841eb0858fee67b63b4be19e04565df4d7f2d01c5eda943a",
+      "source": "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-formal17-continuation-r1\\observations\\D03-R1-007\\bank-final.original.json",
+      "source_sha256": "f57f08848656a162e7ec4a8c937ce76c795610952527597c8ab8e2b162c150b8",
+      "gross_gold_not_operating_net": 3379,
+      "physical_IDs": 50,
+      "active_bodies": 43,
+      "recycled_bodies": 0,
+      "lost_bodies": 7
+    },
+    {
+      "Id": "D03-R1-008",
+      "Hero": "Priest",
+      "Cohort": "skilled",
+      "Attempts": 18,
+      "Deaths": 0,
+      "GoldEarned": 3492,
+      "FragmentsEarned": 1183,
+      "FragmentsSpent": 122,
+      "Fragments": 1061,
+      "Blueprints": 0,
+      "OrangeBlueprints": 7,
+      "BlueprintsSpent": 4,
+      "OrangeBlueprintsSpent": 54,
+      "CombatSeconds": 4397.7,
+      "FirstQualityAttempt": 10,
+      "FirstReadyAttempt": 16,
+      "FirstTargetAttempt": null,
+      "OriginSha256": "45d4645db6f8ab8a841eb0858fee67b63b4be19e04565df4d7f2d01c5eda943a",
+      "source": "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-formal17-continuation-r1\\observations\\D03-R1-008\\bank-final.original.json",
+      "source_sha256": "2cad6ffd5abef0ef97e4ba6c7b812005d42d882562208e7ddf78a9607ae74ee0",
+      "gross_gold_not_operating_net": 3492,
+      "physical_IDs": 55,
+      "active_bodies": 40,
+      "recycled_bodies": 15,
+      "lost_bodies": 0
+    },
+    {
+      "Id": "D03-R1-009",
+      "Hero": "Guardian",
+      "Cohort": "skilled",
+      "Attempts": 19,
+      "Deaths": 0,
+      "GoldEarned": 3799,
+      "FragmentsEarned": 1300,
+      "FragmentsSpent": 152,
+      "Fragments": 1148,
+      "Blueprints": 0,
+      "OrangeBlueprints": 4,
+      "BlueprintsSpent": 4,
+      "OrangeBlueprintsSpent": 64,
+      "CombatSeconds": 4590.5,
+      "FirstQualityAttempt": 5,
+      "FirstReadyAttempt": 5,
+      "FirstTargetAttempt": 18,
+      "OriginSha256": "45d4645db6f8ab8a841eb0858fee67b63b4be19e04565df4d7f2d01c5eda943a",
+      "source": "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-formal17-continuation-r1\\observations\\D03-R1-009\\bank-final.original.json",
+      "source_sha256": "81471c6622da86739862c4b4640ceb52d21a1f7f0ccdfbcdffa52677a6bac14b",
+      "gross_gold_not_operating_net": 3799,
+      "physical_IDs": 59,
+      "active_bodies": 42,
+      "recycled_bodies": 17,
+      "lost_bodies": 0
+    }
+  ],
+  "physical_id_conservation": [
+    {
+      "id": "D03-R1-001",
+      "seen": 59,
+      "active": 24,
+      "recycled": 0,
+      "lost": 35,
+      "disjoint_and_complete": true
+    },
+    {
+      "id": "D03-R1-002",
+      "seen": 64,
+      "active": 26,
+      "recycled": 0,
+      "lost": 38,
+      "disjoint_and_complete": true
+    },
+    {
+      "id": "D03-R1-003",
+      "seen": 71,
+      "active": 29,
+      "recycled": 0,
+      "lost": 42,
+      "disjoint_and_complete": true
+    },
+    {
+      "id": "D03-R1-004",
+      "seen": 59,
+      "active": 42,
+      "recycled": 17,
+      "lost": 0,
+      "disjoint_and_complete": true
+    },
+    {
+      "id": "D03-R1-005",
+      "seen": 73,
+      "active": 44,
+      "recycled": 18,
+      "lost": 11,
+      "disjoint_and_complete": true
+    },
+    {
+      "id": "D03-R1-006",
+      "seen": 59,
+      "active": 41,
+      "recycled": 18,
+      "lost": 0,
+      "disjoint_and_complete": true
+    },
+    {
+      "id": "D03-R1-007",
+      "seen": 50,
+      "active": 43,
+      "recycled": 0,
+      "lost": 7,
+      "disjoint_and_complete": true
+    },
+    {
+      "id": "D03-R1-008",
+      "seen": 55,
+      "active": 40,
+      "recycled": 15,
+      "lost": 0,
+      "disjoint_and_complete": true
+    },
+    {
+      "id": "D03-R1-009",
+      "seen": 59,
+      "active": 42,
+      "recycled": 17,
+      "lost": 0,
+      "disjoint_and_complete": true
+    }
+  ],
+  "total_physical_IDs": 549,
+  "gold_scope": "Bank asserts Gold==GoldEarned and contains no gold-spending balance. Treat as gross carried gold; real account operating costs require the separate F01 transaction evidence.",
+  "fragments_scope": "Net of bank recorded enhancement/reforge spending, not a universal operating-cost model",
+  "conditional_model": {
+    "original_model": {
+      "zip_sha256": "ac593d3600b4c68dac4f136b0bee1808899ecf0a452b59e02605fe8b2018b64c",
+      "member": "analysis/independent_economy_results.json",
+      "member_sha256": "8bc45f1ea96d92e5e945dbb90058063a13925805e9fa7b521c3c666f55b14ca4",
+      "scope": "Independent conditional arithmetic. No real combat, route generation, actual player behavior, telemetry, or measured extraction rates."
+    },
+    "R1_success_fragments": 40,
+    "learned_template_rebuild_fragments": 66,
+    "assumed_extraction_rate": 0.7,
+    "fragment_expected_net_per_attempt": 8.199999999999996,
+    "fragment_break_even_extraction_rate": 0.6226415094339622,
+    "original_model_body_mark_break_even": 0.6896551724137931,
+    "original_model_net_marks_at70pct": 0.44999999999999774,
+    "assumptions": [
+      "All5 target templates already learned",
+      "Original model R1 rewards and equipment choices",
+      "No claim that simulated or real extraction rates equal70percent",
+      "Target kit must be legal for difficulty; original D0/D1 target-kit stress ratios are not usable farming paths"
+    ],
+    "limitation": "Conditional arithmetic, not new combat, current-version steady-state proof or evidence that novice target-kit farming is profitable"
+  },
+  "limitations": [
+    "Only3 named tracks per cohort, one perclass; not population P90 confidence",
+    "Censored values remain unknown, not0 or successful",
+    "Do not backdate late lobby intervention milestones",
+    "Positive ending inventory and wallets are finite-history evidence, not infinite-horizon stationarity"
+  ],
+  "new_gameplay_starts": 0,
+  "PG_started": false,
+  "cloud_changed": false,
+  "D03_used": 308,
+  "D03_max": 308,
+  "D03_accepted": false,
+  "whole_progress": "33/35"
+}
