@@ -14,7 +14,10 @@ public sealed class SeasonD0PublishedCalibrationTests
     public void Published16ChangesOnlyD0HpAndShieldWhileArchive15KeepsItsOriginalCurve()
     {
         using var stream=Assembly.GetExecutingAssembly().GetManifestResourceStream("ArchivedD0Config15");Assert.NotNull(stream);using var memory=new MemoryStream();stream.CopyTo(memory);
-        var old=GameConfigCatalog.Load(memory.ToArray());var current=GameConfigCatalog.Current;Assert.Equal("season-v1-config-15",old.Version);Assert.Equal("season-v1-config-16",current.Version);
+        var old=GameConfigCatalog.Load(memory.ToArray());
+        // This regression compares the immutable v15-to-v16 calibration, including its original hash.
+        var current=GameConfigCatalog.Load(File.ReadAllBytes(Path.Combine(PublishedConfigTestInputs.FindRoot(),"server/config/archive/season-v1-config-16/fantasycard.config.bytes")));
+        Assert.Equal("season-v1-config-15",old.Version);Assert.Equal("season-v1-config-16",current.Version);
         Assert.Equal("2bc11db4b287055d119aceda45deeeb6fb00c3df524b3acad9887deaa04d9d8a",old.ContentHash);Assert.Equal("48e25ff33fed65928f059a6907dfacaa5b88f7c7e91d5fb558c3a1dbac0e0e8b",current.ContentHash);
         Assert.Equal(10000,old.SeasonDifficulty(0).HpBasisPoints);Assert.Equal(old.SeasonDifficulty(0) with {HpBasisPoints=5000,ShieldBasisPoints=5000},current.SeasonDifficulty(0));
         for(var d=1;d<6;d++)Assert.Equal(old.SeasonDifficulty(d),current.SeasonDifficulty(d));

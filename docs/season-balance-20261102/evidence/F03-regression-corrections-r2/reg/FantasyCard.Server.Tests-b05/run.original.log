@@ -1,0 +1,27 @@
+VSTest version 18.7.0 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+  Failed FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.AckPersistsActionAndRouterAndRoomRecreationCannotRepeatItOrResetCooldown [879 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration)
+   at FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.Setup(PostgresTestSchema db)
+   at FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.AckPersistsActionAndRouterAndRoomRecreationCannotRepeatItOrResetCooldown()
+   at FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.AckPersistsActionAndRouterAndRoomRecreationCannotRepeatItOrResetCooldown()
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.OwnedTerminalFallbackReplaysThePersistedActionWithoutRegisteringOrMutatingARoom [860 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration)
+   at FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.Setup(PostgresTestSchema db)
+   at FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.OwnedTerminalFallbackReplaysThePersistedActionWithoutRegisteringOrMutatingARoom()
+   at FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.OwnedTerminalFallbackReplaysThePersistedActionWithoutRegisteringOrMutatingARoom()
+--- End of stack trace from previous location ---
+Results File: G:\PR13Evidence\season-balance-20261102-r1\f03-protected-ordinary-r4\FantasyCard.Server.Tests-b05\shengjiahao_YK-SHENGJIAHAO_2026-11-07_12_17_21_net10.0.trx
+
+Failed!  - Failed:     2, Passed:    88, Skipped:     0, Total:    90, Duration: 1 m 15 s - FantasyCard.Server.Tests.dll (net10.0)
+[xUnit.net 00:00:13.44]     FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.AckPersistsActionAndRouterAndRoomRecreationCannotRepeatItOrResetCooldown [FAIL]
+[xUnit.net 00:00:14.30]     FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.OwnedTerminalFallbackReplaysThePersistedActionWithoutRegisteringOrMutatingARoom [FAIL]

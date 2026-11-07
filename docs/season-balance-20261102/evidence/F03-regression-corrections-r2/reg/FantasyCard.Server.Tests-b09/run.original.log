@@ -1,0 +1,139 @@
+VSTest version 18.7.0 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonBlueprintTests.ActualScaledEliteVictoryResourcesReachTheOriginalSeasonWalletOnce [1 s]
+  Error Message:
+   System.IO.InvalidDataException : Journey checkpoint is not durable yet.
+  Stack Trace:
+     at FantasyCard.Server.Settlement.SettlementRepository. (NpgsqlConnection, NpgsqlTransaction,  , Guid, Guid, String, JsonElement, DateTimeOffset, CancellationToken)
+   at FantasyCard.Server.Settlement.SettlementRepository. (NpgsqlConnection, NpgsqlTransaction,  , Guid, Guid, String, JsonElement, DateTimeOffset, CancellationToken)
+   at FantasyCard.Server.Settlement.SettlementRepository. (NpgsqlConnection, NpgsqlTransaction,  , Guid, Guid, String, JsonElement, DateTimeOffset, CancellationToken)
+   at FantasyCard.Server.Settlement.SettlementRepository.SettleAsync(Guid matchId, Guid playerId, String result, JsonElement details, IReadOnlyList`1 assets, CancellationToken cancellationToken, SeasonContext season, String configVersion)
+   at FantasyCard.Server.Settlement.SettlementRepository.SettleAsync(Guid matchId, Guid playerId, String result, JsonElement details, IReadOnlyList`1 assets, CancellationToken cancellationToken, SeasonContext season, String configVersion)
+   at FantasyCard.Server.Settlement.SettlementRepository.SettleAsync(Guid matchId, Guid playerId, String result, JsonElement details, IReadOnlyList`1 assets, CancellationToken cancellationToken, SeasonContext season, String configVersion)
+   at FantasyCard.Server.Settlement.SettlementCoordinator.ObserveAsync(Guid matchId, BattleRoomSnapshot snapshot)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonBlueprintTests.ActualScaledEliteVictoryResourcesReachTheOriginalSeasonWalletOnce()
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonBlueprintTests.ActualScaledEliteVictoryResourcesReachTheOriginalSeasonWalletOnce()
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonEquipmentTests.ExistingRedUniqueSurvivesPreparationLaunchAndRecoveryWithActualNewStats(unique: "ChainDraw") [876 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEquipmentTests.ExistingRedUniqueSurvivesPreparationLaunchAndRecoveryWithActualNewStats(String unique)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEquipmentTests.ExistingRedUniqueSurvivesPreparationLaunchAndRecoveryWithActualNewStats(String unique)
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonEquipmentTests.ExistingRedUniqueSurvivesPreparationLaunchAndRecoveryWithActualNewStats(unique: "Inferno") [969 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEquipmentTests.ExistingRedUniqueSurvivesPreparationLaunchAndRecoveryWithActualNewStats(String unique)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEquipmentTests.ExistingRedUniqueSurvivesPreparationLaunchAndRecoveryWithActualNewStats(String unique)
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonEquipmentTests.ExistingRedUniqueSurvivesPreparationLaunchAndRecoveryWithActualNewStats(unique: "GoldenCicada") [959 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEquipmentTests.ExistingRedUniqueSurvivesPreparationLaunchAndRecoveryWithActualNewStats(String unique)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEquipmentTests.ExistingRedUniqueSurvivesPreparationLaunchAndRecoveryWithActualNewStats(String unique)
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonEquipmentTests.ExistingRedUniqueSurvivesPreparationLaunchAndRecoveryWithActualNewStats(unique: "Scavenge") [913 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEquipmentTests.ExistingRedUniqueSurvivesPreparationLaunchAndRecoveryWithActualNewStats(String unique)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEquipmentTests.ExistingRedUniqueSurvivesPreparationLaunchAndRecoveryWithActualNewStats(String unique)
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonEquipmentTests.ExistingRedUniqueSurvivesPreparationLaunchAndRecoveryWithActualNewStats(unique: "RapidDraw") [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEquipmentTests.ExistingRedUniqueSurvivesPreparationLaunchAndRecoveryWithActualNewStats(String unique)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEquipmentTests.ExistingRedUniqueSurvivesPreparationLaunchAndRecoveryWithActualNewStats(String unique)
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.MatchLaunchAndRecoveryPreserveBorrowedSourceAndQuarantineTamperedSnapshots(mutation: "changed") [958 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.MatchLaunchAndRecoveryPreserveBorrowedSourceAndQuarantineTamperedSnapshots(String mutation)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.MatchLaunchAndRecoveryPreserveBorrowedSourceAndQuarantineTamperedSnapshots(String mutation)
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.MatchLaunchAndRecoveryPreserveBorrowedSourceAndQuarantineTamperedSnapshots(mutation: "bot") [906 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.MatchLaunchAndRecoveryPreserveBorrowedSourceAndQuarantineTamperedSnapshots(String mutation)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.MatchLaunchAndRecoveryPreserveBorrowedSourceAndQuarantineTamperedSnapshots(String mutation)
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.MatchLaunchAndRecoveryPreserveBorrowedSourceAndQuarantineTamperedSnapshots(mutation: "missing") [905 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.MatchLaunchAndRecoveryPreserveBorrowedSourceAndQuarantineTamperedSnapshots(String mutation)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.MatchLaunchAndRecoveryPreserveBorrowedSourceAndQuarantineTamperedSnapshots(String mutation)
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.MatchLaunchAndRecoveryPreserveBorrowedSourceAndQuarantineTamperedSnapshots(mutation: "valid") [928 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.MatchLaunchAndRecoveryPreserveBorrowedSourceAndQuarantineTamperedSnapshots(String mutation)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.MatchLaunchAndRecoveryPreserveBorrowedSourceAndQuarantineTamperedSnapshots(String mutation)
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.AllCapsBorrowWithoutOwnedCopiesOrSavedDeckAndNeverChangePermanentAssets(hero: Priest) [908 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.AllCapsBorrowWithoutOwnedCopiesOrSavedDeckAndNeverChangePermanentAssets(HeroClassDto hero)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.AllCapsBorrowWithoutOwnedCopiesOrSavedDeckAndNeverChangePermanentAssets(HeroClassDto hero)
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.AllCapsBorrowWithoutOwnedCopiesOrSavedDeckAndNeverChangePermanentAssets(hero: Guardian) [919 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.AllCapsBorrowWithoutOwnedCopiesOrSavedDeckAndNeverChangePermanentAssets(HeroClassDto hero)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.AllCapsBorrowWithoutOwnedCopiesOrSavedDeckAndNeverChangePermanentAssets(HeroClassDto hero)
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.AllCapsBorrowWithoutOwnedCopiesOrSavedDeckAndNeverChangePermanentAssets(hero: Mage) [952 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.AllCapsBorrowWithoutOwnedCopiesOrSavedDeckAndNeverChangePermanentAssets(HeroClassDto hero)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.AllCapsBorrowWithoutOwnedCopiesOrSavedDeckAndNeverChangePermanentAssets(HeroClassDto hero)
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.BorrowingDoesNotBypassSeasonPersonalUnlockOrOwnedDeckCopyValidation [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.BorrowingDoesNotBypassSeasonPersonalUnlockOrOwnedDeckCopyValidation()
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.BorrowingDoesNotBypassSeasonPersonalUnlockOrOwnedDeckCopyValidation()
+--- End of stack trace from previous location ---
+Results File: G:\PR13Evidence\season-balance-20261102-r1\f03-protected-ordinary-r4\FantasyCard.Server.Tests-b09\shengjiahao_YK-SHENGJIAHAO_2026-11-07_12_27_05_net10.0.trx
+
+Failed!  - Failed:    14, Passed:    70, Skipped:     0, Total:    84, Duration: 3 m 14 s - FantasyCard.Server.Tests.dll (net10.0)
+[xUnit.net 00:00:15.41]     FantasyCard.Server.Tests.Persistence.PostgresSeasonBlueprintTests.ActualScaledEliteVictoryResourcesReachTheOriginalSeasonWalletOnce [FAIL]
+[xUnit.net 00:00:26.22]     FantasyCard.Server.Tests.Persistence.PostgresSeasonEquipmentTests.ExistingRedUniqueSurvivesPreparationLaunchAndRecoveryWithActualNewStats(unique: "ChainDraw") [FAIL]
+[xUnit.net 00:00:27.19]     FantasyCard.Server.Tests.Persistence.PostgresSeasonEquipmentTests.ExistingRedUniqueSurvivesPreparationLaunchAndRecoveryWithActualNewStats(unique: "Inferno") [FAIL]
+[xUnit.net 00:00:28.15]     FantasyCard.Server.Tests.Persistence.PostgresSeasonEquipmentTests.ExistingRedUniqueSurvivesPreparationLaunchAndRecoveryWithActualNewStats(unique: "GoldenCicada") [FAIL]
+[xUnit.net 00:00:29.07]     FantasyCard.Server.Tests.Persistence.PostgresSeasonEquipmentTests.ExistingRedUniqueSurvivesPreparationLaunchAndRecoveryWithActualNewStats(unique: "Scavenge") [FAIL]
+[xUnit.net 00:00:30.21]     FantasyCard.Server.Tests.Persistence.PostgresSeasonEquipmentTests.ExistingRedUniqueSurvivesPreparationLaunchAndRecoveryWithActualNewStats(unique: "RapidDraw") [FAIL]
+[xUnit.net 00:03:09.54]     FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.MatchLaunchAndRecoveryPreserveBorrowedSourceAndQuarantineTamperedSnapshots(mutation: "changed") [FAIL]
+[xUnit.net 00:03:10.44]     FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.MatchLaunchAndRecoveryPreserveBorrowedSourceAndQuarantineTamperedSnapshots(mutation: "bot") [FAIL]
+[xUnit.net 00:03:11.35]     FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.MatchLaunchAndRecoveryPreserveBorrowedSourceAndQuarantineTamperedSnapshots(mutation: "missing") [FAIL]
+[xUnit.net 00:03:12.28]     FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.MatchLaunchAndRecoveryPreserveBorrowedSourceAndQuarantineTamperedSnapshots(mutation: "valid") [FAIL]
+[xUnit.net 00:03:13.20]     FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.AllCapsBorrowWithoutOwnedCopiesOrSavedDeckAndNeverChangePermanentAssets(hero: Priest) [FAIL]
+[xUnit.net 00:03:14.12]     FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.AllCapsBorrowWithoutOwnedCopiesOrSavedDeckAndNeverChangePermanentAssets(hero: Guardian) [FAIL]
+[xUnit.net 00:03:15.07]     FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.AllCapsBorrowWithoutOwnedCopiesOrSavedDeckAndNeverChangePermanentAssets(hero: Mage) [FAIL]
+[xUnit.net 00:03:16.16]     FantasyCard.Server.Tests.Persistence.PostgresSeasonBorrowedDeckTests.BorrowingDoesNotBypassSeasonPersonalUnlockOrOwnedDeckCopyValidation [FAIL]

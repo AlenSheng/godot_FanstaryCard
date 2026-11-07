@@ -29,7 +29,7 @@ public sealed class PostgresSeasonBorrowedDeckTests
         await using var db = await PostgresTestSchema.CreateAsync(migrate:true);
         var season = Define();var clock = new Clock(season.StartsAtUtc);var player = await PlayerAsync(db,clock);
         var seasons = new SeasonRepository(db.DataSource,clock);
-        await seasons.PublishAsync(season,new string('a',64),Ct);
+        await seasons.PublishAsync(season,GameConfigCatalog.Current.ContentHash,Ct);
         await seasons.EnsurePlayerAsync(player,season.ContextFor(0),Ct);
         await Sql(db,"UPDATE player_season_state SET highest_unlocked_difficulty=5 WHERE player_id=$1",player);
         await Sql(db,"DELETE FROM player_decks WHERE player_id=$1 AND hero_class=$2",player,(short)hero);
@@ -73,7 +73,7 @@ public sealed class PostgresSeasonBorrowedDeckTests
         await using var db = await PostgresTestSchema.CreateAsync(migrate:true);
         var season=Define();var clock=new Clock(season.StartsAtUtc.AddSeconds(-1));var player=await PlayerAsync(db,clock);
         var seasons=new SeasonRepository(db.DataSource,clock);
-        await seasons.PublishAsync(season,new string('a',64),Ct);
+        await seasons.PublishAsync(season,GameConfigCatalog.Current.ContentHash,Ct);
         var repository=new PreparationRepository(db.DataSource,clock);
         var request=Request(HeroClassDto.Mage,0);
         await Assert.ThrowsAsync<DomainValidationException>(()=>repository.CreateAsync(player,"legacy",request with {SeasonId=null,Difficulty="Standard"},Ct));
@@ -96,7 +96,7 @@ public sealed class PostgresSeasonBorrowedDeckTests
     {
         await using var db=await PostgresTestSchema.CreateAsync(migrate:true);
         var season=Define();var clock=new Clock(season.StartsAtUtc);var player=await PlayerAsync(db,clock);
-        var seasons=new SeasonRepository(db.DataSource,clock);await seasons.PublishAsync(season,new string('a',64),Ct);
+        var seasons=new SeasonRepository(db.DataSource,clock);await seasons.PublishAsync(season,GameConfigCatalog.Current.ContentHash,Ct);
         await seasons.EnsurePlayerAsync(player,season.ContextFor(0),Ct);
         await Sql(db,"UPDATE player_season_state SET highest_unlocked_difficulty=5 WHERE player_id=$1",player);
         var before=await AssetsAsync(db,player);

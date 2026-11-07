@@ -29,7 +29,7 @@ public sealed class PostgresSeasonEquipmentTests
         await using var db=await PostgresTestSchema.CreateAsync(migrate:true);
         var config=GameConfigCatalog.Current;var definition=SeasonDefinition.FromCalendarDays("equipment",new DateOnly(2026,11,2),config.Version,"season-equipment-v1",highestOpenDifficulty:5);
         var clock=new Clock(definition.StartsAtUtc);var seasons=new SeasonRepository(db.DataSource,clock);
-        await seasons.PublishAsync(definition,new string('a',64),Ct);
+        await seasons.PublishAsync(definition,config.ContentHash,Ct);
         var key=Guid.NewGuid().ToString("N");var player=(await new IdentityRepository(db.DataSource,new PlayerProvisioningService()).SignInLocalAsync(
             key,"Gear "+key[..8],RandomNumberGenerator.GetBytes(32),clock.Now,clock.Now.AddHours(1),Ct)).UserId;
         await seasons.EnsurePlayerAsync(player,definition.ContextFor(0),Ct);

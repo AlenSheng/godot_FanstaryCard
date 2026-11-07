@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Headers;
 using FantasyCard.Contracts.Http;
+using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Seasons;
 using FantasyCard.Server.Seasons;
 using FantasyCard.Server.Tests.Persistence;
@@ -57,9 +58,10 @@ public sealed partial class RealNetworkEndToEndTests
         var playerId = Guid.Parse(owner.Player.UserId);
         var localDay = DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow,
             TimeZoneInfo.FindSystemTimeZoneById(SeasonDefinition.TimeZoneId)).DateTime);
-        var definition = SeasonDefinition.FromCalendarDays("api-season", localDay, "api-config", "season-equipment-v1");
+        var config = GameConfigCatalog.Current;
+        var definition = SeasonDefinition.FromCalendarDays("api-season", localDay, config.Version, "season-equipment-v1");
         var seasons = new SeasonRepository(database.DataSource, TimeProvider.System);
-        await seasons.PublishAsync(definition, new string('a', 64), ct);
+        await seasons.PublishAsync(definition, config.ContentHash, ct);
         await seasons.EnsurePlayerAsync(playerId, definition.ContextFor(0), ct);
         await seasons.ApplyAsync(playerId, definition.ContextFor(0), 0, 100, 0, "test.reward", "fund", SeasonWalletPurpose.General, ct);
         await using (var seed = database.DataSource.CreateCommand("UPDATE player_materials SET equipment_fragments=1000 WHERE player_id=$1"))

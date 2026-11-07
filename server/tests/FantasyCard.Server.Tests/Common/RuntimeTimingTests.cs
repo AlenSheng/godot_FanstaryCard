@@ -33,7 +33,7 @@ public sealed class RuntimeTimingTests(ITestOutputHelper output)
         using var metrics = new ServerMetrics();
         using var capture = new Capture(metrics);
         using var root = new Activity("actual-pool-replay-request").Start();
-        var settings = new NpgsqlConnectionStringBuilder(database.ConnectionString) { MaxPoolSize = 1, MinPoolSize = 0 };
+        var settings = new NpgsqlConnectionStringBuilder(database.ConnectionString) { Pooling = true, MaxPoolSize = 1, MinPoolSize = 0 };
         await using var limited = NpgsqlDataSource.Create(settings.ConnectionString);
         await using var held = await limited.OpenConnectionAsync(ct);
         var repository = new MatchmakingRepository(limited, TimeProvider.System, metrics);

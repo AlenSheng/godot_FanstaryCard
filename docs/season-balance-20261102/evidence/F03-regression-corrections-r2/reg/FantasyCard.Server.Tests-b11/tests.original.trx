@@ -1,0 +1,392 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="8a4cdf80-a203-4361-a7ce-6452020ecded" name="shengjiahao@YK-SHENGJIAHAO 2026-11-07 12:34:24" runUser="DOBEST\shengjiahao" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-07T12:34:24.2028834+08:00" queuing="2026-11-07T12:34:24.2028838+08:00" start="2026-11-07T12:34:18.3377834+08:00" finish="2026-11-07T12:36:59.5968734+08:00" />
+  <TestSettings name="default" id="8535a9dd-e7e5-4025-818e-4b8544be669d">
+    <Deployment runDeploymentRoot="shengjiahao_YK-SHENGJIAHAO_2026-11-07_12_34_24" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="335169ec-44d8-4fa4-9ec5-9b6ca8e60196" testId="b4545c55-abc3-cba2-4fc5-1117a9d6db82" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Protobuf_real_database_login_bootstrap_profile_deck_and_cross_format_purchase" computerName="YK-SHENGJIAHAO" duration="00:00:05.1262950" startTime="2026-11-07T12:36:28.5383613+08:00" endTime="2026-11-07T12:36:33.6648102+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="335169ec-44d8-4fa4-9ec5-9b6ca8e60196" />
+    <UnitTestResult executionId="2036bb94-e1bf-4bcf-8626-325b2f7b2dd9" testId="9af08629-79b8-2c21-84cc-23a15bcbd03d" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.PermanentCopyAdoptionSurvivesClosureAndCannotBeBypassedByOpeningCardsBeforeTheShop" computerName="YK-SHENGJIAHAO" duration="00:00:01.8223207" startTime="2026-11-07T12:36:44.4811245+08:00" endTime="2026-11-07T12:36:46.3036363+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2036bb94-e1bf-4bcf-8626-325b2f7b2dd9" />
+    <UnitTestResult executionId="0e09e16b-0a68-4c4e-9fb7-d6056c15e444" testId="126e0124-8faa-e304-7053-674978fdfa61" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.MissingOrChangedTermsAndAnEmptySeasonWalletNeverSpendThePermanentGoldBalance" computerName="YK-SHENGJIAHAO" duration="00:00:02.2468047" startTime="2026-11-07T12:36:46.3048358+08:00" endTime="2026-11-07T12:36:48.5519172+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0e09e16b-0a68-4c4e-9fb7-d6056c15e444" />
+    <UnitTestResult executionId="3090c8d8-820c-4469-856a-78c3161bdb19" testId="7a9aaf37-f2f1-44e5-097f-56383de9d21a" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry" computerName="YK-SHENGJIAHAO" duration="00:00:04.5300353" startTime="2026-11-07T12:34:36.7931190+08:00" endTime="2026-11-07T12:34:41.3233312+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3090c8d8-820c-4469-856a-78c3161bdb19">
+      <Output>
+        <StdOut>PB ready begin: POST /api/v1/auth/local, players=0&#xD;
+PB ready headers: POST /api/v1/auth/local, elapsedMs=323.90, status=200, length=201&#xD;
+PB ready body: POST /api/v1/auth/local, elapsedMs=324.62, bytes=201&#xD;
+PB ready begin: GET /api/v1/bootstrap, players=1&#xD;
+PB ready headers: GET /api/v1/bootstrap, elapsedMs=168.13, status=200, length=36067&#xD;
+PB ready body: GET /api/v1/bootstrap, elapsedMs=168.42, bytes=36067&#xD;
+PB ready begin: GET /api/v1/loadouts/Priest, players=1&#xD;
+PB ready headers: GET /api/v1/loadouts/Priest, elapsedMs=9.57, status=200, length=20&#xD;
+PB ready body: GET /api/v1/loadouts/Priest, elapsedMs=9.72, bytes=20&#xD;
+PB ready begin: POST /api/v1/preparations, players=1&#xD;
+PB ready headers: POST /api/v1/preparations, elapsedMs=118.92, status=201, length=321&#xD;
+PB ready body: POST /api/v1/preparations, elapsedMs=119.34, bytes=321&#xD;
+PB ready begin: POST /api/v1/realtime/ticket, players=1&#xD;
+PB ready headers: POST /api/v1/realtime/ticket, elapsedMs=10.65, status=200, length=80&#xD;
+PB ready body: POST /api/v1/realtime/ticket, elapsedMs=10.79, bytes=80&#xD;
+PB ready begin: POST /api/v1/matches/enqueue, players=1&#xD;
+PB ready headers: POST /api/v1/matches/enqueue, elapsedMs=45.00, status=202, length=119&#xD;
+PB ready body: POST /api/v1/matches/enqueue, elapsedMs=45.22, bytes=119&#xD;
+PB ready begin: POST /api/v1/auth/local, players=1&#xD;
+PB ready headers: POST /api/v1/auth/local, elapsedMs=59.80, status=200, length=201&#xD;
+PB ready body: POST /api/v1/auth/local, elapsedMs=60.60, bytes=201&#xD;
+PB ready begin: GET /api/v1/bootstrap, players=2&#xD;
+PB ready headers: GET /api/v1/bootstrap, elapsedMs=23.89, status=200, length=36067&#xD;
+PB ready body: GET /api/v1/bootstrap, elapsedMs=24.08, bytes=36067&#xD;
+PB ready begin: GET /api/v1/loadouts/Priest, players=2&#xD;
+PB ready headers: GET /api/v1/loadouts/Priest, elapsedMs=1.70, status=200, length=20&#xD;
+PB ready body: GET /api/v1/loadouts/Priest, elapsedMs=1.78, bytes=20&#xD;
+PB ready begin: POST /api/v1/preparations, players=2&#xD;
+PB ready headers: POST /api/v1/preparations, elapsedMs=8.02, status=201, length=321&#xD;
+PB ready body: POST /api/v1/preparations, elapsedMs=8.12, bytes=321&#xD;
+PB ready begin: POST /api/v1/realtime/ticket, players=2&#xD;
+PB ready headers: POST /api/v1/realtime/ticket, elapsedMs=1.94, status=200, length=80&#xD;
+PB ready body: POST /api/v1/realtime/ticket, elapsedMs=2.06, bytes=80&#xD;
+PB ready begin: POST /api/v1/matches/enqueue, players=2&#xD;
+PB ready headers: POST /api/v1/matches/enqueue, elapsedMs=5.14, status=202, length=119&#xD;
+PB ready body: POST /api/v1/matches/enqueue, elapsedMs=5.25, bytes=119&#xD;
+PB ready begin: POST /api/v1/auth/local, players=2&#xD;
+PB ready headers: POST /api/v1/auth/local, elapsedMs=57.04, status=200, length=201&#xD;
+PB ready body: POST /api/v1/auth/local, elapsedMs=57.25, bytes=201&#xD;
+PB ready begin: GET /api/v1/bootstrap, players=3&#xD;
+PB ready headers: GET /api/v1/bootstrap, elapsedMs=46.44, status=200, length=36067&#xD;
+PB ready body: GET /api/v1/bootstrap, elapsedMs=46.71, bytes=36067&#xD;
+PB ready begin: GET /api/v1/loadouts/Priest, players=3&#xD;
+PB ready headers: GET /api/v1/loadouts/Priest, elapsedMs=2.67, status=200, length=20&#xD;
+PB ready body: GET /api/v1/loadouts/Priest, elapsedMs=2.82, bytes=20&#xD;
+PB ready begin: POST /api/v1/preparations, players=3&#xD;
+PB ready headers: POST /api/v1/preparations, elapsedMs=5.19, status=201, length=321&#xD;
+PB ready body: POST /api/v1/preparations, elapsedMs=5.43, bytes=321&#xD;
+PB ready begin: POST /api/v1/realtime/ticket, players=3&#xD;
+PB ready headers: POST /api/v1/realtime/ticket, elapsedMs=2.62, status=200, length=80&#xD;
+PB ready body: POST /api/v1/realtime/ticket, elapsedMs=2.91, bytes=80&#xD;
+PB ready begin: POST /api/v1/matches/enqueue, players=3&#xD;
+PB ready headers: POST /api/v1/matches/enqueue, elapsedMs=4.04, status=202, length=119&#xD;
+PB ready body: POST /api/v1/matches/enqueue, elapsedMs=4.22, bytes=119&#xD;
+PB ready begin: POST /api/v1/auth/local, players=3&#xD;
+PB ready headers: POST /api/v1/auth/local, elapsedMs=62.10, status=200, length=201&#xD;
+PB ready body: POST /api/v1/auth/local, elapsedMs=62.33, bytes=201&#xD;
+PB ready begin: GET /api/v1/bootstrap, players=4&#xD;
+PB ready headers: GET /api/v1/bootstrap, elapsedMs=20.85, status=200, length=36067&#xD;
+PB ready body: GET /api/v1/bootstrap, elapsedMs=21.11, bytes=36067&#xD;
+PB ready begin: GET /api/v1/loadouts/Priest, players=4&#xD;
+PB ready headers: GET /api/v1/loadouts/Priest, elapsedMs=3.03, status=200, length=20&#xD;
+PB ready body: GET /api/v1/loadouts/Priest, elapsedMs=3.19, bytes=20&#xD;
+PB ready begin: POST /api/v1/preparations, players=4&#xD;
+PB ready headers: POST /api/v1/preparations, elapsedMs=18.49, status=201, length=321&#xD;
+PB ready body: POST /api/v1/preparations, elapsedMs=18.67, bytes=321&#xD;
+PB ready begin: POST /api/v1/realtime/ticket, players=4&#xD;
+PB ready headers: POST /api/v1/realtime/ticket, elapsedMs=1.20, status=200, length=80&#xD;
+PB ready body: POST /api/v1/realtime/ticket, elapsedMs=1.26, bytes=80&#xD;
+PB ready begin: POST /api/v1/matches/enqueue, players=4&#xD;
+PB ready headers: POST /api/v1/matches/enqueue, elapsedMs=5.69, status=202, length=119&#xD;
+PB ready body: POST /api/v1/matches/enqueue, elapsedMs=5.80, bytes=119</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0963aa3b-48f0-4b15-9321-ebff256bdfe5" testId="d3702611-f018-417f-e20a-4865a08d5dcf" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.AnUnavailableOrAlteredFrozenCatalogDoesNotFallBackToCurrentPrices" computerName="YK-SHENGJIAHAO" duration="00:00:01.5759449" startTime="2026-11-07T12:36:51.5699075+08:00" endTime="2026-11-07T12:36:53.1460559+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0963aa3b-48f0-4b15-9321-ebff256bdfe5" />
+    <UnitTestResult executionId="8e58c47a-dffb-4837-b1e1-f0c45d14dd4f" testId="c7dbac66-e4e7-0f96-3647-37272a846f3f" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark" computerName="YK-SHENGJIAHAO" duration="00:00:07.7150513" startTime="2026-11-07T12:36:17.4191739+08:00" endTime="2026-11-07T12:36:25.1440125+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8e58c47a-dffb-4837-b1e1-f0c45d14dd4f">
+      <Output>
+        <ErrorInfo>
+          <Message>GET /api/v1/season-crafting/reforge-quote BadRequest</Message>
+          <StackTrace>   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark()&#xD;
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark()&#xD;
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark()&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="9aea48fe-88c2-43f8-a9fc-9cd616cd55c9" testId="06999e84-d3fa-477b-cc24-ef58994c004b" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: &quot;ban-idle&quot;)" computerName="YK-SHENGJIAHAO" duration="00:00:07.9816261" startTime="2026-11-07T12:35:13.8062127+08:00" endTime="2026-11-07T12:35:21.7880341+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9aea48fe-88c2-43f8-a9fc-9cd616cd55c9" />
+    <UnitTestResult executionId="64fd8740-3ba1-495d-99cf-c71b8c48d25f" testId="1bb68ff3-d709-bf5f-6267-4a788415b362" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonThemeRecoveryTests.RecreatedRecoveryWorkerUsesOriginalFireBundleRatherThanNewWoodAndRetainsFailures(archiveState: &quot;corrupt&quot;)" computerName="YK-SHENGJIAHAO" duration="00:00:01.6492492" startTime="2026-11-07T12:36:39.4513619+08:00" endTime="2026-11-07T12:36:41.1007905+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="64fd8740-3ba1-495d-99cf-c71b8c48d25f" />
+    <UnitTestResult executionId="772b61b8-1179-4954-8f7e-f1a693cccad0" testId="d4a1dc87-cb9a-91c7-a0d3-5d63075da7f3" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonActivity_ActualBinaryHttpReservesSharedTokensAndClaimsTheSameEntitlementOnce" computerName="YK-SHENGJIAHAO" duration="00:00:05.2488455" startTime="2026-11-07T12:34:31.5416326+08:00" endTime="2026-11-07T12:34:36.7909463+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="772b61b8-1179-4954-8f7e-f1a693cccad0" />
+    <UnitTestResult executionId="389c8d0a-0b45-4b41-b698-33532998e70f" testId="47d82b0d-f653-f780-9f45-96e306ce96da" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonShop_RealBinaryHttpKeepsScopedPricesCopiesAndFrozenReplayReceipts" computerName="YK-SHENGJIAHAO" duration="00:00:03.7783286" startTime="2026-11-07T12:36:09.8730902+08:00" endTime="2026-11-07T12:36:13.6515713+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="389c8d0a-0b45-4b41-b698-33532998e70f" />
+    <UnitTestResult executionId="26b697dc-0579-4ddc-b161-9fc3e0e42199" testId="d1336add-d612-c38d-5ccf-89c186aafa5f" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_switching_names_registers_distinct_uids_and_relogin_restores_the_original_account" computerName="YK-SHENGJIAHAO" duration="00:00:03.4661016" startTime="2026-11-07T12:35:10.3387996+08:00" endTime="2026-11-07T12:35:13.8050275+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="26b697dc-0579-4ddc-b161-9fc3e0e42199" />
+    <UnitTestResult executionId="25774413-6301-49d4-a943-71c75038c500" testId="1a443735-49fa-5fb4-0a04-032d8fbe7837" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonCrafting_binary_session_uses_all_five_routes_and_preserves_asset_identity" computerName="YK-SHENGJIAHAO" duration="00:00:03.6375491" startTime="2026-11-07T12:35:06.6999371+08:00" endTime="2026-11-07T12:35:10.3376380+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="25774413-6301-49d4-a943-71c75038c500" />
+    <UnitTestResult executionId="ba3099d5-338a-4c32-9b9b-14c501c08b87" testId="3b428c32-5789-6ef0-4262-a5ede91b20d0" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonMarket_binary_http_and_authenticated_websockets_keep_currency_escrow_and_private_balances" computerName="YK-SHENGJIAHAO" duration="00:00:04.5768775" startTime="2026-11-07T12:34:49.1842826+08:00" endTime="2026-11-07T12:34:53.7613129+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ba3099d5-338a-4c32-9b9b-14c501c08b87" />
+    <UnitTestResult executionId="b8c5a8b8-ed02-444e-b3f3-8bee5b04cb5c" testId="8ae9a7b1-5742-ed56-fd06-b3cebe02735c" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonThemeRecoveryTests.RecreatedRecoveryWorkerUsesOriginalFireBundleRatherThanNewWoodAndRetainsFailures(archiveState: &quot;missing&quot;)" computerName="YK-SHENGJIAHAO" duration="00:00:01.6775186" startTime="2026-11-07T12:36:42.8008157+08:00" endTime="2026-11-07T12:36:44.4784576+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b8c5a8b8-ed02-444e-b3f3-8bee5b04cb5c" />
+    <UnitTestResult executionId="4a4d55cd-2e80-4a2e-a683-3e1c94657d14" testId="c79e82d3-a95f-5a35-763f-4656284ddadc" testName="FantasyCard.Server.Tests.Persistence.PostgresTerminalContextTests.Owned_terminal_fallback_reads_old_match_and_cancels_without_mutating_new_room_or_assets(phase: Extracted)" computerName="YK-SHENGJIAHAO" duration="00:00:03.5665927" startTime="2026-11-07T12:34:20.5891382+08:00" endTime="2026-11-07T12:34:24.1668278+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4a4d55cd-2e80-4a2e-a683-3e1c94657d14" />
+    <UnitTestResult executionId="402582d0-d2bb-4779-973b-4003d1dc75e7" testId="3908f2f5-4fe5-d1c6-8cbf-defa3deaa68e" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonArchive_binary_HTTP_preserves_original_versions_paginates_and_keeps_all_sections_readonly" computerName="YK-SHENGJIAHAO" duration="00:00:04.4460153" startTime="2026-11-07T12:34:44.7359971+08:00" endTime="2026-11-07T12:34:49.1822905+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="402582d0-d2bb-4779-973b-4003d1dc75e7" />
+    <UnitTestResult executionId="cd6891e7-aa20-40e8-9695-e225a1d5e1d5" testId="0bd0b733-f3fd-059f-cae8-3f6fae4071fa" testName="FantasyCard.Server.Tests.Persistence.PostgresSystemMailLocalizationTests.Legacy_mail_with_no_metadata_is_read_unchanged_even_when_it_looks_like_a_recall" computerName="YK-SHENGJIAHAO" duration="00:00:01.1148374" startTime="2026-11-07T12:36:58.4008405+08:00" endTime="2026-11-07T12:36:59.5157689+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cd6891e7-aa20-40e8-9695-e225a1d5e1d5" />
+    <UnitTestResult executionId="8d5e0eac-ec82-46f2-82b0-b956384506e1" testId="437328df-f5da-1f84-db0c-f2a58c160215" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: &quot;ticket-expiry&quot;)" computerName="YK-SHENGJIAHAO" duration="00:00:34.3451359" startTime="2026-11-07T12:35:21.7892036+08:00" endTime="2026-11-07T12:35:56.1348425+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8d5e0eac-ec82-46f2-82b0-b956384506e1" />
+    <UnitTestResult executionId="686cce1e-afd0-4c76-8a4b-a639b6a3722e" testId="5e68557d-f2aa-4b6a-d280-974b36b9d1d7" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Bootstrap_projection_real_HTTP_preserves_auth_scope_pending_errors_and_full_legacy_response" computerName="YK-SHENGJIAHAO" duration="00:00:03.7644306" startTime="2026-11-07T12:36:13.6532042+08:00" endTime="2026-11-07T12:36:17.4177802+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="686cce1e-afd0-4c76-8a4b-a639b6a3722e" />
+    <UnitTestResult executionId="c7b611de-78dc-43e7-b4e6-cbbbaaf4bd68" testId="b481684f-08a5-23cd-7dfe-2d3f404651f0" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonJourney_ActualAuthenticatedBinaryHttpKeepsOriginalProgressAndNeverOffersAClientExperienceGrant" computerName="YK-SHENGJIAHAO" duration="00:00:06.3709657" startTime="2026-11-07T12:34:56.9626267+08:00" endTime="2026-11-07T12:35:03.3338091+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c7b611de-78dc-43e7-b4e6-cbbbaaf4bd68" />
+    <UnitTestResult executionId="51646cbe-11a6-428c-8268-ad02cfdd4b83" testId="4990c775-311e-04ec-5f26-fe877acc84af" testName="FantasyCard.Server.Tests.Persistence.PostgresSystemMailLocalizationTests.Recall_persists_exact_reason_and_free_admin_mail_is_not_inferred_from_its_title" computerName="YK-SHENGJIAHAO" duration="00:00:01.6188681" startTime="2026-11-07T12:36:56.7808279+08:00" endTime="2026-11-07T12:36:58.3998639+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="51646cbe-11a6-428c-8268-ad02cfdd4b83" />
+    <UnitTestResult executionId="7d447565-a9ec-4076-aaf3-db28dfaf27d6" testId="483b285f-163e-accc-12f6-5eff90f66b62" testName="FantasyCard.Server.Tests.Persistence.PostgresSystemMailLocalizationTests.Seed_metadata_repair_preserves_claimed_rewards_and_does_not_duplicate_mail(name: &quot;test2_mailmeta&quot;, claimedTemplate: &quot;seed2_fragments&quot;, expectedCount: 2, fragments: True)" computerName="YK-SHENGJIAHAO" duration="00:00:02.0087019" startTime="2026-11-07T12:36:53.1479331+08:00" endTime="2026-11-07T12:36:55.1568560+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7d447565-a9ec-4076-aaf3-db28dfaf27d6" />
+    <UnitTestResult executionId="09fd75d7-d983-4127-aa69-7f18a0b7ca71" testId="017b32d0-4f2e-4817-1668-e74a457a556e" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_binary_business_equipment_cards_market_mail_matchmaking" computerName="YK-SHENGJIAHAO" duration="00:00:04.7166712" startTime="2026-11-07T12:36:33.6658817+08:00" endTime="2026-11-07T12:36:38.3827042+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="09fd75d7-d983-4127-aa69-7f18a0b7ca71" />
+    <UnitTestResult executionId="1d6bb5fa-3122-46ab-b957-c78a97366ac7" testId="a2486033-7db4-9e9b-9bdd-18ef1151ad9d" testName="FantasyCard.Server.Tests.Persistence.PostgresTerminalContextTests.Owned_terminal_fallback_reads_old_match_and_cancels_without_mutating_new_room_or_assets(phase: Dead)" computerName="YK-SHENGJIAHAO" duration="00:00:01.6110435" startTime="2026-11-07T12:34:24.1902856+08:00" endTime="2026-11-07T12:34:25.8018958+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1d6bb5fa-3122-46ab-b957-c78a97366ac7" />
+    <UnitTestResult executionId="e2855794-3e39-4f22-8fbf-f925e65fc518" testId="191f0054-ffe1-51b2-9057-f876bdd8e8a4" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.JourneyRewards_ActualBinaryHttpClaimsFrozenCopiesAndSelectsOwnedCosmetics" computerName="YK-SHENGJIAHAO" duration="00:00:03.1980466" startTime="2026-11-07T12:34:53.7630018+08:00" endTime="2026-11-07T12:34:56.9612237+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e2855794-3e39-4f22-8fbf-f925e65fc518" />
+    <UnitTestResult executionId="214c84ea-2e40-4c38-88e0-8e28600d567d" testId="ab65b1a8-65e2-2824-8e79-63a17de4228f" testName="FantasyCard.Server.Tests.Persistence.PostgresSystemMailLocalizationTests.Seed_metadata_repair_preserves_claimed_rewards_and_does_not_duplicate_mail(name: &quot;test_mailmeta&quot;, claimedTemplate: &quot;seed_gold&quot;, expectedCount: 7, fragments: False)" computerName="YK-SHENGJIAHAO" duration="00:00:01.6220759" startTime="2026-11-07T12:36:55.1575833+08:00" endTime="2026-11-07T12:36:56.7799625+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="214c84ea-2e40-4c38-88e0-8e28600d567d" />
+    <UnitTestResult executionId="67d9cbba-db2c-4b34-808c-761dbaaca3e3" testId="9b3ab205-71c3-836c-ae9a-613939966991" testName="FantasyCard.Server.Tests.Common.RuntimeTimingTests.Actual_pool_acquisition_wait_is_separate_from_replay_SQL_execution" computerName="YK-SHENGJIAHAO" duration="00:00:01.0641995" startTime="2026-11-07T12:36:38.3848801+08:00" endTime="2026-11-07T12:36:39.4500032+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="67d9cbba-db2c-4b34-808c-761dbaaca3e3">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.False() Failure&#xD;
+Expected: False&#xD;
+Actual:   True</Message>
+          <StackTrace>   at FantasyCard.Server.Tests.Common.RuntimeTimingTests.Actual_pool_acquisition_wait_is_separate_from_replay_SQL_execution()&#xD;
+   at FantasyCard.Server.Tests.Common.RuntimeTimingTests.Actual_pool_acquisition_wait_is_separate_from_replay_SQL_execution()&#xD;
+   at FantasyCard.Server.Tests.Common.RuntimeTimingTests.Actual_pool_acquisition_wait_is_separate_from_replay_SQL_execution()&#xD;
+   at FantasyCard.Server.Tests.Common.RuntimeTimingTests.Actual_pool_acquisition_wait_is_separate_from_replay_SQL_execution()&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a2711d4d-8089-4b75-aecc-a46c055a79cf" testId="c51b746c-82b3-e8be-3cc0-84378bcfa8e4" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_concurrent_card_upgrade_retries_spend_once" computerName="YK-SHENGJIAHAO" duration="00:00:03.4086880" startTime="2026-11-07T12:34:41.3255775+08:00" endTime="2026-11-07T12:34:44.7344629+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a2711d4d-8089-4b75-aecc-a46c055a79cf" />
+    <UnitTestResult executionId="a3a4e02b-a33b-4576-85de-a2228db689cf" testId="57d4e50a-cb19-7bb5-08e6-e4cfa320f747" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonThemeRecoveryTests.RecreatedRecoveryWorkerUsesOriginalFireBundleRatherThanNewWoodAndRetainsFailures(archiveState: &quot;valid&quot;)" computerName="YK-SHENGJIAHAO" duration="00:00:01.6977710" startTime="2026-11-07T12:36:41.1015121+08:00" endTime="2026-11-07T12:36:42.7995481+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a3a4e02b-a33b-4576-85de-a2228db689cf" />
+    <UnitTestResult executionId="8c3e2631-5b0b-4a09-bbcf-4f36e5c4b916" testId="19d93692-00c3-1f9f-43bd-3eb0363423df" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonWallet_binary_quote_upgrade_ownership_and_legacy_contracts" computerName="YK-SHENGJIAHAO" duration="00:00:03.3832852" startTime="2026-11-07T12:36:25.1512015+08:00" endTime="2026-11-07T12:36:28.5365837+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8c3e2631-5b0b-4a09-bbcf-4f36e5c4b916">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Values differ&#xD;
+Expected: OK&#xD;
+Actual:   InternalServerError</Message>
+          <StackTrace>   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.&lt;&gt;c__DisplayClass35_0.&lt;&lt;SeasonWallet_binary_quote_upgrade_ownership_and_legacy_contracts&gt;g__Call|0&gt;d.MoveNext()&#xD;
+--- End of stack trace from previous location ---&#xD;
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonWallet_binary_quote_upgrade_ownership_and_legacy_contracts()&#xD;
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonWallet_binary_quote_upgrade_ownership_and_legacy_contracts()&#xD;
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonWallet_binary_quote_upgrade_ownership_and_legacy_contracts()&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="9c6f7d93-d849-4504-84cf-a45a43bbcd0d" testId="9f802b74-b1f8-3d11-7a3f-414d31e78772" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart" computerName="YK-SHENGJIAHAO" duration="00:00:10.5258236" startTime="2026-11-07T12:35:56.1365756+08:00" endTime="2026-11-07T12:36:06.6625798+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9c6f7d93-d849-4504-84cf-a45a43bbcd0d" />
+    <UnitTestResult executionId="b9d00dd9-0d26-4390-b922-e5c28608b939" testId="33c18f5e-c02e-c9b3-28a0-e56f8367f3b4" testName="FantasyCard.Server.Tests.Persistence.PostgresTerminalContextTests.Membership_match_pair_bot_and_durable_phase_are_all_required" computerName="YK-SHENGJIAHAO" duration="00:00:01.9895432" startTime="2026-11-07T12:34:25.8092302+08:00" endTime="2026-11-07T12:34:27.7991141+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b9d00dd9-0d26-4390-b922-e5c28608b939" />
+    <UnitTestResult executionId="ebf6a1c5-c7b4-4745-9411-33c344c842dd" testId="448bfe9c-214e-9cfb-a50b-00bc89370c98" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Configuration_real_HTTP_authenticates_and_serves_exact_current_or_archived_binary" computerName="YK-SHENGJIAHAO" duration="00:00:03.2070182" startTime="2026-11-07T12:36:06.6640107+08:00" endTime="2026-11-07T12:36:09.8711618+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ebf6a1c5-c7b4-4745-9411-33c344c842dd" />
+    <UnitTestResult executionId="642e20f0-ce7b-4a0a-8a60-84a0b6511901" testId="1aa325b7-99c6-5aa6-3d22-de03a2c75d65" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_supports_login_bootstrap_and_websocket_ping" computerName="YK-SHENGJIAHAO" duration="00:00:03.3632230" startTime="2026-11-07T12:35:03.3352939+08:00" endTime="2026-11-07T12:35:06.6987017+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="642e20f0-ce7b-4a0a-8a60-84a0b6511901" />
+    <UnitTestResult executionId="0bdccbbb-6a11-493d-b837-3256b61873a5" testId="e769e623-2b27-30e1-3706-3730a0c22b47" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.InventoryDiscard_binary_http_authenticates_versions_replays_and_projects_the_committed_inventory" computerName="YK-SHENGJIAHAO" duration="00:00:03.7293171" startTime="2026-11-07T12:34:27.8103241+08:00" endTime="2026-11-07T12:34:31.5399986+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0bdccbbb-6a11-493d-b837-3256b61873a5" />
+    <UnitTestResult executionId="784a9b2d-bcdb-4b7e-adc5-084c26e03ecc" testId="b891ca02-50c4-15e4-ea17-ab4ec2b27d29" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ConcurrentGlobalRefreshesKeepThreeReceiptsAndDoNotResetAtUtcMidnight" computerName="YK-SHENGJIAHAO" duration="00:00:03.0145996" startTime="2026-11-07T12:36:48.5532535+08:00" endTime="2026-11-07T12:36:51.5680447+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="784a9b2d-bcdb-4b7e-adc5-084c26e03ecc" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSystemMailLocalizationTests.Seed_metadata_repair_preserves_claimed_rewards_and_does_not_duplicate_mail(name: &quot;test_mailmeta&quot;, claimedTemplate: &quot;seed_gold&quot;, expectedCount: 7, fragments: False)" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="ab65b1a8-65e2-2824-8e79-63a17de4228f">
+      <Execution id="214c84ea-2e40-4c38-88e0-8e28600d567d" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSystemMailLocalizationTests" name="Seed_metadata_repair_preserves_claimed_rewards_and_does_not_duplicate_mail" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.JourneyRewards_ActualBinaryHttpClaimsFrozenCopiesAndSelectsOwnedCosmetics" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="191f0054-ffe1-51b2-9057-f876bdd8e8a4">
+      <Execution id="e2855794-3e39-4f22-8fbf-f925e65fc518" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="JourneyRewards_ActualBinaryHttpClaimsFrozenCopiesAndSelectsOwnedCosmetics" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_switching_names_registers_distinct_uids_and_relogin_restores_the_original_account" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="d1336add-d612-c38d-5ccf-89c186aafa5f">
+      <Execution id="26b697dc-0579-4ddc-b161-9fc3e0e42199" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Real_http_switching_names_registers_distinct_uids_and_relogin_restores_the_original_account" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="7a9aaf37-f2f1-44e5-097f-56383de9d21a">
+      <Execution id="3090c8d8-820c-4469-856a-78c3161bdb19" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Real_default_protobuf_preparation_ready_and_room_entry" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Bootstrap_projection_real_HTTP_preserves_auth_scope_pending_errors_and_full_legacy_response" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="5e68557d-f2aa-4b6a-d280-974b36b9d1d7">
+      <Execution id="686cce1e-afd0-4c76-8a4b-a639b6a3722e" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Bootstrap_projection_real_HTTP_preserves_auth_scope_pending_errors_and_full_legacy_response" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Common.RuntimeTimingTests.Actual_pool_acquisition_wait_is_separate_from_replay_SQL_execution" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="9b3ab205-71c3-836c-ae9a-613939966991">
+      <Execution id="67d9cbba-db2c-4b34-808c-761dbaaca3e3" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Common.RuntimeTimingTests" name="Actual_pool_acquisition_wait_is_separate_from_replay_SQL_execution" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSystemMailLocalizationTests.Seed_metadata_repair_preserves_claimed_rewards_and_does_not_duplicate_mail(name: &quot;test2_mailmeta&quot;, claimedTemplate: &quot;seed2_fragments&quot;, expectedCount: 2, fragments: True)" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="483b285f-163e-accc-12f6-5eff90f66b62">
+      <Execution id="7d447565-a9ec-4076-aaf3-db28dfaf27d6" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSystemMailLocalizationTests" name="Seed_metadata_repair_preserves_claimed_rewards_and_does_not_duplicate_mail" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonThemeRecoveryTests.RecreatedRecoveryWorkerUsesOriginalFireBundleRatherThanNewWoodAndRetainsFailures(archiveState: &quot;valid&quot;)" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="57d4e50a-cb19-7bb5-08e6-e4cfa320f747">
+      <Execution id="a3a4e02b-a33b-4576-85de-a2228db689cf" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonThemeRecoveryTests" name="RecreatedRecoveryWorkerUsesOriginalFireBundleRatherThanNewWoodAndRetainsFailures" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_concurrent_card_upgrade_retries_spend_once" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="c51b746c-82b3-e8be-3cc0-84378bcfa8e4">
+      <Execution id="a2711d4d-8089-4b75-aecc-a46c055a79cf" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Real_http_concurrent_card_upgrade_retries_spend_once" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonWallet_binary_quote_upgrade_ownership_and_legacy_contracts" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="19d93692-00c3-1f9f-43bd-3eb0363423df">
+      <Execution id="8c3e2631-5b0b-4a09-bbcf-4f36e5c4b916" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="SeasonWallet_binary_quote_upgrade_ownership_and_legacy_contracts" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="c7dbac66-e4e7-0f96-3647-37272a846f3f">
+      <Execution id="8e58c47a-dffb-4837-b1e1-f0c45d14dd4f" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Migration_default_binary_routes_ticket_security_and_real_sample_benchmark" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonArchive_binary_HTTP_preserves_original_versions_paginates_and_keeps_all_sections_readonly" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="3908f2f5-4fe5-d1c6-8cbf-defa3deaa68e">
+      <Execution id="402582d0-d2bb-4779-973b-4003d1dc75e7" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="SeasonArchive_binary_HTTP_preserves_original_versions_paginates_and_keeps_all_sections_readonly" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresTerminalContextTests.Owned_terminal_fallback_reads_old_match_and_cancels_without_mutating_new_room_or_assets(phase: Dead)" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="a2486033-7db4-9e9b-9bdd-18ef1151ad9d">
+      <Execution id="1d6bb5fa-3122-46ab-b957-c78a97366ac7" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresTerminalContextTests" name="Owned_terminal_fallback_reads_old_match_and_cancels_without_mutating_new_room_or_assets" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.MissingOrChangedTermsAndAnEmptySeasonWalletNeverSpendThePermanentGoldBalance" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="126e0124-8faa-e304-7053-674978fdfa61">
+      <Execution id="0e09e16b-0a68-4c4e-9fb7-d6056c15e444" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests" name="MissingOrChangedTermsAndAnEmptySeasonWalletNeverSpendThePermanentGoldBalance" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresTerminalContextTests.Membership_match_pair_bot_and_durable_phase_are_all_required" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="33c18f5e-c02e-c9b3-28a0-e56f8367f3b4">
+      <Execution id="b9d00dd9-0d26-4390-b922-e5c28608b939" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresTerminalContextTests" name="Membership_match_pair_bot_and_durable_phase_are_all_required" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: &quot;ticket-expiry&quot;)" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="437328df-f5da-1f84-db0c-f2a58c160215">
+      <Execution id="8d5e0eac-ec82-46f2-82b0-b956384506e1" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Migration_ticket_lifecycle_rejects_expiry_and_idle_ban" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSystemMailLocalizationTests.Recall_persists_exact_reason_and_free_admin_mail_is_not_inferred_from_its_title" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="4990c775-311e-04ec-5f26-fe877acc84af">
+      <Execution id="51646cbe-11a6-428c-8268-ad02cfdd4b83" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSystemMailLocalizationTests" name="Recall_persists_exact_reason_and_free_admin_mail_is_not_inferred_from_its_title" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonThemeRecoveryTests.RecreatedRecoveryWorkerUsesOriginalFireBundleRatherThanNewWoodAndRetainsFailures(archiveState: &quot;missing&quot;)" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="8ae9a7b1-5742-ed56-fd06-b3cebe02735c">
+      <Execution id="b8c5a8b8-ed02-444e-b3f3-8bee5b04cb5c" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonThemeRecoveryTests" name="RecreatedRecoveryWorkerUsesOriginalFireBundleRatherThanNewWoodAndRetainsFailures" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Configuration_real_HTTP_authenticates_and_serves_exact_current_or_archived_binary" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="448bfe9c-214e-9cfb-a50b-00bc89370c98">
+      <Execution id="ebf6a1c5-c7b4-4745-9411-33c344c842dd" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Configuration_real_HTTP_authenticates_and_serves_exact_current_or_archived_binary" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonThemeRecoveryTests.RecreatedRecoveryWorkerUsesOriginalFireBundleRatherThanNewWoodAndRetainsFailures(archiveState: &quot;corrupt&quot;)" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="1bb68ff3-d709-bf5f-6267-4a788415b362">
+      <Execution id="64fd8740-3ba1-495d-99cf-c71b8c48d25f" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonThemeRecoveryTests" name="RecreatedRecoveryWorkerUsesOriginalFireBundleRatherThanNewWoodAndRetainsFailures" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: &quot;ban-idle&quot;)" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="06999e84-d3fa-477b-cc24-ef58994c004b">
+      <Execution id="9aea48fe-88c2-43f8-a9fc-9cd616cd55c9" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Migration_ticket_lifecycle_rejects_expiry_and_idle_ban" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="9f802b74-b1f8-3d11-7a3f-414d31e78772">
+      <Execution id="9c6f7d93-d849-4504-84cf-a45a43bbcd0d" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Real_process_pvp_relic_replay_and_extraction_survive_forced_restart" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonShop_RealBinaryHttpKeepsScopedPricesCopiesAndFrozenReplayReceipts" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="47d82b0d-f653-f780-9f45-96e306ce96da">
+      <Execution id="389c8d0a-0b45-4b41-b698-33532998e70f" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="SeasonShop_RealBinaryHttpKeepsScopedPricesCopiesAndFrozenReplayReceipts" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Protobuf_real_database_login_bootstrap_profile_deck_and_cross_format_purchase" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="b4545c55-abc3-cba2-4fc5-1117a9d6db82">
+      <Execution id="335169ec-44d8-4fa4-9ec5-9b6ca8e60196" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Protobuf_real_database_login_bootstrap_profile_deck_and_cross_format_purchase" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonActivity_ActualBinaryHttpReservesSharedTokensAndClaimsTheSameEntitlementOnce" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="d4a1dc87-cb9a-91c7-a0d3-5d63075da7f3">
+      <Execution id="772b61b8-1179-4954-8f7e-f1a693cccad0" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="SeasonActivity_ActualBinaryHttpReservesSharedTokensAndClaimsTheSameEntitlementOnce" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSystemMailLocalizationTests.Legacy_mail_with_no_metadata_is_read_unchanged_even_when_it_looks_like_a_recall" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="0bd0b733-f3fd-059f-cae8-3f6fae4071fa">
+      <Execution id="cd6891e7-aa20-40e8-9695-e225a1d5e1d5" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSystemMailLocalizationTests" name="Legacy_mail_with_no_metadata_is_read_unchanged_even_when_it_looks_like_a_recall" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresTerminalContextTests.Owned_terminal_fallback_reads_old_match_and_cancels_without_mutating_new_room_or_assets(phase: Extracted)" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="c79e82d3-a95f-5a35-763f-4656284ddadc">
+      <Execution id="4a4d55cd-2e80-4a2e-a683-3e1c94657d14" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresTerminalContextTests" name="Owned_terminal_fallback_reads_old_match_and_cancels_without_mutating_new_room_or_assets" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.PermanentCopyAdoptionSurvivesClosureAndCannotBeBypassedByOpeningCardsBeforeTheShop" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="9af08629-79b8-2c21-84cc-23a15bcbd03d">
+      <Execution id="2036bb94-e1bf-4bcf-8626-325b2f7b2dd9" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests" name="PermanentCopyAdoptionSurvivesClosureAndCannotBeBypassedByOpeningCardsBeforeTheShop" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonJourney_ActualAuthenticatedBinaryHttpKeepsOriginalProgressAndNeverOffersAClientExperienceGrant" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="b481684f-08a5-23cd-7dfe-2d3f404651f0">
+      <Execution id="c7b611de-78dc-43e7-b4e6-cbbbaaf4bd68" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="SeasonJourney_ActualAuthenticatedBinaryHttpKeepsOriginalProgressAndNeverOffersAClientExperienceGrant" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonCrafting_binary_session_uses_all_five_routes_and_preserves_asset_identity" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="1a443735-49fa-5fb4-0a04-032d8fbe7837">
+      <Execution id="25774413-6301-49d4-a943-71c75038c500" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="SeasonCrafting_binary_session_uses_all_five_routes_and_preserves_asset_identity" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonMarket_binary_http_and_authenticated_websockets_keep_currency_escrow_and_private_balances" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="3b428c32-5789-6ef0-4262-a5ede91b20d0">
+      <Execution id="ba3099d5-338a-4c32-9b9b-14c501c08b87" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="SeasonMarket_binary_http_and_authenticated_websockets_keep_currency_escrow_and_private_balances" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.InventoryDiscard_binary_http_authenticates_versions_replays_and_projects_the_committed_inventory" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="e769e623-2b27-30e1-3706-3730a0c22b47">
+      <Execution id="0bdccbbb-6a11-493d-b837-3256b61873a5" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="InventoryDiscard_binary_http_authenticates_versions_replays_and_projects_the_committed_inventory" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_supports_login_bootstrap_and_websocket_ping" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="1aa325b7-99c6-5aa6-3d22-de03a2c75d65">
+      <Execution id="642e20f0-ce7b-4a0a-8a60-84a0b6511901" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Real_process_supports_login_bootstrap_and_websocket_ping" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.AnUnavailableOrAlteredFrozenCatalogDoesNotFallBackToCurrentPrices" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="d3702611-f018-417f-e20a-4865a08d5dcf">
+      <Execution id="0963aa3b-48f0-4b15-9321-ebff256bdfe5" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests" name="AnUnavailableOrAlteredFrozenCatalogDoesNotFallBackToCurrentPrices" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ConcurrentGlobalRefreshesKeepThreeReceiptsAndDoNotResetAtUtcMidnight" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="b891ca02-50c4-15e4-ea17-ab4ec2b27d29">
+      <Execution id="784a9b2d-bcdb-4b7e-adc5-084c26e03ecc" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests" name="ConcurrentGlobalRefreshesKeepThreeReceiptsAndDoNotResetAtUtcMidnight" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_binary_business_equipment_cards_market_mail_matchmaking" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\fantasycard.server.tests\fantasycard.server.tests.dll" id="017b32d0-4f2e-4817-1668-e74a457a556e">
+      <Execution id="09fd75d7-d983-4127-aa69-7f18a0b7ca71" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\protected-tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Migration_binary_business_equipment_cards_market_mail_matchmaking" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="b4545c55-abc3-cba2-4fc5-1117a9d6db82" executionId="335169ec-44d8-4fa4-9ec5-9b6ca8e60196" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9af08629-79b8-2c21-84cc-23a15bcbd03d" executionId="2036bb94-e1bf-4bcf-8626-325b2f7b2dd9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="126e0124-8faa-e304-7053-674978fdfa61" executionId="0e09e16b-0a68-4c4e-9fb7-d6056c15e444" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7a9aaf37-f2f1-44e5-097f-56383de9d21a" executionId="3090c8d8-820c-4469-856a-78c3161bdb19" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d3702611-f018-417f-e20a-4865a08d5dcf" executionId="0963aa3b-48f0-4b15-9321-ebff256bdfe5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c7dbac66-e4e7-0f96-3647-37272a846f3f" executionId="8e58c47a-dffb-4837-b1e1-f0c45d14dd4f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="06999e84-d3fa-477b-cc24-ef58994c004b" executionId="9aea48fe-88c2-43f8-a9fc-9cd616cd55c9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1bb68ff3-d709-bf5f-6267-4a788415b362" executionId="64fd8740-3ba1-495d-99cf-c71b8c48d25f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d4a1dc87-cb9a-91c7-a0d3-5d63075da7f3" executionId="772b61b8-1179-4954-8f7e-f1a693cccad0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="47d82b0d-f653-f780-9f45-96e306ce96da" executionId="389c8d0a-0b45-4b41-b698-33532998e70f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d1336add-d612-c38d-5ccf-89c186aafa5f" executionId="26b697dc-0579-4ddc-b161-9fc3e0e42199" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1a443735-49fa-5fb4-0a04-032d8fbe7837" executionId="25774413-6301-49d4-a943-71c75038c500" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3b428c32-5789-6ef0-4262-a5ede91b20d0" executionId="ba3099d5-338a-4c32-9b9b-14c501c08b87" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8ae9a7b1-5742-ed56-fd06-b3cebe02735c" executionId="b8c5a8b8-ed02-444e-b3f3-8bee5b04cb5c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c79e82d3-a95f-5a35-763f-4656284ddadc" executionId="4a4d55cd-2e80-4a2e-a683-3e1c94657d14" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3908f2f5-4fe5-d1c6-8cbf-defa3deaa68e" executionId="402582d0-d2bb-4779-973b-4003d1dc75e7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0bd0b733-f3fd-059f-cae8-3f6fae4071fa" executionId="cd6891e7-aa20-40e8-9695-e225a1d5e1d5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="437328df-f5da-1f84-db0c-f2a58c160215" executionId="8d5e0eac-ec82-46f2-82b0-b956384506e1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5e68557d-f2aa-4b6a-d280-974b36b9d1d7" executionId="686cce1e-afd0-4c76-8a4b-a639b6a3722e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b481684f-08a5-23cd-7dfe-2d3f404651f0" executionId="c7b611de-78dc-43e7-b4e6-cbbbaaf4bd68" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4990c775-311e-04ec-5f26-fe877acc84af" executionId="51646cbe-11a6-428c-8268-ad02cfdd4b83" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="483b285f-163e-accc-12f6-5eff90f66b62" executionId="7d447565-a9ec-4076-aaf3-db28dfaf27d6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="017b32d0-4f2e-4817-1668-e74a457a556e" executionId="09fd75d7-d983-4127-aa69-7f18a0b7ca71" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a2486033-7db4-9e9b-9bdd-18ef1151ad9d" executionId="1d6bb5fa-3122-46ab-b957-c78a97366ac7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="191f0054-ffe1-51b2-9057-f876bdd8e8a4" executionId="e2855794-3e39-4f22-8fbf-f925e65fc518" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ab65b1a8-65e2-2824-8e79-63a17de4228f" executionId="214c84ea-2e40-4c38-88e0-8e28600d567d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9b3ab205-71c3-836c-ae9a-613939966991" executionId="67d9cbba-db2c-4b34-808c-761dbaaca3e3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c51b746c-82b3-e8be-3cc0-84378bcfa8e4" executionId="a2711d4d-8089-4b75-aecc-a46c055a79cf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="57d4e50a-cb19-7bb5-08e6-e4cfa320f747" executionId="a3a4e02b-a33b-4576-85de-a2228db689cf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="19d93692-00c3-1f9f-43bd-3eb0363423df" executionId="8c3e2631-5b0b-4a09-bbcf-4f36e5c4b916" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9f802b74-b1f8-3d11-7a3f-414d31e78772" executionId="9c6f7d93-d849-4504-84cf-a45a43bbcd0d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="33c18f5e-c02e-c9b3-28a0-e56f8367f3b4" executionId="b9d00dd9-0d26-4390-b922-e5c28608b939" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="448bfe9c-214e-9cfb-a50b-00bc89370c98" executionId="ebf6a1c5-c7b4-4745-9411-33c344c842dd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1aa325b7-99c6-5aa6-3d22-de03a2c75d65" executionId="642e20f0-ce7b-4a0a-8a60-84a0b6511901" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e769e623-2b27-30e1-3706-3730a0c22b47" executionId="0bdccbbb-6a11-493d-b837-3256b61873a5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b891ca02-50c4-15e4-ea17-ab4ec2b27d29" executionId="784a9b2d-bcdb-4b7e-adc5-084c26e03ecc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="36" executed="36" passed="33" failed="3" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)&#xD;
+[xUnit.net 00:00:00.39]   Discovering: FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:00:01.17]   Discovered:  FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:00:01.60]   Starting:    FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:02:06.26]       GET /api/v1/season-crafting/reforge-quote BadRequest&#xD;
+[xUnit.net 00:02:06.26]       Stack Trace:&#xD;
+[xUnit.net 00:02:06.26]            at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark()&#xD;
+[xUnit.net 00:02:06.26]            at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark()&#xD;
+[xUnit.net 00:02:06.26]            at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark()&#xD;
+[xUnit.net 00:02:06.26]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:02:09.65]       Assert.Equal() Failure: Values differ&#xD;
+[xUnit.net 00:02:09.65]       Expected: OK&#xD;
+[xUnit.net 00:02:09.65]       Actual:   InternalServerError&#xD;
+[xUnit.net 00:02:09.65]       Stack Trace:&#xD;
+[xUnit.net 00:02:09.65]            at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.&lt;&gt;c__DisplayClass35_0.&lt;&lt;SeasonWallet_binary_quote_upgrade_ownership_and_legacy_contracts&gt;g__Call|0&gt;d.MoveNext()&#xD;
+[xUnit.net 00:02:09.65]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:02:09.65]            at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonWallet_binary_quote_upgrade_ownership_and_legacy_contracts()&#xD;
+[xUnit.net 00:02:09.65]            at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonWallet_binary_quote_upgrade_ownership_and_legacy_contracts()&#xD;
+[xUnit.net 00:02:09.65]            at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonWallet_binary_quote_upgrade_ownership_and_legacy_contracts()&#xD;
+[xUnit.net 00:02:09.65]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:02:20.56]       Assert.False() Failure&#xD;
+[xUnit.net 00:02:20.56]       Expected: False&#xD;
+[xUnit.net 00:02:20.56]       Actual:   True&#xD;
+[xUnit.net 00:02:20.56]       Stack Trace:&#xD;
+[xUnit.net 00:02:20.56]            at FantasyCard.Server.Tests.Common.RuntimeTimingTests.Actual_pool_acquisition_wait_is_separate_from_replay_SQL_execution()&#xD;
+[xUnit.net 00:02:20.56]            at FantasyCard.Server.Tests.Common.RuntimeTimingTests.Actual_pool_acquisition_wait_is_separate_from_replay_SQL_execution()&#xD;
+[xUnit.net 00:02:20.56]            at FantasyCard.Server.Tests.Common.RuntimeTimingTests.Actual_pool_acquisition_wait_is_separate_from_replay_SQL_execution()&#xD;
+[xUnit.net 00:02:20.56]            at FantasyCard.Server.Tests.Common.RuntimeTimingTests.Actual_pool_acquisition_wait_is_separate_from_replay_SQL_execution()&#xD;
+[xUnit.net 00:02:20.56]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:02:40.63]   Finished:    FantasyCard.Server.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="YK-SHENGJIAHAO" outcome="Error" timestamp="2026-11-07T12:36:25.1481766+08:00">
+        <Text>[xUnit.net 00:02:06.26]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="YK-SHENGJIAHAO" outcome="Error" timestamp="2026-11-07T12:36:28.5371355+08:00">
+        <Text>[xUnit.net 00:02:09.65]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonWallet_binary_quote_upgrade_ownership_and_legacy_contracts [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="YK-SHENGJIAHAO" outcome="Error" timestamp="2026-11-07T12:36:39.4504765+08:00">
+        <Text>[xUnit.net 00:02:20.56]     FantasyCard.Server.Tests.Common.RuntimeTimingTests.Actual_pool_acquisition_wait_is_separate_from_replay_SQL_execution [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

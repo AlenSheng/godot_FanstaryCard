@@ -86,4 +86,32 @@ public sealed partial class RealNetworkEndToEndTests
         rebuild.ExpectedBodyVersion++;await Call("POST","/api/v1/season-crafting/reforge",rebuild,"rebuild-action",HttpStatusCode.Conflict);
         Assert.Equal(2L,await database.ScalarAsync<long>("SELECT count(*) FROM equipments WHERE season_id=$1",definition.SeasonId));
     }
+    [Fact(Skip="Set isolated PostgreSQL database.",SkipUnless=nameof(HasTestDatabase))]
+    [Trait("Category","PostgresIntegration")]
+    public async Task Reforge_quote_authenticates_before_missing_or_malformed_query_validation()
+    {
+        await using var database=await PostgresTestSchema.CreateAsync(migrate:false);
+        using var timeout=CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
+        timeout.CancelAfter(TimeSpan.FromSeconds(60));var ct=timeout.Token;var port=ReserveLoopbackPort();
+        await using var server=StartServer(database.ConnectionString,port,legacy:false);
+        using var client=new HttpClient{BaseAddress=new Uri($"http://127.0.0.1:{port}"),Timeout=TimeSpan.FromSeconds(12)};
+        await server.WaitUntilReadyAsync(client,ct);
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(HttpProtocolRegistry.MediaType));
+        string[] queries=["","?seasonId=season&recipeId=invalid&bodyEquipmentId=invalid"];
+        foreach(var query in queries)await AssertQueryAsync(query,HttpStatusCode.Unauthorized);
+        using var loginResponse=await client.PostAsync("/api/v1/auth/local",PbContent(new Wire.LocalSignInRequest
+            {DeviceId=Guid.NewGuid().ToString(),DisplayName="Quote boundary"}),ct);
+        loginResponse.EnsureSuccessStatusCode();
+        var login=Wire.LocalSignInResponse.Parser.ParseFrom(await loginResponse.Content.ReadAsByteArrayAsync(ct));
+        client.DefaultRequestHeaders.Authorization=new AuthenticationHeaderValue("Bearer",login.AccessToken);
+        foreach(var query in queries)await AssertQueryAsync(query,HttpStatusCode.BadRequest);
+
+        async Task AssertQueryAsync(string query,HttpStatusCode expected)
+        {
+            using var response=await client.GetAsync("/api/v1/season-crafting/reforge-quote"+query,ct);
+            Assert.Equal(expected,response.StatusCode);
+            Assert.Equal(HttpProtocolRegistry.MediaType,response.Content.Headers.ContentType?.MediaType);
+            Assert.Equal((int)expected,Wire.HttpError.Parser.ParseFrom(await response.Content.ReadAsByteArrayAsync(ct)).Status);
+        }
+    }
 }
