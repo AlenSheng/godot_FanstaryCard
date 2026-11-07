@@ -1,0 +1,119 @@
+{
+  "item": "D03",
+  "status": "AcceptedWithinBoundedSimulationWithDeclaredPacingException",
+  "authority": {
+    "original_user_instruction": "如果遇见多次周期测试有部分失败整体验收不通过，多次可以放宽限制，并在报告中重点说明",
+    "latest_class_criterion": "保留15%目标",
+    "latest_nine_authorization": "call_4d670ef99a7b4b1babd43b2d87c7be95",
+    "interpretation": "Use the standing multi-cycle relaxation only for the lower time target of mature D2 farming; never relax class15percent or call original pacing targets passed"
+  },
+  "class_time_ratio": 1.0263157894736843,
+  "income_per_domain_hour_ratios": {
+    "gold_per_domain_hour": 1.0635046636237349,
+    "fragments_per_domain_hour": 1.0635046636237349
+  },
+  "matched_D2_three_maps_all_within15": true,
+  "matched_D5_no_red_evidence_retained": true,
+  "original_pacing_targets_all_met": false,
+  "declared_exception": {
+    "scope": "MatureD2 low-difficulty farming lower-time targets only",
+    "observed": {
+      "Normal": {
+        "n": 54,
+        "minimum": 3.7,
+        "median": 11.85,
+        "maximum": 31.2,
+        "original_target": [
+          25,
+          40
+        ],
+        "below": 50,
+        "within": 4,
+        "above": 0
+      },
+      "Elite": {
+        "n": 9,
+        "minimum": 29.4,
+        "median": 38.0,
+        "maximum": 44.3,
+        "original_target": [
+          50,
+          80
+        ],
+        "below": 9,
+        "within": 0,
+        "above": 0
+      },
+      "Boss": {
+        "n": 9,
+        "minimum": 49.0,
+        "median": 53.7,
+        "maximum": 70.8,
+        "original_target": [
+          75,
+          120
+        ],
+        "below": 9,
+        "within": 0,
+        "above": 0
+      }
+    },
+    "upper_targets_retained": true,
+    "class_ratio_limit": 1.15,
+    "stats_changed": false,
+    "reason": "Across317historical attempts and repeated calibration, mature D2 is faster, not slower. Keep observed early-tier throughput without inflating enemies just to meet a lower-time target. D5 benchmark and all old deviations remain separately reported."
+  },
+  "cohort_scope": "Three named trajectories per cohort; historical mixed versions, censored values and raw events retained. Percentiles are descriptive,not population guarantees.",
+  "economy_scope": "Finite original route/account histories plus conditional model; not a guarantee of infinite-horizon profitability. Bank gold is gross,real costs use F01. Cheap/adaptive gear at lower survival rates; learned-template target-kit model needs stated extraction assumptions.",
+  "first_season_highest_open_recommendation": "D2; does not activate a season or rewrite production definitions",
+  "D03_used": 317,
+  "D03_maximum": 317,
+  "F01_used": 300,
+  "B05_used": 330,
+  "new_gameplay_starts": 0,
+  "evidence": {
+    "paired_D2": {
+      "path": "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-paired-d2-audit-r1\\result.json",
+      "sha256": "63fddf7c22becf7a2baeaba0d067804362b7ee112d4473b015f90e238d061f39"
+    },
+    "paired_budget": {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\worktrees\\sync-release-targets\\godot_FanstaryCard\\docs\\season-balance-20261102\\D03-BUDGET.json",
+      "sha256": "cb8062d1e65291d9d23533189e3444b996f3ac3595338a526704c4b67d389690"
+    },
+    "cohort_quantiles": {
+      "path": "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-existing-quantiles-r1\\result.json",
+      "sha256": "4a88bb1fcd899d32dd2890d7100bd505bfdc6d34a9f4a85d63c33f4fd0607753"
+    },
+    "D5_matched": {
+      "path": "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-approved-matched-audit-r1.derived.json",
+      "sha256": "84ac2e864422c9b41e7b10860e63d3a2d58de74ecbc11ee70bf323a88c4ba7e7"
+    },
+    "F01_calendar": {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\worktrees\\sync-release-targets\\godot_FanstaryCard\\docs\\season-balance-20261102\\evidence\\F01-calendar-final-r1\\result.json",
+      "sha256": "63cbae39a6b1226cde4beaf1c4227af0b6f14a01abb0e196eefe6511952f92e2"
+    },
+    "phase1_correction": {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\worktrees\\sync-release-targets\\godot_FanstaryCard\\docs\\season-balance-20261102\\F01-PHASE1-CRITERION-CORRECTION.md",
+      "sha256": "85e025f6573b15d05bfff8e8b725094923021a6c89fefdcf7a9d50cca7f8cf62"
+    },
+    "skill_policy_correction": {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\worktrees\\sync-release-targets\\godot_FanstaryCard\\docs\\season-balance-20261102\\F01-SKILLED-POLICY-CORRECTION.md",
+      "sha256": "6a7a56f540da92b1f1545b12602921fd3f1a333ba93e640828bb310fb3bdd8f9"
+    },
+    "D0_same_tier": {
+      "path": "G:\\PR13Evidence\\season-balance-20261102-r1\\f01-existing-same-tier-efficiency-r2.derived.json",
+      "sha256": "dd3e82501939a85dc68c5f7c5c52d2746b379800f359aa755ec4b88e2ba8710c"
+    }
+  },
+  "all_original_failures_retained": true,
+  "no_new_budget_requested": true,
+  "production_changed": false,
+  "limitations": [
+    "Humanexperience excluded by user",
+    "No100person capacity rerun",
+    "PVE-only paired route does not replace F01 real account settlement",
+    "Original pacing failures stay failures;exception is explicit",
+    "Censored novice/strict-target tails stay unresolved observations,not fabricated events"
+  ],
+  "reviewed_at_utc": "2026-11-07T13:51:36.028480+00:00"
+}
