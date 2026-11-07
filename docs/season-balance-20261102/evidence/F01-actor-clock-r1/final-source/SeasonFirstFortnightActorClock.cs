@@ -1,0 +1,118 @@
+using FantasyCard.Domain.Combat;
+using FantasyCard.Domain.Seasons;
+using FantasyCard.Server.Rooms;
+
+namespace FantasyCard.Server.Tests.Config;
+
+/// <summary>Test-only application clock: changing simulated UTC never fires background timers.</summary>
+internal sealed class SeasonFirstFortnightTimeProvider(DateTimeOffset startsAtUtc) : TimeProvider
+{
+    private readonly object _gate = new();
+    private readonly DateTimeOffset _startsAtUtc = startsAtUtc.ToUniversalTime();
+    private DateTimeOffset _now = startsAtUtc.ToUniversalTime();
+    private int _activeTimers;
+
+    public override DateTimeOffset GetUtcNow() { lock (_gate) return _now; }
+    public override long TimestampFrequency => TimeSpan.TicksPerSecond;
+    public override long GetTimestamp() { lock (_gate) return (_now - _startsAtUtc).Ticks; }
+    internal int ActiveTimers => Volatile.Read(ref _activeTimers);
+
+    internal void AdvanceExplicitly(TimeSpan delta)
+    {
+        ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(delta, TimeSpan.Zero);
+        lock (_gate) _now += delta;
+    }
+
+    public override ITimer CreateTimer(TimerCallback callback, object? state, TimeSpan dueTime, TimeSpan period)
+    {
+        ArgumentNullException.ThrowIfNull(callback);
+        Interlocked.Increment(ref _activeTimers);
+        return new ManualOnlyTimer(() => Interlocked.Decrement(ref _activeTimers));
+    }
+
+    private sealed class ManualOnlyTimer(Action onDispose) : ITimer
+    {
+        private int _disposed;
+        public bool Change(TimeSpan dueTime, TimeSpan period) => Volatile.Read(ref _disposed) == 0;
+        public void Dispose() { if (Interlocked.Exchange(ref _disposed, 1) == 0) onDispose(); }
+        public ValueTask DisposeAsync() { Dispose(); return ValueTask.CompletedTask; }
+    }
+}
+
+/// <summary>Advance an existing actor exactly once per explicit100ms frame; no admission or map creation.</summary>
+internal sealed class SeasonFirstFortnightActorClock
+{
+    private readonly RoomActor _actor;
+    private readonly SeasonFirstFortnightTimeProvider _clock;
+    private readonly DateTimeOffset _startsAtUtc;
+    private readonly TimeSpan _maximumElapsed;
+    private TimeSpan _elapsed;
+    private bool _faulted;
+    private int _advancing;
+
+    private SeasonFirstFortnightActorClock(RoomActor actor, SeasonFirstFortnightTimeProvider clock,
+        DateTimeOffset startsAtUtc, TimeSpan maximumElapsed)
+    {
+        _actor = actor;
+        _clock = clock;
+        _startsAtUtc = startsAtUtc.ToUniversalTime();
+        _maximumElapsed = maximumElapsed;
+    }
+
+    internal static async Task<SeasonFirstFortnightActorClock> BindAsync(RoomActor actor,
+        SeasonFirstFortnightTimeProvider clock, Guid expectedRoomId, SeasonContext expectedContext,
+        DateTimeOffset startsAtUtc, TimeSpan maximumElapsed, CancellationToken cancellationToken)
+    {
+        if (actor.RoomId != expectedRoomId || clock.GetUtcNow() != startsAtUtc
+            || maximumElapsed < RoomActor.TickInterval || maximumElapsed > TimeSpan.FromSeconds(1200))
+            throw new InvalidOperationException("F01 actor identity, scheduled UTC or frame bound differs.");
+        var snapshot = await actor.ExecuteAsync(new GetRoomSnapshotCommand(), cancellationToken);
+        if (snapshot.RoomId != expectedRoomId || snapshot.Season != expectedContext || snapshot.Elapsed != TimeSpan.Zero)
+            throw new InvalidOperationException("F01 clock requires the original unadvanced actor/context.");
+        if (snapshot.StartedAtUtc is { } originalStart && originalStart != startsAtUtc
+            || snapshot.Players.Count > 0 && (snapshot.Map is null || snapshot.StartedAtUtc is null))
+            throw new InvalidOperationException("F01 requires the actual original map start, not a prepared prototype or legacy epoch.");
+        return new(actor, clock, startsAtUtc, maximumElapsed);
+    }
+
+    internal async Task<BattleRoomSnapshot> AdvanceOneFrameAsync(CancellationToken cancellationToken)
+    {
+        if (_faulted || Interlocked.CompareExchange(ref _advancing, 1, 0) != 0)
+            throw new InvalidOperationException("A faulted or concurrently advanced F01 frame cannot be retried.");
+        if (_elapsed + RoomActor.TickInterval > _maximumElapsed)
+        {
+            Volatile.Write(ref _advancing, 0);
+            throw new InvalidOperationException("The F01 declared frame bound has been reached.");
+        }
+        try
+        {
+            if (_clock.GetUtcNow() != _startsAtUtc + _elapsed)
+                throw new InvalidOperationException("F01 application time changed outside the explicit driver.");
+            var expectedElapsed = _elapsed + RoomActor.TickInterval;
+            _clock.AdvanceExplicitly(RoomActor.TickInterval);
+            var snapshot = await _actor.ExecuteAsync(new AdvanceRoomTimeCommand(RoomActor.TickInterval, _clock.GetUtcNow()), cancellationToken);
+            if (snapshot.Elapsed != expectedElapsed)
+                throw new InvalidOperationException("F01 actor elapsed time differs; automatic or foreign ticks must not be pooled.");
+            _elapsed = snapshot.Elapsed;
+            return snapshot;
+        }
+        catch
+        {
+            _faulted = true;
+            throw;
+        }
+        finally { Volatile.Write(ref _advancing, 0); }
+    }
+
+    internal async Task<BattleRoomSnapshot> CaptureStableAsync(CancellationToken cancellationToken)
+    {
+        if (_faulted || Volatile.Read(ref _advancing) != 0) throw new InvalidOperationException("F01 has no stable non-faulted frame boundary.");
+        var snapshot = await _actor.ExecuteAsync(new GetRoomSnapshotCommand(), cancellationToken);
+        if (snapshot.Elapsed != _elapsed || _clock.GetUtcNow() != _startsAtUtc + _elapsed)
+        {
+            _faulted = true;
+            throw new InvalidOperationException("F01 actor or application time changed after the last explicit frame.");
+        }
+        return snapshot;
+    }
+}

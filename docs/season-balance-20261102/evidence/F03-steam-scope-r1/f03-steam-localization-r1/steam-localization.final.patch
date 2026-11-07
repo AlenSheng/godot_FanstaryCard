@@ -1,0 +1,242 @@
+From 14b3a1729d55e59aea1aa3d24a47ac002ebf1a91 Mon Sep 17 00:00:00 2001
+From: AlenSheng <498576810@qq.com>
+Date: Sat, 7 Nov 2026 03:59:02 +0800
+Subject: [PATCH] fix(steam): localize entry copy across all supported
+ languages
+
+---
+ client/data/locales/ar.json           |  4 +++-
+ client/data/locales/en.json           |  4 +++-
+ client/data/locales/es.json           |  4 +++-
+ client/data/locales/fr.json           |  4 +++-
+ client/data/locales/hi.json           |  4 +++-
+ client/data/locales/id.json           |  4 +++-
+ client/data/locales/ja.json           |  4 +++-
+ client/data/locales/ko.json           |  4 +++-
+ client/data/locales/pt.json           |  4 +++-
+ client/data/locales/ru.json           |  4 +++-
+ client/data/locales/zh-CN.json        |  4 +++-
+ client/tests/ui_steam_entry_review.gd | 12 +++++++++---
+ client/ui/main.gd                     |  4 ++--
+ 13 files changed, 44 insertions(+), 16 deletions(-)
+
+diff --git a/client/data/locales/ar.json b/client/data/locales/ar.json
+index 0e24e7d8..c42b78b6 100644
+--- a/client/data/locales/ar.json
++++ b/client/data/locales/ar.json
+@@ -1141,7 +1141,9 @@
+     "reward_value_empty_slot": "خانة الدرع هذه فارغة.",
+     "reward_value_replaces": "التجهيز المباشر يستبدل: %s",
+     "reward_value_set": "قطع %s: %d/%d → %d/%d",
+-    "reward_value_high_quality": "التجهيز سيتجاوز الحد المشترك لقطعة برتقالية/حمراء واحدة."
++    "reward_value_high_quality": "التجهيز سيتجاوز الحد المشترك لقطعة برتقالية/حمراء واحدة.",
++    "steam_enter": "دخول",
++    "steam_entry_unavailable": "تسجيل الدخول عبر Steam غير جاهز بعد. يرجى المحاولة لاحقًا."
+   },
+   "card_names": {
+     "C01": "قطع النار",
+diff --git a/client/data/locales/en.json b/client/data/locales/en.json
+index 5dea6f63..4e5bca8f 100644
+--- a/client/data/locales/en.json
++++ b/client/data/locales/en.json
+@@ -1141,7 +1141,9 @@
+     "reward_value_empty_slot": "This armor slot is empty.",
+     "reward_value_replaces": "Direct equip replaces: %s",
+     "reward_value_set": "%s pieces: %d/%d → %d/%d",
+-    "reward_value_high_quality": "Direct equip would exceed the one Orange/Red limit."
++    "reward_value_high_quality": "Direct equip would exceed the one Orange/Red limit.",
++    "steam_enter": "Enter",
++    "steam_entry_unavailable": "Steam sign-in is not ready. Please try again later."
+   },
+   "card_names": {
+     "C01": "Fire Slash",
+diff --git a/client/data/locales/es.json b/client/data/locales/es.json
+index a7fd4d99..8883a5fd 100644
+--- a/client/data/locales/es.json
++++ b/client/data/locales/es.json
+@@ -1141,7 +1141,9 @@
+     "reward_value_empty_slot": "Esta ranura de armadura está vacía.",
+     "reward_value_replaces": "Equipar directamente reemplaza: %s",
+     "reward_value_set": "Piezas de %s: %d/%d → %d/%d",
+-    "reward_value_high_quality": "Equipar superaría el límite conjunto de una pieza naranja/roja."
++    "reward_value_high_quality": "Equipar superaría el límite conjunto de una pieza naranja/roja.",
++    "steam_enter": "Entrar",
++    "steam_entry_unavailable": "El inicio de sesión de Steam aún no está listo. Inténtalo de nuevo más tarde."
+   },
+   "numerical": {
+     "text": {
+diff --git a/client/data/locales/fr.json b/client/data/locales/fr.json
+index a3541f92..f03e872e 100644
+--- a/client/data/locales/fr.json
++++ b/client/data/locales/fr.json
+@@ -1141,7 +1141,9 @@
+     "reward_value_empty_slot": "Cet emplacement d’armure est vide.",
+     "reward_value_replaces": "Équiper remplace : %s",
+     "reward_value_set": "Pièces %s : %d/%d → %d/%d",
+-    "reward_value_high_quality": "Équiper dépasserait la limite commune d’une pièce orange/rouge."
++    "reward_value_high_quality": "Équiper dépasserait la limite commune d’une pièce orange/rouge.",
++    "steam_enter": "Entrer",
++    "steam_entry_unavailable": "La connexion Steam n'est pas encore prête. Réessayez plus tard."
+   },
+   "numerical": {
+     "text": {
+diff --git a/client/data/locales/hi.json b/client/data/locales/hi.json
+index 0f7af1be..916b4c29 100644
+--- a/client/data/locales/hi.json
++++ b/client/data/locales/hi.json
+@@ -1141,7 +1141,9 @@
+     "reward_value_empty_slot": "यह कवच स्लॉट खाली है।",
+     "reward_value_replaces": "सीधे पहनने पर बदलेगा: %s",
+     "reward_value_set": "%s हिस्से: %d/%d → %d/%d",
+-    "reward_value_high_quality": "सीधे पहनने से नारंगी/लाल की संयुक्त एक वस्तु सीमा पार होगी।"
++    "reward_value_high_quality": "सीधे पहनने से नारंगी/लाल की संयुक्त एक वस्तु सीमा पार होगी।",
++    "steam_enter": "प्रवेश",
++    "steam_entry_unavailable": "Steam लॉगिन अभी तैयार नहीं है। कृपया बाद में फिर कोशिश करें।"
+   },
+   "numerical": {
+     "text": {
+diff --git a/client/data/locales/id.json b/client/data/locales/id.json
+index c6c8da44..c28db510 100644
+--- a/client/data/locales/id.json
++++ b/client/data/locales/id.json
+@@ -1141,7 +1141,9 @@
+     "reward_value_empty_slot": "Slot zirah ini kosong.",
+     "reward_value_replaces": "Pakai langsung mengganti: %s",
+     "reward_value_set": "Bagian %s: %d/%d → %d/%d",
+-    "reward_value_high_quality": "Memakai akan melampaui batas satu perlengkapan Oranye/Merah."
++    "reward_value_high_quality": "Memakai akan melampaui batas satu perlengkapan Oranye/Merah.",
++    "steam_enter": "Masuk",
++    "steam_entry_unavailable": "Login Steam belum siap. Coba lagi nanti."
+   },
+   "numerical": {
+     "text": {
+diff --git a/client/data/locales/ja.json b/client/data/locales/ja.json
+index 3f59d8dc..fae0c022 100644
+--- a/client/data/locales/ja.json
++++ b/client/data/locales/ja.json
+@@ -1141,7 +1141,9 @@
+     "reward_value_empty_slot": "この防具枠は空いています。",
+     "reward_value_replaces": "直接装備で交換：%s",
+     "reward_value_set": "%s の部位数：%d/%d → %d/%d",
+-    "reward_value_high_quality": "直接装備すると橙・赤合計1個の上限を超えます。"
++    "reward_value_high_quality": "直接装備すると橙・赤合計1個の上限を超えます。",
++    "steam_enter": "入る",
++    "steam_entry_unavailable": "Steamログインの準備ができていません。しばらくしてから再試行してください。"
+   },
+   "card_names": {
+     "C01": "火斬り",
+diff --git a/client/data/locales/ko.json b/client/data/locales/ko.json
+index 5896dd50..a5554899 100644
+--- a/client/data/locales/ko.json
++++ b/client/data/locales/ko.json
+@@ -1141,7 +1141,9 @@
+     "reward_value_empty_slot": "이 방어구 슬롯은 비어 있습니다.",
+     "reward_value_replaces": "바로 착용 시 교체: %s",
+     "reward_value_set": "%s 부위 수: %d/%d → %d/%d",
+-    "reward_value_high_quality": "바로 착용하면 주황·빨강 합계 1개 제한을 초과합니다."
++    "reward_value_high_quality": "바로 착용하면 주황·빨강 합계 1개 제한을 초과합니다.",
++    "steam_enter": "입장",
++    "steam_entry_unavailable": "Steam 로그인이 아직 준비되지 않았습니다. 잠시 후 다시 시도해 주세요."
+   },
+   "card_names": {
+     "C01": "화염 베기",
+diff --git a/client/data/locales/pt.json b/client/data/locales/pt.json
+index df08fb8c..eb129ebc 100644
+--- a/client/data/locales/pt.json
++++ b/client/data/locales/pt.json
+@@ -1141,7 +1141,9 @@
+     "reward_value_empty_slot": "Este espaço de armadura está vazio.",
+     "reward_value_replaces": "Equipar diretamente substitui: %s",
+     "reward_value_set": "Peças de %s: %d/%d → %d/%d",
+-    "reward_value_high_quality": "Equipar excederia o limite conjunto de uma peça laranja/vermelha."
++    "reward_value_high_quality": "Equipar excederia o limite conjunto de uma peça laranja/vermelha.",
++    "steam_enter": "Entrar",
++    "steam_entry_unavailable": "O início de sessão Steam ainda não está pronto. Tente novamente mais tarde."
+   },
+   "numerical": {
+     "text": {
+diff --git a/client/data/locales/ru.json b/client/data/locales/ru.json
+index b91a6f16..57b5050e 100644
+--- a/client/data/locales/ru.json
++++ b/client/data/locales/ru.json
+@@ -1141,7 +1141,9 @@
+     "reward_value_empty_slot": "Этот слот брони пуст.",
+     "reward_value_replaces": "Надевание заменит: %s",
+     "reward_value_set": "Частей %s: %d/%d → %d/%d",
+-    "reward_value_high_quality": "Надевание превысит общий лимит в одну оранжевую/красную вещь."
++    "reward_value_high_quality": "Надевание превысит общий лимит в одну оранжевую/красную вещь.",
++    "steam_enter": "Войти",
++    "steam_entry_unavailable": "Вход через Steam пока недоступен. Повторите попытку позже."
+   },
+   "card_names": {
+     "C01": "Огненный разрез",
+diff --git a/client/data/locales/zh-CN.json b/client/data/locales/zh-CN.json
+index 92c79ee2..255baa1e 100644
+--- a/client/data/locales/zh-CN.json
++++ b/client/data/locales/zh-CN.json
+@@ -1141,7 +1141,9 @@
+     "reward_value_empty_slot": "此部位当前未穿防具。",
+     "reward_value_replaces": "直接穿戴将替换：%s",
+     "reward_value_set": "%s 件数：%d/%d → %d/%d",
+-    "reward_value_high_quality": "直接穿戴会超过橙红合计一件上限。"
++    "reward_value_high_quality": "直接穿戴会超过橙红合计一件上限。",
++    "steam_enter": "进入",
++    "steam_entry_unavailable": "Steam 登录暂未就绪，请稍后重试。"
+   },
+   "card_names": {
+     "C01": "火斩",
+diff --git a/client/tests/ui_steam_entry_review.gd b/client/tests/ui_steam_entry_review.gd
+index 6c3768c9..0ebf5a20 100644
+--- a/client/tests/ui_steam_entry_review.gd
++++ b/client/tests/ui_steam_entry_review.gd
+@@ -11,7 +11,10 @@ func _run() -> void:
+ 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
+ 	_frame_log = FileAccess.open(output.path_join("frames.original.jsonl"), FileAccess.WRITE)
+ 	_initial_lobby = Game.lobby.duplicate(true)
+-	for locale in ["zh-CN", "en"]:
++	var chinese_pack: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/locales/zh-CN.json"))
++	for locale in Palette.languages():
++		var target_pack: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/locales/%s.json" % locale))
++		_text_auditor = TextAudit.new(locale, chinese_pack, target_pack)
+ 		Palette.set_language(locale)
+ 		$UI.theme = Palette.theme()
+ 		Game.changed.emit()
+@@ -28,12 +31,15 @@ func _run() -> void:
+ 				var buttons: Array = $UI.content.find_children("*", "Button", true, false)
+ 				review_checks[name_tag + ": only one entry action"] = buttons.size() == 1 and buttons[0].name == "EnterGameButton"
+ 				review_checks[name_tag + ": no account input"] = $UI.content.find_children("*", "LineEdit", true, false).is_empty()
+-				review_checks[name_tag + ": entry caption"] = buttons[0].text == ("Enter" if locale == "en" else "进入")
++				review_checks[name_tag + ": entry caption"] = buttons[0].text == Palette.localized("steam_enter")
+ 				review_checks[name_tag + ": public title locale"] = $UI._game_title.text == Palette.localized("game_title")
+ 				review_checks[name_tag + ": readiness state"] = buttons[0].disabled == not ready
++				if not ready:
++					var notices: Array = $UI.content.find_children("*", "Label", true, false)
++					review_checks[name_tag + ": localized unavailability"] = notices.any(func(label): return label.text == Palette.localized("steam_entry_unavailable"))
+ 				await _review_capture(name_tag, false)
+ 	_frame_log.close()
+-	var report := {"ok": screenshot_count == 12 and layout_errors.is_empty() and not review_checks.values().has(false), "frames": review_frames, "checks": review_checks, "layout_errors": layout_errors, "screenshots": screenshot_count, "actual_game_matches": 0, "scope": "Steam ready/unavailable UI fixtures; no Steam SDK or real authentication"}
++	var report := {"ok": screenshot_count == 66 and layout_errors.is_empty() and not review_checks.values().has(false), "frames": review_frames, "checks": review_checks, "layout_errors": layout_errors, "screenshots": screenshot_count, "actual_game_matches": 0, "scope": "Steam ready/unavailable UI fixtures; no Steam SDK or real authentication"}
+ 	FileAccess.open(output.path_join("report.json"), FileAccess.WRITE).store_string(JSON.stringify(report, "  "))
+ 	Sound.stop_all()
+ 	Sound.stop_music()
+diff --git a/client/ui/main.gd b/client/ui/main.gd
+index f2342651..1e46fcd0 100644
+--- a/client/ui/main.gd
++++ b/client/ui/main.gd
+@@ -766,11 +766,11 @@ func _login() -> void:
+ 	top_space.size_flags_vertical = Control.SIZE_EXPAND_FILL
+ 	panel.add_child(top_space)
+ 	var steam_reason := _steam_unavailable_reason()
+-	var enter := _button(panel, I18n.t("进入"), _enter_steam, Game.busy or not steam_reason.is_empty(), "UI/CardCodex/card_codex_action_button_orange.png")
++	var enter := _button(panel, P.localized("steam_enter"), _enter_steam, Game.busy or not steam_reason.is_empty(), "UI/CardCodex/card_codex_action_button_orange.png")
+ 	enter.name = "EnterGameButton"
+ 	enter.custom_minimum_size.y = 100
+ 	if not steam_reason.is_empty():
+-		_label(panel, I18n.t("Steam 登录暂未就绪，请稍后重试。"), 20, P.MUTED)
++		_label(panel, P.localized("steam_entry_unavailable"), 20, P.MUTED)
+ 	var bottom_space := Control.new()
+ 	bottom_space.size_flags_vertical = Control.SIZE_EXPAND_FILL
+ 	panel.add_child(bottom_space)
+-- 
+2.39.2.windows.1
+
