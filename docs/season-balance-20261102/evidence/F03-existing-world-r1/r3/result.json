@@ -1,0 +1,101 @@
+{
+  "ok": false,
+  "error": {
+    "type": "ValueError",
+    "message": "Invalid isoformat string: '2026-11-07T14:12:59.3445969+00:00'"
+  },
+  "source_commit": "1fe8e4b219714688c0bed061a3162628c5dd1cbe",
+  "backup_sha256": "14f127e47726936785af0d78015959ea67c53d63746f0887d64f381e4e381139",
+  "facts": {
+    "before": {
+      "migration_max": 30,
+      "matches": 577,
+      "unacknowledged": 653
+    },
+    "after_startup": {
+      "migration_max": 55,
+      "migration_count": 52,
+      "matches": 577,
+      "unacknowledged": 653,
+      "seasons": 1
+    }
+  },
+  "checks": [
+    {
+      "name": "cloned-data readiness",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "text/plain",
+      "bytes": 7,
+      "body_sha256": "7f1e323b6272c6209a590fe8684bc64142a226cc9f73783bc027befede0ea0ee"
+    },
+    {
+      "name": "legacy068-0bootstrap before",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 36292,
+      "body_sha256": "4ba6d9ee8f8b683a113661cb11782d9fca220eab4b6f1c37dba624e7a6183591"
+    },
+    {
+      "name": "legacy068-0original settlement",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 208,
+      "body_sha256": "f12d1b477206be24899186bfbe1a764ed24f64b461de1ee8fddaf56dddd4fb5d"
+    },
+    {
+      "name": "legacy068-0first ACK",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 73,
+      "body_sha256": "e15732b24fcae4d07c8442729785286cdd28110b627850d22fb2e83a45669510"
+    },
+    {
+      "name": "legacy068-0same-key ACK replay",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 73,
+      "body_sha256": "e15732b24fcae4d07c8442729785286cdd28110b627850d22fb2e83a45669510"
+    },
+    {
+      "name": "legacy068-0new-key ACK replay",
+      "status": 200,
+      "expected": 200,
+      "passed": true,
+      "content_type": "application/protobuf",
+      "bytes": 73,
+      "body_sha256": "c7b5a1e95c6a8e2ee35ac35e5030e004b418961f092aa982bac05b073f5e15f2"
+    }
+  ],
+  "selected_existing_real_player_receipts": 6,
+  "synthetic_tokens_only_in_private_clone": true,
+  "no_actual_user_tokens_read": true,
+  "asset_fingerprints_before": {
+    "wallets": "b4190eefc7e894cfd67820910bf176d7",
+    "materials": "df6e14381e59149b121ca511247a8238",
+    "equipment": "c40a8e2b6514fa3dd205b87b5f36b2c3",
+    "holds": "e39d63ba912b19b727c330a517341725",
+    "ledger_count": 294
+  },
+  "asset_fingerprints_after": null,
+  "ACK_same_key_byte_exact": true,
+  "ACK_new_key_identity_equal_at_Postgres_microsecond_precision": true,
+  "exact_protected_package": true,
+  "old_config_archive_not_invented": true,
+  "private_database_retained": true,
+  "own_job_closed": true,
+  "own_PG_stopped": true,
+  "resource_breach": false,
+  "minimum_available_bytes": 13395079168,
+  "new_gameplay_starts": 0,
+  "production_changed": false
+}
